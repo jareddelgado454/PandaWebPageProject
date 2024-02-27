@@ -1,8 +1,13 @@
-import { Inter } from "next/font/google";
-import { ApolloWrapper } from '@/lib/apollo-wrapper';
 import "./globals.css";
 import { robotoFlex } from "./font";
-const inter = Inter({ subsets: ["latin"] });
+import { generateServerClientUsingCookies } from '@aws-amplify/adapter-nextjs/api';
+import { cookies } from 'next/headers';
+import config from '@/amplifyconfiguration.json';
+
+export const cookiesClient = generateServerClientUsingCookies({
+  config,
+  cookies
+});
 
 export const metadata = {
   title: "Create Next App",
@@ -13,11 +18,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${robotoFlex.className} antialiased dark:bg-zinc-800`}>
-        <ApolloWrapper>
           {
             children
           }
-        </ApolloWrapper>
       </body>
     </html>
   );

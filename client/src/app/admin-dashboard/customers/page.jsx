@@ -1,5 +1,4 @@
 import React from 'react';
-import { Table } from '@/components/Table';
 import { CardData } from '@/components/admin/cards/CardData';
 
 const Customers = () => {
@@ -41,7 +40,7 @@ const Customers = () => {
       </div>
       {/* Todo: Table */}
       <div>
-        <Table />
+        {/* <Table /> */}
       </div>
       <div className='flex flex-col md:flex-row items-center justify-between w-full gap-4'>
         <div className='flex flex-row items-center mt-4 dark:text-gray-800 font-medium tab-pagination shadow-lg '>

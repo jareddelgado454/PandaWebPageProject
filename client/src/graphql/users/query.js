@@ -29,12 +29,8 @@ export const getUser = gql`
 `;
 
 export const listUsers = gql`
-  query ListUsers(
-    $filter: ModelUserFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  query ListUsers{
+    listUsers {
       items {
         id
         email
@@ -55,6 +51,33 @@ export const listUsers = gql`
     }
   }
 `;
+
+// export const listUsers = gql`
+//   query ListUsers(
+//     $email: String
+//     $rol: String
+//   ) {
+//     listUsers(filter: { email: { ne: $email }, rol: { eq: $rol }}) {
+//       items {
+//         id
+//         email
+//         rol
+//         fullName
+//         contactNumber
+//         createdAt
+//         status
+//         address
+//         city
+//         state
+//         profilePicture
+//         updatedAt
+//         __typename
+//       }
+//       nextToken
+//       __typename
+//     }
+//   }
+// `;
 
 export const getReview = gql`
   query GetReview($id: ID!) {

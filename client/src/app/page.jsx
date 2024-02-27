@@ -1,7 +1,5 @@
-"use client";
-import React, { useState } from "react";
-import { useMutation } from "@apollo/client";
-import {  } from "@apollo/experimental-nextjs-app-support/ssr";
+import React from "react";
+import { generateClient } from 'aws-amplify/api';
 import { LOGIN_USER } from "@/graphql/users/mutation";
 import LandingNavBar from "@/components/LandingNavBar";
 import {
@@ -11,37 +9,42 @@ import {
   RiEyeOffLine,
   RiGoogleFill,
 } from "react-icons/ri";
-import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { Formik, Form, Field } from 'formik'
+import { listUsers } from "@/graphql/users/query";
+import { cookiesClient } from "./layout";
+const client = generateClient();
+const Home = async() => {
 
+  const { data, errors } = await cookiesClient.graphql({
+    query: listUsers
+  });
 
-const Home = () => {
+  console.log(data.listUsers.items);
 
-  const initialValue = {
-    email: '',
-    password: ''
-  }
+  // const initialValue = {
+  //   email: '',
+  //   password: ''
+  // }
 
-  const onHandleSubmit = async (values, { resetForm }) => {
-    try {
-      await loginUser({
-        variables: {
-          email: values.email,
-          password: values.password
-        }
-      });
-      resetForm();
-    } catch (error) {
-      console.error( error);
-    }
-  };
+  // const onHandleSubmit = async (values, { resetForm }) => {
+  //   try {
+  //     await loginUser({
+  //       variables: {
+  //         email: values.email,
+  //         password: values.password
+  //       }
+  //     });
+  //     resetForm();
+  //   } catch (error) {
+  //     console.error( error);
+  //   }
+  // };
 
-  const [ loginUser ] = useMutation(LOGIN_USER, {
-    update(_, { data }) {
-        console.log(data);
-    }
-  })
-
-  const [showPassword, setShowPassword] = useState(false);
+  // const [ loginUser ] = useMutation(LOGIN_USER, {
+  //   update(_, { data }) {
+  //       console.log(data);
+  //   }
+  // })
   return (
     <div className="flex flex-col w-full h-screen p-0 overflow-hidden relative">
       <div className="w-full h-full relative overflow-hidden">
@@ -78,7 +81,7 @@ const Home = () => {
                     <RiGoogleFill /> Enter with Google
                   </button>
                   <p className="mb-4">Or Sign in with your account</p>
-
+{/* 
                   <Formik
                     initialValues={initialValue}
                     onSubmit={onHandleSubmit}
@@ -127,7 +130,7 @@ const Home = () => {
                     )}
                   </Formik>
 
-      
+       */}
                   <p className="text-primary/80 mb-6 hover:text-primary cursor-pointer">
                     Have you forgotten the password?
                   </p>

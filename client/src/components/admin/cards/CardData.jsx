@@ -3,10 +3,7 @@ import React from 'react';
 import {Card, CardBody} from "@nextui-org/react";
 import { FaFaceMeh, FaFaceSmile, FaPeopleGroup } from 'react-icons/fa6';
 
-export const CardData = ({ mode }) => {
-
-    let text;
-
+export const CardData = ({ mode, number }) => {
     const renderIcon = () => {
         switch (mode) {
           case 'total':
@@ -36,11 +33,11 @@ export const CardData = ({ mode }) => {
     const getText = () => {
         switch (mode) {
             case 'total':
-              return "Total users: 10";
+              return `Total users: ${number}`;
             case 'active':
-              return "Active users: 5";
+              return `Active users: ${number}`;
             case 'inactive':
-              return "Inactive users: 4";
+              return `Inactive users: ${number}`;
             default:
               return null;
         }

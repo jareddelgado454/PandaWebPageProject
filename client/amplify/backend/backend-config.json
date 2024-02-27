@@ -1,0 +1,65 @@
+{
+  "api": {
+    "pandacms": {
+      "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [],
+          "defaultAuthentication": {
+            "apiKeyConfig": {
+              "apiKeyExpirationDate": "2024-03-10T23:49:12.280Z",
+              "apiKeyExpirationDays": 15,
+              "description": "auth"
+            },
+            "authenticationType": "API_KEY"
+          }
+        }
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync"
+    }
+  },
+  "auth": {
+    "pandacms": {
+      "customAuth": false,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "serviceType": "imported"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_auth_pandacms_nativeClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "pandacms"
+        }
+      ]
+    },
+    "AMPLIFY_auth_pandacms_userPoolId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "pandacms"
+        }
+      ]
+    },
+    "AMPLIFY_auth_pandacms_userPoolName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "pandacms"
+        }
+      ]
+    },
+    "AMPLIFY_auth_pandacms_webClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "pandacms"
+        }
+      ]
+    }
+  }
+}

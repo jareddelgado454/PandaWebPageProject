@@ -4,7 +4,7 @@ import { RiTeamFill, RiTaxiFill, RiGroupFill } from "react-icons/ri";
 const CardHome = ({type, numberActive, lastRegistrations}) => {
   return (
     <div
-        className='hover:text-black bg-green-panda text-white dark:bg-zinc-800 w-[25%] h-[220px] rounded-xl shadow-2xl px-4 py-5 flex flex-col justify-between transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300 cursor-pointer'
+        className='hover:text-gray-200 text-white bg-zinc-600 dark:bg-zinc-800 dark:text-gray-300 dark:hover:text-white  w-[25%] h-[220px] rounded-xl shadow-2xl px-4 py-5 flex flex-col justify-between transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300 cursor-pointer'
     >
         <div className='w-full flex justify-between items-center'>
             {
