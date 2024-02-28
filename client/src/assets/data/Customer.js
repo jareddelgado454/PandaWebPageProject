@@ -21,13 +21,6 @@ export const Customers = [
       "contact_number": "+1122334455"
     },
     {
-      "image": "https://scontent.flim2-1.fna.fbcdn.net/v/t39.30808-6/341023342_188085256909068_7360682541755663494_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=efb6e6&_nc_eui2=AeFN0ZHRN5BjhsPRIKpTKh6Cjg01AZGDyWuODTUBkYPJawD-g7lCqO50CcI2IS5b4FBbZtkhe-IVwYpBzC4YQSDn&_nc_ohc=OB_p7KT8rRsAX-bkVsh&_nc_ht=scontent.flim2-1.fna&oh=00_AfATF8MQp5RbaFs7ZLrj84TV5EneKX7xPI7KmuK_oVok8Q&oe=65DA4346",
-      "full_name": "Bob Brown",
-      "mail": "bob.brown@example.com",
-      "status": "Active",
-      "contact_number": "+1555666777"
-    },
-    {
       "image": "https://www.wrestlinginc.com/img/gallery/shawn-michaels-reflects-on-being-beat-up-by-six-marines/l-intro-1667060247.jpg",
       "full_name": "Emily Davis",
       "mail": "emily.davis@example.com",

@@ -5,10 +5,6 @@ import {  } from "@apollo/experimental-nextjs-app-support/ssr";
 import { LOGIN_USER } from "../graphql/users/mutation";
 import LandingNavBar from "../components/LandingNavBar";
 import {
-  RiMailLine,
-  RiLockLine,
-  RiEyeLine,
-  RiEyeOffLine,
   RiGoogleFill,
 } from "react-icons/ri";
 import { Formik, Form, Field, ErrorMessage } from 'formik'

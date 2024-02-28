@@ -3,7 +3,6 @@ import { ApolloWrapper } from '../lib/apollo-wrapper';
 import AuthProvider  from "../contexts/AuthContext";
 import "./globals.css";
 import { robotoFlex } from "./font";
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Create Next App",

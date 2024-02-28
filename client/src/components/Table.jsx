@@ -7,10 +7,10 @@ import {
     FaPersonCircleMinus
 } from 'react-icons/fa6';
 import { useDisclosure } from "@nextui-org/react";
-import { Customers } from '../assets/data/Customer';
 import { CustomerModal } from './admin/Customer/CustomerModal';
 
-export const Table = () => {
+export const Table = ({ item }) => {
+
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [mode, setMode] = useState('create');
 
@@ -23,10 +23,10 @@ export const Table = () => {
 
   return (
     <div className="relative overflow-x-auto rounded-lg shadow-lg p-6 bg-white dark:bg-zinc-800">
-        <table className="w-full text-sm text-left rtl:text-right  transition-all">
-            <thead className="text-xs text-gray-700 dark:text-white uppercase rounded-lg bg-zinc-200 dark:bg-zinc-800">
+        <table id="myTable" className="w-full text-sm text-left rtl:text-right  transition-all">
+            <thead className="text-xs text-gray-700 dark:text-white uppercase rounded-full bg-zinc-200 dark:bg-zinc-800" >
                 <tr>
-                    <th scope="col" className="px-6 py-3 w-20">
+                    <th scope="col" className="px-6 py-3 w-20 rounded-l-lg">
                         IMAGE
                     </th>
                     <th scope="col" className="px-6 py-3">
@@ -41,14 +41,14 @@ export const Table = () => {
                     <th scope="col" className="px-6 py-3">
                         CONTACT NUMBER
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-6 py-3 rounded-r-lg">
                         ACTIONS
                     </th>
                 </tr>
             </thead>
             <tbody>
                 {
-                    Customers.map((Customer, i) => (
+                    item.map((user, i) => (
                         <tr className={`bg-white border-b text-gray-700 dark:bg-zinc-800 dark:border-[#40C48E] dark:text-white dark:font-medium`}
                             key={i}
                         >
@@ -57,28 +57,28 @@ export const Table = () => {
                                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                             >
                                 <img
-                                    src={Customer.image}
+                                    src={user.profilePicture ? user.profilePicture : '/image/defaultProfilePicture.jpg'}
                                     alt="logo_image"
                                     className='w-[2rem] h-[2rem] rounded-lg object-cover bg-center'
                                 />
                             </th>
                             <td className="px-6 py-4">
-                                {Customer.full_name}
+                                {user.fullName}
                             </td>
                             <td className="px-6 py-4">
-                                {Customer.mail}
+                                {user.email}
                             </td>
                             <td className="px-6 py-4">
                                 <div>
                                     <p
-                                        className={`py-1 font-medium rounded-2xl brightness-125 w-20 flex justify-center ${Customer.status === 'Active' ? 'bg-emerald-700 text-green-500' : 'bg-rose-700 text-rose-300'}`}
+                                        className={`py-1 font-medium rounded-2xl brightness-125 w-20 flex justify-center ${user.status === 'active' ? 'bg-emerald-700 text-green-500' : 'bg-rose-700 text-rose-300'}`}
                                     >
-                                        {Customer.status}
+                                        {user.status}
                                     </p>
                                 </div>
                             </td>
                             <td className="px-6 py-4">
-                                {Customer.contact_number}
+                                {user.contactNumber}
                             </td>
                             <td className="px-6 py-4">
                                 <div className='flex gap-4'>
@@ -96,7 +96,7 @@ export const Table = () => {
                                         <FaPencil />
                                     </button>
                                     {
-                                        Customer.status === "Active" ? (
+                                        user.status === "active" ? (
                                             <button
                                                 type='button'
                                             >

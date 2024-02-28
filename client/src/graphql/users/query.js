@@ -1,6 +1,7 @@
-import { gql } from '@apollo/client';
 
-export const getUser = gql`
+import { gql } from 'graphql-tag';
+
+export const getUser = `
   query GetUser($id: ID!) {
     getUser(id: $id) {
       id
@@ -28,13 +29,33 @@ export const getUser = gql`
   }
 `;
 
+// export const listUsers = gql`
+//   query ListUsers{
+//     listUsers {
+//       items {
+//         id
+//         email
+//         rol
+//         fullName
+//         contactNumber
+//         createdAt
+//         status
+//         address
+//         city
+//         state
+//         profilePicture
+//         updatedAt
+//         __typename
+//       }
+//       nextToken
+//       __typename
+//     }
+//   }
+// `;
+
 export const listUsers = gql`
-  query ListUsers(
-    $filter: ModelUserFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  query ListUsers($email: String!, $rol: String!) {
+    listUsers(filter: {email: {ne: $email}, rol: {eq: $rol}}) {
       items {
         id
         email
@@ -50,13 +71,11 @@ export const listUsers = gql`
         updatedAt
         __typename
       }
-      nextToken
-      __typename
     }
   }
 `;
 
-export const getReview = gql`
+export const getReview = `
   query GetReview($id: ID!) {
     getReview(id: $id) {
       id
@@ -84,7 +103,7 @@ export const getReview = gql`
   }
 `;
 
-export const listReviews = gql`
+export const listReviews = `
   query ListReviews(
     $filter: ModelReviewFilterInput
     $limit: Int
