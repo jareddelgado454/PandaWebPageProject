@@ -6,6 +6,10 @@ import { LOGIN_USER } from "../graphql/users/mutation";
 import LandingNavBar from "../components/LandingNavBar";
 import {
   RiGoogleFill,
+  RiMailLine,
+  RiLockLine,
+  RiEyeLine,
+  RiEyeOffLine,
 } from "react-icons/ri";
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import RegisterFormLanding from "../components/LoginRegister/Register/RegisterFormLanding"
