@@ -1,39 +1,10 @@
 import React from "react";
 import LandingNavBar from "@/components/LandingNavBar";
 import {
-  RiMailLine,
-  RiLockLine,
-  RiEyeLine,
-  RiEyeOffLine,
   RiGoogleFill,
 } from "react-icons/ri";
-import { Formik, Form, Field } from 'formik';
 const Home = async() => {
 
-  const initialValue = {
-    email: '',
-    password: ''
-  }
-
-  const onHandleSubmit = async (values, { resetForm }) => {
-    try {
-      await loginUser({
-        variables: {
-          email: values.email,
-          password: values.password
-        }
-      });
-      resetForm();
-    } catch (error) {
-      console.error( error);
-    }
-  };
-
-  const [ loginUser ] = useMutation(LOGIN_USER, {
-    update(_, { data }) {
-        console.log(data);
-    }
-  })
   return (
     <div className="flex flex-col w-full h-screen p-0 overflow-hidden relative">
       <div className="w-full h-full relative overflow-hidden">
@@ -71,7 +42,7 @@ const Home = async() => {
                   </button>
                   <p className="mb-4">Or Sign in with your account</p>
 
-                  <Formik
+                  {/* <Formik
                     initialValues={initialValue}
                     onSubmit={onHandleSubmit}
                   >
@@ -117,7 +88,7 @@ const Home = async() => {
                         <span></span>
                       </Form>
                     )}
-                  </Formik>
+                  </Formik> */}
 
       
                   <p className="text-primary/80 mb-6 hover:text-primary cursor-pointer">
