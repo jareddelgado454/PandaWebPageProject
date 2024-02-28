@@ -22,7 +22,7 @@ const Settings = () => {
   }
 
   return (
-    <div className='flex justify-center items-center flex-col'>
+    <div className='flex justify-center items-center flex-col slide-in-left'>
         <div className='bg-white h-[5rem] w-full dark:bg-zinc-800 shadow-md flex justify-center items-center mb-10'>
           <p className='text-black dark:text-white font-bold text-3xl capitalize tracking-[0.2em]'>Profile Settings</p>
         </div>
