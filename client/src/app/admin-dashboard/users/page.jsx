@@ -61,7 +61,7 @@ const Users = () => {
     setPage(pageNumber);
   };
 
-  const totalPages = calculateTotalPages();
+  const totalPages = calculateTotalPages(users, rowsPerPage);
   const disablePrevious = page === 1;
   const disableNext = page === totalPages;
   const numbers = totalNumbers(users);

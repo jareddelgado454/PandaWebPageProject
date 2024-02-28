@@ -1,6 +1,4 @@
 import React from "react";
-import { generateClient } from 'aws-amplify/api';
-import { LOGIN_USER } from "@/graphql/users/mutation";
 import LandingNavBar from "@/components/LandingNavBar";
 import {
   RiMailLine,
@@ -9,42 +7,33 @@ import {
   RiEyeOffLine,
   RiGoogleFill,
 } from "react-icons/ri";
-import { Formik, Form, Field } from 'formik'
-import { listUsers } from "@/graphql/users/query";
-import { cookiesClient } from "./layout";
-const client = generateClient();
+import { Formik, Form, Field } from 'formik';
 const Home = async() => {
 
-  const { data, errors } = await cookiesClient.graphql({
-    query: listUsers
-  });
+  const initialValue = {
+    email: '',
+    password: ''
+  }
 
-  console.log(data.listUsers.items);
+  const onHandleSubmit = async (values, { resetForm }) => {
+    try {
+      await loginUser({
+        variables: {
+          email: values.email,
+          password: values.password
+        }
+      });
+      resetForm();
+    } catch (error) {
+      console.error( error);
+    }
+  };
 
-  // const initialValue = {
-  //   email: '',
-  //   password: ''
-  // }
-
-  // const onHandleSubmit = async (values, { resetForm }) => {
-  //   try {
-  //     await loginUser({
-  //       variables: {
-  //         email: values.email,
-  //         password: values.password
-  //       }
-  //     });
-  //     resetForm();
-  //   } catch (error) {
-  //     console.error( error);
-  //   }
-  // };
-
-  // const [ loginUser ] = useMutation(LOGIN_USER, {
-  //   update(_, { data }) {
-  //       console.log(data);
-  //   }
-  // })
+  const [ loginUser ] = useMutation(LOGIN_USER, {
+    update(_, { data }) {
+        console.log(data);
+    }
+  })
   return (
     <div className="flex flex-col w-full h-screen p-0 overflow-hidden relative">
       <div className="w-full h-full relative overflow-hidden">
@@ -81,7 +70,7 @@ const Home = async() => {
                     <RiGoogleFill /> Enter with Google
                   </button>
                   <p className="mb-4">Or Sign in with your account</p>
-{/* 
+
                   <Formik
                     initialValues={initialValue}
                     onSubmit={onHandleSubmit}
@@ -130,7 +119,7 @@ const Home = async() => {
                     )}
                   </Formik>
 
-       */}
+      
                   <p className="text-primary/80 mb-6 hover:text-primary cursor-pointer">
                     Have you forgotten the password?
                   </p>

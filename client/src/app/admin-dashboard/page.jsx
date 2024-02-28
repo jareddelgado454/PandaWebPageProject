@@ -5,7 +5,7 @@ import { FaGear, FaChartSimple } from 'react-icons/fa6'
 
 const AdminDashboard = () => {
   return (
-    <div className='w-full m-4'>
+    <div className='w-full m-4 slide-in-left'>
         <h2 className='text-4xl text-black dark:text-white font-extrabold mb-2'>Welcome Back [username]</h2>
         <h4 className='text-[22px] mb-8 text-gray-700 dark:text-gray-100 font-semibold'>The bussiness information is here</h4>
         <div className='w-full flex flex-wrap justify-around items-center mb-8'>
