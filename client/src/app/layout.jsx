@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
-import { ApolloWrapper } from '@/lib/apollo-wrapper';
+import { ApolloWrapper } from '../lib/apollo-wrapper';
+import AuthProvider  from "../contexts/AuthContext";
 import "./globals.css";
 import { robotoFlex } from "./font";
 const inter = Inter({ subsets: ["latin"] });
@@ -13,11 +14,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${robotoFlex.className} antialiased dark:bg-zinc-800`}>
+        <AuthProvider>
         <ApolloWrapper>
           {
             children
           }
         </ApolloWrapper>
+        </AuthProvider>
       </body>
     </html>
   );

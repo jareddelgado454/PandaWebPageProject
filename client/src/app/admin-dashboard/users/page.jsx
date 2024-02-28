@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useEffect } from 'react';
 import { Table } from '@/components/Table';
 import { CardData } from '@/components/admin/cards/CardData';

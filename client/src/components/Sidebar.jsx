@@ -2,7 +2,12 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { FaUser, FaUserGear, FaUserPen, FaChartSimple, FaGear, FaBars } from 'react-icons/fa6'
+import { useSession } from 'next-auth/react';
+
 export const Sidebar = () => {
+
+    const { data : session } = useSession();
+
     const [active, setActive] = useState(false);
 
     const toggleSidebar = () => {
@@ -61,8 +66,8 @@ export const Sidebar = () => {
                             className={`rounded-full   ${active ? 'w-[3rem] h-[3rem]' : 'w-[1.5rem] h-[1.5rem]'}`}    
                         />
                         <div className='overflow-hidden flex flex-col gap-1'>
-                            <p className={`font-medium ${!active && 'hidden'}`}>David Saavedra</p>
-                            <p className={`text-xs text-gray-100 tracking-wide ${!active && 'hidden'}`}>davideveriwhere@gmail.com</p>
+                            <p className={`font-medium ${!active && 'hidden'}`}>{session?.user?.name}</p>
+                            <p className={`text-xs text-gray-100 tracking-wide ${!active && 'hidden'}`}>{session?.user?.email}</p>
                             <p className={`text-xs font-bold cursor-pointer ${!active && 'hidden'}`}>logout</p>
                         </div>
                     </div>

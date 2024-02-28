@@ -9,8 +9,8 @@ const LandingNavBar = () => {
             <p className="font-bold drop-shadow-xl tracking-wider text-white">Panda CMS</p> 
         </div>
         <div className='flex items-center pt-3 pr-4'>
-            <Link href="/admin-dashboard" className='px-4 py-1 border-[2px] rounded-lg text-emerald-300 border-emerald-500 bg-transparent text-[20px] hover:bg-emerald-500 hover:text-white transition delay-50'>
-                Sign In
+            <Link href="/admin-dashboard" className='px-4 py-1 border-[2px] rounded-lg text-emerald-300 border-emerald-500 bg-transparent text-[19px] hover:bg-emerald-500 hover:text-white transition delay-50'>
+                Sign Up Free
             </Link>        
         </div>
     </nav>
