@@ -1,9 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Table } from '@/components/Table';
-import { CardData } from '@/components/admin/cards/CardData';
-import { calculateTotalPages, totalNumbers } from '@/utils/calculate';
-import { listUsers } from '@/graphql/users/query';
+import { Table } from '../../../components/Table';
+import { CardData } from '../../../components/admin/cards/CardData';
+import { calculateTotalPages, totalNumbers } from '../../../utils/calculate';
+import { listUsers } from '../../../graphql/users/query';
 import { Spinner } from '@nextui-org/react';
 import { client } from '../layout';
 
