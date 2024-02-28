@@ -54,8 +54,8 @@ export const getUser = `
 // `;
 
 export const listUsers = gql`
-  query MyQuery {
-    listUsers(filter: {email: {ne: "test@gmail.com"}, rol: {eq: "user"}}) {
+  query ListUsers($email: String!, $rol: String!) {
+    listUsers(filter: {email: {ne: $email}, rol: {eq: $rol}}) {
       items {
         id
         email
