@@ -87,9 +87,8 @@ const Users = () => {
 
   return (
     <>
-      {
-        loading ? (<div className='h-full w-full flex justify-center items-center font-semibold text-2xl'><Spinner label="Loading..." color="default" /></div>)
-        : (
+      
+          
           <div className='container mx-auto px-3 md:px-0 mb-8 slide-in-left'>
             <p
               className='text-xl md:text-3xl text-center bg-white text-zinc-800 dark:text-white dark:bg-zinc-800 rounded-b-lg font-bold py-6 tracking-[0.1em] drop-shadow-lg transition-all'
@@ -133,7 +132,7 @@ const Users = () => {
             {/* Todo: Table */}
             <div>  
               {
-                filteredUsers && <Table item={filteredUsers} />
+                filteredUsers && <Table item={filteredUsers} callback={retrieveData} />
               }
             </div>
             <div className='flex flex-col md:flex-row items-center justify-between w-full gap-4'>
@@ -166,8 +165,8 @@ const Users = () => {
               </div>
             </div>
           </div>
-        )
-      }
+        
+      
     </>
   );
 }
