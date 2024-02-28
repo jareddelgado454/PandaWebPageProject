@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import CountUp from 'react-countup';
 import {Card, CardBody} from "@nextui-org/react";
 import { FaFaceMeh, FaFaceSmile, FaPeopleGroup } from 'react-icons/fa6';
 
@@ -33,11 +34,11 @@ export const CardData = ({ mode, number }) => {
     const getText = () => {
         switch (mode) {
             case 'total':
-              return `Total users: ${number}`;
+              return `Total users: `;
             case 'active':
-              return `Active users: ${number}`;
+              return `Active users: `;
             case 'inactive':
-              return `Inactive users: ${number}`;
+              return `Inactive users: `;
             default:
               return null;
         }
@@ -52,7 +53,9 @@ export const CardData = ({ mode, number }) => {
         <CardBody className="overflow-visible p-4 relative">
             {renderIcon()}
             <div className='absolute left-4 bottom-4'>
-                <p className='text-xl text-white font-bold'>{getText()}</p>
+                <p className='text-xl text-white font-bold'>
+                  {getText()} <CountUp end={number} duration={2.5} />
+                </p>
             </div>
         </CardBody>
   </Card>
