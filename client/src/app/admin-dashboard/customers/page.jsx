@@ -1,10 +1,10 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Spinner } from '@nextui-org/react';
-import { CardData } from '../../../components/admin/cards/CardData';
-import { Table } from '../../../components/Table';
-import { calculateTotalPages, totalNumbers } from '../../../utils/calculate';
-import { listUsers } from '../../../graphql/users/query';
+import { CardData } from '@/components/admin/cards/CardData';
+import { Table } from '@/components/Table';
+import { calculateTotalPages, totalNumbers } from '@/utils/calculate';
+import { listUsersFilter } from '@/graphql/users/query';
 import { client } from '../layout';
 
 const Customers = () => {
@@ -19,7 +19,7 @@ const Customers = () => {
     setLoading(true);
     try {
       const { data } = await client.graphql({
-        query: listUsers,
+        query: listUsersFilter,
         variables: {
           email: "test@gmail.com",
           rol: "customer"
