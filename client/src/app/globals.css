@@ -28,7 +28,7 @@
 
 .sidebar {
   width: 78px;
-  z-index: 99;
+  z-index: 50;
 }
 
 .sidebar.active {

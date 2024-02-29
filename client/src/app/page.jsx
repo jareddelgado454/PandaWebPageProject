@@ -25,25 +25,11 @@ const Home = () => {
     password: ''
   }
 
-  const onHandleSubmit = async (values, { resetForm }) => {
-    try {
-      await loginUser({
-        variables: {
-          email: values.email,
-          password: values.password
-        }
-      });
-      resetForm();
-    } catch (error) {
-      console.error( error);
-    }
+  const onHandleSubmit =  () => {
+    
   };
 
-  const [ loginUser ] = useMutation(LOGIN_USER, {
-    update(_, { data }) {
-        console.log(data);
-    }
-  })
+  
 
   const [showPassword, setShowPassword] = useState(false);
 
