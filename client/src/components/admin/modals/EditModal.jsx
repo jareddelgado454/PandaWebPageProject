@@ -74,7 +74,7 @@ const EditModal = ({ isOpen, onOpenChange, user, callback, setRecordSelected }) 
                             labelPlacement="outside"
                             startContent={
                               <div className="pointer-events-none flex items-center">
-                                <span className="text-default-400 text-small">$</span>
+                                <span className="text-default-400 text-small">%</span>
                               </div>
                             }
                         />
