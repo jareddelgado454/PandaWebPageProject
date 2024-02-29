@@ -14,11 +14,11 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${robotoFlex.className} antialiased dark:bg-zinc-800`}>
         <AuthProvider>
-        <ApolloWrapper>
+
           {
             children
           }
-        </ApolloWrapper>
+
         </AuthProvider>
       </body>
     </html>

@@ -1,8 +1,6 @@
 "use client";
-import React, { useState } from "react";
-import { useMutation } from "@apollo/client";
+import React from "react";
 import {  } from "@apollo/experimental-nextjs-app-support/ssr";
-import { LOGIN_USER } from "../graphql/users/mutation";
 import LandingNavBar from "../components/LandingNavBar";
 import {
   RiGoogleFill,
@@ -13,7 +11,6 @@ import {
 } from "react-icons/ri";
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import RegisterFormLanding from "../components/LoginRegister/Register/RegisterFormLanding"
-
 
 const Home = () => {
 
@@ -70,7 +67,7 @@ const Home = () => {
               </p>
             </div>
             <div className="flex flex-1 justify-center">
-              {
+              {/* {
                 loginMode &&
                 <div className="bg-green-panda opacity-90 md:flex-row flex-col flex  border-[1px] border-white/10   rounded-3xl  w-[400px] items-center justify-center">
                   <div className="w-[100%] flex-1 flex flex-col items-center justify-center pt-8 py-4">
@@ -129,21 +126,20 @@ const Home = () => {
                         </Form>
                       )}
                     </Formik>
-
         
                     <p className="text-white mb-6 font-bold hover:text-zinc-700 hover:font-bold cursor-pointer transition-colors">
                       Have you forgotten the password?
                     </p>
                     <div className=" border-transparent border-r-[1px] border-r-white/10 flex flex-col items-center justify-center text-center px-8 ">
                       <p className="text-white mb-6">
-                        Don't have an account? <span className="hover:text-zinc-700 text-[18px] font-bold hover:font-bold cursor-pointer" onClick={handleRemoveLoginMode}>Sign up free</span>
+                        Don't have an account? <span className="hover:text-zinc-700 text-[18px] font-bold hover:font-bold cursor-pointer">Sign up free</span>
                       </p>
                     </div>
                   </div>
                 </div>
-              }
+              } */}
 
-              {
+              {/* {
                 registerMode && 
                 <div className="bg-green-panda opacity-90 md:flex-row flex-col flex  border-[1px] border-white/10   rounded-3xl  w-[450px] items-center justify-center">
                   <div className="w-[100%] flex-1 flex flex-col items-center justify-center pt-8 py-4">
@@ -165,7 +161,7 @@ const Home = () => {
                     </div>
                   </div>
                 </div>
-              }
+              } */}
 
             </div>
           </div>

@@ -28,33 +28,9 @@ export const getUser = `
   }
 `;
 
-// export const listUsers = gql`
-//   query ListUsers{
-//     listUsers {
-//       items {
-//         id
-//         email
-//         rol
-//         fullName
-//         contactNumber
-//         createdAt
-//         status
-//         address
-//         city
-//         state
-//         profilePicture
-//         updatedAt
-//         __typename
-//       }
-//       nextToken
-//       __typename
-//     }
-//   }
-// `;
-
-export const listUsers = gql`
-  query ListUsers($email: String!, $rol: String!) {
-    listUsers(filter: {email: {ne: $email}, rol: {eq: $rol}}) {
+export const listUsersForGraphics = gql`
+  query ListUsers{
+    listUsers {
       items {
         id
         email
@@ -68,6 +44,23 @@ export const listUsers = gql`
         state
         profilePicture
         updatedAt
+        __typename
+      }
+    }
+  }
+`;
+
+export const listUsersFilter = gql`
+  query ListUsers($email: String!, $rol: String!) {
+    listUsers(filter: {email: {ne: $email}, rol: {eq: $rol}}) {
+      items {
+        id
+        email
+        rol
+        fullName
+        contactNumber
+        status
+        profilePicture
         __typename
       }
     }
