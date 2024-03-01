@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, {useState} from "react";
 import {  } from "@apollo/experimental-nextjs-app-support/ssr";
 import LandingNavBar from "../components/LandingNavBar";
 import {
@@ -13,6 +13,32 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import RegisterFormLanding from "../components/LoginRegister/Register/RegisterFormLanding"
 
 const Home = () => {
+
+  const [loginMode, setLoginMode] = useState(true);
+  const [registerMode, setRegisterMode] = useState(false);
+
+  const initialValue = {
+    email: '',
+    password: ''
+  }
+
+  const onHandleSubmit =  () => {
+    
+  };
+
+  
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleRemoveLoginMode = () => {
+    setLoginMode(false);
+    setRegisterMode(true);
+  }
+
+  const handleRemoveRegisterMode = () => {
+    setRegisterMode(false);
+    setLoginMode(true);
+  }
 
   return (
     <div className="flex flex-col w-full h-screen p-0 overflow-hidden relative">

@@ -1,2 +1,2 @@
 export { default as UpdateStatusModal } from './modals/updateStatus';
-export { default as CustomerModal } from './modals/CustomerModal';
+export { default as EditModal } from './modals/EditModal';

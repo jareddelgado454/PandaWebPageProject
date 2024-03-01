@@ -9,17 +9,23 @@ import {
 import { client } from '@/app/admin-dashboard/layout';
 import { useDisclosure } from "@nextui-org/react";
 import { updateStatus, deleteUserById } from '@/graphql/users/mutation';
-import { CustomerModal } from './admin/Customer/CustomerModal';
+import EditModal from './admin/modals/EditModal';
+import DeletaModal from './admin/modals/DeletModal';
 
 export const Table = ({ item, callback }) => {
 
-    const {isOpen, onOpen, onOpenChange} = useDisclosure();
-    const [mode, setMode] = useState('create');
+    const {isOpen: isEditModalOpen, onOpen: onEditModalOpen, onOpenChange: onEditModalOpenChange} = useDisclosure();
+    const {isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onOpenChange: onDeleteModalOpenChange} = useDisclosure();
+    const [recordSelected, setRecordSelected] = useState({});
 
-    const handleOpenModal = (mode) => {
-        
-        onOpen();
-        setMode(mode);
+    const handleOpenEditModal = (user) => {  
+        onEditModalOpen();
+        setRecordSelected(user);
+    }
+
+    const handleOpenDeleteModal = (user) => {
+        onDeleteModalOpen();
+        setRecordSelected(user);
     }
     
     const handleUpdateStatus = async(user, value) => {
@@ -136,7 +142,7 @@ export const Table = ({ item, callback }) => {
                                     <div className='flex gap-4'>
                                         <button
                                             type='button'
-                                            onClick={() => handleDeleteUserId(user.id, user.email)}
+                                            onClick={() => handleOpenDeleteModal(user)}
                                             className='bg-rose-500 p-2 rounded text-white'
                                         >
                                             <FaTrashCan />
@@ -144,7 +150,7 @@ export const Table = ({ item, callback }) => {
                                         <button
                                             type='button'
                                             className='bg-yellow-400 p-2 rounded text-white'
-                                            onClick={() => handleOpenModal('edit')}
+                                            onClick={() => handleOpenEditModal(user)}
                                         >
                                             <FaPencil />
                                         </button>
@@ -173,7 +179,8 @@ export const Table = ({ item, callback }) => {
                         ))
                     }
                 </tbody>
-                <CustomerModal isOpen={isOpen} onOpenChange={onOpenChange} mode={mode} />
+                <EditModal isOpen={isEditModalOpen} onOpenChange={onEditModalOpenChange} user={recordSelected} callback={callback} setRecordSelected={setRecordSelected}/>
+                <DeletaModal isOpen={isDeleteModalOpen} onOpenChange={onDeleteModalOpenChange} user={recordSelected} callback={callback} setRecordSelected={setRecordSelected}/>
             </table>
         </div>
     )
