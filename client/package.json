@@ -13,6 +13,7 @@
     "@apollo/experimental-nextjs-app-support": "^0.8.0",
     "@aws-amplify/adapter-nextjs": "^1.0.17",
     "@nextui-org/react": "^2.2.9",
+    "amazon-cognito-identity-js": "^6.3.7",
     "aws-amplify": "^6.0.17",
     "chart.js": "^4.4.2",
     "formik": "^2.4.5",

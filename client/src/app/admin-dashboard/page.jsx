@@ -1,12 +1,18 @@
+
 import CardHome from '../../components/CardHome'
 import React from 'react'
 import Link from 'next/link'
 import { FaGear, FaChartSimple } from 'react-icons/fa6'
-import {getServerSession} from "next-auth";
-import {authOptions} from "../api/auth/[...nextauth]/route"
+import { getSession } from '../authUtils/getSession';
+import { redirect } from 'next/navigation';
 
-const AdminDashboard = async () => {
-    const session = await getServerSession(authOptions); 
+
+const AdminDashboard =  async () => {
+    const session = await getSession();
+    if(!session){
+        redirect("/");
+    }
+    console.log(session);
   return (
     <div className='w-full m-4'>
         <h2 className='text-4xl text-black dark:text-white font-extrabold mb-2'>Welcome Back { session?.user?.name }</h2>

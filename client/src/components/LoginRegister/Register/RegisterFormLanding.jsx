@@ -4,36 +4,43 @@ import React from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import {
     RiMailLine,
-    RiLock2Line,
-    RiHome8Line,
     RiUserLine,
     RiPhoneFill,
-    RiSpeakLine,
-    RiMapPin2Fill,
-    RiRoadMapLine,
-    RiInstagramLine,
     RiLockLine,
-    RiUpload2Fill,
-    RiEyeLine,
-    RiEyeOffLine,
-    RiGoogleFill,
   } from "react-icons/ri";
+import { cognitoRegister } from '@/app/authUtils/cognitoRegister';
 
 const RegisterFormLanding = () => {
 
     const initialValue = {
         email: '',
-        password: ''
+        password: '',
+        fullname:'',
+        confirmPassword:'',
+        mobilephone:''
     }
 
-    const onHandleSubmit = () => {
-        
+    const onHandleSubmit = async (values) => {
+        try {
+          const { fullname, email, password,  mobilephone} = values;
+          const registerData = {
+            fullname,
+            email,
+            password,
+            mobilephone
+          }
+
+          const result = await cognitoRegister(registerData);
+          console.log(result);
+        } catch (error) {
+          console.log(error);
+        }
     };
 
   return (
     <Formik
         initialValues={initialValue}
-        onSubmit={onHandleSubmit}
+        onSubmit={(values) => onHandleSubmit(values)}
     >
           {({ handleSubmit }) => (
                     <Form onSubmit={handleSubmit} className="mb-7  w-[80%]">
@@ -79,7 +86,7 @@ const RegisterFormLanding = () => {
                             <RiPhoneFill  className="absolute left-2 top-3 text-zinc-900" />
                             <Field
                               type="text"
-                              name="confirmPassword"
+                              name="mobilephone"
                               className="py-2 px-8 bg-white w-full outline-none rounded-2xl mb-4 "
                               placeholder="Mobile phone"
                             />

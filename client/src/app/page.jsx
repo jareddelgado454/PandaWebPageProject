@@ -4,12 +4,9 @@ import {  } from "@apollo/experimental-nextjs-app-support/ssr";
 import LandingNavBar from "../components/LandingNavBar";
 import {
   RiGoogleFill,
-  RiMailLine,
-  RiLockLine,
-  RiEyeLine,
-  RiEyeOffLine,
 } from "react-icons/ri";
-import { Formik, Form, Field, ErrorMessage } from 'formik'
+import LoginFormLanding from "@/components/LoginRegister/Login/LoginFormLanding";
+
 import RegisterFormLanding from "../components/LoginRegister/Register/RegisterFormLanding"
 
 const Home = () => {
@@ -17,18 +14,6 @@ const Home = () => {
   const [loginMode, setLoginMode] = useState(true);
   const [registerMode, setRegisterMode] = useState(false);
 
-  const initialValue = {
-    email: '',
-    password: ''
-  }
-
-  const onHandleSubmit =  () => {
-    
-  };
-
-  
-
-  const [showPassword, setShowPassword] = useState(false);
 
   const handleRemoveLoginMode = () => {
     setLoginMode(false);
@@ -67,7 +52,7 @@ const Home = () => {
               </p>
             </div>
             <div className="flex flex-1 justify-center">
-              {/* {
+              {
                 loginMode &&
                 <div className="bg-green-panda opacity-90 md:flex-row flex-col flex  border-[1px] border-white/10   rounded-3xl  w-[400px] items-center justify-center">
                   <div className="w-[100%] flex-1 flex flex-col items-center justify-center pt-8 py-4">
@@ -79,67 +64,21 @@ const Home = () => {
                     </button>
                     <p className="mb-4">Or Sign in with your account</p>            
 
-                    <Formik
-                      initialValues={initialValue}
-                      onSubmit={onHandleSubmit}
-                    >
-                      {({ handleSubmit }) => (
-                        <Form onSubmit={handleSubmit} className="mb-7  w-[80%]">
-                          <div className="relative mb-3">
-                            <RiMailLine className="absolute left-2 top-4 text-zinc-900" />
-                            <Field
-                              type="email"
-                              name="email"
-                              className="py-3 pl-8 pr-4 bg-white w-full outline-none rounded-2xl mb-4"
-                              placeholder="E-mail"
-                            />
-                          </div>
-                          <div className="relative mb-4">
-                            <RiLockLine className="absolute left-2 top-4 text-zinc-900" />
-                            <Field
-                              type={showPassword ? "text" : "password"}
-                              name="password"
-                              className="py-3 px-8 bg-white w-full outline-none rounded-2xl mb-4 "
-                              placeholder="Password"
-                            />
-                            {showPassword ? (
-                              <RiEyeLine
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute top-6 -translate-y-1/2 right-2 hover:cursor-pointer text-primary"
-                              />
-                            ) : (
-                              <RiEyeOffLine
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute top-6 -translate-y-1/2 right-2 hover:cursor-pointer text-primary"
-                              />
-                            )}
-                          </div>
-                          <div>
-                            <button
-                              type="submit"
-                              className="bg-zinc-800 hover:bg-zinc-900 cursor-pointer font-bold text-white text-[18px] w-full py-3 px-4 rounded-lg transition-colors delay-50"
-                            >
-                              Login
-                            </button>
-                          </div>
-                          <span></span>
-                        </Form>
-                      )}
-                    </Formik>
+                    <LoginFormLanding />
         
                     <p className="text-white mb-6 font-bold hover:text-zinc-700 hover:font-bold cursor-pointer transition-colors">
                       Have you forgotten the password?
                     </p>
                     <div className=" border-transparent border-r-[1px] border-r-white/10 flex flex-col items-center justify-center text-center px-8 ">
                       <p className="text-white mb-6">
-                        Don't have an account? <span className="hover:text-zinc-700 text-[18px] font-bold hover:font-bold cursor-pointer">Sign up free</span>
+                        Don't have an account? <span className="hover:text-zinc-700 text-[18px] font-bold hover:font-bold cursor-pointer" onClick={handleRemoveLoginMode}>Sign up free</span>
                       </p>
                     </div>
                   </div>
                 </div>
-              } */}
+              } 
 
-              {/* {
+               {
                 registerMode && 
                 <div className="bg-green-panda opacity-90 md:flex-row flex-col flex  border-[1px] border-white/10   rounded-3xl  w-[450px] items-center justify-center">
                   <div className="w-[100%] flex-1 flex flex-col items-center justify-center pt-8 py-4">
@@ -161,7 +100,7 @@ const Home = () => {
                     </div>
                   </div>
                 </div>
-              } */}
+              }
 
             </div>
           </div>
