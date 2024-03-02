@@ -1,5 +1,3 @@
-import { Inter } from "next/font/google";
-import { ApolloWrapper } from '../lib/apollo-wrapper';
 import AuthProvider  from "../contexts/AuthContext";
 import "./globals.css";
 import { robotoFlex } from "./font";

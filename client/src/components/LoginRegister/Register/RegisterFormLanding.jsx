@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import React from 'react'
-import { Formik, Form, Field, ErrorMessage } from 'formik'
+import React from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import {
     RiMailLine,
     RiUserLine,
@@ -107,4 +107,4 @@ const RegisterFormLanding = () => {
   )
 }
 
-export default RegisterFormLanding
+export default RegisterFormLanding;
