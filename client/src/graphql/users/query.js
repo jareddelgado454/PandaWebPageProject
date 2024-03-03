@@ -1,29 +1,20 @@
 import { gql } from 'graphql-tag';
 
-export const getUser = `
+export const getUser = gql`
   query GetUser($id: ID!) {
     getUser(id: $id) {
       id
-      email
-      rol
-      fullName
-      contactNumber
-      createdAt
-      status
       address
       city
-      state
+      contactNumber
+      email
+      fullName
       profilePicture
-      review {
-        id
-        comment
-        rate
-        createdAt
-        updatedAt
-        __typename
-      }
-      updatedAt
-      __typename
+      rol
+      state
+      zipCode
+      subscription
+      status
     }
   }
 `;

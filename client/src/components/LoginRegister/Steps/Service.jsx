@@ -42,7 +42,7 @@ export const Service = (props) => {
                 type='button'
                 className='bg-green-panda shadow-lg font-bold text-white p-4 rounded w-[20rem] flex flex-row justify-center items-center gap-2 transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300'
             >
-                Continue without services
+                Continue with Email
                 <FaArrowRight />
             </button>
         </div>

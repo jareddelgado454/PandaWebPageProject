@@ -1,7 +1,6 @@
 import React from 'react';
 import { statesUSA } from '@/assets/data/StatesUSA';
-import { FaLocationDot } from 'react-icons/fa6';
-
+import Link from 'next/link';
 export const Information2 = () => {
   return (
     <div className='bg-white w-[21rem] md:w-[45rem] md:h-[32rem] transition-all rounded-lg slide-in-left'>
@@ -76,12 +75,12 @@ export const Information2 = () => {
               
               <div className='mb-6 w-2/3'>
                 <div>
-                    <button
-                    type="submit"
+                    <Link
+                    href={`/user`}
                     className="bg-green-panda hover:bg-green-400 cursor-pointer font-bold text-white text-[18px] w-full py-3 px-4 rounded-lg transition-colors delay-50"
                     >
                     Create
-                    </button>
+                    </Link>
                 </div>
               </div>
 
