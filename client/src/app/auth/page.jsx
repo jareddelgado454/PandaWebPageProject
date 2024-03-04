@@ -6,9 +6,9 @@ import { Information } from '@/components/LoginRegister/Steps/Information';
 import { Information2 } from '@/components/LoginRegister/Steps/Information2';
 
 const page = () => {
-    const [activeStep1, setActiveStep1] = useState(true);
+    const [activeStep1, setActiveStep1] = useState(false);
     const [activeStep2, setActiveStep2] = useState(false);
-    const [activeStep3, setActiveStep3] = useState(false);
+    const [activeStep3, setActiveStep3] = useState(true);
     return (
         <div className='w-full h-screen relative'>
             <img
@@ -22,9 +22,9 @@ const page = () => {
                 {
                     activeStep1 && <Service setActiveStep1={setActiveStep1} setActiveStep2={setActiveStep2} />
                 }
-                {
+                {/* {
                     activeStep2 && <Information setActiveStep2={setActiveStep2} setActiveStep3={setActiveStep3} />
-                }
+                } */}
                 {
                     activeStep3 && <Information2 />
                 }

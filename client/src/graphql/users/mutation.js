@@ -18,3 +18,11 @@ export const deleteUserById = gql`
   }
 
 `;
+
+export const createUser = gql`
+  mutation MyMutation($input: CreateUserInput!) {
+    createUser(input: $input) {
+      id
+    }
+  }
+`;
