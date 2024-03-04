@@ -9,6 +9,13 @@ const page = () => {
     const [activeStep1, setActiveStep1] = useState(true);
     const [activeStep2, setActiveStep2] = useState(false);
     const [activeStep3, setActiveStep3] = useState(false);
+    const [signUpInformation, setSignUpInformation] = useState({
+        fullName : "",
+        email : "",
+        password : "",
+        contactNumber : "",
+    });
+
     return (
         <div className='w-full h-screen relative'>
             <img
@@ -23,10 +30,10 @@ const page = () => {
                     activeStep1 && <Service setActiveStep1={setActiveStep1} setActiveStep2={setActiveStep2} />
                 }
                 {
-                    activeStep2 && <Information setActiveStep2={setActiveStep2} setActiveStep3={setActiveStep3} />
+                    activeStep2 && <Information setActiveStep2={setActiveStep2} setActiveStep3={setActiveStep3} signUpInformation={signUpInformation} setSignUpInformation={setSignUpInformation} />
                 }
                 {
-                    activeStep3 && <Information2 />
+                    activeStep3 && <Information2 signUpInformation={signUpInformation} setSignUpInformation={setSignUpInformation} />
                 }
             </div>
         </div>

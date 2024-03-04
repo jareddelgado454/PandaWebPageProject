@@ -9,11 +9,20 @@ import {
 
 export const Information = (props) => {
     const initialValue = {
-        email: "",
-        password: "",
+        fullName : "",
+        email : "",
+        password : "",
+        contactNumber : ""
     };
     
-    const onHandleSubmit = () => {
+    const onHandleSubmit = (values) => {
+        const { fullName, email, password, contactNumber } = values;
+        props.setSignUpInformation({
+            fullName : fullName,
+            email : email,
+            password : password,
+            contactNumber : contactNumber
+        });
         props.setActiveStep2(false);
         props.setActiveStep3(true);
     };
@@ -24,7 +33,7 @@ export const Information = (props) => {
             <p className='text-zinc-800 my-8 md:text-4xl font-bold'>
                 Complete Information
             </p>
-            <Formik initialValues={initialValue} onSubmit={onHandleSubmit}>
+            <Formik initialValues={initialValue} onSubmit={(values) => onHandleSubmit(values)}>
             {({ handleSubmit }) => (
                 <Form onSubmit={handleSubmit} className="mb-7  w-[80%]">
                 <div className="relative mb-3">
@@ -33,7 +42,7 @@ export const Information = (props) => {
                     </label>
                     <Field
                     type="text"
-                    name="fullname"
+                    name="fullName"
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     placeholder="Fullname"
                     />
@@ -63,11 +72,11 @@ export const Information = (props) => {
 
                 <div className="relative mb-4">
                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-contactNumber">
-                        Contact Number
+                        Confirm Password
                     </label>
                     <Field
                     type="text"
-                    name="contactNumber"
+                    name="confirmpassword"
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     placeholder="Confirm password"
                     />
@@ -75,11 +84,11 @@ export const Information = (props) => {
 
                 <div className="relative mb-4">
                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-confirmPassword">
-                        Confirm Password
+                        Contact Number
                     </label>
                     <Field
                     type="text"
-                    name="confirmPassword"
+                    name="contactNumber"
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     placeholder="Mobile phone"
                     />
