@@ -9,7 +9,7 @@ export const Service = (props) => {
     }
 
   return (
-    <div className='bg-white w-[21rem] md:w-[45rem] md:h-[29rem] transition-all rounded-lg slide-in-left' style={{
+    <div className='bg-white w-[21rem] h-2/3 md:w-[45rem] md:h-[29rem] transition-all rounded-lg slide-in-left' style={{
         boxShadow: '0 5px 10px #1e293b'
     }}>
         <div className='flex flex-col items-center justify-center h-full gap-8'>

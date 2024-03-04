@@ -1,11 +1,5 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import {
-  RiMailLine,
-  RiUserLine,
-  RiPhoneFill,
-  RiLockLine,
-} from "react-icons/ri";
 
 export const Information = (props) => {
     const initialValue = {
@@ -18,7 +12,7 @@ export const Information = (props) => {
         props.setActiveStep3(true);
     };
     return (
-        <div className='bg-white w-[45rem] h-[45rem] rounded-lg slide-in-left flex justify-center items-center flex-col' style={{
+        <div className='bg-white h-[30rem] w-full md:w-[45rem] md:h-[45rem] rounded-lg slide-in-left flex justify-center items-center flex-col' style={{
             boxShadow: '0 5px 10px #1e293b'
         }}>
             <p className='text-zinc-800 my-8 md:text-4xl font-bold'>
@@ -58,18 +52,6 @@ export const Information = (props) => {
                     name="password"
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     placeholder="Password"
-                    />
-                </div>
-
-                <div className="relative mb-4">
-                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-contactNumber">
-                        Contact Number
-                    </label>
-                    <Field
-                    type="text"
-                    name="contactNumber"
-                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                    placeholder="Confirm password"
                     />
                 </div>
 

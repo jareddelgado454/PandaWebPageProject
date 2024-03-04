@@ -61,8 +61,8 @@ const page = () => {
             {
                 loading ? (<div>Loading Information</div>) : error ? (<div>{error}</div>) : user &&
                 (
-                    <div className="absolute w-full h-full flex flex-row justify-center items-center gap-10 px-4 md:px-0">
-                        <div className="w-2/4 bg-white rounded-lg shadow-lg p-4 h-3/4 relative order-1">
+                    <div className="absolute w-full h-full flex flex-col md:flex-row justify-center items-center gap-10 px-4 md:px-0 py-4 md:py-0">
+                        <div className="w-full overflow-y-auto md:w-2/4 bg-white rounded-lg shadow-lg p-4 h-3/4 relative order-1">
                             <Formik
                                 initialValues={{
                                     fullName: user.fullName || '',
@@ -86,8 +86,8 @@ const page = () => {
                                             <p className="text-xl text-[#40C48E] font-bold my-4">
                                                 General Information
                                             </p>
-                                            <div className="flex flex-row w-full gap-12">
-                                                <div className="w-2/4">
+                                            <div className="flex flex-col md:flex-row w-full gap-7 md:gap-12">
+                                                <div className="w-full md:w-2/4">
                                                     <label
                                                         htmlFor="grid-fullName"
                                                         className="block text-gray-700 text-sm font-bold mb-2"
@@ -101,7 +101,7 @@ const page = () => {
                                                         id="grid-fullName"
                                                     />
                                                 </div>
-                                                <div className="w-2/4">
+                                                <div className="w-full md:w-2/4">
                                                     <label
                                                         htmlFor="grid-email"
                                                         className="block text-gray-700 text-sm font-bold mb-2"
@@ -116,8 +116,8 @@ const page = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="flex flex-row w-full gap-12">
-                                                <div className="w-full md:w-2/4 mb-6 md:mb-0">
+                                            <div className="flex flex-col md:flex-row w-full gap-7 md:gap-12">
+                                                <div className="w-full md:w-2/4 md:mb-0">
                                                     <label
                                                         className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                                                         htmlFor="states"
@@ -137,7 +137,7 @@ const page = () => {
                                                         ))}
                                                     </Field>
                                                 </div>
-                                                <div className="w-full md:w-2/4 mb-6 md:mb-0">
+                                                <div className="w-full md:w-2/4 md:mb-0">
                                                     <label
                                                         className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                                                         htmlFor="grid-city"
@@ -153,8 +153,8 @@ const page = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="flex flex-row w-full gap-12">
-                                                <div className="w-full md:w-2/4 mb-6 md:mb-0">
+                                            <div className="flex flex-col md:flex-row w-full gap-7 md:gap-12">
+                                                <div className="w-full md:w-2/4 md:mb-0">
                                                     <label
                                                         className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                                                         htmlFor="grid-zip"
@@ -169,7 +169,7 @@ const page = () => {
                                                         name="zipCode"
                                                     />
                                                 </div>
-                                                <div className="w-full md:w-2/4 mb-6 md:mb-0">
+                                                <div className="w-full md:w-2/4 md:mb-0">
                                                     <label
                                                         className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                                                         htmlFor="grid-city"
@@ -186,8 +186,8 @@ const page = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="flex flex-row w-full gap-12">
-                                                <div className="w-full md:w-2/4 mb-6 md:mb-0">
+                                            <div className="flex flex-col md:flex-row w-full gap-7 md:gap-12">
+                                                <div className="w-full md:w-2/4 md:mb-0">
                                                     <label
                                                         className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                                                         htmlFor="grid-contactNumber"
@@ -203,10 +203,10 @@ const page = () => {
                                                     />
                                                 </div>
                                             </div>
-                                            <div className="absolute right-5 bottom-5">
+                                            <div className="w-full pb-5">
                                                 <button
                                                     type="button"
-                                                    className="bg-green-panda p-3 rounded-lg text-white font-bold"
+                                                    className="bg-green-panda p-3 rounded-lg text-white font-bold w-full"
                                                 >
                                                     Update Information
                                                 </button>
@@ -217,19 +217,19 @@ const page = () => {
                             </Formik>
                         </div>
                         
-                        <div className="bg-white rounded-lg shadow-lg p-4 w-2/12 h-3/4 relative">
-                            <div className="flex flex-col items-center justify-center mb-10">
-                                <div className="relative w-[12rem] h-[12rem] overflow-hidden rounded-full shadow-md group">
+                        <div className="bg-white rounded-lg shadow-lg p-4 w-full h-2/5 md:w-2/12 md:h-3/4 relative">
+                            <div className="flex flex-row md:flex-col gap-6 items-center justify-center mb-10">
+                                <div className="relative w-[6rem] h-[6rem] md:w-[12rem] md:h-[12rem] overflow-hidden rounded-full shadow-md group">
                                     <div className="absolute bg-black group-hover:opacity-60 opacity-0 w-full h-full transition-all">
                                         <div className="flex justify-center items-center h-full">
-                                        <FaCamera className="text-white text-4xl" />
+                                        <FaCamera className="text-white text-xl md:text-4xl" />
                                         </div>
                                     </div>
                                     <img
                                         src={
                                             photograph ? photograph : (user.profilePicture ? user.profilePicture : "/image/defaultProfilePicture.jpg")
                                         }
-                                        className="rounded-full w-[12rem] h-[12rem] cursor-pointer "
+                                        className="rounded-full w-[6rem] h-[6rem] md:w-[12rem] md:h-[12rem] cursor-pointer "
                                         alt="Fotografía de perfil"
                                     />
                                     <input
@@ -262,7 +262,7 @@ const page = () => {
                                 <div className="flex flex-col">
                                 <Link
                                     href={`/`}
-                                    className="rounded-b-lg bg-green-panda h-[3.5rem] font-bold text-white flex justify-center items-center"
+                                    className="rounded-b-lg bg-green-panda h-[2.5rem] md:h-[3.5rem] font-bold text-white flex justify-center items-center"
                                 >
                                     Sign Out
                                 </Link>

@@ -3,7 +3,7 @@ import { statesUSA } from '@/assets/data/StatesUSA';
 import Link from 'next/link';
 export const Information2 = () => {
   return (
-    <div className='bg-white w-[21rem] md:w-[45rem] md:h-[32rem] transition-all rounded-lg slide-in-left'>
+    <div className='bg-white h-[32rem] overflow-y-auto w-[21rem] md:w-[45rem] md:h-[32rem] transition-all rounded-lg slide-in-left'>
         <div className='my-4'>
             <p className='text-zinc-800 my-8 md:text-4xl font-bold text-center'>Additional Information</p>
             <form className='w-full flex flex-col justify-center items-center'>
@@ -62,7 +62,7 @@ export const Information2 = () => {
 
               <div className='mb-6 w-2/3 px-3'>
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="rol-grid">
-                    Zip
+                    Role
                   </label>
                 <select
                   id='rol-grid'
@@ -73,16 +73,12 @@ export const Information2 = () => {
                 </select>
               </div>
               
-              <div className='mb-6 w-2/3'>
-                <div>
-                    <Link
-                    href={`/user`}
-                    className="bg-green-panda hover:bg-green-400 cursor-pointer font-bold text-white text-[18px] w-full py-3 px-4 rounded-lg transition-colors delay-50"
-                    >
-                    Create
-                    </Link>
-                </div>
-              </div>
+              <Link
+                href={`/user`}
+                className="bg-green-panda hover:bg-green-400 cursor-pointer font-bold text-white text-[18px] w-2/3 text-center py-3 px-4 rounded-lg transition-colors delay-50"
+              >
+                Create
+              </Link>
 
             </form>
         </div>
