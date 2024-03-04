@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { uploadData } from 'aws-amplify/storage';
 import Link from "next/link";
 import { FaCamera } from "react-icons/fa6";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -32,7 +33,7 @@ const page = () => {
             const { data } = await client.graphql({
                 query: getUser,
                 variables: {
-                    id: "37d17d5c-06d6-42e9-ad49-38ffe609a969",
+                    id: "def68a7b-e086-46e8-b52e-02e15b26e822",
                 },
             });
             await setUser(data.getUser);
@@ -48,6 +49,34 @@ const page = () => {
     }
 
     useEffect(() => { retrieveOneUser();  }, []);
+
+    const handleUpdatePicture = () => {
+
+        const filename = `user-profiles/def68a7b-e086-46e8-b52e-02e15b26e822.jpg`;
+
+        try {
+            
+            const result = uploadData({
+                key: filename,
+                data: photograph,
+                options: {
+                    onProgress: ({ transferredBytes, totalBytes }) => {
+                        if (totalBytes) {
+                          console.log(
+                            `Upload progress ${
+                              Math.round((transferredBytes / totalBytes) * 100)
+                            } %`
+                          );
+                        }
+                    }
+                }
+            });
+
+        } catch (error) {
+            console.log(`Error : ${ error }`);
+        }
+
+    }
 
     return (
         <div className="w-full h-screen relative">
@@ -238,7 +267,10 @@ const page = () => {
                                         name=""
                                         accept="image/gif, image/jpeg, image/png"
                                         className="absolute top-0 right-0 min-w-full min-h-full opacity-0 cursor-pointer bg-center object-cover object-center"
-                                        onChange={handleChangePhotograph}
+                                        onChange={(event) => {
+                                            handleChangePhotograph(event);
+                                            handleUpdatePicture();
+                                        }}
                                     />
                                 </div>
 

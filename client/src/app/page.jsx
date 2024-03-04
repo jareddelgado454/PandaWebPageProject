@@ -6,8 +6,6 @@ import {
   RiGoogleFill,
 } from "react-icons/ri";
 import LoginFormLanding from "@/components/LoginRegister/Login/LoginFormLanding";
-
-import RegisterFormLanding from "../components/LoginRegister/Register/RegisterFormLanding"
 import Link from "next/link";
 
 const Home = () => {

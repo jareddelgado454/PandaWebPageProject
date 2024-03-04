@@ -20,46 +20,36 @@
     }
   },
   "auth": {
-    "pandacms": {
+    "pandacms839ad34d": {
       "customAuth": false,
       "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": [],
+          "passwordPolicyMinLength": 8
+        },
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
       "providerPlugin": "awscloudformation",
-      "service": "Cognito",
-      "serviceType": "imported"
+      "service": "Cognito"
     }
   },
-  "parameters": {
-    "AMPLIFY_auth_pandacms_nativeClientId": {
-      "usedBy": [
-        {
-          "category": "auth",
-          "resourceName": "pandacms"
-        }
-      ]
-    },
-    "AMPLIFY_auth_pandacms_userPoolId": {
-      "usedBy": [
-        {
-          "category": "auth",
-          "resourceName": "pandacms"
-        }
-      ]
-    },
-    "AMPLIFY_auth_pandacms_userPoolName": {
-      "usedBy": [
-        {
-          "category": "auth",
-          "resourceName": "pandacms"
-        }
-      ]
-    },
-    "AMPLIFY_auth_pandacms_webClientId": {
-      "usedBy": [
-        {
-          "category": "auth",
-          "resourceName": "pandacms"
-        }
-      ]
+  "storage": {
+    "s3ef9bc444": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3"
     }
   }
 }

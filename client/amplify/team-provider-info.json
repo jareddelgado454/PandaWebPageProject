@@ -12,16 +12,11 @@
       "AmplifyAppId": "d3339ieb6qxkhq"
     },
     "categories": {
-      "auth": {
-        "pandacms": {
-          "nativeClientId": "74rq2r66911k2qjlj556hgg5hr",
-          "userPoolId": "us-east-1_h5BwpSl4I",
-          "userPoolName": "MyUserPoolThePanda",
-          "webClientId": "74rq2r66911k2qjlj556hgg5hr"
-        }
-      },
       "api": {
         "pandacms": {}
+      },
+      "auth": {
+        "pandacms839ad34d": {}
       }
     }
   }
