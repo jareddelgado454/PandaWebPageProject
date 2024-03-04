@@ -1,13 +1,13 @@
 "use client"
 
 import React from 'react';
-import { Field, Formik, Form } from 'formik';
 import { statesUSA } from '@/assets/data/StatesUSA';
 import { FaLocationDot } from 'react-icons/fa6';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { cognitoRegister } from '@/app/authUtils/cognitoRegister';
 import { createUser } from '@/graphql/users/mutation';
 import {client} from "../../../app/admin-dashboard/layout";
+import * as Yup from 'yup';
 
 export const Information2 = ({signUpInformation}) => {
 
