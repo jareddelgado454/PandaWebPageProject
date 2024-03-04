@@ -1,5 +1,5 @@
 "use client";
-import React, {useState} from "react";
+import React from "react";
 import {  } from "@apollo/experimental-nextjs-app-support/ssr";
 import LandingNavBar from "../components/LandingNavBar";
 import {
@@ -8,22 +8,9 @@ import {
 import LoginFormLanding from "@/components/LoginRegister/Login/LoginFormLanding";
 
 import RegisterFormLanding from "../components/LoginRegister/Register/RegisterFormLanding"
+import Link from "next/link";
 
 const Home = () => {
-
-  const [loginMode, setLoginMode] = useState(true);
-  const [registerMode, setRegisterMode] = useState(false);
-
-
-  const handleRemoveLoginMode = () => {
-    setLoginMode(false);
-    setRegisterMode(true);
-  }
-
-  const handleRemoveRegisterMode = () => {
-    setRegisterMode(false);
-    setLoginMode(true);
-  }
 
   return (
     <div className="flex flex-col w-full h-screen p-0 overflow-hidden relative">
@@ -52,8 +39,6 @@ const Home = () => {
               </p>
             </div>
             <div className="flex flex-1 justify-center">
-              {
-                loginMode &&
                 <div className="bg-green-panda opacity-90 md:flex-row flex-col flex  border-[1px] border-white/10   rounded-3xl  w-[400px] items-center justify-center">
                   <div className="w-[100%] flex-1 flex flex-col items-center justify-center pt-8 py-4">
                     <h2 className=" text-[32px] text-zinc-800  mb-5 font-extrabold">
@@ -71,37 +56,11 @@ const Home = () => {
                     </p>
                     <div className=" border-transparent border-r-[1px] border-r-white/10 flex flex-col items-center justify-center text-center px-8 ">
                       <p className="text-white mb-6">
-                        Don't have an account? <span className="hover:text-zinc-700 text-[18px] font-bold hover:font-bold cursor-pointer" onClick={handleRemoveLoginMode}>Sign up free</span>
+                        Don't have an account? <Link className="hover:text-zinc-700 text-[18px] font-bold hover:font-bold cursor-pointer" href="/auth" >Sign up free</Link>
                       </p>
                     </div>
                   </div>
                 </div>
-              } 
-
-               {
-                registerMode && 
-                <div className="bg-green-panda opacity-90 md:flex-row flex-col flex  border-[1px] border-white/10   rounded-3xl  w-[450px] items-center justify-center">
-                  <div className="w-[100%] flex-1 flex flex-col items-center justify-center pt-8 py-4">
-                    <h2 className=" text-[32px] text-zinc-800  mb-5 font-extrabold">
-                      <span className="text-emerald-900">CREATE</span> an account
-                    </h2>
-                    <button className="w-[50%] bg-emerald-600 hover:bg-emerald-700 transition-colors delay-50  mb-2  hover:text-white text-white rounded-2xl flex gap-x-2 items-center justify-center py-2 px-5">
-                      <RiGoogleFill /> Google
-                    </button>
-                    <p className="mb-4">Or register with your personal information</p>            
-
-                    <RegisterFormLanding /> 
-
-        
-                    <div className=" border-transparent border-r-[1px] border-r-white/10 flex flex-col items-center justify-center text-center px-8 ">
-                      <p className="text-white mb-6">
-                        Don you already have an account? <span className="hover:text-zinc-700 text-[18px] font-bold hover:font-bold cursor-pointer" onClick={handleRemoveRegisterMode}>Sign In</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              }
-
             </div>
           </div>
         </div>
