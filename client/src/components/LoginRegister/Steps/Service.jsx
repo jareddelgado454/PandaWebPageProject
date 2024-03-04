@@ -9,7 +9,7 @@ export const Service = (props) => {
     }
 
   return (
-    <div className='bg-white w-[21rem] md:w-[45rem] md:h-[29rem] transition-all rounded-lg slide-in-left' style={{
+    <div className='bg-white w-[21rem] h-2/3 md:w-[45rem] md:h-[29rem] transition-all rounded-lg slide-in-left' style={{
         boxShadow: '0 5px 10px #1e293b'
     }}>
         <div className='flex flex-col items-center justify-center h-full gap-8'>
@@ -42,7 +42,7 @@ export const Service = (props) => {
                 type='button'
                 className='bg-green-panda shadow-lg font-bold text-white p-4 rounded w-[20rem] flex flex-row justify-center items-center gap-2 transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300'
             >
-                Continue without services
+                Continue with Email
                 <FaArrowRight />
             </button>
         </div>

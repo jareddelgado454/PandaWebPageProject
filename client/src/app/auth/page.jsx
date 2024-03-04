@@ -6,7 +6,7 @@ import { Information } from '@/components/LoginRegister/Steps/Information';
 import { Information2 } from '@/components/LoginRegister/Steps/Information2';
 
 const page = () => {
-    const [activeStep1, setActiveStep1] = useState(true);
+    const [activeStep1, setActiveStep1] = useState(false);
     const [activeStep2, setActiveStep2] = useState(false);
     const [activeStep3, setActiveStep3] = useState(false);
     const [signUpInformation, setSignUpInformation] = useState({

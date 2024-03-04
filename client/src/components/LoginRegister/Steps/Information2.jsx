@@ -1,6 +1,7 @@
 "use client"
 
 import React from 'react';
+import { Field, Formik, Form } from 'formik';
 import { statesUSA } from '@/assets/data/StatesUSA';
 import { FaLocationDot } from 'react-icons/fa6';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -89,7 +90,7 @@ export const Information2 = ({signUpInformation}) => {
   }
 
   return (
-    <div className='bg-white w-[21rem] md:w-[45rem] md:h-[32rem] transition-all rounded-lg slide-in-left'>
+    <div className='bg-white h-[32rem] overflow-y-auto w-[21rem] md:w-[45rem] md:h-[36rem] transition-all rounded-lg slide-in-left'>
         <div className='my-4'>
             <p className='text-zinc-800 my-8 md:text-4xl font-bold text-center'>Additional Information</p>
             <Formik
@@ -190,3 +191,27 @@ export const Information2 = ({signUpInformation}) => {
     </div>
   )
 }
+
+const validationSchema = Yup.object().shape({
+
+  address: Yup.string()
+    .max(30, 'Too Long!')
+    .required(),
+  city: Yup.string()
+    .max(30, 'Too Long!')
+    .required(),
+  state: Yup.string()
+    .max(30, 'Too Long!')
+    .required(),
+  zip: Yup.number()
+    .required()
+    .positive()
+    .integer(),
+  role: Yup.string()
+    .required(),
+  contactNumber: Yup.number()
+    .required()
+    .positive()
+    .integer(),
+
+});
