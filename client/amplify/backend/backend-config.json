@@ -44,12 +44,5 @@
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
     }
-  },
-  "storage": {
-    "s3ef9bc444": {
-      "dependsOn": [],
-      "providerPlugin": "awscloudformation",
-      "service": "S3"
-    }
   }
 }
