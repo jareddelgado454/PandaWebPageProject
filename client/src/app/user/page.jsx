@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { uploadData } from 'aws-amplify/storage';
+import { v4 as uuidv4 } from 'uuid';
 import Link from "next/link";
 import { FaCamera } from "react-icons/fa6";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -13,16 +14,6 @@ const page = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [user, setUser] = useState(null);
-    function handleChangePhotograph(event) {
-        const file = event.target.files[0];
-        if (file) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setPhotograph(reader.result);
-        };
-        reader.readAsDataURL(file);
-        }
-    }
 
     const retrieveOneUser = async() => {
 
@@ -33,7 +24,7 @@ const page = () => {
             const { data } = await client.graphql({
                 query: getUser,
                 variables: {
-                    id: "def68a7b-e086-46e8-b52e-02e15b26e822",
+                    id: "99662d8b-4fae-4958-b9fc-5d42460e22a8",
                 },
             });
             await setUser(data.getUser);
@@ -48,18 +39,49 @@ const page = () => {
 
     }
 
-    useEffect(() => { retrieveOneUser();  }, []);
+    useEffect(() => { retrieveOneUser();  }, []);    
 
-    const handleUpdatePicture = () => {
-
-        const filename = `user-profiles/def68a7b-e086-46e8-b52e-02e15b26e822.jpg`;
-
+    function dataURLtoBlob(dataURL) {
+        if (!dataURL) {
+          return null; // o manejar el caso de error de alguna otra manera
+        }
+        var parts = dataURL.split(';base64,');
+        var contentType = parts[0].split(':')[1];
+        var raw = window.atob(parts[1]);
+        var rawLength = raw.length;
+        var uInt8Array = new Uint8Array(rawLength);
+        for (var i = 0; i < rawLength; ++i) {
+          uInt8Array[i] = raw.charCodeAt(i);
+        }
+        return new Blob([uInt8Array], { type: contentType });
+      }
+    
+      function handleChangePhotograph(event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setPhotograph(reader.result);
+            handleUpdatePicture(dataURLtoBlob(reader.result));
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+    
+    
+      const handleUpdatePicture = async(picture) => {
+    
+        const uniqueId = uuidv4();
+    
+        const filename = `user-image/${uniqueId}.jpg`;
+    
         try {
             
-            const result = uploadData({
+            const result = await uploadData({
                 key: filename,
-                data: photograph,
+                data: picture,
                 options: {
+                    contentType: "image/png",
                     onProgress: ({ transferredBytes, totalBytes }) => {
                         if (totalBytes) {
                           console.log(
@@ -70,13 +92,14 @@ const page = () => {
                         }
                     }
                 }
-            });
-
+            }).result;
+            console.log('Succeeded: ',result);
+    
         } catch (error) {
-            console.log(`Error : ${ error }`);
+            console.log(`Error from here : ${ error }`);
         }
-
-    }
+    
+      }
 
     return (
         <div className="w-full h-screen relative">
@@ -269,7 +292,6 @@ const page = () => {
                                         className="absolute top-0 right-0 min-w-full min-h-full opacity-0 cursor-pointer bg-center object-cover object-center"
                                         onChange={(event) => {
                                             handleChangePhotograph(event);
-                                            handleUpdatePicture();
                                         }}
                                     />
                                 </div>

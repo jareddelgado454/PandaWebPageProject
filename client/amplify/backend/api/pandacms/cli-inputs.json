@@ -4,12 +4,20 @@
     "apiName": "pandacms",
     "serviceName": "AppSync",
     "defaultAuthType": {
-      "mode": "API_KEY",
-      "expirationTime": 15,
-      "apiKeyExpirationDate": "2024-03-10T23:49:12.280Z",
-      "keyDescription": "auth"
+      "mode": "AWS_IAM"
     },
     "conflictResolution": {},
-    "additionalAuthTypes": []
+    "additionalAuthTypes": [
+      {
+        "mode": "API_KEY",
+        "expirationTime": 7,
+        "apiKeyExpirationDate": "2024-03-14T16:35:19.309Z",
+        "keyDescription": "api-key-test"
+      },
+      {
+        "mode": "AMAZON_COGNITO_USER_POOLS",
+        "cognitoUserPoolId": "authpandacms839ad34d"
+      }
+    ]
   }
 }

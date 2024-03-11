@@ -17,6 +17,12 @@
       },
       "auth": {
         "pandacms839ad34d": {}
+      },
+      "storage": {
+        "pandacms14476009": {
+          "bucketName": "amplify-amplify4e12e8bb95994-staging-90719-deployment",
+          "region": "us-east-1"
+        }
       }
     }
   }

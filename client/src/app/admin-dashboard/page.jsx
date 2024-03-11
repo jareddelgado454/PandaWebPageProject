@@ -9,9 +9,6 @@ import { redirect } from 'next/navigation';
 
 const AdminDashboard =  async () => {
     const session = await getSession();
-    if(!session){
-        redirect("/");
-    }
     console.log(session);
   return (
     <div className='w-full m-4'>

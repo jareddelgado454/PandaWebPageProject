@@ -25,16 +25,6 @@ export const listUsersForGraphics = gql`
       items {
         id
         email
-        rol
-        fullName
-        contactNumber
-        createdAt
-        status
-        address
-        city
-        state
-        profilePicture
-        updatedAt
         __typename
       }
     }
