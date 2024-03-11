@@ -1,15 +1,13 @@
 {
   "api": {
-    "pandacms": {
+    "pandaapi": {
       "dependsOn": [],
       "output": {
         "authConfig": {
           "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
             "apiKeyConfig": {
-              "apiKeyExpirationDate": "2024-03-10T23:49:12.280Z",
-              "apiKeyExpirationDays": 15,
-              "description": "auth"
+              "apiKeyExpirationDays": 7
             },
             "authenticationType": "API_KEY"
           }
@@ -20,7 +18,7 @@
     }
   },
   "auth": {
-    "pandacms839ad34d": {
+    "pandaapi6c754ed6": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -35,8 +33,12 @@
         "signupAttributes": [
           "EMAIL"
         ],
-        "socialProviders": [],
-        "usernameAttributes": [],
+        "socialProviders": [
+          "GOOGLE"
+        ],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
         "verificationMechanisms": [
           "EMAIL"
         ]
