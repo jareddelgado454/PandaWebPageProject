@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Table } from '@/components/Table';
 import { CardData } from '@/components/admin/cards/CardData';
 import { calculateTotalPages, totalNumbers } from '@/utils/calculate';
-import { listUsersFilter, listUsersForGraphics } from '@/graphql/users/query';
+import { listUsers} from '@/graphql/users/query';
 import { Spinner } from '@nextui-org/react';
 import { client } from '../layout';
 
@@ -21,7 +21,7 @@ const Users = () => {
     try {
       
       const { data } = await client.graphql({
-        query: listUsersForGraphics,
+        query: listUsers,
       });
       setUsers(data.listUsers.items);
       setLoading(false);

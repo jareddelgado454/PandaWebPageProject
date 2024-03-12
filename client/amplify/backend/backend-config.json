@@ -1,35 +1,15 @@
 {
   "api": {
-    "pandacms": {
-      "dependsOn": [
-        {
-          "attributes": [
-            "UserPoolId"
-          ],
-          "category": "auth",
-          "resourceName": "pandacms839ad34d"
-        }
-      ],
+    "pandaapi": {
+      "dependsOn": [],
       "output": {
         "authConfig": {
-          "additionalAuthenticationProviders": [
-            {
-              "apiKeyConfig": {
-                "apiKeyExpirationDate": "2024-03-14T16:35:19.309Z",
-                "apiKeyExpirationDays": 7,
-                "description": "api-key-test"
-              },
-              "authenticationType": "API_KEY"
-            },
-            {
-              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-              "userPoolConfig": {
-                "userPoolId": "authpandacms839ad34d"
-              }
-            }
-          ],
+          "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
-            "authenticationType": "AWS_IAM"
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 7
+            },
+            "authenticationType": "API_KEY"
           }
         }
       },
@@ -38,7 +18,7 @@
     }
   },
   "auth": {
-    "pandacms839ad34d": {
+    "pandaapi6c754ed6": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -53,40 +33,18 @@
         "signupAttributes": [
           "EMAIL"
         ],
-        "socialProviders": [],
-        "usernameAttributes": [],
+        "socialProviders": [
+          "GOOGLE"
+        ],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
         "verificationMechanisms": [
           "EMAIL"
         ]
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
-    }
-  },
-  "parameters": {
-    "AMPLIFY_storage_pandacms14476009_bucketName": {
-      "usedBy": [
-        {
-          "category": "storage",
-          "resourceName": "pandacms14476009"
-        }
-      ]
-    },
-    "AMPLIFY_storage_pandacms14476009_region": {
-      "usedBy": [
-        {
-          "category": "storage",
-          "resourceName": "pandacms14476009"
-        }
-      ]
-    }
-  },
-  "storage": {
-    "pandacms14476009": {
-      "dependsOn": [],
-      "providerPlugin": "awscloudformation",
-      "service": "S3",
-      "serviceType": "imported"
     }
   }
 }

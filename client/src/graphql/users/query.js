@@ -48,6 +48,23 @@ export const listUsersFilter = gql`
   }
 `;
 
+export const listUsers = gql`
+  query ListUsers {
+    listUsers {
+      items {
+        id
+        email
+        rol
+        fullName
+        contactNumber
+        status
+        profilePicture
+        __typename
+      }
+    }
+  }
+`;
+
 export const getReview = `
   query GetReview($id: ID!) {
     getReview(id: $id) {
