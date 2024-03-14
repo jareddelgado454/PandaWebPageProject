@@ -3,18 +3,17 @@ import React, { useEffect, useState } from "react";
 import { Sidebar } from "../../components/Sidebar";
 import { FaHouse, FaMoon } from "react-icons/fa6";
 import Link from "next/link";
-
-import { Amplify } from 'aws-amplify';
 import { generateClient } from 'aws-amplify/api';
-import config from '../../amplifyconfiguration.json';
-Amplify.configure(config);
-
+import { signOut } from 'aws-amplify/auth';
 export const client = generateClient();
+import { Amplify } from 'aws-amplify';
+import config from '@/amplifyconfiguration.json';
+Amplify.configure(config);
 
 export default function AdminDashboardLayout ({children}) {
     
 
-    const [theme, setTheme] = useState("light");
+    const [theme, setTheme] = useState("dark");
 
     useEffect(() => {
         
@@ -35,7 +34,7 @@ export default function AdminDashboardLayout ({children}) {
 
     return(
         <div className="flex w-full h-screen max-h-screen relative bg-zinc-600 dark:bg-zinc-800">
-            <Sidebar />
+            <Sidebar signOut={signOut}/>
             <div className="home_content transition-all ease-out duration-500 md:px-2 py-4">
                 <div className="shadow-xl text-white bg-gray-100 h-full rounded-lg dark:bg-green-panda overflow-y-auto">
                 {

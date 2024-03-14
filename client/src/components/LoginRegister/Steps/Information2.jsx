@@ -1,15 +1,20 @@
 "use client"
 
-import React from 'react';
+import React, { useState } from 'react';
 import { statesUSA } from '@/assets/data/StatesUSA';
 import { FaLocationDot } from 'react-icons/fa6';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { cognitoRegister } from '@/app/authUtils/cognitoRegister';
-import { createUser } from '@/graphql/users/mutation';
 import {client} from "../../../app/admin-dashboard/layout";
+import { createUser } from '@/graphql/users/mutation';
 import * as Yup from 'yup';
+import { signUp } from 'aws-amplify/auth';
+import VerificationCodeModal from '../modals/VerificationCodeModal';
+import { useDisclosure } from "@nextui-org/react";
 
 export const Information2 = ({signUpInformation}) => {
+
+  const {isOpen: isVerifyCodeModalOpen, onOpen: onVerifyCodeModalOpen, onOpenChange: onVerifyCodeModalOpenChange} = useDisclosure();
+  const [usernameRegistered, setUsernameRegistered] = useState("");
 
   const initialValues = {
     address: '',
@@ -33,56 +38,66 @@ export const Information2 = ({signUpInformation}) => {
           profilePicture:"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
           subscription:"free",
         }
-        console.log(registerInformation);
+        // console.log("REGISTERiNFORMATION", registerInformation);
 
-        const resultCognito = await cognitoRegister({
-          email: registerInformation?.email,
-          password: registerInformation?.password, 
-          fullname: registerInformation?.fullname,
-          contactNumber: registerInformation?.contactNumber
-        }); 
+        // const { isSignUpComplete, userId, nextStep } = await signUp({
+        //   username : registerInformation.email,
+        //   password : registerInformation.password,
+        //   options : {
+        //     userAttributes : {
+        //       email : registerInformation.email
+        //     },
+        //     autoSignIn: true
+        //   }
+        // });
 
-        const show = {
-                  fullName: registerInformation.fullName,
-                  email: registerInformation.email,
-                  password: registerInformation.password,
-                  contactNumber: registerInformation.contactNumber,
-                  city: registerInformation.city,
-                  state: registerInformation.state,
-                  status: registerInformation.status,
-                  zipCode: registerInformation.zipCode,
-                  subscription: registerInformation.subscription,
-                  rol: registerInformation.rol,
-                  address: registerInformation.address,
-                  cognitoId:resultCognito.userSub,
-                  profilePicture: registerInformation.profilePicture,
-        }
+        setUsernameRegistered(registerInformation.email); 
 
+        // console.log("Cognito Information",isSignUpComplete, userId, nextStep);
 
-        const resultDB = await client.graphql(
-          {
-            query: createUser,
-            variables: {
-              input : {
-                fullName: registerInformation?.fullName,
-                email: registerInformation?.email,
-                password: registerInformation?.password,
-                contactNumber: registerInformation?.contactNumber,
-                city: registerInformation?.city,
-                state: registerInformation?.state,
-                status: registerInformation?.status,
-                zipCode: registerInformation?.zipCode,
-                subscription: registerInformation?.subscription,
-                rol: registerInformation?.rol,
-                address: registerInformation?.address,
-                cognitoId:resultCognito.userSub,
-                profilePicture: registerInformation?.profilePicture,
-              }
-            },
-          }
-        ) 
+        onVerifyCodeModalOpen();
 
-        console.log(resultDB);
+        // const show = {
+        //           fullName: registerInformation.fullName,
+        //           email: registerInformation.email,
+        //           password: registerInformation.password,
+        //           contactNumber: registerInformation.contactNumber,
+        //           city: registerInformation.city,
+        //           state: registerInformation.state,
+        //           status: registerInformation.status,
+        //           zipCode: registerInformation.zipCode,
+        //           subscription: registerInformation.subscription,
+        //           rol: registerInformation.rol,
+        //           address: registerInformation.address,
+        //           cognitoId:userId,
+        //           profilePicture: registerInformation.profilePicture,
+        // }
+
+        // console.log(show)
+        // const resultDB = await client.graphql(
+        //   {
+        //     query: createUser,
+        //     variables: {
+        //       input : {
+        //         fullName: registerInformation?.fullName,
+        //         email: registerInformation?.email,
+        //         password: registerInformation?.password,
+        //         contactNumber: registerInformation?.contactNumber,
+        //         city: registerInformation?.city,
+        //         state: registerInformation?.state,
+        //         status: registerInformation?.status,
+        //         zipCode: "154564",
+        //         subscription: "free",
+        //         rol: registerInformation?.rol,
+        //         address: registerInformation?.address,
+        //         cognitoId:userId,
+        //         profilePicture: registerInformation?.profilePicture,
+        //       }
+        //     },
+        //   }
+        // ) 
+
+        // console.log("resultDB",resultDB);
 
     } catch (error) {
         console.log(error)
@@ -188,6 +203,7 @@ export const Information2 = ({signUpInformation}) => {
               )}
             </Formik>
         </div>
+        <VerificationCodeModal isOpen={isVerifyCodeModalOpen} onOpenChange={onVerifyCodeModalOpenChange} username={usernameRegistered}/>
     </div>
   )
 }

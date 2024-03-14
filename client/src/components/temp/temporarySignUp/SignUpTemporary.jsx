@@ -1,11 +1,11 @@
 'use client';
 import React, { useState } from 'react';
-import { Steppers } from '../../components/LoginRegister/Steppers'
-import { Service } from '../../components/LoginRegister/Steps/Service';
+import { Steppers } from '@/components/LoginRegister/Steppers'
+import { Service } from '@/components/LoginRegister/Steps/Service';
 import { Information } from '@/components/LoginRegister/Steps/Information';
 import { Information2 } from '@/components/LoginRegister/Steps/Information2';
 
-const page = () => {
+const SignUpTemporary = () => {
     const [activeStep1, setActiveStep1] = useState(true);
     const [activeStep2, setActiveStep2] = useState(false);
     const [activeStep3, setActiveStep3] = useState(false);
@@ -40,4 +40,4 @@ const page = () => {
     )
 }
 
-export default page;
+export default SignUpTemporary;

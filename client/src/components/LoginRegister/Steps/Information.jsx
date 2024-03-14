@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
+import { signUp } from 'aws-amplify/auth';
 
 export const Information = (props) => {
     const initialValue = {
@@ -10,7 +11,7 @@ export const Information = (props) => {
         contactNumber : ""
     };
     
-    const onHandleSubmit = (values) => {
+    const onHandleSubmit = async (values) => {
         const { fullName, email, password, contactNumber } = values;
         props.setSignUpInformation({
             fullName : fullName,
@@ -18,8 +19,26 @@ export const Information = (props) => {
             password : password,
             contactNumber : contactNumber
         });
-        props.setActiveStep2(false);
-        props.setActiveStep3(true);
+        try {
+            const { isSignUpComplete, userId, nextStep } = await signUp({
+                username : email,
+                password : password,
+                options : {
+                    userAttributes : {
+                        email : email
+                    },
+                }
+            });
+            console.log(isSignUpComplete, userId, nextStep);
+            props.setActiveStep2(false);
+            props.setActiveStep3(true);
+        } catch (error) {
+            if (error.message.includes('An account with the given email already exists.')) {
+                alert('This email address is already registered. Please use a different email address.');
+            } else {
+                console.log("Unknown error occurred:", error);
+            }
+        }
     };
     return (
         <div className='bg-white h-[30rem] w-full md:w-[45rem] md:h-[45rem] rounded-lg slide-in-left flex justify-center items-center flex-col' style={{

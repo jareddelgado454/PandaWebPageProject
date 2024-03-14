@@ -1,4 +1,3 @@
-import AuthProvider  from "../contexts/AuthContext";
 import "./globals.css";
 import { robotoFlex } from "./font";
 
@@ -11,13 +10,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${robotoFlex.className} antialiased dark:bg-zinc-800`}>
-        <AuthProvider>
-
-          {
-            children
-          }
-
-        </AuthProvider>
+            {
+              children
+            }
       </body>
     </html>
   );

@@ -1,21 +1,49 @@
+"use client"
 
 import CardHome from '../../components/CardHome'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Link from 'next/link'
 import { FaGear, FaChartSimple } from 'react-icons/fa6'
-import { getSession } from '../authUtils/getSession';
-import { redirect } from 'next/navigation';
+import { getCurrentUser, fetchUserAttributes } from 'aws-amplify/auth';
+// import { Amplify } from 'aws-amplify';
+// import config from '@/amplifyconfiguration.json';
+// Amplify.configure(config);
 
 
-const AdminDashboard =  async () => {
-    const session = await getSession();
-    if(!session){
-        redirect("/");
+const AdminDashboard =  () => {
+
+    const currentAuthenticatedUser = async () => {
+        try {
+          const { username, userId, signInDetails } = await getCurrentUser();
+          console.log(`The username: ${username}`);
+          console.log(`The userId: ${userId}`);
+          console.log(`The signInDetails: ${signInDetails}`);
+        } catch (err) {
+          console.log(err);
+        }
     }
-    console.log(session);
+
+    const  handleFetchUserAttributes = async () => {
+        try {
+          const userAttributes = await fetchUserAttributes();
+          console.log(userAttributes);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+    useEffect(()=>{
+        currentAuthenticatedUser();
+        handleFetchUserAttributes();
+    },[]);
+
+
+
+    
+
   return (
     <div className='w-full m-4'>
-        <h2 className='text-4xl text-black dark:text-white font-extrabold mb-2'>Welcome Back { session?.user?.name }</h2>
+        <h2 className='text-4xl text-black dark:text-white font-extrabold mb-2'>Welcome Back </h2>
         <h4 className='text-[22px] mb-8 text-gray-700 dark:text-gray-100 font-semibold'>The bussiness information is here</h4>
         <div className='w-full flex flex-wrap justify-around items-center mb-8'>
             <CardHome type='Customers' numberActive={50} lastRegistrations={5}/>

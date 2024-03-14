@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+
+import React, {useState, useEffect} from "react";
 import {  } from "@apollo/experimental-nextjs-app-support/ssr";
 import LandingNavBar from "../components/LandingNavBar";
 import {
@@ -7,62 +8,115 @@ import {
 } from "react-icons/ri";
 import LoginFormLanding from "@/components/LoginRegister/Login/LoginFormLanding";
 import Link from "next/link";
+import { Hub } from "aws-amplify/utils";
+import { signInWithRedirect, signOut, getCurrentUser, fetchUserAttributes } from "aws-amplify/auth";
+import SignInModal from "@/components/LoginRegister/modals/SignInModal";
+import { useDisclosure } from "@nextui-org/react";
+import { Amplify } from 'aws-amplify';
+import config from '@/amplifyconfiguration.json';
+Amplify.configure(config);
 
 const Home = () => {
+  const {isOpen: isSignInModalOpen, onOpen: onSignInModalOpen, onOpenChange: onSignInModalOpenChange} = useDisclosure();
+
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
+  const [customState, setCustomState] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = Hub.listen("auth", ({ payload }) => {
+      switch (payload.event) {
+        case "signInWithRedirect":
+          getUser();
+          break;
+        case "signInWithRedirect_failure":
+          setError("An error has occurred during the OAuth flow.");
+          break;
+        case "customOAuthState":
+          setCustomState(payload.data); 
+          break;
+      }
+    });
+
+    getUser();
+    handleFetchUserAttributes();
+
+    return unsubscribe;
+  }, []);
+
+  const getUser = async () => {
+    try {
+      const currentUser = await getCurrentUser();
+      setUser(currentUser);
+    } catch (error) {
+      console.error(error);
+      console.log("Not signed in");
+    }
+  };
+
+  async function handleFetchUserAttributes() {
+    try {
+      const userAttributes = await fetchUserAttributes();
+      console.log(userAttributes);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    
+    if(user) console.log(user);
+
+  }, [user]);
 
   return (
-    <div className="flex flex-col w-full h-screen p-0 overflow-hidden relative">
-      <div className="w-full h-full relative overflow-hidden">
-        <div className="w-full h-full relative">
-          <div className="absolute w-full h-screen bg-gray-800 opacity-70"></div>
+    <div className="flex flex-col w-full p-0 bg-zinc-800">
+      <div className="w-full h-full">
+        <div className="w-full h-[750px] relative">
+          <LandingNavBar onSignInModalOpen={onSignInModalOpen}/>
+          <div className="absolute top-[30%] left-[20%] flex flex-col text-left z-30">
+              <h1 className=" text-[40px] text-left mb-1 text-white/90 font-extrabold ">
+                <span className="text-emerald-400/90 text-[80px]">Getting</span>{" "}
+                your car repaired
+              </h1>
+              <p className=" mb-7 text-left  text-[30px] text-white/90">
+                Has never been{" "}
+                <span className="text-emerald-400/90 font-extrabold text-[40px]">
+                  EASIER
+                </span>
+              </p>
+              <p className="text-gray-100 text-[22px] font-bold">Changing the auto repair industry by</p>
+              <p className="text-gray-100 text-[22px] font-bold mb-8">placing power in the small business owner`s hands.</p>
+              <div className="flex items-center gap-x-4">
+                <Link href="/auth" className='px-9 py-3 font-semibold border-[2px] rounded-lg text-white border-emerald-500 bg-emerald-500 text-[20px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
+                    Start here
+                </Link>
+
+                <Link href="/auth" className='px-5 py-3 font-semibold border-[2px] rounded-lg text-emerald-300 border-emerald-500 bg-transparent text-[20px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
+                  Why the panda? 
+                </Link>
+
+              </div>
+          </div>
+          <div className="absolute w-full h-[750px] bg-gray-800 opacity-70"></div>
           <img
             className="w-full h-full object-cover"
             src="https://cdna.artstation.com/p/assets/images/images/040/174/900/large/fabian-geyer-wideshotright.jpg?1628083532"
           />
         </div>
 
-        <div className="absolute top-0 left-0 w-full h-full custom-gradient">
-          <LandingNavBar />
+        <div className="top-0 left-0 w-full h-full custom-gradient">
+          
           <div className="flex  w-full px-8 py-10 lg:py-1 text-left ">
-            <div className="w-[60%]  flex flex-col text-left">
-              <h1 className=" text-[40px] text-left mb-8 text-white/90 font-extrabold shadow-xl">
-                <span className="text-emerald-400/90 text-[80px]">Getting</span>{" "}
-                your car repaired
-              </h1>
-              <p className=" mb-10 text-left  text-[30px] text-white/90">
-                Has never been{" "}
-                <span className="text-emerald-400/90 font-extrabold text-[40px]">
-                  EASIER
-                </span>
-              </p>
-            </div>
             <div className="flex flex-1 justify-center">
-                <div className="bg-green-panda opacity-90 md:flex-row flex-col flex  border-[1px] border-white/10   rounded-3xl  w-[400px] items-center justify-center">
-                  <div className="w-[100%] flex-1 flex flex-col items-center justify-center pt-8 py-4">
-                    <h2 className=" text-[32px] text-zinc-800  mb-5 font-extrabold">
-                      <span className="text-emerald-900">LOGIN</span> to see more
-                    </h2>
-                    <button className="w-[50%] bg-emerald-600 hover:bg-emerald-700 transition-colors delay-50  mb-2  hover:text-white text-white rounded-2xl flex gap-x-2 items-center justify-center py-2 px-5">
-                      <RiGoogleFill /> Enter with Google
-                    </button>
-                    <p className="mb-4">Or Sign in with your account</p>            
-
-                    <LoginFormLanding />
-        
-                    <p className="text-white mb-6 font-bold hover:text-zinc-700 hover:font-bold cursor-pointer transition-colors">
-                      Have you forgotten the password?
-                    </p>
-                    <div className=" border-transparent border-r-[1px] border-r-white/10 flex flex-col items-center justify-center text-center px-8 ">
-                      <p className="text-white mb-6">
-                        Don't have an account? <Link className="hover:text-zinc-700 text-[18px] font-bold hover:font-bold cursor-pointer" href="/auth" >Sign up free</Link>
-                      </p>
-                    </div>
-                  </div>
+                <div className="h-[300px] ">
+                  hola perri
                 </div>
             </div>
           </div>
         </div>
       </div>
+      <SignInModal isOpen={isSignInModalOpen} onOpenChange={onSignInModalOpenChange}/>
     </div>
   );
 };
