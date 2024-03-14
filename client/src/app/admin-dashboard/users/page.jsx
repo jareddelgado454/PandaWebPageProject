@@ -3,10 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { Table } from '@/components/Table';
 import { CardData } from '@/components/admin/cards/CardData';
 import { calculateTotalPages, totalNumbers } from '@/utils/calculate';
-import { listUsersFilter } from '@/graphql/users/query';
+import { listUsers} from '@/graphql/users/query';
 import { Spinner } from '@nextui-org/react';
-import { client } from '../layout';
-
+import { client } from '@/app/page';
 
 const Users = () => {
   const [page, setPage] = useState(1);
@@ -22,15 +21,11 @@ const Users = () => {
     try {
       
       const { data } = await client.graphql({
-        query: listUsersFilter,
-        variables: {
-          email: "test@gmail.com",
-          rol: "user"
-        },
+        query: listUsers,
       });
+      console.log(data);
       setUsers(data.listUsers.items);
       setLoading(false);
-
     } catch (error) {
       console.log(error);
       setLoading(false);

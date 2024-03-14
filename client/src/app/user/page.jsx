@@ -1,41 +1,41 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { uploadData } from 'aws-amplify/storage';
 import Link from "next/link";
-import { FaCamera } from "react-icons/fa6";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { uploadData } from 'aws-amplify/storage';
+import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'react-toastify';
+import { FaCamera } from "react-icons/fa6";
 import { statesUSA } from '@/assets/data/StatesUSA';
 import { getUser } from "@/graphql/users/query";
-import { client } from "../admin-dashboard/layout";
+import { client } from "../page";
+import { getUrl } from 'aws-amplify/storage';
+import { updateInformation } from "@/graphql/users/mutation/users";
 const page = () => {
     const [photograph, setPhotograph] = useState(null);
+    const [picture, setPicture] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [user, setUser] = useState(null);
-    function handleChangePhotograph(event) {
-        const file = event.target.files[0];
-        if (file) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setPhotograph(reader.result);
-        };
-        reader.readAsDataURL(file);
-        }
-    }
 
     const retrieveOneUser = async() => {
-
         setLoading(true);
-
         try {
             
             const { data } = await client.graphql({
                 query: getUser,
                 variables: {
-                    id: "def68a7b-e086-46e8-b52e-02e15b26e822",
+                    id: "77405e7b-e42f-44f1-ae0e-d5332a863236",
                 },
+                
             });
+
+            const pic = await getUrl({ key: 'user-profile-pictures/8d6aa1b3-2e29-46c7-a56b-1540f37872e0.jpg' });
+
+            setPicture(pic.url.href);
+            console.log(pic.url.href)
+
             await setUser(data.getUser);
             setLoading(false);
             console.log(data);
@@ -45,21 +45,48 @@ const page = () => {
             setLoading(false);
             setError(error);
         }
-
     }
 
-    useEffect(() => { retrieveOneUser();  }, []);
+    useEffect(() => { retrieveOneUser();  }, []);    
 
-    const handleUpdatePicture = () => {
-
-        const filename = `user-profiles/def68a7b-e086-46e8-b52e-02e15b26e822.jpg`;
-
+    function dataURLtoBlob(dataURL) {
+        if (!dataURL) {
+          return null;
+        }
+        var parts = dataURL.split(';base64,');
+        var contentType = parts[0].split(':')[1];
+        var raw = window.atob(parts[1]);
+        var rawLength = raw.length;
+        var uInt8Array = new Uint8Array(rawLength);
+        for (var i = 0; i < rawLength; ++i) {
+          uInt8Array[i] = raw.charCodeAt(i);
+        }
+        return new Blob([uInt8Array], { type: contentType });
+    }
+    
+    function handleChangePhotograph(event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setPhotograph(reader.result);
+            handleUpdatePicture(dataURLtoBlob(reader.result));
+          };
+          reader.readAsDataURL(file);
+        }
+    }
+    
+    
+    const handleUpdatePicture = async(picture) => {
+    
+        const uniqueId = uuidv4();
+        const filename = `user-profile-pictures/${uniqueId}.jpg`;
         try {
-            
-            const result = uploadData({
+            const result = await uploadData({
                 key: filename,
-                data: photograph,
+                data: picture,
                 options: {
+                    contentType: "image/png",
                     onProgress: ({ transferredBytes, totalBytes }) => {
                         if (totalBytes) {
                           console.log(
@@ -70,10 +97,35 @@ const page = () => {
                         }
                     }
                 }
-            });
+            }).result;
+            console.log('Succeeded: ',result);
+        } catch (error) {
+            console.log(`Error from here : ${ error }`);
+        }
+    
+    }
+
+    const onHandleSubmit = async(values, { setSubmitting }) => {
+
+        setSubmitting(true);
+
+        try {
+
+            await client.graphql({
+                query: updateInformation,
+                variables: {
+                    email: values.email,
+                    input: {
+                        id: user.id,
+                        ...values
+                    }
+                }
+            })
+
+            toast.success("Updated successfully.");
 
         } catch (error) {
-            console.log(`Error : ${ error }`);
+            toast.error(`Error during the process.`);
         }
 
     }
@@ -104,9 +156,9 @@ const page = () => {
                                 }}
                                 validationSchema={formSchema}
                                 validateOnChange={false}
-                                enableReinitialize={true}
+                                onSubmit={onHandleSubmit}
                             >
-                                {({ errors, isValid, setValues, values }) => {
+                                {({ errors, isValid }) => {
                                     return(
                                         <Form
                                             className="w-full h-full flex flex-col gap-7"
@@ -126,9 +178,10 @@ const page = () => {
                                                     <Field
                                                         type="text"
                                                         name="fullName"
-                                                        className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                                        className={`block appearance-none w-full bg-gray-200 border ${errors.fullName ? 'border-red-600' : 'border-gray-200'} text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                                                         id="grid-fullName"
                                                     />
+                                                    <ErrorMessage name="fullName" component={() => (<div className="text-red-600">{errors.fullName}</div>)} />
                                                 </div>
                                                 <div className="w-full md:w-2/4">
                                                     <label
@@ -140,8 +193,10 @@ const page = () => {
                                                     <Field
                                                         type="email"
                                                         name="email"
-                                                        className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                                        disabled
+                                                        className={`block appearance-none w-full bg-gray-200 border ${errors.email ? 'border-red-600' : 'border-gray-200'} text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                                                     />
+                                                    <ErrorMessage name="email" component={() => (<div className="text-red-600">{errors.email}</div>)} />
                                                 </div>
                                             </div>
 
@@ -156,8 +211,7 @@ const page = () => {
                                                     <Field
                                                         as="select"
                                                         name="state"
-                                                        
-                                                        className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                                        className={`block appearance-none w-full bg-gray-200 border ${errors.state ? 'border-red-600' : 'border-gray-200'} text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                                                     >
                                                         {statesUSA.map((estado, index) => (
                                                             <option key={index} value={estado}>
@@ -165,6 +219,7 @@ const page = () => {
                                                             </option>
                                                         ))}
                                                     </Field>
+                                                    <ErrorMessage name="state" component={() => (<div className="text-red-600">{errors.state}</div>)} />
                                                 </div>
                                                 <div className="w-full md:w-2/4 md:mb-0">
                                                     <label
@@ -174,11 +229,12 @@ const page = () => {
                                                     Address
                                                     </label>
                                                     <Field
-                                                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${errors.address ? 'border-red-600' : 'border-gray-200'} rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                                                         type="text"
                                                         placeholder="address"
                                                         name="address"
                                                     />
+                                                    <ErrorMessage name="address" component={() => (<div className="text-red-600">{errors.address}</div>)} />
                                                 </div>
                                             </div>
 
@@ -191,12 +247,13 @@ const page = () => {
                                                         Zip
                                                     </label>
                                                     <Field
-                                                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${errors.zipCode ? 'border-red-600' : 'border-gray-200'} rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                                                         id="grid-zip"
                                                         type="number"
                                                         placeholder="90210"
                                                         name="zipCode"
                                                     />
+                                                    <ErrorMessage name="zipCode" component={() => (<div className="text-red-600">{errors.zipCode}</div>)} />
                                                 </div>
                                                 <div className="w-full md:w-2/4 md:mb-0">
                                                     <label
@@ -206,12 +263,13 @@ const page = () => {
                                                         City
                                                     </label>
                                                     <Field
-                                                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${errors.city ? 'border-red-600' : 'border-gray-200'} rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                                                         id="grid-city"
                                                         type="text"
                                                         placeholder="Miami"
                                                         name="city"
                                                     />
+                                                    <ErrorMessage name="city" component={() => (<div className="text-red-600">{errors.city}</div>)} />
                                                 </div>
                                             </div>
 
@@ -224,18 +282,20 @@ const page = () => {
                                                     Contact Number
                                                     </label>
                                                     <Field
-                                                        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${errors.contectNumber ? 'border-red-600' : 'border-gray-200'} rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                                                         id="grid-contactNumber"
-                                                        type="number"
+                                                        type="text"
                                                         placeholder="90210"
                                                         name="contactNumber"
                                                     />
+                                                    <ErrorMessage name="contactNumber" component={() => (<div className="text-red-600">{errors.contactNumber}</div>)} />
                                                 </div>
                                             </div>
                                             <div className="w-full pb-5">
                                                 <button
-                                                    type="button"
-                                                    className="bg-green-panda p-3 rounded-lg text-white font-bold w-full"
+                                                    type="submit"
+                                                    disabled={!isValid}
+                                                    className={`${ !isValid ? 'bg-gray-200' : 'bg-green-panda' } p-3 rounded-lg text-white font-bold w-full transition-all`}
                                                 >
                                                     Update Information
                                                 </button>
@@ -255,9 +315,7 @@ const page = () => {
                                         </div>
                                     </div>
                                     <img
-                                        src={
-                                            photograph ? photograph : (user.profilePicture ? user.profilePicture : "/image/defaultProfilePicture.jpg")
-                                        }
+                                        src={picture}
                                         className="rounded-full w-[6rem] h-[6rem] md:w-[12rem] md:h-[12rem] cursor-pointer "
                                         alt="Fotografía de perfil"
                                     />
@@ -269,7 +327,6 @@ const page = () => {
                                         className="absolute top-0 right-0 min-w-full min-h-full opacity-0 cursor-pointer bg-center object-cover object-center"
                                         onChange={(event) => {
                                             handleChangePhotograph(event);
-                                            handleUpdatePicture();
                                         }}
                                     />
                                 </div>
@@ -313,7 +370,7 @@ const formSchema = Yup.object().shape({
     email: Yup.string().email().required('Required'),
     city: Yup.string().required('Required'),
     state:  Yup.string().required('Required'),
-    zip: Yup.number().required('Required').positive().integer(),
+    zipCode: Yup.number().required('Required').positive().integer(),
     contactNumber: Yup.number().required('Required').positive().integer()
   });
 

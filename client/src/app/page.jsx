@@ -119,6 +119,6 @@ const Home = () => {
       <SignInModal isOpen={isSignInModalOpen} onOpenChange={onSignInModalOpenChange}/>
     </div>
   );
-};
+}
 
-export default Home;
+export default page

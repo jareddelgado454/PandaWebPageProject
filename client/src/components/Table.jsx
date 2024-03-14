@@ -6,11 +6,11 @@ import {
     FaPersonCircleCheck,
     FaPersonCircleMinus
 } from 'react-icons/fa6';
-import { client } from '@/app/admin-dashboard/layout';
 import { useDisclosure } from "@nextui-org/react";
-import { updateStatus, deleteUserById } from '@/graphql/users/mutation';
+import { updateStatus, deleteUserById } from '@/graphql/users/mutation/users';
 import EditModal from './admin/modals/EditModal';
 import DeletaModal from './admin/modals/DeletModal';
+import { client } from '@/app/page';
 
 export const Table = ({ item, callback }) => {
 
@@ -56,6 +56,8 @@ export const Table = ({ item, callback }) => {
     }
 
     const handleDeleteUserId = async(id, email) => {
+
+        console.log('clicked');
 
         try {
 
@@ -142,7 +144,7 @@ export const Table = ({ item, callback }) => {
                                     <div className='flex gap-4'>
                                         <button
                                             type='button'
-                                            onClick={() => handleOpenDeleteModal(user)}
+                                            onClick={() => handleDeleteUserId(user.id, user.email)}
                                             className='bg-rose-500 p-2 rounded text-white'
                                         >
                                             <FaTrashCan />
