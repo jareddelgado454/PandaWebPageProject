@@ -3,16 +3,13 @@ import CardHome from '../../components/CardHome'
 import React from 'react'
 import Link from 'next/link'
 import { FaGear, FaChartSimple } from 'react-icons/fa6'
-import { getSession } from '../authUtils/getSession';
 import { redirect } from 'next/navigation';
 
 
 const AdminDashboard =  async () => {
-    const session = await getSession();
-    console.log(session);
   return (
     <div className='w-full m-4'>
-        <h2 className='text-4xl text-black dark:text-white font-extrabold mb-2'>Welcome Back { session?.user?.name }</h2>
+        <h2 className='text-4xl text-black dark:text-white font-extrabold mb-2'>Welcome Back </h2>
         <h4 className='text-[22px] mb-8 text-gray-700 dark:text-gray-100 font-semibold'>The bussiness information is here</h4>
         <div className='w-full flex flex-wrap justify-around items-center mb-8'>
             <CardHome type='Customers' numberActive={50} lastRegistrations={5}/>

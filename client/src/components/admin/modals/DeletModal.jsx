@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button} from "@nextui-org/react";
 import { deleteUserById } from '@/graphql/users/mutation';
-import { client } from '@/app/admin-dashboard/layout';
 import { RiAlertFill } from "react-icons/ri";
+import { client } from '@/app/page';
 //import {Input} from "@nextui-org/react";
 
 const DeletaModal = ({ isOpen, onOpenChange, user, callback, setRecordSelected }) => {

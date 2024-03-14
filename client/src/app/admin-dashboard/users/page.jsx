@@ -5,7 +5,7 @@ import { CardData } from '@/components/admin/cards/CardData';
 import { calculateTotalPages, totalNumbers } from '@/utils/calculate';
 import { listUsers} from '@/graphql/users/query';
 import { Spinner } from '@nextui-org/react';
-import { client } from '../layout';
+import { client } from '@/app/page';
 
 const Users = () => {
   const [page, setPage] = useState(1);
@@ -23,9 +23,9 @@ const Users = () => {
       const { data } = await client.graphql({
         query: listUsers,
       });
+      console.log(data);
       setUsers(data.listUsers.items);
       setLoading(false);
-      console.log(data);
     } catch (error) {
       console.log(error);
       setLoading(false);

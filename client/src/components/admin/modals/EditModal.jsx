@@ -4,11 +4,9 @@ import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button} from "
 import {Select, SelectSection, SelectItem} from "@nextui-org/react";
 import {Input} from "@nextui-org/react";
 import { updateStatus } from '@/graphql/users/mutation';
-import { client } from '@/app/admin-dashboard/layout';
-//import {Input} from "@nextui-org/react";
+import { client } from '@/app/page';
 
 const EditModal = ({ isOpen, onOpenChange, user, callback, setRecordSelected }) => {
-    console.log(user);
     const [selectedStatus, setSelectedStatus] = useState(user.status);
 
     const handleStatusChange = (event) => {
@@ -18,7 +16,6 @@ const EditModal = ({ isOpen, onOpenChange, user, callback, setRecordSelected }) 
     };
 
     const handleUpdateStatus = async(user, value) => {
-      console.log("valueeeeee" + value);
       try {
           if(!user) {
               return;
@@ -34,7 +31,7 @@ const EditModal = ({ isOpen, onOpenChange, user, callback, setRecordSelected }) 
           setRecordSelected({});
           callback();         
       }catch (error) {
-          console.log();
+          console.log(error);
       }
 
   }
