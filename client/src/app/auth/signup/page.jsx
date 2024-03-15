@@ -11,6 +11,7 @@ import { createUser } from '@/graphql/users/mutation/users';
 import { client } from '@/app/contexts/AmplifyContext';
 const SignUp = () => {
     const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     let initialValue = {
         fullName: "",
         email : "",
@@ -142,6 +143,10 @@ const SignUp = () => {
                                         id="password-grid"
                                         type="password"
                                         name="password"
+                                        onChange={(e) => {
+                                            setFieldValue("password", e.target.value);
+                                            setPassword(e.target.value);
+                                        }}
                                         className="my-2 py-3 pl-8 pr-4 bg-zinc-700 border-[1px] border-zinc-700 focus:border-emerald-500 w-full outline-none rounded-2xl mb-4"
                                     />
                                 </div>
@@ -206,7 +211,7 @@ const SignUp = () => {
                     )}
                 </Formik>
             </div>
-            <VerificationCodeModal isOpen={isVerifyCodeModalOpen} onOpenChange={onVerifyCodeModalOpenChange} username={email}/>
+            <VerificationCodeModal isOpen={isVerifyCodeModalOpen} onOpenChange={onVerifyCodeModalOpenChange} dataSignIn={{ email: email, password: password }}/>
         </div>
     )
 }

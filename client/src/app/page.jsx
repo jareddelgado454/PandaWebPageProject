@@ -2,8 +2,6 @@
 import React, {useState, useEffect} from "react";
 import LandingNavBar from "../components/LandingNavBar";
 import Link from "next/link";
-import { Hub } from "aws-amplify/utils";
-import { signInWithRedirect, signOut, getCurrentUser, fetchUserAttributes } from "aws-amplify/auth";
 import SignInModal from "@/components/LoginRegister/modals/SignInModal";
 import { useDisclosure } from "@nextui-org/react";
 const Home = () => {
@@ -11,7 +9,7 @@ const Home = () => {
   return (
     <div className="flex flex-col w-full p-0 bg-zinc-800 h-screen">
       <div className="w-full h-full">
-        <div className="w-full h-[750px] relative">
+        <div className="w-full h-[750px] relative mb-10">
           <LandingNavBar onSignInModalOpen={onSignInModalOpen}/>
           <div className="absolute top-[30%] left-[20%] flex flex-col text-left z-30">
               <h1 className=" text-[40px] text-left mb-1 text-white/90 font-extrabold ">
