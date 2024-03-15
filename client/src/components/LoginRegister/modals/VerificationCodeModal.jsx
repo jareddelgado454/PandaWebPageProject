@@ -2,20 +2,28 @@ import React, { useState } from 'react'
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button} from "@nextui-org/react";
 import { confirmSignUp, signIn } from 'aws-amplify/auth';
 
-const VerificationCodeModal = ({isOpen, onOpenChange, username}) => {
+const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn}) => {
 
   const [code, setCode] = useState("");
 
 
   const handleSignUpConfirmation = async (onClose) => {
-    console.log(username)
+    console.log(dataSignIn)
     try {
       const { isSignUpComplete, nextStep } = await confirmSignUp({
-        username: username,
+        username: dataSignIn.email,
         confirmationCode : code
       });
-         
-      console.log(isSignUpComplete, nextStep);
+        
+      const response = await signIn({ 
+        username : dataSignIn.email, 
+        password : dataSignIn.password,
+        options: {
+          authFlowType: 'USER_SRP_AUTH'
+        }
+      });
+      console.log(response);
+      router.replace("/admin-dashboard");
       onClose();
 
     } catch (error) {

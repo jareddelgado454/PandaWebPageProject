@@ -3,9 +3,7 @@
 import React, {useState, useEffect} from "react";
 import {  } from "@apollo/experimental-nextjs-app-support/ssr";
 import LandingNavBar from "../components/LandingNavBar";
-import {
-  RiGoogleFill,
-} from "react-icons/ri";
+import { RiArrowRightDoubleFill } from "react-icons/ri";
 import LoginFormLanding from "@/components/LoginRegister/Login/LoginFormLanding";
 import Link from "next/link";
 import { Hub } from "aws-amplify/utils";
@@ -72,7 +70,7 @@ const Home = () => {
   return (
     <div className="flex flex-col w-full p-0 bg-zinc-800">
       <div className="w-full h-full">
-        <div className="w-full h-[750px] relative">
+        <div className="w-full h-[750px] relative mb-10">
           <LandingNavBar onSignInModalOpen={onSignInModalOpen}/>
           <div className="absolute top-[30%] left-[20%] flex flex-col text-left z-30">
               <h1 className=" text-[40px] text-left mb-1 text-white/90 font-extrabold ">
@@ -105,15 +103,64 @@ const Home = () => {
           />
         </div>
 
-        <div className="top-0 left-0 w-full h-full custom-gradient">
-          
-          <div className="flex  w-full px-8 py-10 lg:py-1 text-left ">
-            <div className="flex flex-1 justify-center">
-                <div className="h-[300px] ">
-                  hola perri
+        <div className="w-full h-full flex flex-col justify-center items-center ">   
+            <div className="w-[1200px] flex justify-between  mb-10">
+                <div className="w-[30%] text-center items-center justify-center py-8">
+                    <h3 className="text-white font-bold text-[35px] w-full text-center">Tittle 1</h3>
+                    <p className="text-[22px] text-gray-400 text-center">luaygfkuaygdflaisduf uasdfiasudhf asdlfiuash fliasduf  asdifuhpa.</p>
+                </div>
+                <div className="w-[30%] text-center items-center justify-center py-8">
+                    <h3 className="text-white font-bold text-[35px] w-full text-center">Tittle 1</h3>
+                    <p className="text-[22px] text-gray-400 text-center">luaygfkuaygdflaisduf <span className="text-emerald-400 cursor-pointer font-bold">uasdfiasudhf</span> asdlfiuash fliasduf  asdifuhpa.</p>
+                </div>
+                <div className="w-[30%] text-center items-center justify-center py-8">
+                    <h3 className="text-white font-bold text-[35px] w-full text-center">Tittle 1</h3>
+                    <p className="text-[22px] text-gray-400 text-center">luaygfkuaygdflaisduf uasdfiasudhf asdlfiuash fliasduf  asdifuhpa.</p>
                 </div>
             </div>
-          </div>
+            <div className="w-[1200px] flex flex-col mb-5 bg-zinc-700/75 rounded-lg shadow-xl cursor-pointer hover:bg-zinc-900 " style={{ transition: 'background-color 1.2s ease' }}>
+                <div className="w-1/2 pt-8 pl-6">
+                    <h3 className="text-[35px] text-white text-left font-bold">This iasdiabs lkdfuasdas asdkh jasdk fhgasd</h3>
+                </div>  
+                <div className="w-full flex">
+                    <div className="w-1/2 flex flex-col pt-6 pl-6">
+                        <h4 className="text-[25px] text-gray-400 mb-5">Jasbhb asdijfuasd a aspfij de easudyg.</h4>
+                        <p className="text-gray-200 text-[18px]">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. </p>
+                    </div>
+                    <div className="w-1/2 flex justify-center">
+                        <img src="/image/computerPage2.png" alt="image" className="w-[500px]" />
+                    </div>
+                </div>
+                <div className="flex gap-x-1 text-[19px] text-emerald-300 font-bold items-center pl-6 pb-6">
+                    <span className="cursor-pointer flex hover:text-emerald-400 transition-colors">Why the Panda? <RiArrowRightDoubleFill className="text-[25px]"/></span>
+                </div>
+            </div>
+            <div className="w-[1200px] flex gap-x-5">
+              <div className="w-1/2 bg-zinc-700 rounded-lg cursor-pointer hover:bg-zinc-900 shadow-xl" style={{ transition: 'background-color 1.2s ease' }}>
+                  <div className="w-full py-8 px-6">
+                      <h3 className="text-[35px] text-white text-left font-bold">This iasdiabs lkdf</h3>
+                  </div> 
+                  <div className="w-full px-6">
+                      <p className="text-gray-200 text-[18px]">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. </p>
+                  </div>
+              </div>
+              <div className="w-1/2 bg-zinc-700 rounded-lg cursor-pointer hover:bg-zinc-900 shadow-xl containerDivChangeColor" style={{ transition: 'background-color 1.2s ease' }}>
+                  <div className="w-full py-8 px-6">
+                      <h3 className="text-[35px] text-white text-left font-bold">Uhsi asod sj auunwd</h3>
+                  </div> 
+                  <div className="w-full px-6 mb-6">
+                      <p className="text-gray-200 text-[18px]">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. </p>
+                  </div>
+                  <div className="w-full px-6 mb-6">
+                      <div className="text-[40px] font-extrabold overflow-hidden divChangeColor">
+                          <p className="m-0 p-0" style={{ lineHeight: '1', marginLeft: '-10px' }}><span className="changeColor">EPANDA</span>TECHNICIANSREPAIREDBUSINESSTHEPANDA<span className="changeColor">THEPANDA</span></p>
+                          <p className="m-0 p-0" style={{ lineHeight: '1', marginLeft: '-10px' }}>ANSREPAIREDBUSINESS<span className="changeColor">THEPANDA</span>TECHNNICIANSREPAIR</p>
+                          <p className="m-0 p-0" style={{ lineHeight: '1', marginLeft: '-10px' }}>NESS<span className="changeColor">THEPANDA</span>TECHNICIANSREPAIREDBUSINESSTECHNICI</p>
+                          <p className="m-0 p-0" style={{ lineHeight: '1', marginLeft: '-10px' }}><span className="changeColor">THEPANDA</span>TECHNICIANSREPAIREDBUSINESSTHEPANDA</p>
+                      </div>
+                  </div>
+              </div>
+            </div>
         </div>
       </div>
       <SignInModal isOpen={isSignInModalOpen} onOpenChange={onSignInModalOpenChange}/>
@@ -121,4 +168,4 @@ const Home = () => {
   );
 }
 
-export default page
+export default Home

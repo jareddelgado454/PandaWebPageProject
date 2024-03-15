@@ -199,7 +199,7 @@ const SignUp = () => {
                     </div>
                 </div>
             </div>
-            <VerificationCodeModal isOpen={isVerifyCodeModalOpen} onOpenChange={onVerifyCodeModalOpenChange} username={formData.email}/>
+            <VerificationCodeModal isOpen={isVerifyCodeModalOpen} onOpenChange={onVerifyCodeModalOpenChange} dataSignIn={{email:formData.email, password : formData.password}}/>
             <SelectAccountModal isOpen={isSelectAccountModalOpen} onOpenChange={onSelectAccountModalOpenChange} providerIdentitySelected = {providerIdentitySelected}/>
         </div>
     )

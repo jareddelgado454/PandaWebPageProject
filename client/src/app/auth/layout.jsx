@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 const AuthLayout = ({children}) => {
   return (
-    <div className='w-full h-screen bg-zinc-800 relative'>
+    <div className='w-full h-screen bg-zinc-800 relative overflow-hidden'>
         <nav className='top-0 w-full p-3 py-4 flex justify-between z-40'>
             <div className="flex gap-x-2 items-center">
                 <img src="/panda.png" className="w-[4rem] h-[3rem] drop-shadow-lg" alt="panda_logo" />

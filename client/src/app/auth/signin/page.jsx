@@ -1,10 +1,171 @@
-import React from 'react'
+"use client"
+
+import React, {useState} from 'react'
+import Link from 'next/link'
+import {
+  RiGoogleFill,
+  RiAppleFill,
+  RiFacebookCircleFill,
+  RiMailLine,
+  RiLockLine,
+  RiEyeLine,
+  RiEyeOffLine, 
+  RiMoneyDollarCircleLine,
+  RiSmartphoneLine,
+  RiListCheck3 
+} from "react-icons/ri";
+import VerificationCodeModal from '@/components/LoginRegister/modals/VerificationCodeModal';
+import { useDisclosure } from "@nextui-org/react";
+import { Amplify } from 'aws-amplify';
+import config from '@/amplifyconfiguration.json';
+Amplify.configure(config);
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { signInWithRedirect, signIn } from 'aws-amplify/auth';
+import { useRouter } from 'next/navigation';
 
 const SignIn = () => {
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [dataPassed, setDataPassed] = useState({
+    email : "",
+    password : ""
+  });
+  const router = useRouter();
+
+  const initialValue = {
+    email: '',
+    password: ''
+  }
+
+  const onHandleSubmit = async (values) => {
+      try {
+        const { isSignedIn, nextStep } = await signIn({ 
+          username : values.email, 
+          password : values.password,
+          options: {
+            authFlowType: 'USER_SRP_AUTH'
+          }
+        });
+        setDataPassed({email:values.email,  password:values.password});
+        if (isSignedIn) {
+          console.log("Login successfully");
+          router.replace("/admin-dashboard");
+        } else {
+          if (nextStep?.signInStep === 'CONFIRM_SIGN_UP') {
+            onVerifyCodeModalOpen();
+          } else {
+            setError('Error signing in. Please try again.');
+          }
+        }
+      } catch (error) {
+        console.log('Error signing in', error);
+      }
+  }
+
+  const {isOpen: isVerifyCodeModalOpen, onOpen: onVerifyCodeModalOpen, onOpenChange: onVerifyCodeModalOpenChange} = useDisclosure();
+
   return (
-    <div>
-        
-    </div>
+      <div className='w-full text-white flex justify-center items-center'>
+            <div className='w-full flex h-full'>
+                <div className='w-1/2 flex justify-center items-center'>
+                  <div className='w-[500px]'>
+                    <div className='mb-3'>
+                        <h2 className='text-[30px] font-bold'>SIGN-IN</h2>
+                        <p>enter with your account</p>
+                    </div>
+                    <div className='w-full flex items-center justify-between'>
+                        <button onClick={() => signInWithRedirect({ provider: "Google", customState: "shopping-cart" })} className="w-[30%]  bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 px-5">
+                            <RiGoogleFill className='text-[20px] text-red-400'/> Google
+                        </button>   
+                        <button onClick={() => signInWithRedirect({ provider: "Facebook", customState: "shopping-cart" })} className="w-[30%] bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50 text-[15px]  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 ">
+                            <RiFacebookCircleFill  className='text-[20px] text-blue-400'/> Facebook
+                        </button> 
+                        <button onClick={() => signInWithRedirect({ provider: "Google", customState: "shopping-cart" })} className="w-[30%] bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 px-5">
+                            <RiAppleFill className='text-[20px]'/> Apple
+                        </button> 
+                    </div>
+                    <p className='w-full text-center text-[18px] font-semibold mb-3'>or</p>
+                    <Formik
+                      initialValues={initialValue}
+                      onSubmit={(values) => onHandleSubmit(values)}
+                    >
+                      {({ handleSubmit }) => (
+                        <Form onSubmit={handleSubmit} className="mb-7  w-full">
+                          <div className="relative mb-3">
+                            <RiMailLine className="absolute left-2 top-4 text-emerald-400" />
+                            <Field
+                              type="email"
+                              name="email"
+                              className="py-3 pl-8 pr-4 bg-zinc-700 border-[1px] border-zinc-700 focus:border-emerald-500 w-full outline-none rounded-2xl mb-4"
+                              placeholder="E-mail"
+                            />
+                          </div>
+                          <div className="relative">
+                            <RiLockLine className="absolute left-2 top-4 text-emerald-400" />
+                            <Field
+                              type={showPassword ? "text" : "password"}
+                              name="password"
+                              className="py-3 px-8 bg-zinc-700 border-[1px] border-zinc-700 focus:border-emerald-500  w-full outline-none rounded-2xl mb-4 "
+                              placeholder="Password"
+                            />
+                            {showPassword ? (
+                              <RiEyeOffLine
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute top-6 -translate-y-1/2 right-2 hover:cursor-pointer text-emerald-400"
+                              />
+                            ) : (
+                              <RiEyeLine
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute top-6 -translate-y-1/2 right-2 hover:cursor-pointer text-emerald-400"
+                              />
+                            )}
+                          </div>
+                          <div className='text-white mb-4'>
+                            I don't remember my password, <span className='text-emerald-400 font-semibold cursor-pointer text-[19px] hover:text-emerald-300'>Recover it</span>
+                          </div>
+                          <div>
+                            <button
+                              type="submit"
+                              className="bg-emerald-600 hover:bg-emerald-700 cursor-pointer font-bold text-white text-[18px] w-full py-3 px-4 rounded-lg transition-colors delay-50"
+                            >
+                              Login
+                            </button>
+                          </div>
+                          <span></span>
+                        </Form>
+                      )}
+                    </Formik>
+                    <div className=" border-transparent flex flex-col border-t-[2px] border-zinc-600 pt-8 pb-4">
+                      <p className="text-white mb-3">
+                        You still don't have an account? <Link className="hover:text-emerald-300 text-emerald-400 text-[18px] font-bold hover:font-bold cursor-pointer" href="/auth/signup" >Sign up here</Link>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className='w-1/2 flex flex-col justify-center items-center'>
+                    <div className='relative'>
+                        <div className='absolute top-[40%] left-[5%] z-40 flex flex-col'>
+                              <h3 className='text-[30px] font-bold mb-7'>Benefit of The Panda</h3>
+                              <div className='flex items-center text-[18px] gap-x-3 font-semibold mb-3'>
+                                  <RiMoneyDollarCircleLine className='text-emerald-400 text-[35px]'/>
+                                  We provide a source of economic power for mobile mechanics.
+                              </div>
+                              <div className='flex items-center text-[18px] gap-x-3 font-semibold mb-3'>
+                                  <RiSmartphoneLine className='text-emerald-400 text-[35px]'/>
+                                  We are the best customer management tool for mobile mechanics.
+                              </div>
+                              <div className='flex items-center text-[18px] gap-x-3 font-semibold mb-3'>
+                                  <RiListCheck3  className='text-emerald-400 text-[35px]'/>
+                                  We focus on customer acquisition and retention so you don't have to.
+                              </div>
+                        </div>
+                        <div className='absolute top-0 w-full h-full bg-zinc-800 opacity-60'></div> 
+                        <img src='https://cdna.artstation.com/p/assets/images/images/040/174/900/large/fabian-geyer-wideshotright.jpg?1628083532' className='object-cover' style={{ height: 'calc(100vh - 80px)' }} />              
+                    </div>
+                </div>
+            </div>
+            <VerificationCodeModal isOpen={isVerifyCodeModalOpen} onOpenChange={onVerifyCodeModalOpenChange} dataSignIn={dataPassed}/>
+      </div>
   )
 }
 
