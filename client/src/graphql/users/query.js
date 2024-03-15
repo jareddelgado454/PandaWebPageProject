@@ -41,6 +41,28 @@ export const listUsersForGraphics = gql`
   }
 `;
 
+export const listUsers = gql`
+  query ListUsers{
+    listUsers {
+      items {
+        id
+        email
+        rol
+        fullName
+        contactNumber
+        createdAt
+        status
+        address
+        city
+        state
+        profilePicture
+        updatedAt
+        __typename
+      }
+    }
+  }
+`;
+
 export const listUsersFilter = gql`
   query ListUsers($email: String!, $rol: String!) {
     listUsers(filter: {email: {ne: $email}, rol: {eq: $rol}}) {

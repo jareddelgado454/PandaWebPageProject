@@ -5,20 +5,20 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { uploadData } from 'aws-amplify/storage';
 import { v4 as uuidv4 } from 'uuid';
+import {Modal, ModalContent, ModalHeader, ModalBody, useDisclosure} from "@nextui-org/react";
 import { toast } from 'react-toastify';
 import { FaCamera } from "react-icons/fa6";
 import { statesUSA } from '@/assets/data/StatesUSA';
 import { getUser } from "@/graphql/users/query";
+import { updateInformation, updateRol } from "@/graphql/users/mutation/users";
 import { client } from "../page";
-import { getUrl } from 'aws-amplify/storage';
-import { updateInformation } from "@/graphql/users/mutation/users";
 const page = () => {
+    const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [photograph, setPhotograph] = useState(null);
-    const [picture, setPicture] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [user, setUser] = useState(null);
-
+    const [userSelected, setUserSelected] = useState({});
     const retrieveOneUser = async() => {
         setLoading(true);
         try {
@@ -31,11 +31,6 @@ const page = () => {
                 
             });
 
-            const pic = await getUrl({ key: 'user-profile-pictures/8d6aa1b3-2e29-46c7-a56b-1540f37872e0.jpg' });
-
-            setPicture(pic.url.href);
-            console.log(pic.url.href)
-
             await setUser(data.getUser);
             setLoading(false);
             console.log(data);
@@ -47,7 +42,7 @@ const page = () => {
         }
     }
 
-    useEffect(() => { retrieveOneUser();  }, []);    
+    useEffect(() => { retrieveOneUser(); }, []);    
 
     function dataURLtoBlob(dataURL) {
         if (!dataURL) {
@@ -74,8 +69,7 @@ const page = () => {
           };
           reader.readAsDataURL(file);
         }
-    }
-    
+    }  
     
     const handleUpdatePicture = async(picture) => {
     
@@ -130,8 +124,20 @@ const page = () => {
 
     }
 
+    useEffect(() => {
+        if(user && !user.rol) {
+            handleUserSelected(user);
+        }
+    }, [user]);
+
+    const handleUserSelected = (user) => {
+        onOpen(true);
+        setUserSelected(user);
+    }
+
     return (
         <div className="w-full h-screen relative">
+            <CustomModal isOpen={isOpen} onOpenChange={onOpenChange} user={user} callback={retrieveOneUser} />
             <img
                 src="https://autenticos4x4.com/wp-content/uploads/2019/03/taller-mecanico-reparacion-vehiculos.jpg"
                 alt="background_user"
@@ -315,7 +321,9 @@ const page = () => {
                                         </div>
                                     </div>
                                     <img
-                                        src={picture}
+                                         src={
+                                            photograph ? photograph : (user.profilePicture ? user.profilePicture : "/image/defaultProfilePicture.jpg")
+                                        }
                                         className="rounded-full w-[6rem] h-[6rem] md:w-[12rem] md:h-[12rem] cursor-pointer "
                                         alt="Fotografía de perfil"
                                     />
@@ -345,6 +353,9 @@ const page = () => {
                                     <div className="flex gap-1">
                                         <strong>Status: </strong><span className="text-[#40C48E]">{user.status}</span>
                                     </div>
+                                    <div className="flex gap-1">
+                                        <strong>Role: </strong><span className="text-[#40C48E]">{user.rol}</span>
+                                    </div>
                                 </div>
                             </div>
                             <div className="absolute bottom-0 -left-0 w-full">
@@ -361,6 +372,7 @@ const page = () => {
                     </div>
                 )
             }
+            
         </div>
     );
 };
@@ -372,6 +384,93 @@ const formSchema = Yup.object().shape({
     state:  Yup.string().required('Required'),
     zipCode: Yup.number().required('Required').positive().integer(),
     contactNumber: Yup.number().required('Required').positive().integer()
-  });
+});
+
+const CustomModal = ({ isOpen, onOpenChange, user, callback }) => {
+
+    const onHandleSubmit = async(values, { setSubmitting }) => {
+        setSubmitting(true);
+        try {
+
+            if (!user) return;
+
+            await client.graphql({
+                query: updateRol,
+                variables: {
+                    email: user.email,
+                    input: {
+                        id: user.id,
+                        rol: values.rol
+                    }
+                }
+            })
+            onOpenChange(false);
+            callback();
+            toast.success("Updated successfully.");
+
+        } catch (error) {
+            toast.error(`Error during the process.`);
+        }
+    }
+
+    return (
+        <>
+            {
+                user && (
+                    
+            <Modal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                isDismissable={false}
+                isKeyboardDismissDisabled={true}
+                hideCloseButton={true}
+                classNames={{
+                    backdrop: 'bg-[#292f46]/50 backdrop-opacity-40'
+                }}
+            >
+                <ModalContent>
+                    <>
+                        <ModalHeader className="flex flex-col gap-1 text-center">¡Attention!</ModalHeader>
+                        <ModalBody>
+                            <p className="tracking-widest"> 
+                                You have to select which kind of user you are going to be in our application. (obligatory)
+                            </p>
+                        </ModalBody>
+                        <ModalBody>
+                            <Formik
+                                initialValues={{
+                                    rol: 'customer'
+                                }}
+                                onSubmit={onHandleSubmit}
+                            >
+                                {({handleSubmit}) => (
+                                    <Form onSubmit={handleSubmit} className="flex flex-col gap-8">
+                                        <Field
+                                            as="select"
+                                            name="rol"
+                                            className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none"
+                                        >
+                                            <option value="customer">Customer</option>
+                                            <option value="technician">Technician</option>
+                                        </Field>
+
+                                        <button
+                                            type="submit"
+                                            className="bg-green-panda hover:bg-green-400 text-white font-bold py-2 px-4 rounded transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300"
+                                        >
+                                            Update
+                                        </button>
+                                    </Form>
+                                )}
+                            </Formik>
+                        </ModalBody>
+                    </>
+                </ModalContent>
+            </Modal>
+                )
+            }
+        </>
+    );
+};
 
 export default page;
