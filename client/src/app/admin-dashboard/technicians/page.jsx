@@ -5,7 +5,7 @@ import { Spinner } from '@nextui-org/react';
 import { Table } from '@/components/Table';
 import { calculateTotalPages, totalNumbers } from '@/utils/calculate';
 import { listUsersFilter } from '@/graphql/users/query';
-import { client } from '../layout';
+import { client } from '@/app/contexts/AmplifyContext';
 
 const Technicians = () => {
   const [page, setPage] = useState(1);

@@ -1,16 +1,12 @@
-"use client";
-import React, {useState, useEffect} from "react";
+import React from "react";
 import LandingNavBar from "../components/LandingNavBar";
 import Link from "next/link";
-import SignInModal from "@/components/LoginRegister/modals/SignInModal";
-import { useDisclosure } from "@nextui-org/react";
 const Home = () => {
-  const {isOpen: isSignInModalOpen, onOpen: onSignInModalOpen, onOpenChange: onSignInModalOpenChange} = useDisclosure();
   return (
     <div className="flex flex-col w-full p-0 bg-zinc-800 h-screen">
       <div className="w-full h-full">
         <div className="w-full h-[750px] relative mb-10">
-          <LandingNavBar onSignInModalOpen={onSignInModalOpen}/>
+          <LandingNavBar/>
           <div className="absolute top-[30%] left-[20%] flex flex-col text-left z-30">
               <h1 className=" text-[40px] text-left mb-1 text-white/90 font-extrabold ">
                 <span className="text-emerald-400/90 text-[80px]">Getting</span>{" "}
@@ -41,8 +37,8 @@ const Home = () => {
             src="https://cdna.artstation.com/p/assets/images/images/040/174/900/large/fabian-geyer-wideshotright.jpg?1628083532"
           />
         </div>
+        
       </div>
-      <SignInModal isOpen={isSignInModalOpen} onOpenChange={onSignInModalOpenChange}/>
     </div>
   );
 }

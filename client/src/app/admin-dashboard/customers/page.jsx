@@ -5,7 +5,7 @@ import { CardData } from '@/components/admin/cards/CardData';
 import { Table } from '@/components/Table';
 import { calculateTotalPages, totalNumbers } from '@/utils/calculate';
 import { listUsersFilter } from '@/graphql/users/query';
-import { client } from '../layout';
+import { client } from '@/app/contexts/AmplifyContext';
 
 const Customers = () => {
   const [page, setPage] = useState(1);

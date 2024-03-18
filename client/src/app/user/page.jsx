@@ -3,16 +3,19 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { fetchUserAttributes, signOut } from "aws-amplify/auth";
 import { uploadData } from 'aws-amplify/storage';
 import { v4 as uuidv4 } from 'uuid';
 import {Modal, ModalContent, ModalHeader, ModalBody, useDisclosure} from "@nextui-org/react";
 import { toast } from 'react-toastify';
 import { FaCamera } from "react-icons/fa6";
 import { statesUSA } from '@/assets/data/StatesUSA';
-import { getUser } from "@/graphql/users/query";
 import { updateInformation, updateRol } from "@/graphql/users/mutation/users";
-import { client } from "../page";
+import { getUserByCognitoID } from "@/graphql/custom-queries";
+import { client } from "../contexts/AmplifyContext";
+import { useRouter } from "next/navigation";
 const page = () => {
+    const router = useRouter();
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [photograph, setPhotograph] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -22,18 +25,15 @@ const page = () => {
     const retrieveOneUser = async() => {
         setLoading(true);
         try {
-            
+            const { sub } = await fetchUserAttributes();
             const { data } = await client.graphql({
-                query: getUser,
+                query: getUserByCognitoID,
                 variables: {
-                    id: "77405e7b-e42f-44f1-ae0e-d5332a863236",
+                    cognitoId: sub,
                 },
-                
             });
-
-            await setUser(data.getUser);
+            await setUser(data.listUsers.items[0]);
             setLoading(false);
-            console.log(data);
 
         } catch (error) {
             console.log(error);
@@ -41,9 +41,7 @@ const page = () => {
             setError(error);
         }
     }
-
     useEffect(() => { retrieveOneUser(); }, []);    
-
     function dataURLtoBlob(dataURL) {
         if (!dataURL) {
           return null;
@@ -58,7 +56,6 @@ const page = () => {
         }
         return new Blob([uInt8Array], { type: contentType });
     }
-    
     function handleChangePhotograph(event) {
         const file = event.target.files[0];
         if (file) {
@@ -70,7 +67,6 @@ const page = () => {
           reader.readAsDataURL(file);
         }
     }  
-    
     const handleUpdatePicture = async(picture) => {
     
         const uniqueId = uuidv4();
@@ -98,7 +94,6 @@ const page = () => {
         }
     
     }
-
     const onHandleSubmit = async(values, { setSubmitting }) => {
 
         setSubmitting(true);
@@ -116,6 +111,7 @@ const page = () => {
                 }
             })
 
+            await retrieveOneUser();
             toast.success("Updated successfully.");
 
         } catch (error) {
@@ -123,18 +119,15 @@ const page = () => {
         }
 
     }
-
     useEffect(() => {
         if(user && !user.rol) {
             handleUserSelected(user);
         }
     }, [user]);
-
     const handleUserSelected = (user) => {
         onOpen(true);
         setUserSelected(user);
     }
-
     return (
         <div className="w-full h-screen relative">
             <CustomModal isOpen={isOpen} onOpenChange={onOpenChange} user={user} callback={retrieveOneUser} />
@@ -159,6 +152,7 @@ const page = () => {
                                     state: user.state || '',
                                     zipCode: user.zipCode || 0,
                                     contactNumber: user.contactNumber || 0,
+                                    status: 'active'
                                 }}
                                 validationSchema={formSchema}
                                 validateOnChange={false}
@@ -351,7 +345,7 @@ const page = () => {
                                         </span>
                                     </div>
                                     <div className="flex gap-1">
-                                        <strong>Status: </strong><span className="text-[#40C48E]">{user.status}</span>
+                                        <strong>Status: </strong><span className={`${user.status === 'active' ? 'text-[#40C48E]' : 'text-rose-600'}`}>{user.status}</span>
                                     </div>
                                     <div className="flex gap-1">
                                         <strong>Role: </strong><span className="text-[#40C48E]">{user.rol}</span>
@@ -360,12 +354,12 @@ const page = () => {
                             </div>
                             <div className="absolute bottom-0 -left-0 w-full">
                                 <div className="flex flex-col">
-                                <Link
-                                    href={`/`}
+                                <button
+                                    onClick={() => signOut()}
                                     className="rounded-b-lg bg-green-panda h-[2.5rem] md:h-[3.5rem] font-bold text-white flex justify-center items-center"
                                 >
                                     Sign Out
-                                </Link>
+                                </button>
                                 </div>
                             </div>
                         </div>
@@ -432,8 +426,11 @@ const CustomModal = ({ isOpen, onOpenChange, user, callback }) => {
                     <>
                         <ModalHeader className="flex flex-col gap-1 text-center">¡Attention!</ModalHeader>
                         <ModalBody>
-                            <p className="tracking-widest"> 
-                                You have to select which kind of user you are going to be in our application. (obligatory)
+                            <p className="tracking-widest text-justify"> 
+                                You have to complete your general information to use our app. (obligatory)
+                            </p>
+                            <p className="tracking-widest text-justify">
+                                Please, select the type of user you are going to be in our application.
                             </p>
                         </ModalBody>
                         <ModalBody>
