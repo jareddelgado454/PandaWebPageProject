@@ -71,7 +71,7 @@ const SignUp = () => {
         <div className='w-full text-white flex justify-center items-center'>
             <div className='container  flex'>
                 <div className='w-1/2'>
-                    <div className=" border-transparent flex flex-col border-b-[2px] border-gray-600 mb-6 pb-4">
+                    <div className=" border-transparent flex flex-col border-b-[2px] border-gray-500 mb-6 pb-4">
                       <p className="text-white mb-3">
                         Do you already have an account? <Link className="hover:text-emerald-400 text-emerald-300 text-[18px] font-bold hover:font-bold cursor-pointer" href="/auth/signin" >Login here</Link>
                       </p>

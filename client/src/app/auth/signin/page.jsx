@@ -121,7 +121,7 @@ const SignIn = () => {
                             )}
                           </div>
                           <div className='text-white mb-4'>
-                            I don't remember my password, <span className='text-emerald-400 font-semibold cursor-pointer text-[19px] hover:text-emerald-300'>Recover it</span>
+                            I don't remember my password, <Link href="/auth/password-recovery" className='text-emerald-400 font-semibold cursor-pointer text-[19px] hover:text-emerald-300'>Recover it</Link>
                           </div>
                           <div>
                             <button
