@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import Link from 'next/link'
 import {
   RiGoogleFill,
@@ -14,29 +14,27 @@ import {
   RiSmartphoneLine,
   RiListCheck3 
 } from "react-icons/ri";
+import { Hub } from 'aws-amplify/utils';
+import { useRouter } from 'next/navigation';
 import VerificationCodeModal from '@/components/LoginRegister/modals/VerificationCodeModal';
 import { useDisclosure } from "@nextui-org/react";
-import { Amplify } from 'aws-amplify';
-import config from '@/amplifyconfiguration.json';
-Amplify.configure(config);
-import { Formik, Form, Field, ErrorMessage } from 'formik'
-import { signInWithRedirect, signIn } from 'aws-amplify/auth';
-import { useRouter } from 'next/navigation';
-
+import { Formik, Form, Field } from 'formik'
+import { signInWithRedirect, signIn, signOut, fetchUserAttributes } from 'aws-amplify/auth';
+import AmplifyContext from '@/app/contexts/AmplifyContext';
+import { handleCreateUserOnDatabase, handleRetrieveMyUser } from '@/api';
 const SignIn = () => {
-
+  const status = "inactive";
+  const router = useRouter();
+  const {isOpen: isVerifyCodeModalOpen, onOpen: onVerifyCodeModalOpen, onOpenChange: onVerifyCodeModalOpenChange} = useDisclosure();
   const [showPassword, setShowPassword] = useState(false);
   const [dataPassed, setDataPassed] = useState({
     email : "",
     password : ""
   });
-  const router = useRouter();
-
   const initialValue = {
     email: '',
     password: ''
   }
-
   const onHandleSubmit = async (values) => {
       try {
         const { isSignedIn, nextStep } = await signIn({ 
@@ -61,10 +59,55 @@ const SignIn = () => {
         console.log('Error signing in', error);
       }
   }
-
-  const {isOpen: isVerifyCodeModalOpen, onOpen: onVerifyCodeModalOpen, onOpenChange: onVerifyCodeModalOpenChange} = useDisclosure();
-
+  // useEffect(() => {  
+  //   const hubListenerCancel = Hub.listen('auth', async ({ payload }) => {
+  //       switch (payload.event) {
+  //         case 'signedIn':
+  //           console.log('user already in DB. Going to /user');
+  //           router.replace('/user');
+  //           break;
+  //       }
+  //   });
+  //   return () => hubListenerCancel();
+  // }, []);
+  async function currentAuthenticatedUser() {
+    try {
+      const { email, family_name, given_name } = await fetchUserAttributes();
+      const fullName = given_name + family_name;
+      return { email, fullName };
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(() => {
+    const hubListenerCancel = Hub.listen("auth", async ({ payload }) => {
+      switch (payload.event) {
+        case "signedIn":
+          console.log("user have been signedIn successfully.");
+          const { fullName, email } = await currentAuthenticatedUser();
+          const cognitoId = payload.data.userId;
+          const userExist = await handleRetrieveMyUser(cognitoId);
+          if (userExist) {
+            console.log("user already in DB. Going to /user");
+            console.log(userExist);
+            router.replace("/user");
+          } else  {
+            await handleCreateUserOnDatabase({
+              fullName,
+              email,
+              cognitoId,
+              status,
+            });
+            router.replace("/user");
+          }
+          console.log("process completed");
+          break;
+      }
+    });
+    return () => hubListenerCancel();
+  }, []);
   return (
+    <AmplifyContext>
       <div className='w-full text-white flex justify-center items-center'>
             <div className='w-full flex h-full'>
                 <div className='w-1/2 flex justify-center items-center'>
@@ -165,7 +208,8 @@ const SignIn = () => {
                 </div>
             </div>
             <VerificationCodeModal isOpen={isVerifyCodeModalOpen} onOpenChange={onVerifyCodeModalOpenChange} dataSignIn={dataPassed}/>
-      </div>
+        </div>
+    </AmplifyContext>
   )
 }
 

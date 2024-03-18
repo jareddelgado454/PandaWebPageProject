@@ -1,5 +1,16 @@
 import { gql} from "@apollo/client";
 
+export const createUser = gql`
+  mutation CreateUser($input: CreateUserInput!) {
+    createUser(input: $input) {
+      cognitoId
+      email
+      rol
+      status
+    }
+  }
+`;
+
 export const updateStatus = gql`
   mutation UpdateUser($id: ID!, $status: String!, $email: String!) {
     updateUser(input: {id: $id, status: $status}, condition: {email: {eq: $email}}) {
@@ -32,6 +43,16 @@ export const updateInformation = gql`
       password
       city
       state
+    }
+  }
+`;
+
+export const updateRol = gql`
+  mutation MyMutation($input: UpdateUserInput!, $email: String!) {
+    updateUser(condition: {email: {eq: $email}}, input: $input) {
+      id
+      email
+      rol
     }
   }
 `;

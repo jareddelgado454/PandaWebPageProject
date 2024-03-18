@@ -15,6 +15,9 @@
       "auth": {
         "pandaapi6c754ed6": {}
       },
+      "api": {
+        "pandaapi": {}
+      },
       "storage": {
         "mypandapistorage": {}
       }

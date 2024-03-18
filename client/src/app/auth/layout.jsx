@@ -1,6 +1,5 @@
-import React from 'react'
-import Link from 'next/link'
-
+import React from 'react';
+import Link from 'next/link';
 const AuthLayout = ({children}) => {
   return (
     <div className='w-full h-screen bg-zinc-800 relative overflow-hidden'>

@@ -1,15 +1,19 @@
 "use client"
+import { signOut } from 'aws-amplify/auth';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { FaUser, FaUserGear, FaUserPen, FaChartSimple, FaGear, FaBars } from 'react-icons/fa6'
 
-export const Sidebar = ({signOut}) => {
-
+export const Sidebar = () => {
+    const router = useRouter();
     const [active, setActive] = useState(false);
 
     const toggleSidebar = () => {
         setActive(!active); // Cambiar el estado activo
     };
+
+
   return (
     <div className={`sidebar bg-gray-100 dark:bg-zinc-800 text-white transition-all ease-out duration-500 ${active ? 'active' : null}`}>
         <div className='flex flex-col items-center py-4 relative h-full px-4'>
@@ -65,7 +69,11 @@ export const Sidebar = ({signOut}) => {
                         <div className='overflow-hidden flex flex-col gap-1'>
                             <p className={`font-medium ${!active && 'hidden'}`}>username</p>
                             <p className={`text-xs text-gray-100 tracking-wide ${!active && 'hidden'}`}>email</p>
-                            <p className={`text-[17px] font-extrabold cursor-pointer ${!active && 'hidden'}`} onClick={()=>signOut()} >logout</p>
+                            <p className={`text-[17px] font-extrabold cursor-pointer ${!active && 'hidden'}`} onClick={()=>{
+                                signOut();
+                                console.log('cliked');
+                                router.replace("/")
+                            }} >logout</p>
                         </div>
                     </div>
                 </div>
