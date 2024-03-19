@@ -4,7 +4,7 @@ import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button} from "
 import {Select, SelectSection, SelectItem} from "@nextui-org/react";
 import {Input} from "@nextui-org/react";
 import { updateStatus } from '@/graphql/users/mutation';
-import { client } from '@/app/contexts/AmplifyContext';
+import { client } from '@/contexts/AmplifyContext';
 const EditModal = ({ isOpen, onOpenChange, user, callback, setRecordSelected }) => {
     const [selectedStatus, setSelectedStatus] = useState(user.status);
 

@@ -12,7 +12,7 @@ import { FaCamera } from "react-icons/fa6";
 import { statesUSA } from '@/assets/data/StatesUSA';
 import { updateInformation, updateRol } from "@/graphql/users/mutation/users";
 import { getUserByCognitoID } from "@/graphql/custom-queries";
-import { client } from "../contexts/AmplifyContext";
+import { client } from "@/contexts/AmplifyContext";
 import { useRouter } from "next/navigation";
 const page = () => {
     const router = useRouter();
@@ -34,6 +34,7 @@ const page = () => {
             });
             await setUser(data.listUsers.items[0]);
             setLoading(false);
+            console.log(data);
 
         } catch (error) {
             console.log(error);

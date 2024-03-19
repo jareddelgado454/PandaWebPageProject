@@ -10,7 +10,7 @@ import { useDisclosure } from "@nextui-org/react";
 import { updateStatus, deleteUserById } from '@/graphql/users/mutation/users';
 import EditModal from './admin/modals/EditModal';
 import DeletaModal from './admin/modals/DeletModal';
-import { client } from '@/app/contexts/AmplifyContext';
+import { client } from '@/contexts/AmplifyContext';
 export const Table = ({ item, callback }) => {
 
     const {isOpen: isEditModalOpen, onOpen: onEditModalOpen, onOpenChange: onEditModalOpenChange} = useDisclosure();

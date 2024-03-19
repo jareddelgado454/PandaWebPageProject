@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
 import { DonutChart, LineChart } from '@/components/chartjs'
-import { listUsersForGraphics } from '@/graphql/users/query';
-import { client } from '@/app/contexts/AmplifyContext';
-;
+import { listUsersForGraphics } from '@/graphql/users/query/user';
+import { client } from '@/contexts/AmplifyContext';
+
 Chart.register(CategoryScale);
 
 const Graphs = () => {
