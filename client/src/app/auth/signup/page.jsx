@@ -55,34 +55,6 @@ const SignUp = () => {
   }
 
   const onHandleCreate = async (values) => {
-    try {
-      const { userId, nextStep } = await signUp({
-        // username: values.email,
-        username: values.fullName,
-        password: values.password,
-        options: {
-          userAttributes: {
-            email: values.email,
-            // "custom:role": values.rol,
-          },
-        },
-      });
-      // await handleCreateUserOnDatabase({ ...values, userId, status });
-      // console.log("nextStep", nextStep);
-      // if (nextStep?.signUpStep == "CONFIRM_SIGN_UP") {
-      //   onVerifyCodeModalOpen();
-      // }
-    } catch (error) {
-      if (
-        error.message.includes(
-          "An account with the given email already exists."
-        )
-      ) {
-        alert(
-          "This email address is already registered. Please use a different email address."
-        );
-      } else {
-        console.log("Unknown error occurred:", error);
     console.log(errors);
     console.log(dataSignUp);
     if( !evaluateErrors() && (dataSignUp.fullName != "" && dataSignUp.email != "" && dataSignUp.password != "" && dataSignUp.confirmPassword != "" && dataSignUp.rol != "" && dataSignUp.agreed )){
