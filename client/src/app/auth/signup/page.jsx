@@ -1,16 +1,24 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import {
   signInWithRedirect,
   signUp,
   fetchUserAttributes,
 } from "aws-amplify/auth";
+import validationSignUp from "./validationSignUp";
 import {
   RiGoogleFill,
   RiAppleFill,
   RiFacebookCircleFill,
+  RiMailLine,
+  RiLockLine,
+  RiEyeLine,
+  RiEyeOffLine,
+  RiUser3Line ,
+  RiErrorWarningFill 
 } from "react-icons/ri";
 import VerificationCodeModal from "@/components/LoginRegister/modals/VerificationCodeModal";
 import { useDisclosure } from "@nextui-org/react";
@@ -18,51 +26,82 @@ import { handleCreateUserOnDatabase, handleRetrieveMyUser } from "@/api";
 import { Hub } from "aws-amplify/utils";
 const SignUp = () => {
   const status = "inactive";
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [messageDataMissing, setMessageDataMissing] = useState(false);
+  const [dataSignUp, setDataSignUp] = useState({
+    fullName : "",
+    email : "",
+    password : "",
+    confirmPassword : "",
+    rol : "",
+    agreed: false
+  });
+  const [errors, setErrors] = useState({});
   let initialValue = {
     fullName: "",
     email: "",
     password: "",
     confirmPassword: "",
-    rol: "customer",
+    rol: "",
+    agreed: false
   };
+
   const {
     isOpen: isVerifyCodeModalOpen,
     onOpen: onVerifyCodeModalOpen,
     onOpenChange: onVerifyCodeModalOpenChange,
   } = useDisclosure();
+
+  const evaluateErrors = () => {
+    return (errors.email && dataSignUp.email !="") || (errors.fullName && dataSignUp.fullName != "") || (errors.password && dataSignUp.password != "") || (errors.confirmPassword && dataSignUp.confirmPassword != "");
+  }
+
   const onHandleCreate = async (values) => {
-    try {
-      const { userId, nextStep } = await signUp({
-        username: values.email,
-        password: values.password,
-        options: {
-          userAttributes: {
-            email: values.email,
-            "custom:role": values.rol,
+    console.log(errors);
+    console.log(dataSignUp);
+    if( !evaluateErrors() && (dataSignUp.fullName != "" && dataSignUp.email != "" && dataSignUp.password != "" && dataSignUp.confirmPassword != "" && dataSignUp.rol != "" && dataSignUp.agreed )){
+      console.log("podes registrarte no hay errores")
+      setMessageDataMissing(false);
+      try {
+        const { userId, nextStep } = await signUp({
+          username: values.email,
+          password: values.password,
+          options: {
+            userAttributes: {
+              email: values.email,
+              "custom:role": values.rol,
+            },
           },
-        },
-      });
-      await handleCreateUserOnDatabase({ ...values, userId, status });
-      console.log("nextStep", nextStep);
-      if (nextStep?.signUpStep == "CONFIRM_SIGN_UP") {
-        onVerifyCodeModalOpen();
+        });
+        await handleCreateUserOnDatabase({ ...values, userId, status });
+        console.log("nextStep", nextStep);
+        if (nextStep?.signUpStep == "CONFIRM_SIGN_UP") {
+          onVerifyCodeModalOpen();
+        }
+      } catch (error) {
+        if (
+          error.message.includes(
+            "An account with the given email already exists."
+          )
+        ) {
+          alert(
+            "This email address is already registered. Please use a different email address."
+          );
+        } else {
+          console.log("Unknown error occurred:", error);
+        }
       }
-    } catch (error) {
-      if (
-        error.message.includes(
-          "An account with the given email already exists."
-        )
-      ) {
-        alert(
-          "This email address is already registered. Please use a different email address."
-        );
-      } else {
-        console.log("Unknown error occurred:", error);
+    }else{
+      if(dataSignUp.rol == ""){
+        console.log("You have not selected an account type ")
       }
+      if(!dataSignUp.agreed){
+        console.log("You need to agree the terms and conditions ")
+      }
+      setMessageDataMissing(true);
     }
   };
+
   async function currentAuthenticatedUser() {
     try {
       const { email, family_name, given_name } = await fetchUserAttributes();
@@ -72,6 +111,7 @@ const SignUp = () => {
       console.log(error);
     }
   }
+
   useEffect(() => {
     const hubListenerCancel = Hub.listen("auth", async ({ payload }) => {
       switch (payload.event) {
@@ -101,11 +141,18 @@ const SignUp = () => {
     });
     return () => hubListenerCancel();
   }, []);
+
+  useEffect(()=>{
+    if(dataSignUp.fullName != '' || dataSignUp.email != '' || dataSignUp.password !='' ){
+       setErrors(validationSignUp(dataSignUp));
+    }
+  },[dataSignUp]);
+
   return (
     <div className="w-full text-white flex justify-center items-center">
       <div className="container px-4 md:px-0 mx-auto bg-zinc-800">
         <div className="w-full">
-          <div className=" border-transparent flex flex-col border-b-[2px] border-gray-600 mb-6 pb-4">
+          <div className=" flex flex-col border-b-[2px] border-gray-600 mb-6 pb-4 pt-6">
             <p className="text-white mb-3">
               Do you already have an account?{" "}
               <Link
@@ -120,81 +167,151 @@ const SignUp = () => {
             <h2 className="text-[30px] font-bold">SIGN-UP</h2>
             <p>enter with your account</p>
           </div>
-          <div className="w-full flex items-center justify-between">
-            <button
-              onClick={() => signInWithRedirect({ provider: "Google" })}
-              className="w-[30%]  bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 px-5"
-            >
-              <RiGoogleFill className="text-[20px] text-red-400" /> Google
-            </button>
-            <button
-              onClick={() => signInWithRedirect({ provider: "Facebook" })}
-              className="w-[30%] bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50 text-[15px]  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 "
-            >
-              <RiFacebookCircleFill className="text-[20px] text-blue-400" />{" "}
-              Facebook
-            </button>
-            <button
-              onClick={() => signInWithRedirect({ provider: "Google" })}
-              className="w-[30%] bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 px-5"
-            >
-              <RiAppleFill className="text-[20px]" /> Apple
-            </button>
-          </div>
         </div>
-        <Formik initialValues={initialValue} onSubmit={onHandleCreate}>
+        <Formik initialValues={initialValue} onSubmit={onHandleCreate} >
           {({ handleSubmit, setFieldValue }) => (
             <Form
               onSubmit={handleSubmit}
-              className="flex flex-col md:flex-row gap-4 flex-nowrap my-10 "
+              className="flex flex-col md:flex-row flex-nowrap mb-10 pt-4"
             >
-              <div className="w-full md:w-2/4 flex flex-col gap-4">
-                <div className="w-full my-2">
-                  <label htmlFor="name-grid">Full Name</label>
+              <div className="w-full md:w-2/4 flex flex-col">
+                <div className="w-full flex items-center justify-between mb-4">
+                  <button
+                    onClick={() => signInWithRedirect({ provider: "Google" })}
+                    className="w-[30%]  bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 px-5"
+                  >
+                    <RiGoogleFill className="text-[20px] text-red-400" /> Google
+                  </button>
+                  <button
+                    onClick={() => signInWithRedirect({ provider: "Facebook" })}
+                    className="w-[30%] bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50 text-[15px]  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 "
+                  >
+                    <RiFacebookCircleFill className="text-[20px] text-blue-400" />{" "}
+                    Facebook
+                  </button>
+                  <button
+                    onClick={() => signInWithRedirect({ provider: "Google" })}
+                    className="w-[30%] bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 px-5"
+                  >
+                    <RiAppleFill className="text-[20px]" /> Apple
+                  </button>
+                </div>
+                <div className="w-full flex items-center justify-center mb-3">
+                    <h3 className="text-[20px] font-bold text-center">or</h3>
+                </div>
+                <label htmlFor="fullName">Full Name: <span className="text-red-400">*</span></label>
+                <div className="w-full relative mb-1 text-[17px]">
+                  <RiUser3Line  className={`absolute left-2 top-4 ${ errors.fullName && dataSignUp.fullName != "" ? "text-red-400" : "text-emerald-400"} `} />
                   <Field
-                    id="name-grid"
+                    id="fullName"
                     type="text"
                     name="fullName"
-                    className="my-2 py-3 pl-8 pr-4 bg-zinc-700 border-[1px] border-zinc-700 focus:border-emerald-500 w-full outline-none rounded-2xl mb-4"
+                    onChange={(e)=>{
+                      setFieldValue("fullName", e.target.value);
+                      setDataSignUp({...dataSignUp, fullName : e.target.value});
+                    }}
+                    placeholder="Fullname"
+                    className={`py-3 pl-8 pr-4 bg-zinc-700 border-[1px] ${ errors.fullName && dataSignUp.fullName != "" ? "border-red-400 focus:border-red-400" : "border-zinc-700"}  focus:border-emerald-500 w-full outline-none rounded-2xl `}
                   />
                 </div>
-                <div className="w-full my-2">
-                  <label htmlFor="email-grid">Email</label>
+                <p className="text-red-400 mb-2 text-[14px]">
+                    {
+                        dataSignUp.fullName !==''  && errors.fullName
+                        ?errors.fullName
+                        :<span className="text-transparent">.</span>
+                    }
+                </p>
+                <label htmlFor="email">Email: <span className="text-red-400">*</span></label> 
+                <div className="w-full relative mb-1 text-[17px]">
+                  <RiMailLine className={`absolute left-2 top-4 ${errors.email && dataSignUp.email != "" ? "text-red-500" : "text-emerald-400" } `} />
                   <Field
-                    id="email-grid"
+                    id="email"
                     type="email"
                     name="email"
+                    placeholder="example@email.com"
                     onChange={(e) => {
                       setFieldValue("email", e.target.value);
-                      setEmail(e.target.value);
+                      setDataSignUp({...dataSignUp, email: e.target.value});
                     }}
-                    className="my-2 py-3 pl-8 pr-4 bg-zinc-700 border-[1px] border-zinc-700 focus:border-emerald-500 w-full outline-none rounded-2xl mb-4"
+                    className={`py-3 pl-8 pr-4 bg-zinc-700 border-[1px] ${errors.email && dataSignUp.email != "" ? "border-red-400 focus:border-red-400"  : "border-zinc-700 focus:border-emerald-500"}  w-full outline-none rounded-2xl `}
                   />
                 </div>
-                <div className="w-full my-2">
-                  <label htmlFor="password-grid">Password</label>
+                <p className="text-red-400 mb-2 text-[14px]">
+                    {
+                        dataSignUp.email !=='' && errors.email
+                        ?errors.email
+                        :<span className="text-transparent">.</span>
+                    }
+                </p>
+                <label htmlFor="password-grid">Password: <span className="text-red-400">*</span></label>
+                <div className="w-full relative mb-1 text-[17px]">
+                  <RiLockLine className={`absolute left-2 top-4 ${errors.password && dataSignUp.password != "" ? "text-red-500" : "text-emerald-400" } `} />
                   <Field
-                    id="password-grid"
-                    type="password"
+                    id="password"
+                    type={showPassword ? "text" : "password"}
                     name="password"
+                    placeholder="Password"
                     onChange={(e) => {
                       setFieldValue("password", e.target.value);
-                      setPassword(e.target.value);
+                      setDataSignUp({...dataSignUp, password : e.target.value});
                     }}
-                    className="my-2 py-3 pl-8 pr-4 bg-zinc-700 border-[1px] border-zinc-700 focus:border-emerald-500 w-full outline-none rounded-2xl mb-4"
+                    className={`py-3 px-8 bg-zinc-700 border-[1px] ${errors.password && dataSignUp.password != "" ? "border-red-500 focus:border-red-500" : "border-zinc-700 focus:border-emerald-500"}  w-full outline-none rounded-2xl `} 
                   />
+                  {showPassword ? (
+                      <RiEyeOffLine
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute top-6 -translate-y-1/2 right-2 hover:cursor-pointer text-emerald-400"
+                      />
+                      ) : (
+                        <RiEyeLine
+                           onClick={() => setShowPassword(!showPassword)}
+                           className="absolute top-6 -translate-y-1/2 right-2 hover:cursor-pointer text-emerald-400"
+                        />
+                  )}
+                
                 </div>
-                <div className="w-full my-2">
-                  <label htmlFor="confirm-password-grid">
-                    Confirm Password
+                <p className="text-red-400 mb-2 text-[14px]">
+                    {
+                        dataSignUp.password !==''  && errors.password
+                        ?errors.password
+                        :<span className="text-transparent">.</span>
+                    }
+                </p>
+                <label htmlFor="confirm-password-grid">
+                    Confirm Password: <span className="text-red-400">*</span>
                   </label>
+                <div className="w-full relative mb-1 text-[17px]">
+                  <RiLockLine className={`absolute left-2 top-4 ${errors.confirmPassword && dataSignUp.confirmPassword != ""  ? "text-red-500" : "text-emerald-400"}  `} />
                   <Field
-                    id="confirm-password-grid"
-                    type="password"
+                    id="confirmPassword"
+                    type={showPassword ? "text" : "password"}
                     name="confirmPassword"
-                    className="my-2 py-3 pl-8 pr-4 bg-zinc-700 border-[1px] border-zinc-700 focus:border-emerald-500 w-full outline-none rounded-2xl mb-4"
+                    onChange={(e) => {
+                      setFieldValue("confirmPassword", e.target.value);
+                      setDataSignUp({...dataSignUp, confirmPassword : e.target.value});
+                    }}
+                    placeholder="Confirm the password"
+                    className={`py-3 px-8 bg-zinc-700 border-[1px] ${errors.confirmPassword && dataSignUp.confirmPassword != ""  ? "border-red-500 focus:border-red-500 " : "border-zinc-700 focus:border-emerald-500" }  w-full outline-none rounded-2xl `}
                   />
+                  {showPassword ? (
+                      <RiEyeOffLine
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute top-6 -translate-y-1/2 right-2 hover:cursor-pointer text-emerald-400"
+                      />
+                      ) : (
+                        <RiEyeLine
+                           onClick={() => setShowPassword(!showPassword)}
+                           className="absolute top-6 -translate-y-1/2 right-2 hover:cursor-pointer text-emerald-400"
+                        />
+                  )}
                 </div>
+                <p className="text-red-400 mb-2 text-[14px]">
+                    {
+                        dataSignUp.confirmPassword !==''  && errors.confirmPassword
+                        ?errors.confirmPassword
+                        :<span className="text-transparent">.</span>
+                    }
+                </p>
               </div>
               <div className="w-full md:w-2/4 flex justify-center items-center">
                 <div className="w-[450px] bg-zinc-700 p-5 rounded-md mb-6 pb-8">
@@ -205,10 +322,17 @@ const SignUp = () => {
                   </p>
                   <Field
                     as="select"
-                    id="rol-grid"
+                    id="rol"
                     name="rol"
+                    onChange = {(e)=>{
+                        setFieldValue("rol", e.target.value);
+                        setDataSignUp({...dataSignUp, rol : e.target.value})
+                    }}
                     className="block w-full bg-zinc-800 text-white py-3 px-4 rounded-lg mb-2"
-                  >
+                  > 
+                    <option className="text-white" value="" disabled selected>
+                      Select an option
+                    </option>
                     <option className="text-white" value="customer">
                       Customer
                     </option>
@@ -239,21 +363,30 @@ const SignUp = () => {
                     type specimen book. It has survived not only five centuries.
                   </p>
 
-                  {/* <div className="flex items-center gap-x-2 mb-2">
-                                        <Field
-                                            type="radio"
-                                            name="agreed"
-                                            value="agreed"
-                                            className="rounded border-emerald-400 focus:ring-emerald-400 focus:border-emerald-400"
-                                        />
-                                        <p className='text-white'>Check here to accept the <span className='text-emerald-300 cursor-pointer font-semibold'>Terms and conditions</span></p>
-                                    </div> */}
+                  <div className="flex items-center gap-x-2 mb-2">
+                        <Field
+                             type="radio"
+                             name="agreed"
+                             value="agreed"
+                             checked={dataSignUp.agreed}
+                             onChange={(e) => setDataSignUp({ ...dataSignUp, agreed: e.target.checked })}
+                             className="rounded border-emerald-400 focus:ring-emerald-400 focus:border-emerald-400"
+                         />
+                         <p className='text-white'>Check here to accept the <span className='text-emerald-300 cursor-pointer font-semibold'>Terms and conditions</span></p>
+                  </div>
                   <button
                     type="submit"
-                    className=" w-full py-3 text-[19px] bg-emerald-500 hover:bg-emerald-500/90 transition-colors rounded-lg text-white"
+                    className={`w-full py-3 text-[19px] ${(errors.email && dataSignUp.email !="") || (errors.fullName && dataSignUp.fullName != "") || (errors.password && dataSignUp.password != "") || (errors.confirmPassword && dataSignUp.confirmPassword != "") ? "bg-red-500" : "bg-emerald-500"}  hover:bg-emerald-500/90 transition-colors rounded-lg text-white`}
                   >
                     Create account
                   </button>
+                  {
+                    messageDataMissing && 
+                    <div className="bg-red-500 text-white flex w-full justify-center gap-x-2 p-4 mt-5">
+                        <RiErrorWarningFill className="w-[30%] text-[35px]" />
+                        <p>All fields must be completed correctly, you must also select the type of account and accept the terms and conditions</p>
+                    </div>
+                  }
                 </div>
               </div>
             </Form>
@@ -263,7 +396,7 @@ const SignUp = () => {
       <VerificationCodeModal
         isOpen={isVerifyCodeModalOpen}
         onOpenChange={onVerifyCodeModalOpenChange}
-        dataSignIn={{ email: email, password: password }}
+        dataSignIn={{ email: dataSignUp.email, password: dataSignUp.password }}
       />
     </div>
   );
