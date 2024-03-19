@@ -1,6 +1,5 @@
 "use client"
-
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import {
   RiGoogleFill,
@@ -20,7 +19,7 @@ import VerificationCodeModal from '@/components/LoginRegister/modals/Verificatio
 import { useDisclosure } from "@nextui-org/react";
 import { Formik, Form, Field } from 'formik'
 import { signInWithRedirect, signIn, signOut, fetchUserAttributes } from 'aws-amplify/auth';
-import AmplifyContext from '@/app/contexts/AmplifyContext';
+import AmplifyContext from '@/contexts/AmplifyContext';
 import { handleCreateUserOnDatabase, handleRetrieveMyUser } from '@/api';
 const SignIn = () => {
   const status = "inactive";
@@ -59,17 +58,6 @@ const SignIn = () => {
         console.log('Error signing in', error);
       }
   }
-  // useEffect(() => {  
-  //   const hubListenerCancel = Hub.listen('auth', async ({ payload }) => {
-  //       switch (payload.event) {
-  //         case 'signedIn':
-  //           console.log('user already in DB. Going to /user');
-  //           router.replace('/user');
-  //           break;
-  //       }
-  //   });
-  //   return () => hubListenerCancel();
-  // }, []);
   async function currentAuthenticatedUser() {
     try {
       const { email, family_name, given_name } = await fetchUserAttributes();
@@ -87,10 +75,14 @@ const SignIn = () => {
           const { fullName, email } = await currentAuthenticatedUser();
           const cognitoId = payload.data.userId;
           const userExist = await handleRetrieveMyUser(cognitoId);
-          if (userExist) {
+          if (userExist !== null) {
             console.log("user already in DB. Going to /user");
-            console.log(userExist);
-            router.replace("/user");
+            if(userExist.rol === "admin")
+            {
+              router.replace("/admin-dashboard/");
+            }else {
+              router.replace("/user/");
+            }
           } else  {
             await handleCreateUserOnDatabase({
               fullName,
@@ -123,7 +115,7 @@ const SignIn = () => {
                         <button onClick={() => signInWithRedirect({ provider: "Facebook", customState: "shopping-cart" })} className="w-[30%] bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50 text-[15px]  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 ">
                             <RiFacebookCircleFill  className='text-[20px] text-blue-400'/> Facebook
                         </button> 
-                        <button onClick={() => signInWithRedirect({ provider: "Google", customState: "shopping-cart" })} className="w-[30%] bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 px-5">
+                        <button onClick={() => signInWithRedirect({ provider: "Apple", customState: "shopping-cart" })} className="w-[30%] bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 px-5">
                             <RiAppleFill className='text-[20px]'/> Apple
                         </button> 
                     </div>
@@ -172,6 +164,12 @@ const SignIn = () => {
                               className="bg-emerald-600 hover:bg-emerald-700 cursor-pointer font-bold text-white text-[18px] w-full py-3 px-4 rounded-lg transition-colors delay-50"
                             >
                               Login
+                            </button>
+                            <button
+                              type='button'
+                              onClick={signOut}
+                            >
+                              Logout
                             </button>
                           </div>
                           <span></span>
