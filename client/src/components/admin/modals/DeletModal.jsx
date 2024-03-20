@@ -2,8 +2,7 @@
 import React, { useState } from 'react';
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button} from "@nextui-org/react";
 import { deleteUserById } from '@/graphql/users/mutation';
-import { client } from '@/app/contexts/AmplifyContext';
-
+import { client } from '@/contexts/AmplifyContext';
 const DeletaModal = ({ isOpen, onOpenChange, user, callback, setRecordSelected }) => {
 
     const handleDeleteUserId = async(id, email) => {

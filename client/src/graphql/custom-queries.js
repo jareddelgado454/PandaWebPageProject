@@ -11,8 +11,24 @@ export const getUserByCognitoID = gql`
                 address
                 zipCode
                 contactNumber
+                profilePicture
                 city
+                state
                 status
+            }
+        }
+    }
+`;
+
+export const getUserByEmail = gql`
+    query MyQuery($email: String!) {
+        listUsers(filter: {email: {eq: $email}}) {
+            items {
+                id
+                email
+                fullName
+                rol
+                profilePicture
             }
         }
     }

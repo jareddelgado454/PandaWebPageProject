@@ -1,5 +1,5 @@
-import { client } from '@/app/contexts/AmplifyContext';
-import { getUserByCognitoID } from '@/graphql/custom-queries';
+import { client } from '@/contexts/AmplifyContext';
+import { getUserByCognitoID, getUserByEmail } from '@/graphql/custom-queries';
 import { createUser } from '@/graphql/users/mutation/users';
 export const handleCreateUserOnDatabase = async(values) => {
     try {
@@ -31,7 +31,22 @@ export const handleRetrieveMyUser = async (cognitoId) => {
             }
         });
 
-        return data && data.listUsers.items.length > 0 ? true : false;
+        return data && data.listUsers.items[0];
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getUserByMail = async (email) => {
+    try {
+        const { data } = await client.graphql({
+            query: getUserByEmail,
+            variables: {
+                email: email
+            }
+        });
+
+        return data && data.listUsers.items[0];
     } catch (error) {
         console.log(error);
     }

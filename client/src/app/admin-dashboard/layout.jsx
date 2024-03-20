@@ -1,6 +1,5 @@
 "use client";
-import React, { useEffect, useState, useLayoutEffect } from "react";
-import { redirect } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { sessionsStatus, isAdmin } from '@/utils/session';
 import { Sidebar } from "@/components/Sidebar";
 import { FaHouse, FaMoon } from "react-icons/fa6";
@@ -11,8 +10,6 @@ export const client = generateClient();
 import { Amplify } from 'aws-amplify';
 import config from '@/amplifyconfiguration.json';
 Amplify.configure(config);
-
-
 import AuthGuard from "@/components/authGuard";
 
 function AdminDashboardLayout ({children}) {
@@ -36,7 +33,6 @@ function AdminDashboardLayout ({children}) {
     };
 
     return(
-
         <>
             {
                 sessionsStatus && isAdmin && (

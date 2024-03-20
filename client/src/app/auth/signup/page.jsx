@@ -1,12 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import ErrorAlert from "@/components/LoginRegister/modals/ErrorAlert";
 import {
   signInWithRedirect,
   signUp,
-  fetchUserAttributes,
 } from "aws-amplify/auth";
 import validationSignUp from "./validationSignUp";
 import {
@@ -22,8 +21,7 @@ import {
 } from "react-icons/ri";
 import VerificationCodeModal from "@/components/LoginRegister/modals/VerificationCodeModal";
 import { useDisclosure } from "@nextui-org/react";
-import { handleCreateUserOnDatabase, handleRetrieveMyUser } from "@/api";
-import { Hub } from "aws-amplify/utils";
+import { handleCreateUserOnDatabase } from "@/api";
 const SignUp = () => {
   const status = "inactive";
   const [showPassword, setShowPassword] = useState(false);
@@ -104,53 +102,6 @@ const SignUp = () => {
       setMessageDataMissing(true);
     }
   };
-
-  async function currentAuthenticatedUser() {
-    try {
-      const { email, family_name, given_name } = await fetchUserAttributes();
-      const fullName = given_name + family_name;
-      return { email, fullName };
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  useEffect(() => {
-    const hubListenerCancel = Hub.listen("auth", async ({ payload }) => {
-      switch (payload.event) {
-        case "signedIn":
-          console.log("user have been signedIn successfully.");
-          const { fullName, email } = await currentAuthenticatedUser();
-          const cognitoId = payload.data.userId;
-          const userExist = await handleRetrieveMyUser(cognitoId);
-          console.log(userExist);
-          if (userExist) {
-            console.log("user already in DB. Going to /user");
-            console.log(userExist);
-            //router.replace("/user");
-          } else  {
-            await handleCreateUserOnDatabase({
-              fullName,
-              email,
-              cognitoId,
-              status,
-            });
-            console.log("user created.");
-            router.replace("/user");
-          }
-          console.log("process completed");
-          break;
-      }
-    });
-    return () => hubListenerCancel();
-  }, []);
-
-  useEffect(()=>{
-    if(dataSignUp.fullName != '' || dataSignUp.email != '' || dataSignUp.password !='' ){
-       setErrors(validationSignUp(dataSignUp));
-    }
-  },[dataSignUp]);
-
   return (
     <div className="w-full text-white flex justify-center items-center">
       <div className="container px-4 md:px-0 mx-auto bg-zinc-800">
