@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import ErrorAlert from "@/components/LoginRegister/modals/ErrorAlert";
 import {
   signInWithRedirect,
   signUp,
@@ -37,6 +37,7 @@ const SignUp = () => {
     agreed: false
   });
   const [errors, setErrors] = useState({});
+  const [errorPassed, setErrorPassed] = useState("");
   let initialValue = {
     fullName: "",
     email: "",
@@ -50,6 +51,12 @@ const SignUp = () => {
     isOpen: isVerifyCodeModalOpen,
     onOpen: onVerifyCodeModalOpen,
     onOpenChange: onVerifyCodeModalOpenChange,
+  } = useDisclosure();
+
+  const {
+    isOpen: isErrorAlertModalOpen,
+    onOpen: onErrorAlertModalOpen,
+    onOpenChange: onErrorAlertModalOpenChange,
   } = useDisclosure();
 
   const evaluateErrors = () => {
@@ -79,16 +86,12 @@ const SignUp = () => {
           onVerifyCodeModalOpen();
         }
       } catch (error) {
-        if (
-          error.message.includes(
-            "An account with the given email already exists."
-          )
-        ) {
-          alert(
-            "This email address is already registered. Please use a different email address."
-          );
+        if (error.message.includes("An account with the given email already exists.")){
+          setErrorPassed("alreadyExists");
+          onErrorAlertModalOpen();
         } else {
-          console.log("Unknown error occurred:", error);
+          setErrorPassed("unknownError");
+          onErrorAlertModalOpen();
         }
       }
     }else{
@@ -376,7 +379,7 @@ const SignUp = () => {
                   </div>
                   <button
                     type="submit"
-                    className={`w-full py-3 text-[19px] ${(errors.email && dataSignUp.email !="") || (errors.fullName && dataSignUp.fullName != "") || (errors.password && dataSignUp.password != "") || (errors.confirmPassword && dataSignUp.confirmPassword != "") ? "bg-red-500" : "bg-emerald-500"}  hover:bg-emerald-500/90 transition-colors rounded-lg text-white`}
+                    className="w-full py-3 text-[19px] bg-emerald-500  hover:bg-emerald-500/90 transition-colors rounded-lg text-white"
                   >
                     Create account
                   </button>
@@ -397,6 +400,11 @@ const SignUp = () => {
         isOpen={isVerifyCodeModalOpen}
         onOpenChange={onVerifyCodeModalOpenChange}
         dataSignIn={{ email: dataSignUp.email, password: dataSignUp.password }}
+      />
+      <ErrorAlert
+        isOpen={isErrorAlertModalOpen}
+        onOpenChange={onErrorAlertModalOpenChange}
+        error={errorPassed}
       />
     </div>
   );

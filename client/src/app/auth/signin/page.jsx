@@ -47,7 +47,6 @@ const SignIn = () => {
         setDataPassed({email:values.email,  password:values.password});
         if (isSignedIn) {
           console.log("Login successfully");
-          router.replace("/admin-dashboard");
         } else {
           if (nextStep?.signInStep === 'CONFIRM_SIGN_UP') {
             onVerifyCodeModalOpen();
