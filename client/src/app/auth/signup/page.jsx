@@ -14,7 +14,9 @@ import {
 import VerificationCodeModal from "@/components/LoginRegister/modals/VerificationCodeModal";
 import { useDisclosure } from "@nextui-org/react";
 import { handleCreateUserOnDatabase } from "@/api";
+import { useRouter } from 'next/navigation';
 const SignUp = () => {
+  const router = useRouter();
   const status = "inactive";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,7 +42,8 @@ const SignUp = () => {
           },
         },
       });
-      //await handleCreateUserOnDatabase({ ...values, cognitoId, status });
+      await handleCreateUserOnDatabase({ ...values, cognitoId, status });
+      router.replace("/user/");
       //console.log("nextStep", nextStep);
       // if (nextStep?.signUpStep == "CONFIRM_SIGN_UP") {
       //   onVerifyCodeModalOpen();
