@@ -22,7 +22,6 @@ const SignUp = () => {
     fullName: "",
     email: "",
     password: "",
-    confirmPassword: "",
     rol: "customer",
   };
   const {
@@ -32,19 +31,17 @@ const SignUp = () => {
   } = useDisclosure();
   const onHandleCreate = async (values) => {
     try {
-      const { userId, nextStep } = await signUp({
-        // username: values.email,
-        username: values.fullName,
+      await signUp({
+        username: values.email,
         password: values.password,
         options: {
           userAttributes: {
             email: values.email,
-            // "custom:role": values.rol,
           },
         },
       });
-      // await handleCreateUserOnDatabase({ ...values, userId, status });
-      // console.log("nextStep", nextStep);
+      //await handleCreateUserOnDatabase({ ...values, cognitoId, status });
+      //console.log("nextStep", nextStep);
       // if (nextStep?.signUpStep == "CONFIRM_SIGN_UP") {
       //   onVerifyCodeModalOpen();
       // }
@@ -146,7 +143,7 @@ const SignUp = () => {
                   />
                 </div>
                 <div className="w-full my-2">
-                  <label htmlFor="confirm-password-grid">
+                  {/* <label htmlFor="confirm-password-grid">
                     Confirm Password
                   </label>
                   <Field
@@ -154,7 +151,7 @@ const SignUp = () => {
                     type="password"
                     name="confirmPassword"
                     className="my-2 py-3 pl-8 pr-4 bg-zinc-700 border-[1px] border-zinc-700 focus:border-emerald-500 w-full outline-none rounded-2xl mb-4"
-                  />
+                  /> */}
                 </div>
               </div>
               <div className="w-full md:w-2/4 flex justify-center items-center">
