@@ -2,9 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
-import { DonutChart, LineChart } from '@/components/chartjs'
+import { DonutChartPerRole, LineChartGained } from '@/components/chartjs'
 import { listUsersForGraphics } from '@/graphql/users/query/user';
 import { client } from '@/contexts/AmplifyContext';
+import HighRateComponent from '@/components/chartjs/highRate/HighRateComponent';
+import MonthlyComponent from '@/components/chartjs/monthlyServices/MonthlyComponent';
+import {Progress} from "@nextui-org/react";
 
 Chart.register(CategoryScale);
 
@@ -36,24 +39,45 @@ const Graphs = () => {
 
   return (
     <>
-      <div className='bg-white h-[5rem] w-full dark:bg-zinc-800 shadow-md flex justify-center items-center'>
-        <p className='text-black dark:text-white font-bold text-3xl capitalize tracking-[0.2em]'>Statistics from Entities</p>
-      </div>
-      <div className='container mx-auto my-10 transition-all overflow-y-auto h-full'>
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
+      
+      <div className='container mx-auto my-10 transition-all h-full'>
+        <p className='dark:text-white text-zinc-800 font-semibold text-xl'>ThePanda Analytics</p>
+        <div className='w-full bg-zinc-800 my-4 rounded-lg h-[12rem] py-3 px-7'>
+          <div className='flex flex-col gap-1'>
+            <p className='text-lg font-bold'>Service goal</p>
+            <p className='text-gray-400'>total performance this month</p>
+            <div className='flex flex-row justify-between'>
+              <p>Service request successfully</p>
+              <p className='text-2xl font-black text-[#40C48E]'>366</p>
+            </div>
+            <Progress color='success' aria-label="Loading..." value={60} className="w-full my-2"/>
+            <div className='flex flex-row justify-between'>
+              <p className='text-gray-400'>Monthly target</p>
+              <p className='text-lg text-gray-400'>100%</p>
+            </div>
+          </div>
+        </div>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-4 my-8'>
+          <div className='bg-zinc-800 rounded-lg h-[26rem] p-7'>
+            <p className='font-bold text-lg'>Monthly Services</p>
+            <p className='text-2xl my-3 text-[#40C48E]'>+75</p>
+            <MonthlyComponent />
+          </div>
+          <div className='bg-zinc-800 rounded-lg h-[26rem] p-7 flex flex-col gap-4 overflow-auto'>
+            <p className='font-bold text-lg'>Technicians with High Rate</p>
+            <HighRateComponent />
+          </div>
+        </div>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-8 mb-4 pb-8'>
           {
             loading ? (<div>cargando graficos...</div>) :
             (
                 <>
                   <div className='flex flex-col items-center gap-2'>
-                    <p className='text-zinc-800 text-2xl font-bold'>
-                      Users Gained
-                    </p>
-                    <LineChart users={users} />
+                    <LineChartGained users={users} />
                   </div>
                   <div className='flex flex-col items-center gap-2'>
-                    <p className='text-zinc-800 text-2xl font-bold'>Users per role</p>
-                    <DonutChart users={users} />
+                    <DonutChartPerRole users={users} />
                   </div>
                 </>
             )

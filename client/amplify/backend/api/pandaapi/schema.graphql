@@ -23,6 +23,7 @@ type User @model @auth(
     zipCode: Int
     subscription: String
     cognitoId: String
+    rate: Float
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
 }

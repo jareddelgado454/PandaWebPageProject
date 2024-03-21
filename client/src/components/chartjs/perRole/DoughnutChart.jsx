@@ -32,8 +32,9 @@ const DoughnutChart = ({ users }) => {
         ]
     };
   return (
-    <div className="bg-zinc-800 rounded-xl shadow-lg h-[30rem] w-[30rem] p-4">
-      <Doughnut className="bg-cover object-cover" data={chartData} />
+    <div className="bg-zinc-800 rounded-xl shadow-lg h-[35rem] w-full p-4 overflow-hidden flex flex-col justify-center items-center">
+      <p className='text-2xl font-bold text-white text-center'>Users per role</p>
+      <Doughnut className="bg-cover object-fill h-[]" data={chartData} />
     </div>
   )
 }

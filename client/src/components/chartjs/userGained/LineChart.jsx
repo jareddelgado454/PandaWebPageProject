@@ -40,7 +40,10 @@ const chartData = {
 };
 
   return (
-    <div className="shadow-lg rounded-xl py-8 px-1 md:h-full md:w-full bg-zinc-800 text-white overflow-x-auto flex justify-center items-center">
+    <div className="shadow-lg rounded-xl py-8 px-1 md:h-full md:w-full bg-zinc-800 text-white overflow-x-auto flex flex-col gap-4 justify-center items-center">
+      <p className='text-white text-2xl font-bold'>
+        Users Gained
+      </p>
       <Line
         data={chartData}
         options={{

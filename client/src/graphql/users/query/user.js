@@ -88,51 +88,18 @@ export const listUsersFilter = gql`
   }
 `;
 
-export const getReview = `
-  query GetReview($id: ID!) {
-    getReview(id: $id) {
-      id
-      comment
-      user {
+export const filterUserByRate = gql`
+  query MyQuery {
+    listUsers(filter: {rate: {between: [4, 5]}}) {
+      items {
+        fullName
         id
         email
-        rol
-        fullName
-        contactNumber
-        createdAt
-        status
-        address
-        city
-        state
         profilePicture
-        updatedAt
-        __typename
-      }
-      rate
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-
-export const listReviews = `
-  query ListReviews(
-    $filter: ModelReviewFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listReviews(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        comment
+        rol
+        cognitoId
         rate
-        createdAt
-        updatedAt
-        __typename
       }
-      nextToken
-      __typename
     }
   }
 `;
