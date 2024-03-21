@@ -106,6 +106,14 @@ const SignUp = () => {
         }
         setMessageDataMissing(true);
       }
+    }else{
+      if(dataSignUp.rol == ""){
+        console.log("You have not selected an account type ")
+      }
+      if(!dataSignUp.agreed){
+        console.log("You need to agree the terms and conditions ")
+      }
+      setMessageDataMissing(true);
     }
   }
   return (
