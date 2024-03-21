@@ -42,7 +42,14 @@ const SignUp = () => {
           },
         },
       });
-      await handleCreateUserOnDatabase({ ...values, cognitoId, status });
+      await handleCreateUserOnDatabase({ 
+        fullName: values.fullName,
+        email: values.email,
+        password: values.password,
+        rol: values.rol,
+        status,
+        cognitoId,
+        status });
       router.replace("/user/");
       console.log("nextStep", nextStep);
       if (nextStep?.signUpStep == "CONFIRM_SIGN_UP") {
