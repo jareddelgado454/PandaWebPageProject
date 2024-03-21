@@ -98,15 +98,16 @@ const SignUp = () => {
           setErrorPassed("unknownError");
           onErrorAlertModalOpen();
         }
-      if(dataSignUp.rol == ""){
-        console.log("You have not selected an account type ")
+        if(dataSignUp.rol == ""){
+          console.log("You have not selected an account type ")
+        }
+        if(!dataSignUp.agreed){
+          console.log("You need to agree the terms and conditions ")
+        }
+        setMessageDataMissing(true);
       }
-      if(!dataSignUp.agreed){
-        console.log("You need to agree the terms and conditions ")
-      }
-      setMessageDataMissing(true);
     }
-  };
+  }
   return (
     <div className="w-full text-white flex justify-center items-center">
       <div className="container px-4 md:px-0 mx-auto bg-zinc-800">

@@ -74,13 +74,17 @@ const SignIn = () => {
           const { fullName, email } = await currentAuthenticatedUser();
           const cognitoId = payload.data.userId;
           const userExist = await handleRetrieveMyUser(cognitoId);
+          console.log(userExist);
           if (userExist !== null) {
             console.log("user already in DB. Going to /user");
-            if(userExist.rol !== "admin")
+            if(userExist.rol === "admin")
             {
-              router.replace("/user/");
-            }else {
+              console.log("admin");
               router.replace("/admin-dashboard/");
+              
+            }else {
+              console.log("not admin");
+              router.replace("/user/");
             }
           } else  {
             await handleCreateUserOnDatabase({
