@@ -18,7 +18,7 @@ import { useRouter } from 'next/navigation';
 import VerificationCodeModal from '@/components/LoginRegister/modals/VerificationCodeModal';
 import { useDisclosure } from "@nextui-org/react";
 import { Formik, Form, Field } from 'formik'
-import { signInWithRedirect, signIn, signOut, fetchUserAttributes } from 'aws-amplify/auth';
+import { signInWithRedirect, signIn, signOut, fetchUserAttributes, getCurrentUser } from 'aws-amplify/auth';
 import AmplifyContext from '@/contexts/AmplifyContext';
 import { handleCreateUserOnDatabase, handleRetrieveMyUser } from '@/api';
 const SignIn = () => {
@@ -77,11 +77,11 @@ const SignIn = () => {
           const userExist = await handleRetrieveMyUser(cognitoId);
           if (userExist !== null) {
             console.log("user already in DB. Going to /user");
-            if(userExist.rol === "admin")
+            if(userExist.rol !== "admin")
             {
-              router.replace("/admin-dashboard/");
-            }else {
               router.replace("/user/");
+            }else {
+              router.replace("/admin-dashboard/");
             }
           } else  {
             await handleCreateUserOnDatabase({
