@@ -24,7 +24,7 @@ const SignUp = () => {
     fullName: "",
     email: "",
     password: "",
-    rol: "customer",
+    rol: "",
   };
   const {
     isOpen: isVerifyCodeModalOpen,
@@ -44,10 +44,10 @@ const SignUp = () => {
       });
       await handleCreateUserOnDatabase({ ...values, cognitoId, status });
       router.replace("/user/");
-      //console.log("nextStep", nextStep);
-      // if (nextStep?.signUpStep == "CONFIRM_SIGN_UP") {
-      //   onVerifyCodeModalOpen();
-      // }
+      console.log("nextStep", nextStep);
+      if (nextStep?.signUpStep == "CONFIRM_SIGN_UP") {
+        onVerifyCodeModalOpen();
+      }
     } catch (error) {
       if (
         error.message.includes(
@@ -146,7 +146,7 @@ const SignUp = () => {
                   />
                 </div>
                 <div className="w-full my-2">
-                  {/* <label htmlFor="confirm-password-grid">
+                  <label htmlFor="confirm-password-grid">
                     Confirm Password
                   </label>
                   <Field
@@ -154,7 +154,7 @@ const SignUp = () => {
                     type="password"
                     name="confirmPassword"
                     className="my-2 py-3 pl-8 pr-4 bg-zinc-700 border-[1px] border-zinc-700 focus:border-emerald-500 w-full outline-none rounded-2xl mb-4"
-                  /> */}
+                  />
                 </div>
               </div>
               <div className="w-full md:w-2/4 flex justify-center items-center">
@@ -200,15 +200,15 @@ const SignUp = () => {
                     type specimen book. It has survived not only five centuries.
                   </p>
 
-                  {/* <div className="flex items-center gap-x-2 mb-2">
-                                        <Field
-                                            type="radio"
-                                            name="agreed"
-                                            value="agreed"
-                                            className="rounded border-emerald-400 focus:ring-emerald-400 focus:border-emerald-400"
-                                        />
-                                        <p className='text-white'>Check here to accept the <span className='text-emerald-300 cursor-pointer font-semibold'>Terms and conditions</span></p>
-                                    </div> */}
+                  <div className="flex items-center gap-x-2 mb-2">
+                    <Field
+                      type="radio"
+                      name="agreed"
+                      value="agreed"
+                      className="rounded border-emerald-400 focus:ring-emerald-400 focus:border-emerald-400"
+                    />
+                      <p className='text-white'>Check here to accept the <span className='text-emerald-300 cursor-pointer font-semibold'>Terms and conditions</span></p>
+                  </div>
                   <button
                     type="submit"
                     className=" w-full py-3 text-[19px] bg-emerald-500 hover:bg-emerald-500/90 transition-colors rounded-lg text-white"

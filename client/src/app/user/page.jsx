@@ -1,19 +1,19 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { fetchUserAttributes, signOut } from "aws-amplify/auth";
 import { uploadData } from 'aws-amplify/storage';
 import { v4 as uuidv4 } from 'uuid';
-import {Modal, ModalContent, ModalHeader, ModalBody, useDisclosure} from "@nextui-org/react";
 import { toast } from 'react-toastify';
 import { FaCamera } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
+import {Modal, ModalContent, ModalHeader, ModalBody, useDisclosure} from "@nextui-org/react";
 import { statesUSA } from '@/assets/data/StatesUSA';
 import { updateInformation, updateRol } from "@/graphql/users/mutation/users";
 import { getUserByCognitoID } from "@/graphql/custom-queries";
 import { client } from "@/contexts/AmplifyContext";
-import { useRouter } from "next/navigation";
+import AuthGuard from "@/components/authGuard";
 const page = () => {
     const router = useRouter();
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -34,10 +34,8 @@ const page = () => {
             });
             await setUser(data.listUsers.items[0]);
             setLoading(false);
-            console.log(data);
 
         } catch (error) {
-            console.log(error);
             setLoading(false);
             setError(error);
         }
@@ -356,7 +354,10 @@ const page = () => {
                             <div className="absolute bottom-0 -left-0 w-full">
                                 <div className="flex flex-col">
                                 <button
-                                    onClick={() => signOut()}
+                                    onClick={() => {
+                                        signOut();
+                                        router.replace("/");
+                                    }}
                                     className="rounded-b-lg bg-green-panda h-[2.5rem] md:h-[3.5rem] font-bold text-white flex justify-center items-center"
                                 >
                                     Sign Out
@@ -471,4 +472,4 @@ const CustomModal = ({ isOpen, onOpenChange, user, callback }) => {
     );
 };
 
-export default page;
+export default AuthGuard(page);
