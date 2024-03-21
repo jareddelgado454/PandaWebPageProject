@@ -37,14 +37,22 @@ const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn}) => {
           onClose();
 
         } catch (error) {
-          console.log(error);
-          if(error.message.includes("Invalid verification code provided")){
+          if(error.name == "CodeMismatchException"){
               setErrorCode({
                   status : true,
                   message : "The verification code you provided is not correct, check again"
               })
+          }else if (error.name == 'ExpiredCodeException') {
+            setErrorCode({
+              status: true,
+              message: "The verification code you provided has expired. Please request a new code."
+            });
           }else{
-              alert("Unkown error has ocurred")
+            setErrorCode({
+              status: true,
+              message: "Unknown error."
+            });
+            console.log(error)
           }
         }
     }else{

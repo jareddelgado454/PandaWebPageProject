@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import ErrorAlert from "@/components/LoginRegister/modals/ErrorAlert";
@@ -38,6 +38,13 @@ const SignUp = () => {
   });
   const [errors, setErrors] = useState({});
   const [errorPassed, setErrorPassed] = useState("");
+
+  useEffect(()=>{
+    if(dataSignUp.fullName != '' || dataSignUp.email != '' || dataSignUp.password !='' || dataSignUp.confirmPassword != '' ){
+       setErrors(validationSignUp(dataSignUp));
+    }
+  },[dataSignUp]);
+
   let initialValue = {
     fullName: "",
     email: "",
