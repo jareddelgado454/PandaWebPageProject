@@ -11,7 +11,8 @@ import {
   RiEyeOffLine, 
   RiMoneyDollarCircleLine,
   RiSmartphoneLine,
-  RiListCheck3 
+  RiListCheck3,
+  RiErrorWarningFill
 } from "react-icons/ri";
 import { Hub } from 'aws-amplify/utils';
 import { useRouter } from 'next/navigation';
@@ -26,6 +27,10 @@ const SignIn = () => {
   const router = useRouter();
   const {isOpen: isVerifyCodeModalOpen, onOpen: onVerifyCodeModalOpen, onOpenChange: onVerifyCodeModalOpenChange} = useDisclosure();
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState({
+    status:false,
+    message:""
+  });
   const [dataPassed, setDataPassed] = useState({
     email : "",
     password : ""
@@ -35,26 +40,53 @@ const SignIn = () => {
     password: ''
   }
   const onHandleSubmit = async (values) => {
-      try {
-        const { isSignedIn, nextStep } = await signIn({ 
-          username : values.email, 
-          password : values.password,
-          options: {
-            authFlowType: 'USER_SRP_AUTH'
+      setErrorMessage({
+        status : false,
+        message : ""
+      })
+      if(values.email != "" && values.password != ""){
+          try {
+            const { isSignedIn, nextStep } = await signIn({ 
+              username : values.email, 
+              password : values.password,
+              options: {
+                authFlowType: 'USER_SRP_AUTH'
+              }
+            });
+            setDataPassed({email:values.email,  password:values.password});
+            if (isSignedIn) {
+              console.log("Login successfully");
+            } else {
+              if (nextStep?.signInStep === 'CONFIRM_SIGN_UP') {
+                onVerifyCodeModalOpen();
+              } else {
+                setError('Error signing in. Please try again.');
+              }
+            }
+          } catch (error) {
+              console.log(error);
+              if(error.name == "UserNotFoundException"){
+                  setErrorMessage({
+                    status : true,
+                    message : "No account was found registered with this email"
+                  })
+              }else if(error.name == "NotAuthorizedException"){
+                  setErrorMessage({
+                    status : true,
+                    message : "Incorrect username or password."
+                  })
+              }else {
+                  setErrorMessage({
+                    status : true,
+                    message : "There was an error, try again."
+                  })
+              }
           }
-        });
-        setDataPassed({email:values.email,  password:values.password});
-        if (isSignedIn) {
-          console.log("Login successfully");
-        } else {
-          if (nextStep?.signInStep === 'CONFIRM_SIGN_UP') {
-            onVerifyCodeModalOpen();
-          } else {
-            setError('Error signing in. Please try again.');
-          }
-        }
-      } catch (error) {
-        console.log('Error signing in', error);
+      }else{
+          setErrorMessage({
+            status : true,
+            message : "You need to complete the fields to be able to log in"
+          })
       }
   }
   async function currentAuthenticatedUser() {
@@ -164,16 +196,22 @@ const SignIn = () => {
                           <div>
                             <button
                               type="submit"
-                              className="bg-emerald-600 hover:bg-emerald-700 cursor-pointer font-bold text-white text-[18px] w-full py-3 px-4 rounded-lg transition-colors delay-50"
+                              className="bg-emerald-600 hover:bg-emerald-700 cursor-pointer font-bold text-white text-[18px] w-full py-3 px-4 rounded-lg transition-colors delay-50 mb-3"
                             >
                               Login
                             </button>
-                            <button
+                            {
+                                errorMessage.status && <div className='bg-red-500 w-full text-white text-[16px] flex items-center gap-x-2 p-2 mb-3'>
+                                    <RiErrorWarningFill className='text-[30px]'/>
+                                    <p>{errorMessage.message}</p>
+                                </div>
+                            }
+                            {/* <button
                               type='button'
                               onClick={signOut}
                             >
                               Logout
-                            </button>
+                            </button> */}
                           </div>
                           <span></span>
                         </Form>

@@ -84,12 +84,22 @@ const SignUp = () => {
             },
           },
         });
-        await handleCreateUserOnDatabase({ ...values, cognitoId, status });
-        router.replace("/user/");
+        
+        await handleCreateUserOnDatabase({ 
+          fullName: values.fullName,
+          email: values.email,
+          password: values.password,
+          rol: values.rol,
+          status,
+          cognitoId,
+          status 
+        });
+        
         console.log("nextStep", nextStep);
         if (nextStep?.signUpStep == "CONFIRM_SIGN_UP") {
           onVerifyCodeModalOpen();
         }
+        
       } catch (error) {
         if (error.message.includes("An account with the given email already exists.")){
           setErrorPassed("alreadyExists");

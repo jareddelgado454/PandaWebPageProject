@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button} from "@nextui-org/react";
 import { confirmSignUp, signIn } from 'aws-amplify/auth';
 import { RiErrorWarningFill,RiRestartLine } from "react-icons/ri";
+import { useRouter } from 'next/navigation';
 
 const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn}) => {
 
@@ -10,6 +11,7 @@ const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn}) => {
     status : false,
     message : ""
   });
+  const router = useRouter();
 
   const handleSignUpConfirmation = async (onClose) => {
     setErrorCode({
@@ -31,6 +33,8 @@ const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn}) => {
               authFlowType: 'USER_SRP_AUTH'
             }
           });
+
+          router.replace("/user/");
 
           console.log(response);
           // router.replace("/admin-dashboard");
