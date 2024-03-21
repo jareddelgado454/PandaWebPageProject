@@ -22,7 +22,9 @@ import {
 import VerificationCodeModal from "@/components/LoginRegister/modals/VerificationCodeModal";
 import { useDisclosure } from "@nextui-org/react";
 import { handleCreateUserOnDatabase } from "@/api";
+import { useRouter } from 'next/navigation';
 const SignUp = () => {
+  const router = useRouter();
   const status = "inactive";
   const [showPassword, setShowPassword] = useState(false);
   const [messageDataMissing, setMessageDataMissing] = useState(false);
@@ -62,23 +64,21 @@ const SignUp = () => {
   }
 
   const onHandleCreate = async (values) => {
-    console.log(errors);
-    console.log(dataSignUp);
     if( !evaluateErrors() && (dataSignUp.fullName != "" && dataSignUp.email != "" && dataSignUp.password != "" && dataSignUp.confirmPassword != "" && dataSignUp.rol != "" && dataSignUp.agreed )){
       console.log("podes registrarte no hay errores")
       setMessageDataMissing(false);
       try {
-        const { userId, nextStep } = await signUp({
+        const { userId: cognitoId, nextStep } = await signUp({
           username: values.email,
           password: values.password,
           options: {
             userAttributes: {
               email: values.email,
-              "custom:role": values.rol,
             },
           },
         });
-        await handleCreateUserOnDatabase({ ...values, userId, status });
+        await handleCreateUserOnDatabase({ ...values, cognitoId, status });
+        router.replace("/user/");
         console.log("nextStep", nextStep);
         if (nextStep?.signUpStep == "CONFIRM_SIGN_UP") {
           onVerifyCodeModalOpen();
@@ -91,8 +91,6 @@ const SignUp = () => {
           setErrorPassed("unknownError");
           onErrorAlertModalOpen();
         }
-      }
-    }else{
       if(dataSignUp.rol == ""){
         console.log("You have not selected an account type ")
       }

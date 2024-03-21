@@ -1,26 +1,34 @@
-"use client";
-import { sessionsStatus, isAdmin } from '@/utils/session';
-import { useEffect } from "react";
-import { redirect } from "next/navigation";
+import { fetchUserAttributes } from "aws-amplify/auth";
+import { useLayoutEffect } from "react";
+import { useRouter } from 'next/navigation';
 
 export default function AuthGuard(Component) {
-
   return function WithAuth(props) {
+    const router = useRouter();
 
-      useEffect(() => {
-        const session = sessionsStatus;
-        const admin = isAdmin;
-    
-        if (!session || !admin) {
-          redirect("/");
+    useLayoutEffect(() => {
+      const retrieveInfoFromSession = async () => {
+        try {
+          const info = await fetchUserAttributes();
+          if (info) {
+            const isAdmin = info['custom:role'] === "admin";
+            if (isAdmin) {
+              router.replace("/admin-dashboard/");
+            } else {
+              router.replace("/user/");
+            }
+          } else {
+            router.replace("/");
+          }
+        } catch (error) {
+          console.error("Error fetching user attributes:", error);
+          router.replace("/");
         }
-      }, []);
+      };
 
-      if(!sessionsStatus && !isAdmin) {
-        return null;
-      }
+      retrieveInfoFromSession();
+    }, []);
 
-      return <Component {...props} />
+    return <Component {...props} />;
   };
-
 };
