@@ -1,7 +1,6 @@
 import { fetchUserAttributes } from "aws-amplify/auth";
 import { useLayoutEffect } from "react";
 import { useRouter } from 'next/navigation';
-
 export default function AuthGuard(Component) {
   return function WithAuth(props) {
     const router = useRouter();
@@ -12,10 +11,8 @@ export default function AuthGuard(Component) {
           const info = await fetchUserAttributes();
           if (info) {
             const isAdmin = info['custom:role'] === "admin";
-            if (isAdmin) {
+            if (!isAdmin) {
               router.replace("/admin-dashboard/");
-            } else {
-              router.replace("/user/");
             }
           } else {
             router.replace("/");

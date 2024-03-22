@@ -1,2 +1,2 @@
-export { default as LineChart } from './LineChart';
-export { default as DonutChart } from './DoughnutChart';
+export { default as LineChartGained } from './userGained/LineChart';
+export { default as DonutChartPerRole } from './perRole/DoughnutChart';
