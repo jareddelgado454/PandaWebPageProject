@@ -10,8 +10,8 @@ export default function AuthGuard(Component) {
         try {
           const info = await fetchUserAttributes();
           if (info) {
-            const isAdmin = info['custom:role'] === "admin";
-            if (!isAdmin) {
+            const isAdmin = info['custom:role'] === "admin" ? true : false;
+            if (isAdmin) {
               router.replace("/admin-dashboard/");
             }
           } else {

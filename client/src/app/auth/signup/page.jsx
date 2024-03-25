@@ -81,6 +81,7 @@ const SignUp = () => {
           options: {
             userAttributes: {
               email: values.email,
+              "custom:role": values.rol
             },
           },
         });
@@ -168,7 +169,7 @@ const SignUp = () => {
                     Facebook
                   </button>
                   <button
-                    onClick={() => signInWithRedirect({ provider: "Google" })}
+                    onClick={() => signInWithRedirect({ provider: "Apple" })}
                     className="w-[30%] bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 px-5"
                   >
                     <RiAppleFill className="text-[20px]" /> Apple

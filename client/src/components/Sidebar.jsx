@@ -153,7 +153,7 @@ export const Sidebar = () => {
           >
             <div className="flex items-center w-full h-full gap-2">
               <img
-                src={user.profilePicture ? user.profilePicture : "/image/defaultProfilePicture.jpg"}
+                src={user && user.profilePicture ? user.profilePicture : "/image/defaultProfilePicture.jpg"}
                 alt="user_logo"
                 className={`rounded-full   ${
                   active ? "w-[3rem] h-[3rem]" : "w-[1.5rem] h-[1.5rem]"

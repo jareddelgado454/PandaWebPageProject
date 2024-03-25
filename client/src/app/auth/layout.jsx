@@ -2,8 +2,10 @@
 import React, { useEffect } from 'react';
 import { fetchUserAttributes } from "aws-amplify/auth";
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 const AuthLayout = ({children}) => {
+  const searchParams = useSearchParams();
+  const isAdded = searchParams.has('code')
   const router = useRouter();
   useEffect(() => {
     const retrieveInfoFromSession = async () => {
@@ -20,11 +22,12 @@ const AuthLayout = ({children}) => {
           router.replace("/");
         }
       } catch (error) {
-        console.error("Error fetching user attributes:", error);
+        console.log(error);
       }
     };
-
-    retrieveInfoFromSession();
+    if(!isAdded){
+      retrieveInfoFromSession();
+    }
   }, []);
   return (
     <div className='w-full h-screen bg-zinc-800 relative overflow-hidden'>
