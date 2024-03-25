@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button} from "@nextui-org/react";
 import { RiCheckboxCircleLine } from "react-icons/ri";
+import { toast } from 'react-toastify';
 import validationPasswordRecovery from '@/app/auth/password-recovery/validationPasswordRecovery';
 import {
   RiMailLine,
@@ -48,6 +49,7 @@ const ChangingPassword = ({isOpen, onOpenChange, username}) => {
           try {
             await confirmResetPassword({ username:username, confirmationCode : dataForm.code, newPassword : dataForm.password });
             onClose();
+            toast.success("Password changed successfully.");
             router.push("/auth/signin");
           } catch (error) {
               console.log(error)

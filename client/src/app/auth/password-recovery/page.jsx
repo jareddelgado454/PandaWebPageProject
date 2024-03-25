@@ -7,7 +7,8 @@ import {
     RiMailLine,
     RiMoneyDollarCircleLine,
     RiSmartphoneLine,
-    RiListCheck3 
+    RiListCheck3,
+    RiErrorWarningFill
   } from "react-icons/ri";
 import { resetPassword } from 'aws-amplify/auth';
 import ChangingPassword from '@/components/LoginRegister/modals/ChangingPassword';
@@ -19,6 +20,10 @@ Amplify.configure(config);
 const RecoveryPassword = () => {
 
     const [emailPassed, setEmailPassed] = useState("");
+    const [errorMessage, setErrorMessage] = useState({
+        status : false,
+        message : ""
+    });
 
     const initialValue = {
         email: ''
@@ -27,13 +32,35 @@ const RecoveryPassword = () => {
     const {isOpen: isChangePasswordModalOpen, onOpen: onChangePasswordModalOpen, onOpenChange: onChangePasswordModalOpenChange} = useDisclosure();
 
     const onHandleSubmit = async (values) => {
-        try {
+        setErrorMessage({
+            status : false,
+            message : ""
+        })
+        if(values.email != ""){
+          try {
             const output = await resetPassword({ username : values.email });
             setEmailPassed(values.email);
             handleResetPasswordNextSteps(output);
-        } catch (error) {
-            console.log(error);
+          } catch (error) {
+              if(error.name == "UserNotFoundException"){
+                  setErrorMessage({
+                      status : true,
+                      message : "No account was found registered with this email"
+                  })
+              }else{
+                  setErrorMessage({
+                    status : true,
+                    message : "An error ocurred, please try again later"
+                  })
+              }
+          }
+        } else {
+          setErrorMessage({
+              status : true,
+              message : "You did not enter any email"
+          })
         }
+        
     }
 
     const handleResetPasswordNextSteps = (output) => {
@@ -61,6 +88,12 @@ const RecoveryPassword = () => {
                         <h2 className='text-[30px] font-bold'>Have you <span className='text-emerald-400'>forgotten</span> the password?</h2>
                         <p>Enter the email address with which you registered at The Panda</p>
                     </div>
+                    {
+                        errorMessage.status && <div className='bg-red-500 w-full text-white text-[16px] flex items-center gap-x-2 p-2 mb-3'>
+                            <RiErrorWarningFill className='text-[30px]'/>
+                            <p>{errorMessage.message}</p>
+                         </div>
+                    }
                     <Formik
                       initialValues={initialValue}
                       onSubmit={(values) => onHandleSubmit(values)}
@@ -77,7 +110,7 @@ const RecoveryPassword = () => {
                               placeholder="Write your email"
                             />
                           </div>     
-                          <div>
+                          <div >
                             <button
                               type="submit"
                               className="bg-emerald-600 hover:bg-emerald-700 cursor-pointer font-bold text-white text-[18px] w-full py-3 px-4 rounded-lg transition-colors delay-50"
@@ -85,7 +118,6 @@ const RecoveryPassword = () => {
                                 Restore password
                             </button>
                           </div>
-                          <span></span>
                         </Form>
                       )}
                     </Formik>

@@ -102,28 +102,16 @@ const SignUp = () => {
         }
         
       } catch (error) {
-        if (error.message.includes("An account with the given email already exists.")){
+        console.log(error)
+        if (error.name == "UsernameExistsException"){
           setErrorPassed("alreadyExists");
           onErrorAlertModalOpen();
         } else {
           setErrorPassed("unknownError");
           onErrorAlertModalOpen();
         }
-        if(dataSignUp.rol == ""){
-          console.log("You have not selected an account type ")
-        }
-        if(!dataSignUp.agreed){
-          console.log("You need to agree the terms and conditions ")
-        }
-        setMessageDataMissing(true);
       }
     }else{
-      if(dataSignUp.rol == ""){
-        console.log("You have not selected an account type ")
-      }
-      if(!dataSignUp.agreed){
-        console.log("You need to agree the terms and conditions ")
-      }
       setMessageDataMissing(true);
     }
   }

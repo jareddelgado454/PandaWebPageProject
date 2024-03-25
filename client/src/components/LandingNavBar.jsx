@@ -1,7 +1,48 @@
-import React from 'react'
-import Link from 'next/link'
+"use client"
 
-const LandingNavBar = ({onSignInModalOpen}) => {
+import React, { useEffect, useState } from 'react'
+import Link from 'next/link'
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, User} from "@nextui-org/react";
+import { getCurrentUser } from 'aws-amplify/auth';
+import { fetchUserAttributes } from 'aws-amplify/auth';
+import { Amplify } from "aws-amplify";
+import { client } from "@/contexts/AmplifyContext";
+import config from "@/amplifyconfiguration.json";
+import { signOut } from "aws-amplify/auth";
+import { getUserByCognitoID } from "@/graphql/custom-queries";
+Amplify.configure(config);
+
+const LandingNavBar = () => {
+    const [user,setUser] = useState({});
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const currentAuthenticatedUser = async () => {
+        console.log("holaaa")
+        try {
+            const { sub } = await fetchUserAttributes();
+            if(sub){
+                setIsLoggedIn(true);
+                const { data } = await client.graphql({
+                    query: getUserByCognitoID,
+                    variables: {
+                        cognitoId: sub,
+                    },
+                });
+                console.log(data)
+                setUser(data.listUsers.items[0]);
+            }
+            setIsLoading(false);
+        } catch (error) {
+            console.log(error);
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(()=>{
+        currentAuthenticatedUser();
+    },[]);
+
   return (
     <nav className='fixed w-full bg-black/20 p-3 py-4 mb-10 flex justify-between z-40'>
         <div className="flex gap-x-2 items-center">
@@ -10,31 +51,81 @@ const LandingNavBar = ({onSignInModalOpen}) => {
         </div>
         <div className='flex items-center pt-3 pr-4 gap-x-7 justify-between'>
 
-            <Link href="" className='text-white font-extrabold text-[18px] hover:text-emerald-300 transition delay-50'>
+            <Link href="" className='text-white font-extrabold text-[17px] hover:text-emerald-300 transition delay-50'>
                 Why the Panda?
             </Link>
 
-            <Link href="" className='text-white font-extrabold text-[18px] hover:text-emerald-300 transition delay-50'>
+            <Link href="" className='text-white font-extrabold text-[17px] hover:text-emerald-300 transition delay-50'>
                 Services
             </Link>
 
-            <Link href="" className='text-white font-extrabold text-[18px] hover:text-emerald-300 transition delay-50'>
+            <Link href="" className='text-white font-extrabold text-[17px] hover:text-emerald-300 transition delay-50'>
                 Security
             </Link>
 
-            <Link href="" className='text-white font-extrabold text-[18px] hover:text-emerald-300 transition delay-50'>
+            <Link href="" className='text-white font-extrabold text-[17px] hover:text-emerald-300 transition delay-50'>
                 About us
             </Link>
 
-            <div className='flex items-center justify-around gap-x-4'>
-              <Link href="/auth/signin" className='px-5 py-1 font-semibold border-[2px] rounded-lg text-emerald-300 border-emerald-500 bg-transparent text-[18px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
-                  Log In 
-              </Link>   
+            {isLoading ?
+            (
+                <div className='w-[150px] animate-pulse rounded shadow-xl flex gap-1 items-center'>
+                    <div className='w-[48px] h-[48px] rounded-full bg-zinc-600/60'></div>
+                    <div className='w-[100px] h-[40px] flex flex-col gap-y-2'>
+                        <div className='bg-zinc-600/60 h-[22px] w-full rounded-md'></div>
+                        <div className='bg-zinc-600/60 h-[12px] w-full rounded-md'></div>
+                    </div>
+                </div>
+            ): 
+            (
+                <div>
+                        {isLoggedIn ? (
+                            <Dropdown placement="bottom-start" className='bg-zinc-800'>
+                                <DropdownTrigger>
+                                    <User
+                                        as="button"
+                                        avatarProps={{
+                                            isBordered: false,
+                                            src: `${user.profilePicture ? user?.profilePicture : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" }`,
+                                        }}
+                                        className="transition-transform text-white w-[150px]"
+                                        description={`${user?.rol}`}
+                                        name={`${user?.fullName}`}
+                                    />
+                                </DropdownTrigger>
+                                <DropdownMenu aria-label="User Actions" variant="flat" className='bg-zinc-800 text-white '>
+                                    <DropdownItem key="profile" className="h-14 gap-2">
+                                        <p className="font-bold">Signed in as</p>
+                                        <p className="font-extralight text-sm">{user?.email}</p>
+                                    </DropdownItem>
+                                    <DropdownItem key="settings">
+                                        My Profile
+                                    </DropdownItem>
+                                    <DropdownItem key="support">
+                                        Contact Support
+                                    </DropdownItem>
+                                    <DropdownItem key="review">
+                                        Review & Feedback
+                                    </DropdownItem>
+                                    <DropdownItem key="logout" className='text-emerald-400' onClick={()=>{signOut(); setIsLoggedIn(false)}}>
+                                        Log Out
+                                    </DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
+                        ) : (
+                            <div className='flex items-center justify-around gap-x-4'>
+                                <Link href="/auth/signin" className='px-5 py-1 font-semibold border-[2px] rounded-lg text-emerald-300 border-emerald-500 bg-transparent text-[18px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
+                                    Log In 
+                                </Link>   
 
-              <Link href="/auth/signup" className='px-5 py-1 font-semibold border-[2px] rounded-lg text-white border-emerald-500 bg-emerald-500 text-[18px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
-                  Sign Up 
-              </Link>  
-            </div>            
+                                <Link href="/auth/signup" className='px-5 py-1 font-semibold border-[2px] rounded-lg text-white border-emerald-500 bg-emerald-500 text-[18px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
+                                    Sign Up 
+                                </Link>  
+                            </div>
+                        )}
+                    </div>
+                )}
+                            
         </div>
     </nav>
   )

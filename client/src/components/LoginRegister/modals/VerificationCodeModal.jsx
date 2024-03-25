@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button} from "@nextui-org/react";
-import { confirmSignUp, signIn } from 'aws-amplify/auth';
+import { confirmSignUp, signIn, resendSignUpCode } from 'aws-amplify/auth';
 import { RiErrorWarningFill,RiRestartLine } from "react-icons/ri";
 import { useRouter } from 'next/navigation';
 
@@ -11,7 +11,47 @@ const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn}) => {
     status : false,
     message : ""
   });
+
+  const [showResendButton, setShowResendButton] = useState(true);
+  const [countdown, setCountdown] = useState(60);
   const router = useRouter();
+
+  useEffect(() => {
+    let timer;
+    if (!showResendButton && countdown > 0) {
+      timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+    } else if (!showResendButton && countdown === 0) {
+      setShowResendButton(true);
+      setCountdown(60);
+    }
+    return () => clearTimeout(timer);
+  }, [showResendButton, countdown]);
+
+  const handleResendSignUpCode = async () => {
+    console.log("Resending new signUp Code");
+    setErrorCode({
+      status : false,
+      message : ""
+    });
+    try {
+        const {destination,deliveryMedium,attributeName} = await resendSignUpCode({ username : dataSignIn.email }); 
+        console.log(destination,deliveryMedium,attributeName);
+        setShowResendButton(false);
+
+    } catch (error) {
+        if(error.name == "LimitExceededException"){
+            setErrorCode({
+              status : true,
+              message : "Attempt limit exceeded, please try after some time."
+            });
+        }else{
+            setErrorCode({
+              status : true,
+              message : "An error ocurred, please try after some time."
+            });
+        }
+    }
+  }
 
   const handleSignUpConfirmation = async (onClose) => {
     setErrorCode({
@@ -33,7 +73,8 @@ const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn}) => {
               authFlowType: 'USER_SRP_AUTH'
             }
           });
-
+          setShowResendButton(true);
+          setCode("");
           router.replace("/user/");
 
           console.log(response);
@@ -110,10 +151,15 @@ const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn}) => {
                       </Button>
                       <div className='flex flex-col justify-center'>
                         <p className='text-[15px]  text-gray-200 mb-2'><span className='text-emerald-300'>*</span>You may find your verification code in your <span className='text-emerald-300'>inbox</span> or <span className='text-emerald-300'>spam</span></p>
-                        <p className='flex flex-gap-x-2 items-center justify-center text-emerald-300 hover:text-emerald-400 font-semibold text-[17px] transition-colors'>
-                            <RiRestartLine className='text-[20px]'/>
-                            <span className='cursor-pointer '>Resend code</span>
-                        </p>
+
+                        {showResendButton ? (     
+                            <button onClick={() => handleResendSignUpCode()} className='flex flex-gap-x-2 items-center justify-center text-emerald-300 hover:text-emerald-400 font-semibold text-[17px] transition-colors'>
+                                <RiRestartLine className='text-[20px]'/>
+                                <span className='cursor-pointer '>Resend code</span>
+                            </button>
+                        ) : (
+                            <p className='w-full text-center text-white text-[18px] '>You can request a new code in <span className='text-emerald-300 font-semibold'>{countdown} seconds</span></p> 
+                        )}
                       </div>
                   </div>
                     
