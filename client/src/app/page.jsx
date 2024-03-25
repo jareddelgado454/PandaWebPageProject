@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react";
 import LandingNavBar from "../components/LandingNavBar";
 import Link from "next/link";

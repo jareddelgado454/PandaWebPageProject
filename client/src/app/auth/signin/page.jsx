@@ -21,6 +21,8 @@ import { useDisclosure } from "@nextui-org/react";
 import { Formik, Form, Field } from 'formik'
 import { signInWithRedirect, signIn, signOut, fetchUserAttributes, getCurrentUser } from 'aws-amplify/auth';
 import AmplifyContext from '@/contexts/AmplifyContext';
+import { getUserByCognitoID } from "@/graphql/custom-queries";
+import { client } from "@/contexts/AmplifyContext";
 import { useDispatch } from 'react-redux';
 import { signInRedux } from '@/redux/user/userSlice';
 import { handleCreateUserOnDatabase, handleRetrieveMyUser } from '@/api';
@@ -111,6 +113,13 @@ const SignIn = () => {
           const userExist = await handleRetrieveMyUser(cognitoId);
           if (userExist !== null && userExist !== undefined) {
             console.log("user already in DB. Going to /user");
+            const { data } = await client.graphql({
+              query: getUserByCognitoID,
+              variables: {
+                  cognitoId: cognitoId,
+              },
+            });
+            dispatch(signInRedux(data.listUsers.items[0]))
             if(userExist.rol === "admin")
             {
               router.replace("/admin-dashboard/");

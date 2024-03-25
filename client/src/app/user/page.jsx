@@ -8,14 +8,17 @@ import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
 import { FaCamera } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
-import {Modal, ModalContent, ModalHeader, ModalBody, useDisclosure} from "@nextui-org/react";
+import {Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, useSelect} from "@nextui-org/react";
 import { statesUSA } from '@/assets/data/StatesUSA';
 import { updateInformation, updateRol } from "@/graphql/users/mutation/users";
 import { getUserByCognitoID } from "@/graphql/custom-queries";
 import { client } from "@/contexts/AmplifyContext";
 import AuthGuard from "@/components/authGuard";
+import { useSelector } from "react-redux";
 const page = () => {
     const router = useRouter();
+    const {currentUser} = useSelector((state) => state.user);
+    console.log("asfasdas",currentUser);
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [photograph, setPhotograph] = useState(null);
     const [loading, setLoading] = useState(true);
