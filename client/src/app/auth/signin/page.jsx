@@ -109,16 +109,13 @@ const SignIn = () => {
           const { fullName, email } = await currentAuthenticatedUser();
           const cognitoId = payload.data.userId;
           const userExist = await handleRetrieveMyUser(cognitoId);
-          console.log(userExist);
-          if (userExist !== null) {
+          if (userExist !== null && userExist !== undefined) {
             console.log("user already in DB. Going to /user");
             if(userExist.rol === "admin")
             {
-              console.log("admin");
               router.replace("/admin-dashboard/");
               
             }else {
-              console.log("not admin");
               router.replace("/user/");
             }
           } else  {
@@ -215,12 +212,12 @@ const SignIn = () => {
                                     <p>{errorMessage.message}</p>
                                 </div>
                             }
-                            {/* <button
+                            <button
                               type='button'
                               onClick={signOut}
                             >
                               Logout
-                            </button> */}
+                            </button>
                           </div>
                           <span></span>
                         </Form>

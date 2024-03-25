@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { fetchUserAttributes, signOut } from "aws-amplify/auth";
+import { fetchUserAttributes, signOut, updateUserAttributes } from "aws-amplify/auth";
 import { uploadData } from 'aws-amplify/storage';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
@@ -383,7 +383,6 @@ const formSchema = Yup.object().shape({
 });
 
 const CustomModal = ({ isOpen, onOpenChange, user, callback }) => {
-
     const onHandleSubmit = async(values, { setSubmitting }) => {
         setSubmitting(true);
         try {
@@ -401,14 +400,25 @@ const CustomModal = ({ isOpen, onOpenChange, user, callback }) => {
                 }
             })
             onOpenChange(false);
+            await updateCustomRol(values.rol);
             callback();
             toast.success("Updated successfully.");
 
         } catch (error) {
             toast.error(`Error during the process.`);
         }
+    };
+    const updateCustomRol = async() => {
+        try {
+            await updateUserAttributes({
+                userAttributes: {
+                    'custom:role': "technician"
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
     }
-
     return (
         <>
             {
