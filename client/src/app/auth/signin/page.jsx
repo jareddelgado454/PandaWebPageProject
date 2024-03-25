@@ -21,10 +21,13 @@ import { useDisclosure } from "@nextui-org/react";
 import { Formik, Form, Field } from 'formik'
 import { signInWithRedirect, signIn, signOut, fetchUserAttributes, getCurrentUser } from 'aws-amplify/auth';
 import AmplifyContext from '@/contexts/AmplifyContext';
+import { useDispatch } from 'react-redux';
+import { signInRedux } from '@/redux/user/userSlice';
 import { handleCreateUserOnDatabase, handleRetrieveMyUser } from '@/api';
 const SignIn = () => {
   const status = "inactive";
   const router = useRouter();
+  const dispatch = useDispatch();
   const {isOpen: isVerifyCodeModalOpen, onOpen: onVerifyCodeModalOpen, onOpenChange: onVerifyCodeModalOpenChange} = useDisclosure();
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState({
@@ -125,6 +128,12 @@ const SignIn = () => {
               cognitoId,
               status,
             });
+            dispatch(signInRedux({ 
+              fullName,
+              email,
+              cognitoId,
+              status, 
+            }));
             router.replace("/user");
           }
           console.log("process completed");
