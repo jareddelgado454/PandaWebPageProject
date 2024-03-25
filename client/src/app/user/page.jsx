@@ -17,7 +17,7 @@ import AuthGuard from "@/components/authGuard";
 import { useSelector } from "react-redux";
 const page = () => {
     const router = useRouter();
-    const {currentUser} = useSelector((state) => state.user);
+    const {currentUser} = useSelector((state) => state.persistedReducer.user);
     console.log("asfasdas",currentUser);
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [photograph, setPhotograph] = useState(null);

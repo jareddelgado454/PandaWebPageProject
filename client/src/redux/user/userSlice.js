@@ -9,6 +9,7 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         signInRedux : (state, action) => {
+            console.log("desde redux slice", action)
             state.currentUser = action.payload;
         },
         signOutRedux : (state, action) => {
