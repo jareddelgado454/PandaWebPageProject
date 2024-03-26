@@ -13,7 +13,6 @@ import {
   FaBars,
 } from "react-icons/fa6";
 import { getUserByMail } from "@/api";
-
 export const Sidebar = () => {
   const router = useRouter();
   const [active, setActive] = useState(false);
@@ -22,11 +21,9 @@ export const Sidebar = () => {
     fullName: "",
     profilePictire: ""
   });
-
   const toggleSidebar = () => {
     setActive(!active);
   };
-
   function reduceName(name) {
     if (name.length > 10) { 
       return name.slice(0, 17) + '...';
@@ -34,7 +31,6 @@ export const Sidebar = () => {
       return name;
     }
   }
-
   const handleFetchUserAttributes = async () => {
     try {
       const { email } = await fetchUserAttributes();
@@ -44,11 +40,9 @@ export const Sidebar = () => {
       console.log(error);
     }
   };
-
   useEffect(() => {
     handleFetchUserAttributes();
   }, []);
-
   return (
     <div
       className={`sidebar bg-gray-100 dark:bg-zinc-800 text-white transition-all ease-out duration-500 ${

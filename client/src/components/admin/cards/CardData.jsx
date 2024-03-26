@@ -47,7 +47,7 @@ export const CardData = ({ mode, number }) => {
   return (
     <Card
         shadow="md"
-        className={`h-[11rem] w-[24rem] dark:bg-zinc-800 ${getColorClass()}`}
+        className={`h-[11rem] w-11/12 l-g:w-[24rem] dark:bg-zinc-800 ${getColorClass()}`}
         isPressable
     >
         <CardBody className="overflow-visible p-4 relative">

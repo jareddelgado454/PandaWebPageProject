@@ -40,9 +40,9 @@ const Graphs = () => {
   return (
     <>
       
-      <div className='container mx-auto my-10 transition-all h-full'>
+      <div className='container mx-auto my-10 transition-all h-full px-4'>
         <p className='dark:text-white text-zinc-800 font-semibold text-xl'>ThePanda Analytics</p>
-        <div className='w-full bg-zinc-800 my-4 rounded-lg h-[12rem] py-3 px-7'>
+        <div className='w-full bg-zinc-800 my-4 rounded-lg h-[14rem] lg:h-[12rem] py-3 px-7'>
           <div className='flex flex-col gap-1'>
             <p className='text-lg font-bold'>Service goal</p>
             <p className='text-gray-400'>total performance this month</p>
@@ -57,8 +57,8 @@ const Graphs = () => {
             </div>
           </div>
         </div>
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-4 my-8'>
-          <div className='bg-zinc-800 rounded-lg h-[26rem] p-7'>
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 my-8'>
+          <div className='bg-zinc-800 rounded-lg h-[20rem] lg:h-[26rem] p-7'>
             <p className='font-bold text-lg'>Monthly Services</p>
             <p className='text-2xl my-3 text-[#40C48E]'>+75</p>
             <MonthlyComponent />
@@ -68,7 +68,7 @@ const Graphs = () => {
             <HighRateComponent />
           </div>
         </div>
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-8 mb-4 pb-8'>
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 mb-4 pb-8'>
           {
             loading ? (<div>cargando graficos...</div>) :
             (
