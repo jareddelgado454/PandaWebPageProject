@@ -1,7 +1,10 @@
+
+
 import "./globals.css";
 import { robotoFlex } from "./font";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Providers from "@/redux/provider";
 import AmplifyContext from "@/contexts/AmplifyContext";
 export const metadata = {
   title: "Create Next App",
@@ -11,10 +14,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="max-h-full">
       <body className={`${robotoFlex.className} antialiased bg-zinc-800 dark:bg-zinc-800`}>
-          <ToastContainer />
-          <AmplifyContext>
-            {children}
-          </AmplifyContext>
+        <ToastContainer />
+          <Providers>
+            <AmplifyContext>
+              {children}
+            </AmplifyContext>
+          </Providers>
       </body>
     </html>
   );

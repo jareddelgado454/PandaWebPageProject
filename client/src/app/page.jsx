@@ -1,10 +1,10 @@
+"use client"
 import React from "react";
 import LandingNavBar from "../components/LandingNavBar";
 import Link from "next/link";
 import {
   RiArrowRightDoubleFill,
 } from "react-icons/ri";
-
 const Home = () => {
   return (
     <div className="flex flex-col w-full p-0 bg-zinc-800">

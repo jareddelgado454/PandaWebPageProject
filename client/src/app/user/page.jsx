@@ -8,20 +8,25 @@ import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
 import { FaCamera } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
-import {Modal, ModalContent, ModalHeader, ModalBody, useDisclosure} from "@nextui-org/react";
+import {Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, useSelect} from "@nextui-org/react";
 import { statesUSA } from '@/assets/data/StatesUSA';
 import { updateInformation, updateRol } from "@/graphql/users/mutation/users";
 import { getUserByCognitoID } from "@/graphql/custom-queries";
 import { client } from "@/contexts/AmplifyContext";
 import AuthGuard from "@/components/authGuard";
+import { useSelector, useDispatch } from "react-redux";
+import { signOutRedux } from "@/redux/user/userSlice";
 const page = () => {
     const router = useRouter();
+    const {currentUser} = useSelector((state) => state.persistedReducer.user);
+    console.log("asfasdas",currentUser);
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [photograph, setPhotograph] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [user, setUser] = useState(null);
     const [userSelected, setUserSelected] = useState({});
+    const dispatch = useDispatch();
     const retrieveOneUser = async() => {
         setLoading(true);
         try {
@@ -356,6 +361,7 @@ const page = () => {
                                 <button
                                     onClick={() => {
                                         signOut();
+                                        dispatch(signOutRedux());
                                         router.replace("/");
                                     }}
                                     className="rounded-b-lg bg-green-panda h-[2.5rem] md:h-[3.5rem] font-bold text-white flex justify-center items-center"
