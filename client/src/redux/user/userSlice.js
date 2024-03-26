@@ -12,7 +12,7 @@ export const userSlice = createSlice({
             console.log("desde redux slice", action)
             state.currentUser = action.payload;
         },
-        signOutRedux : (state, action) => {
+        signOutRedux : (state) => {
             state.currentUser = null;
         }
     },

@@ -14,7 +14,8 @@ import { updateInformation, updateRol } from "@/graphql/users/mutation/users";
 import { getUserByCognitoID } from "@/graphql/custom-queries";
 import { client } from "@/contexts/AmplifyContext";
 import AuthGuard from "@/components/authGuard";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { signOutRedux } from "@/redux/user/userSlice";
 const page = () => {
     const router = useRouter();
     const {currentUser} = useSelector((state) => state.persistedReducer.user);
@@ -25,6 +26,7 @@ const page = () => {
     const [error, setError] = useState(null);
     const [user, setUser] = useState(null);
     const [userSelected, setUserSelected] = useState({});
+    const dispatch = useDispatch();
     const retrieveOneUser = async() => {
         setLoading(true);
         try {
@@ -359,6 +361,7 @@ const page = () => {
                                 <button
                                     onClick={() => {
                                         signOut();
+                                        dispatch(signOutRedux());
                                         router.replace("/");
                                     }}
                                     className="rounded-b-lg bg-green-panda h-[2.5rem] md:h-[3.5rem] font-bold text-white flex justify-center items-center"

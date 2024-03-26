@@ -5,7 +5,7 @@ import { store } from "./store"
 import { PersistGate } from "redux-persist/integration/react"
 import { persistStore } from "redux-persist"
 
-export function Providers({children}) {
+const Providers = ({children}) => {
     const persistor = persistStore(store)
     return (    
         <Provider store={store}>
@@ -15,3 +15,4 @@ export function Providers({children}) {
         </Provider>
     )
 }
+export default Providers
