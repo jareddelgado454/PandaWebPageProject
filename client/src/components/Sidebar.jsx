@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { signOut } from "aws-amplify/auth";
 import Link from "next/link";
+import Cookies from "js-cookie";
 import { fetchUserAttributes } from 'aws-amplify/auth';
 import { useRouter } from "next/navigation";
 import {
@@ -168,7 +169,7 @@ export const Sidebar = () => {
                   }`}
                   onClick={() => {
                     signOut();
-                    console.log("cliked");
+                    Cookies.remove("currentUser");
                     router.replace("/");
                   }}
                 >

@@ -358,9 +358,8 @@ const page = () => {
                                 <div className="flex flex-col">
                                 <button
                                     onClick={() => {
-                                        signOut();
                                         Cookies.remove("currentUser");
-                                        //dispatch(signOutRedux());
+                                        signOut();
                                         router.replace("/");
                                     }}
                                     className="rounded-b-lg bg-green-panda h-[2.5rem] md:h-[3.5rem] font-bold text-white flex justify-center items-center"
