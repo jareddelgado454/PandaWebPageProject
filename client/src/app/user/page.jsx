@@ -102,6 +102,17 @@ const page = () => {
 
         try {
 
+            await updateUserAttributes({
+                userAttributes: {
+                    'custom:fullName' : values.fullName,
+                    'custom:address': values.address,
+                    'custom:city' : values.city,
+                    'custom:state' : values.state,
+                    'custom:contactNumber' : values.contactNumber,
+                    'custom:zipCode' : values.zipCode
+                }
+            });
+
             await client.graphql({
                 query: updateInformation,
                 variables: {
@@ -117,6 +128,7 @@ const page = () => {
             toast.success("Updated successfully.");
 
         } catch (error) {
+            console.log(error);
             toast.error(`Error during the process.`);
         }
 
@@ -251,7 +263,7 @@ const page = () => {
                                                     <Field
                                                         className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${errors.zipCode ? 'border-red-600' : 'border-gray-200'} rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                                                         id="grid-zip"
-                                                        type="number"
+                                                        type="text"
                                                         placeholder="90210"
                                                         name="zipCode"
                                                     />
