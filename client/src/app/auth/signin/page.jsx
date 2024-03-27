@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   RiGoogleFill,
   RiAppleFill,
@@ -15,21 +17,15 @@ import {
   RiErrorWarningFill,
 } from "react-icons/ri";
 import { Hub } from "aws-amplify/utils";
-import { useRouter } from "next/navigation";
 import VerificationCodeModal from "@/components/LoginRegister/modals/VerificationCodeModal";
 import { useDisclosure } from "@nextui-org/react";
 import { Formik, Form, Field } from 'formik'
-import { signInWithRedirect, signIn, signOut, fetchUserAttributes } from 'aws-amplify/auth';
+import { signInWithRedirect, signIn, signOut, fetchUserAttributes, fetchAuthSession } from 'aws-amplify/auth';
 import AmplifyContext from '@/contexts/AmplifyContext';
-import { getUserByCognitoID } from "@/graphql/custom-queries";
-import { client } from "@/contexts/AmplifyContext";
-import { useDispatch } from 'react-redux';
-import { signInRedux } from '@/redux/user/userSlice';
 import { handleCreateUserOnDatabase, handleRetrieveMyUser } from '@/api';
 const SignIn = () => {
   const status = "inactive";
   const router = useRouter();
-  const dispatch = useDispatch();
   const {isOpen: isVerifyCodeModalOpen, onOpen: onVerifyCodeModalOpen, onOpenChange: onVerifyCodeModalOpenChange} = useDisclosure();
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState({
@@ -97,8 +93,10 @@ const SignIn = () => {
   async function currentAuthenticatedUser() {
     try {
       const { email, family_name, given_name } = await fetchUserAttributes();
+      const { tokens } = await fetchAuthSession({ forceRefresh: true });
+      const expiredAt = tokens.accessToken.payload.exp;
       const fullName = given_name + family_name;
-      return { email, fullName };
+      return { email, fullName, expiredAt };
     } catch (error) {
       console.log(error);
     }
@@ -108,18 +106,11 @@ const SignIn = () => {
       switch (payload.event) {
         case "signedIn":
           console.log("user have been signedIn successfully.");
-          const { fullName, email } = await currentAuthenticatedUser();
+          const { fullName, email, expiredAt } = await currentAuthenticatedUser();
           const cognitoId = payload.data.userId;
           const userExist = await handleRetrieveMyUser(cognitoId);
           if (userExist !== null && userExist !== undefined) {
             console.log("user already in DB. Going to /user");
-            const { data } = await client.graphql({
-              query: getUserByCognitoID,
-              variables: {
-                  cognitoId: cognitoId,
-              },
-            });
-            dispatch(signInRedux(data.listUsers.items[0]))
             if(userExist.rol === "admin")
             {
               router.replace("/admin-dashboard/");
@@ -133,14 +124,9 @@ const SignIn = () => {
               cognitoId,
               status,
             });
-            dispatch(signInRedux({ 
-              fullName,
-              email,
-              cognitoId,
-              status, 
-            }));
             router.replace("/user");
           }
+          Cookies.set("currentUser", JSON.stringify({...userExist, expiredAt}));
           console.log("process completed");
           break;
       }

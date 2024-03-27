@@ -1,14 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field } from "formik";
 import ErrorAlert from "@/components/LoginRegister/modals/ErrorAlert";
-import { signInWithRedirect, signUp } from "aws-amplify/auth";
+import { signUp } from "aws-amplify/auth";
 import validationSignUp from "./validationSignUp";
 import {
-  RiGoogleFill,
-  RiAppleFill,
-  RiFacebookCircleFill,
   RiMailLine,
   RiLockLine,
   RiEyeLine,
@@ -21,7 +18,6 @@ import { useDisclosure } from "@nextui-org/react";
 import { handleCreateUserOnDatabase } from "@/api";
 import { useRouter } from "next/navigation";
 const SignUp = () => {
-  const router = useRouter();
   const status = "inactive";
   const [showPassword, setShowPassword] = useState(false);
   const [messageDataMissing, setMessageDataMissing] = useState(false);
@@ -143,30 +139,6 @@ const SignUp = () => {
                   <h2 className="text-[30px] font-bold">SIGN-UP</h2>
                   <p>enter with your account</p>
                 </div>
-              </div>
-              <div className="w-full flex items-center justify-between mb-4">
-                <button
-                  onClick={() => signInWithRedirect({ provider: "Google" })}
-                  className="w-[30%]  bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 px-5"
-                >
-                  <RiGoogleFill className="text-[20px] text-red-400" /> Google
-                </button>
-                <button
-                  onClick={() => signInWithRedirect({ provider: "Facebook" })}
-                  className="w-[30%] bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50 text-[15px]  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 "
-                >
-                  <RiFacebookCircleFill className="text-[20px] text-blue-400" />{" "}
-                  Facebook
-                </button>
-                <button
-                  onClick={() => signInWithRedirect({ provider: "Apple" })}
-                  className="w-[30%] bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 px-5"
-                >
-                  <RiAppleFill className="text-[20px]" /> Apple
-                </button>
-              </div>
-              <div className="w-full flex items-center justify-center mb-3">
-                <h3 className="text-[20px] font-bold text-center">or</h3>
               </div>
               <div className=" flex flex-col border-b-[2px] border-gray-600 mb-6 pb-4 pt-6">
                 <p className="text-white mb-3">
