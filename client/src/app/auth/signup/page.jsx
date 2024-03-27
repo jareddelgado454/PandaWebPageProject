@@ -93,6 +93,8 @@ const SignUp = () => {
             userAttributes: {
               email: values.email,
               "custom:role": values.rol,
+              "custom:fullName": values.fullName,
+              "custom:status": status
             },
           },
         });

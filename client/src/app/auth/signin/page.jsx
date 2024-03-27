@@ -20,7 +20,7 @@ import { Hub } from "aws-amplify/utils";
 import VerificationCodeModal from "@/components/LoginRegister/modals/VerificationCodeModal";
 import { useDisclosure } from "@nextui-org/react";
 import { Formik, Form, Field } from 'formik'
-import { signInWithRedirect, signIn, signOut, fetchUserAttributes, fetchAuthSession } from 'aws-amplify/auth';
+import { signInWithRedirect, signIn, signOut, fetchUserAttributes, fetchAuthSession, updateUserAttributes } from 'aws-amplify/auth';
 import AmplifyContext from '@/contexts/AmplifyContext';
 import { handleCreateUserOnDatabase, handleRetrieveMyUser } from '@/api';
 const SignIn = () => {
@@ -119,6 +119,21 @@ const SignIn = () => {
               router.replace("/user/");
             }
           } else {
+            if(fullName){
+              await updateUserAttributes({
+                userAttributes: {
+                    'custom:fullName': fullName,
+                    'custom:status' : status
+                }
+              });
+            }else{
+              await updateUserAttributes({
+                userAttributes: {
+                    'custom:status' : status
+                }
+              });
+            }
+            
             await handleCreateUserOnDatabase({
               fullName,
               email,
