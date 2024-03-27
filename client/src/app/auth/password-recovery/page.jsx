@@ -1,7 +1,6 @@
 "use client"
-
 import React, { useState } from 'react'
-import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { Formik, Form, Field } from 'formik'
 import Link from 'next/link'
 import {
     RiMailLine,
@@ -13,10 +12,6 @@ import {
 import { resetPassword } from 'aws-amplify/auth';
 import ChangingPassword from '@/components/LoginRegister/modals/ChangingPassword';
 import { useDisclosure } from '@nextui-org/react';
-import { Amplify } from 'aws-amplify';
-import config from '@/amplifyconfiguration.json';
-Amplify.configure(config);
-
 const RecoveryPassword = () => {
 
     const [emailPassed, setEmailPassed] = useState("");
