@@ -5,6 +5,7 @@ export const publicRoutes = ["/"];
 export function middleware(request) {
   const currentUserCookie = request.cookies.get("currentUser");
   const currentUser = currentUserCookie ? currentUserCookie.value : null;
+  const userRol = currentUserCookie ? JSON.parse(currentUser).rol : null;
   if (
     protectedRoutes.includes(request.nextUrl.pathname) &&
     (!currentUser || Date.now() > new Date((JSON.parse(currentUser).expiredAt) * 1000))
@@ -24,8 +25,13 @@ export function middleware(request) {
     }
   }
 
-  if (request.nextUrl.pathname.startsWith("/admin-dashboard") && JSON.parse(currentUser).rol !== 'admin') {
+  if (request.nextUrl.pathname.startsWith("/admin-dashboard") && userRol !== 'admin') {
     const response = NextResponse.redirect(new URL("/user", request.url));
+    return response;
+  }
+
+  if (request.nextUrl.pathname.startsWith("/user") && userRol === 'admin') {
+    const response = NextResponse.redirect(new URL("/admin-dashboard", request.url));
     return response;
   }
 }

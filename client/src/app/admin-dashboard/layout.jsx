@@ -4,8 +4,6 @@ import { Sidebar } from "@/components/Sidebar";
 import { FaHouse, FaMoon } from "react-icons/fa6";
 import Link from "next/link";
 import { signOut } from 'aws-amplify/auth';
-import AuthGuard from "@/components/authGuard";
-
 function AdminDashboardLayout ({children}) {
     const [theme, setTheme] = useState("light");
     
@@ -54,4 +52,4 @@ function AdminDashboardLayout ({children}) {
     )
 }
 
-export default AuthGuard(AdminDashboardLayout);
+export default AdminDashboardLayout;

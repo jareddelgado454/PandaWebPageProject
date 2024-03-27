@@ -111,6 +111,7 @@ const SignIn = () => {
           const userExist = await handleRetrieveMyUser(cognitoId);
           if (userExist !== null && userExist !== undefined) {
             console.log("user already in DB. Going to /user");
+            Cookies.set("currentUser", JSON.stringify({...userExist, expiredAt}));
             if(userExist.rol === "admin")
             {
               router.replace("/admin-dashboard/");
@@ -124,9 +125,9 @@ const SignIn = () => {
               cognitoId,
               status,
             });
+            Cookies.set("currentUser", JSON.stringify({...userExist, expiredAt}));
             router.replace("/user");
           }
-          Cookies.set("currentUser", JSON.stringify({...userExist, expiredAt}));
           console.log("process completed");
           break;
       }
