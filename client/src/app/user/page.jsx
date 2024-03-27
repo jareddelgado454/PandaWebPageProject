@@ -1,8 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import Cookies from "js-cookie";
 import * as Yup from 'yup';
-import { fetchUserAttributes, signOut, updateUserAttributes } from "aws-amplify/auth";
+import { fetchAuthSession, fetchUserAttributes, signOut, updateUserAttributes } from "aws-amplify/auth";
 import { uploadData } from 'aws-amplify/storage';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
@@ -14,23 +15,20 @@ import { updateInformation, updateRol } from "@/graphql/users/mutation/users";
 import { getUserByCognitoID } from "@/graphql/custom-queries";
 import { client } from "@/contexts/AmplifyContext";
 import AuthGuard from "@/components/authGuard";
-import { useSelector, useDispatch } from "react-redux";
-import { signOutRedux } from "@/redux/user/userSlice";
 const page = () => {
     const router = useRouter();
-    const {currentUser} = useSelector((state) => state.persistedReducer.user);
-    console.log("asfasdas",currentUser);
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [photograph, setPhotograph] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [user, setUser] = useState(null);
     const [userSelected, setUserSelected] = useState({});
-    const dispatch = useDispatch();
     const retrieveOneUser = async() => {
         setLoading(true);
         try {
             const { sub } = await fetchUserAttributes();
+            const log = await fetchAuthSession();
+            console.log(log);
             const { data } = await client.graphql({
                 query: getUserByCognitoID,
                 variables: {
@@ -361,7 +359,8 @@ const page = () => {
                                 <button
                                     onClick={() => {
                                         signOut();
-                                        dispatch(signOutRedux());
+                                        Cookies.remove("currentUser");
+                                        //dispatch(signOutRedux());
                                         router.replace("/");
                                     }}
                                     className="rounded-b-lg bg-green-panda h-[2.5rem] md:h-[3.5rem] font-bold text-white flex justify-center items-center"
@@ -414,11 +413,11 @@ const CustomModal = ({ isOpen, onOpenChange, user, callback }) => {
             toast.error(`Error during the process.`);
         }
     };
-    const updateCustomRol = async() => {
+    const updateCustomRol = async(rol) => {
         try {
             await updateUserAttributes({
                 userAttributes: {
-                    'custom:role': "technician"
+                    'custom:role': rol
                 }
             });
         } catch (error) {

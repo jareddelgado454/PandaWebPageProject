@@ -1,12 +1,31 @@
 import { NextResponse } from 'next/server'
- 
-const isLoggedIn = false;
-
+export const protectedRoutes = ["/admin-dashboard", "/user"];
+export const authRoutes = ["/auth/signup", "/auth/signin"];
+export const publicRoutes = ["/"];
 export function middleware(request) {
-  return NextResponse.redirect(new URL('/home', request.url))
-}
- 
-// See "Matching Paths" below to learn more
-export const config = {
-  matcher: '/about/:path*',
+  const currentUserCookie = request.cookies.get("currentUser");
+  const currentUser = currentUserCookie ? currentUserCookie.value : null;
+  if (
+    protectedRoutes.includes(request.nextUrl.pathname) &&
+    (!currentUser || Date.now() > new Date((JSON.parse(currentUser).expiredAt) * 1000))
+  ) {
+    request.cookies.delete("currentUser");
+    const response = NextResponse.redirect(new URL("/", request.url));
+    response.cookies.delete("currentUser");
+    return response;
+  }
+
+  if (authRoutes.includes(request.nextUrl.pathname) && currentUser) {
+    console.log("allowed");
+    if(JSON.parse(currentUser).rol === 'admin') {
+      return NextResponse.redirect(new URL("/admin-dashboard/", request.url));
+    }else {
+      return NextResponse.redirect(new URL("/user", request.url));
+    }
+  }
+
+  if (request.nextUrl.pathname.startsWith("/admin-dashboard") && JSON.parse(currentUser).rol !== 'admin') {
+    const response = NextResponse.redirect(new URL("/user", request.url));
+    return response;
+  }
 }
