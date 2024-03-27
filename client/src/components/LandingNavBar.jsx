@@ -14,12 +14,14 @@ Amplify.configure(config);
 
 const LandingNavBar = () => {
     const [user,setUser] = useState({});
+    const [pictureUser, setPictureUser] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [showMenu, setShowMenu] = useState(false);
     const currentAuthenticatedUser = async () => {
         try {
-            const { sub } = await fetchUserAttributes();
+            const { sub, picture } = await fetchUserAttributes();
+            if (picture) setPictureUser(picture);
             if(sub){
                 setIsLoggedIn(true);
                 const { data } = await client.graphql({
@@ -87,9 +89,10 @@ const LandingNavBar = () => {
                                             as="button"
                                             avatarProps={{
                                                 isBordered: false,
-                                                src: `${user.profilePicture ? user?.profilePicture : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" }`,
+                                                src: `${pictureUser ? pictureUser : user.profilePicture ? user?.profilePicture : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" }`,
+                                                
                                             }}
-                                            className="transition-transform text-white w-[150px]"
+                                            className="transition-transform text-white w-[12rem] h-full"
                                             description={`${user?.rol}`}
                                             name={`${user?.fullName}`}
                                         />
