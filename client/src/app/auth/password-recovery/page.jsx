@@ -42,6 +42,7 @@ const RecoveryPassword = () => {
             setEmailPassed(values.email);
             handleResetPasswordNextSteps(output);
           } catch (error) {
+            console.log(error)
               if(error.name == "UserNotFoundException"){
                   setErrorMessage({
                       status : true,
