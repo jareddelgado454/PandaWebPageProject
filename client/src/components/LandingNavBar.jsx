@@ -45,7 +45,7 @@ const LandingNavBar = () => {
     },[]);
 
   return (
-    <nav className='relative w-full bg-black/20 p-3 py-4 flex justify-between z-40'>
+    <nav className='relative w-full  p-3 py-4 flex justify-between z-40'>
         <div className="flex gap-x-2 items-center order-1 lg:order-2">
             <img src="/panda.png" className="w-[4rem] h-[3rem] drop-shadow-lg" alt="panda_logo" />
             <p className="font-bold drop-shadow-xl tracking-wider text-white">Panda CMS</p> 
