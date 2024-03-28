@@ -20,6 +20,16 @@ export const getUserByCognitoID = gql`
     }
 `;
 
+export const getUserIdByCognitoID = gql`
+    query MyQuery($cognitoId: String!) {
+        listUsers(filter: {cognitoId: {eq: $cognitoId}}) {
+            items {
+                id
+            }
+        }
+    }
+`;
+
 export const getUserByEmail = gql`
     query MyQuery($email: String!) {
         listUsers(filter: {email: {eq: $email}}) {

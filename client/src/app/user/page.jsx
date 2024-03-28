@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import Cookies from "js-cookie";
 import * as Yup from 'yup';
-import { fetchAuthSession, fetchUserAttributes, signOut, updateUserAttributes } from "aws-amplify/auth";
+import { fetchUserAttributes, signOut, updateUserAttributes } from "aws-amplify/auth";
 import { uploadData } from 'aws-amplify/storage';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
@@ -12,9 +12,8 @@ import { useRouter } from "next/navigation";
 import {Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, useSelect} from "@nextui-org/react";
 import { statesUSA } from '@/assets/data/StatesUSA';
 import { updateInformation, updateRol } from "@/graphql/users/mutation/users";
-import { getUserByCognitoID } from "@/graphql/custom-queries";
+import { getUserIdByCognitoID } from "@/graphql/custom-queries";
 import { client } from "@/contexts/AmplifyContext";
-import AuthGuard from "@/components/authGuard";
 const page = () => {
     const router = useRouter();
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -22,20 +21,18 @@ const page = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [user, setUser] = useState(null);
-    const [userSelected, setUserSelected] = useState({});
     const retrieveOneUser = async() => {
         setLoading(true);
         try {
-            const { sub } = await fetchUserAttributes();
-            const log = await fetchAuthSession();
-            console.log(log);
+            const info = await fetchUserAttributes();
             const { data } = await client.graphql({
-                query: getUserByCognitoID,
+                query: getUserIdByCognitoID,
                 variables: {
-                    cognitoId: sub,
+                    cognitoId: info.sub,
                 },
             });
-            await setUser(data.listUsers.items[0]);
+            const userId = data.listUsers.items[0].id;
+            await setUser({...info, dbId: userId});
             setLoading(false);
 
         } catch (error) {
@@ -70,7 +67,6 @@ const page = () => {
         }
     }  
     const handleUpdatePicture = async(picture) => {
-    
         const uniqueId = uuidv4();
         const filename = `user-profile-pictures/${uniqueId}.jpg`;
         try {
@@ -97,11 +93,8 @@ const page = () => {
     
     }
     const onHandleSubmit = async(values, { setSubmitting }) => {
-
         setSubmitting(true);
-
         try {
-
             await updateUserAttributes({
                 userAttributes: {
                     'custom:fullName' : values.fullName,
@@ -112,35 +105,31 @@ const page = () => {
                     'custom:zipCode' : values.zipCode
                 }
             });
-
             await client.graphql({
                 query: updateInformation,
                 variables: {
                     email: values.email,
                     input: {
-                        id: user.id,
+                        id: user.dbId,
                         ...values
                     }
                 }
             })
-
             await retrieveOneUser();
             toast.success("Updated successfully.");
-
         } catch (error) {
             console.log(error);
             toast.error(`Error during the process.`);
         }
-
     }
     useEffect(() => {
-        if(user && !user.rol) {
+        if(user && !user['custom:role']) {
             handleUserSelected(user);
         }
     }, [user]);
     const handleUserSelected = (user) => {
         onOpen(true);
-        setUserSelected(user);
+        setUser(user);
     }
     return (
         <div className="w-full h-screen relative">
@@ -159,13 +148,13 @@ const page = () => {
                         <div className="w-full overflow-y-auto md:w-2/4 bg-white rounded-lg shadow-lg p-4 h-3/4 relative order-1">
                             <Formik
                                 initialValues={{
-                                    fullName: user.fullName || '',
+                                    fullName: user['custom:fullName'] || '',
                                     email: user.email || '',
-                                    address: user.address || '',
-                                    city: user.city || '',
-                                    state: user.state || '',
-                                    zipCode: user.zipCode || 0,
-                                    contactNumber: user.contactNumber || 0,
+                                    address: user['custom:address'] || '',
+                                    city: user['custom:city'] || '',
+                                    state: user['custom:state'] || '',
+                                    zipCode: user['custom:zipCode'] || 0,
+                                    contactNumber: user['custom:contactNumber'] || 0,
                                     status: 'active'
                                 }}
                                 validationSchema={formSchema}
@@ -359,10 +348,10 @@ const page = () => {
                                         </span>
                                     </div>
                                     <div className="flex gap-1">
-                                        <strong>Status: </strong><span className={`${user.status === 'active' ? 'text-[#40C48E]' : 'text-rose-600'}`}>{user.status}</span>
+                                        <strong>Status: </strong><span className={`${user['custom:status'] === 'active' ? 'text-[#40C48E]' : 'text-rose-600'}`}>{user['custom:status']}</span>
                                     </div>
                                     <div className="flex gap-1">
-                                        <strong>Role: </strong><span className="text-[#40C48E]">{user.rol}</span>
+                                        <strong>Role: </strong><span className="text-[#40C48E]">{user['custom:role']}</span>
                                     </div>
                                 </div>
                             </div>
@@ -399,10 +388,12 @@ const formSchema = Yup.object().shape({
 });
 
 const CustomModal = ({ isOpen, onOpenChange, user, callback }) => {
+
     const onHandleSubmit = async(values, { setSubmitting }) => {
         setSubmitting(true);
-        try {
 
+        try {
+            
             if (!user) return;
 
             await client.graphql({
@@ -410,7 +401,7 @@ const CustomModal = ({ isOpen, onOpenChange, user, callback }) => {
                 variables: {
                     email: user.email,
                     input: {
-                        id: user.id,
+                        id: user.dbId,
                         rol: values.rol
                     }
                 }
@@ -498,4 +489,4 @@ const CustomModal = ({ isOpen, onOpenChange, user, callback }) => {
     );
 };
 
-export default AuthGuard(page);
+export default page;

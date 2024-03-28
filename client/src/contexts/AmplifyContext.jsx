@@ -5,7 +5,6 @@ Amplify.configure(config);
 import { generateClient } from "aws-amplify/api";
 export const client = generateClient();
 const AmplifyContext = ({ children }) => {
-  console.log("aws configured");
   return <>{children}</>;
 };
 
