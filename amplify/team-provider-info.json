@@ -1,0 +1,29 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-pandawebapp-dev-33154-authRole",
+      "UnauthRoleArn": "arn:aws:iam::327537917845:role/amplify-pandawebapp-dev-33154-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::327537917845:role/amplify-pandawebapp-dev-33154-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
+      "UnauthRoleName": "amplify-pandawebapp-dev-33154-unauthRole",
+      "StackName": "amplify-pandawebapp-dev-33154",
+      "StackId": "arn:aws:cloudformation:us-east-1:327537917845:stack/amplify-pandawebapp-dev-33154/62baf2a0-f046-11ee-a854-12c0f8b687c7",
+      "AmplifyAppId": "d3dtglewderhtg"
+    },
+    "categories": {
+      "auth": {
+        "pandawebapp0a05bcd0": {}
+      },
+      "function": {
+        "S3Triggerdf93383d": {
+          "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
+          "s3Key": "amplify-builds/S3Triggerdf93383d-464f485a6f6748553356-build.zip"
+        }
+      },
+      "storage": {
+        "pandawebapp": {}
+      }
+    }
+  }
+}
