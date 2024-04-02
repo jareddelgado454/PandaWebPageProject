@@ -200,7 +200,7 @@ const Home = () => {
                       <h3 className="text-[35px] text-white text-left font-bold">Our <span className="text-emerald-400">MISSION</span></h3>
                   </div> 
                   <div className="w-full px-6 mb-6">
-                      <p className="text-gray-200 text-[18px]">We provide a source of economic power for mobile mechanics. Our goal is to be the best customer relationship management tool any mobile mechanic could need. we focus on customer acquisition and retention so you don't have to.</p>
+                      <p className="text-gray-200 text-[18px]">{"We provide a source of economic power for mobile mechanics. Our goal is to be the best customer relationship management tool any mobile mechanic could need. we focus on customer acquisition and retention so you don't have to."}</p>
                   </div>
                   <div className="w-full px-6 mb-6">
                       <div className="text-[40px] font-extrabold overflow-hidden divChangeColor">

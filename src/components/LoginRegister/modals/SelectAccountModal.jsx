@@ -41,12 +41,12 @@ const SelectAccountModal = ({ isOpen, onOpenChange, providerIdentitySelected }) 
 
                         <p className='text-[12px] font-light text-gray-100'>
                             <span className='text-[14px] font-bold text-white'>Customer account:</span>
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                         </p>
 
                         <p className='text-[12px] font-light text-gray-100 mb-3'>
                             <span className='text-[14px] font-bold text-white'>Technician account:</span>
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                         </p>
 
                         <div className="flex items-center gap-x-2 mb-2">

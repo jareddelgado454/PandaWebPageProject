@@ -118,7 +118,7 @@ const RecoveryPassword = () => {
                     </Formik>
                     <div className=" border-transparent flex flex-col border-t-[2px] border-zinc-600 pt-8 pb-4">
                       <p className="text-white mb-3">
-                        You still don't have an account? <Link className="hover:text-emerald-300 text-emerald-400 text-[18px] font-bold hover:font-bold cursor-pointer" href="/auth/signup" >Sign up here</Link>
+                        {"You still don't have an account?"} <Link className="hover:text-emerald-300 text-emerald-400 text-[18px] font-bold hover:font-bold cursor-pointer" href="/auth/signup" >Sign up here</Link>
                       </p>
                     </div>
                   </div>
@@ -137,7 +137,7 @@ const RecoveryPassword = () => {
                               </div>
                               <div className='flex items-center text-[18px] gap-x-3 font-semibold mb-3'>
                                   <RiListCheck3  className='text-emerald-400 text-[35px]'/>
-                                  We focus on customer acquisition and retention so you don't have to.
+                                  {"We focus on customer acquisition and retention so you don't have to."}
                               </div>
                         </div>
                         <div className='absolute top-0 w-full h-full bg-zinc-800 opacity-60'></div> 

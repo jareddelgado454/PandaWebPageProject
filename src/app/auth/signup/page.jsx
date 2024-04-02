@@ -347,22 +347,14 @@ const SignUp = () => {
                     <span className="text-[14px] font-bold text-white">
                       Customer account:
                     </span>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an unknown
-                    printer took a galley of type and scrambled it to make a type
-                    specimen book. It has survived not only five centuries.
+                    {"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."}
                   </p>
 
                   <p className="text-[12px] font-light text-gray-100 mb-3">
                     <span className="text-[14px] font-bold text-white">
                       Technician account:
                     </span>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an unknown
-                    printer took a galley of type and scrambled it to make a type
-                    specimen book. It has survived not only five centuries.
+                    {"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."}
                   </p>
 
                   <div className="flex items-center gap-x-2 mb-2">
@@ -401,7 +393,7 @@ const SignUp = () => {
                   )}
                 </div>
                 <div className="xl:block hidden w-full xl:w-[430px] bg-zinc-700 p-8 rounded-lg mb-6 pb-8 h-auto text-[19px] ">
-                  Don't forget to<span className="text-emerald-300" > complete</span> your <span className="text-emerald-300">profile</span> when you log in.
+                  {"Don't forget to"}<span className="text-emerald-300" > complete</span> your <span className="text-emerald-300">profile</span> when you log in.
                 </div>
               </div>
               

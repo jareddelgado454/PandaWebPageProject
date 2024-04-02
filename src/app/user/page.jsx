@@ -14,7 +14,7 @@ import { statesUSA } from '@/assets/data/StatesUSA';
 import { updateInformation, updateRol } from "@/graphql/users/mutation/users";
 import { getUserIdByCognitoID } from "@/graphql/custom-queries";
 import { client } from "@/contexts/AmplifyContext";
-const page = () => {
+const Page = () => {
     const router = useRouter();
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [photograph, setPhotograph] = useState(null);
@@ -489,4 +489,4 @@ const CustomModal = ({ isOpen, onOpenChange, user, callback }) => {
     );
 };
 
-export default page;
+export default Page;

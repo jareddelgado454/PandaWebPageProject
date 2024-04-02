@@ -174,7 +174,7 @@ const SignIn = () => {
       }
     });
     return () => hubListenerCancel();
-  }, []);
+  }, [onOpenLoadingModal, router]);
   return (
     <AmplifyContext>
       <CheckoutModal
@@ -230,7 +230,7 @@ const SignIn = () => {
 
             <div className=" border-transparent flex flex-col border-t-[2px] border-zinc-600 pt-8 pb-4">
               <p className="text-white mb-3">
-                You still don't have an account?{" "}
+                {"You still don't have an account?"}{" "}
                 <Link
                   className="hover:text-emerald-300 text-emerald-400 text-[18px] font-bold hover:font-bold cursor-pointer"
                   href="/auth/signup"
@@ -275,7 +275,7 @@ const SignIn = () => {
                     )}
                   </div>
                   <div className="text-white mb-4">
-                    I don't remember my password,{" "}
+                    {"I don't remember my password,"}{" "}
                     <Link
                       href="/auth/password-recovery"
                       className="text-emerald-400 font-semibold cursor-pointer text-[19px] hover:text-emerald-300"
@@ -320,7 +320,7 @@ const SignIn = () => {
               </div>
               <div className="flex items-center text-[18px] gap-x-3 font-semibold mb-3">
                 <RiListCheck3 className="text-emerald-400 text-[35px]" />
-                We focus on customer acquisition and retention so you don't have
+                {"We focus on customer acquisition and retention so you don't have"}
                 to.
               </div>
             </div>
