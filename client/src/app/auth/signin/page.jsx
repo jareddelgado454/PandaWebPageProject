@@ -182,7 +182,7 @@ const SignIn = () => {
         onOpenChange={onOpenLoadingModal}
       />
       <div className="h-screen w-full text-white">
-        <div className="grid grid-cols-1 lg:grid-cols-2 h-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 h-[calc(100%-100px)]">
           <div className="flex flex-col gap-4 justify-center px-4 lg:px-12">
             <div className="my-4">
               <h2 className="text-[30px] font-bold">SIGN-IN</h2>
@@ -305,7 +305,7 @@ const SignIn = () => {
               )}
             </Formik>
           </div>
-          <div className="relative h-full">
+          <div className="relative h-full lg:block hidden">
             <div className="absolute top-[40%] left-[5%] z-40 flex flex-col">
               <h3 className="text-[30px] font-bold mb-7">
                 Benefit of The Panda
@@ -327,7 +327,7 @@ const SignIn = () => {
             <div className="absolute top-0 w-full h-full bg-zinc-800 opacity-60"></div>
             <img
               src="https://cdna.artstation.com/p/assets/images/images/040/174/900/large/fabian-geyer-wideshotright.jpg?1628083532"
-              className="object-cover h-[32rem] md:h-[44rem] xl:h-full"
+              className="object-cover h-[calc(100%-100px)] md:h-[44rem] xl:h-full"
             />
           </div>
         </div>

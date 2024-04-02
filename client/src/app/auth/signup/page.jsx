@@ -128,14 +128,14 @@ const SignUp = () => {
     }
   };
   return (
-    <div className="lg:h-screen w-full text-white px-8">
+    <div className="xl:h-screen w-full flex justify-center text-white px-8">
       <Formik initialValues={initialValue} onSubmit={onHandleCreate}>
         {({ handleSubmit, setFieldValue }) => (
           <Form
             onSubmit={handleSubmit}
-            className="flex flex-col lg:flex-row flex-nowrap justify-center items-center h-full mb-10 pt-4"
+            className="flex flex-col xl:flex-row flex-nowrap xl:justify-around justify-center h-full mb-10 pt-4 xl:w-[1200px] lg:w-[80%] w-full gap-7"
           >
-            <div className="w-full lg:w-2/4 flex flex-col">
+            <div className="w-full xl:flex-1  flex flex-col  px-4 pt-6">
               <div className="w-full">
                 <div className="mb-3">
                   <h2 className="text-[30px] font-bold">SIGN-UP</h2>
@@ -315,91 +315,97 @@ const SignUp = () => {
                 )}
               </p>
             </div>
-            <div className="w-full lg:w-2/4 flex justify-center items-center">
-              <div className="w-full lg:w-2/3 h-full bg-zinc-700 p-8 rounded-md mb-6 pb-8">
-                <h2 className="text-4xl font-bold mb-3">Account settings</h2>
-                <p className="mb-1">
-                  Choose your account type:{" "}
-                  <span className="text-red-400">*</span>
-                </p>
-                <Field
-                  as="select"
-                  id="rol"
-                  name="rol"
-                  onChange={(e) => {
-                    setFieldValue("rol", e.target.value);
-                    setDataSignUp({ ...dataSignUp, rol: e.target.value });
-                  }}
-                  className="block w-full bg-zinc-800 text-white py-3 px-4 rounded-lg mb-2"
-                >
-                  <option className="text-white" value="" disabled selected>
-                    Select an option
-                  </option>
-                  <option className="text-white" value="customer">
-                    Customer
-                  </option>
-                  <option className="text-white" value="technician">
-                    Technician
-                  </option>
-                </Field>
-
-                <p className="text-[12px] font-light text-gray-100">
-                  <span className="text-[14px] font-bold text-white">
-                    Customer account:
-                  </span>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries.
-                </p>
-
-                <p className="text-[12px] font-light text-gray-100 mb-3">
-                  <span className="text-[14px] font-bold text-white">
-                    Technician account:
-                  </span>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries.
-                </p>
-
-                <div className="flex items-center gap-x-2 mb-2">
-                  <Field
-                    type="radio"
-                    name="agreed"
-                    value="agreed"
-                    checked={dataSignUp.agreed}
-                    onChange={(e) =>
-                      setDataSignUp({ ...dataSignUp, agreed: e.target.checked })
-                    }
-                    className="rounded border-emerald-400 focus:ring-emerald-400 focus:border-emerald-400"
-                  />
-                  <p className="text-white">
-                    Check here to accept the{" "}
-                    <span className="text-emerald-300 cursor-pointer font-semibold">
-                      Terms and conditions
-                    </span>
+            <div className="w-full xl:w-1/3  flex  px-2">
+              <div className="xl:w-[430px] w-full pt-6 flex flex-col">
+                <div className="w-full xl:w-[430px] bg-zinc-700 p-8 rounded-lg mb-6 pb-8 h-auto">
+                  <h2 className="text-4xl font-bold mb-3">Account settings</h2>
+                  <p className="mb-1">
+                    Choose your account type:{" "}
+                    <span className="text-red-400">*</span>
                   </p>
-                </div>
-                <button
-                  type="submit"
-                  className="w-full py-3 text-[19px] bg-emerald-500  hover:bg-emerald-500/90 transition-colors rounded-lg text-white"
-                >
-                  Create account
-                </button>
-                {messageDataMissing && (
-                  <div className="bg-red-500 text-white flex w-full justify-center gap-x-2 p-4 mt-5">
-                    <RiErrorWarningFill className="w-[30%] text-[35px]" />
-                    <p>
-                      All fields must be completed correctly, you must also
-                      select the type of account and accept the terms and
-                      conditions
+                  <Field
+                    as="select"
+                    id="rol"
+                    name="rol"
+                    onChange={(e) => {
+                      setFieldValue("rol", e.target.value);
+                      setDataSignUp({ ...dataSignUp, rol: e.target.value });
+                    }}
+                    className="block w-full bg-zinc-800 text-white py-3 px-4 rounded-lg mb-2"
+                  >
+                    <option className="text-white" value="" disabled selected>
+                      Select an option
+                    </option>
+                    <option className="text-white" value="customer">
+                      Customer
+                    </option>
+                    <option className="text-white" value="technician">
+                      Technician
+                    </option>
+                  </Field>
+
+                  <p className="text-[12px] font-light text-gray-100">
+                    <span className="text-[14px] font-bold text-white">
+                      Customer account:
+                    </span>
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industry's
+                    standard dummy text ever since the 1500s, when an unknown
+                    printer took a galley of type and scrambled it to make a type
+                    specimen book. It has survived not only five centuries.
+                  </p>
+
+                  <p className="text-[12px] font-light text-gray-100 mb-3">
+                    <span className="text-[14px] font-bold text-white">
+                      Technician account:
+                    </span>
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industry's
+                    standard dummy text ever since the 1500s, when an unknown
+                    printer took a galley of type and scrambled it to make a type
+                    specimen book. It has survived not only five centuries.
+                  </p>
+
+                  <div className="flex items-center gap-x-2 mb-2">
+                    <Field
+                      type="radio"
+                      name="agreed"
+                      value="agreed"
+                      checked={dataSignUp.agreed}
+                      onChange={(e) =>
+                        setDataSignUp({ ...dataSignUp, agreed: e.target.checked })
+                      }
+                      className="rounded border-emerald-400 focus:ring-emerald-400 focus:border-emerald-400"
+                    />
+                    <p className="text-white">
+                      Check here to accept the{" "}
+                      <span className="text-emerald-300 cursor-pointer font-semibold">
+                        Terms and conditions
+                      </span>
                     </p>
                   </div>
-                )}
+                  <button
+                    type="submit"
+                    className="w-full py-3 text-[19px] bg-emerald-500  hover:bg-emerald-500/90 transition-colors rounded-lg text-white"
+                  >
+                    Create account
+                  </button>
+                  {messageDataMissing && (
+                    <div className="bg-red-500 text-white flex w-full justify-center gap-x-2 p-4 mt-5">
+                      <RiErrorWarningFill className="w-[30%] text-[35px]" />
+                      <p>
+                        All fields must be completed correctly, you must also
+                        select the type of account and accept the terms and
+                        conditions
+                      </p>
+                    </div>
+                  )}
+                </div>
+                <div className="xl:block hidden w-full xl:w-[430px] bg-zinc-700 p-8 rounded-lg mb-6 pb-8 h-auto text-[19px] ">
+                  Don't forget to<span className="text-emerald-300" > complete</span> your <span className="text-emerald-300">profile</span> when you log in.
+                </div>
               </div>
+              
             </div>
           </Form>
         )}
