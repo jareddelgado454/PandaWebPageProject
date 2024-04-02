@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, User} from "@nextui-org/react";
 import { getCurrentUser } from 'aws-amplify/auth';
+import { RiCloseFill } from "react-icons/ri";
 import { fetchUserAttributes } from 'aws-amplify/auth';
 import { Amplify } from "aws-amplify";
 import { client } from "@/contexts/AmplifyContext";
@@ -10,6 +11,8 @@ import config from "@/amplifyconfiguration.json";
 import { signOut } from "aws-amplify/auth";
 import { getUserByCognitoID } from "@/graphql/custom-queries";
 import { FaBars } from 'react-icons/fa6';
+import { useWindowSize } from 'react-use';
+import useMedia from 'use-media';
 Amplify.configure(config);
 
 const LandingNavBar = () => {
@@ -17,7 +20,17 @@ const LandingNavBar = () => {
     const [pictureUser, setPictureUser] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const { width } = useWindowSize();
+    const isLGScreen = useMedia({ minWidth: '1024px' }); 
     const [showMenu, setShowMenu] = useState(false);
+    const toggleMenu = (action) => {
+        setShowMenu(action);
+        if (!showMenu) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    };
     const currentAuthenticatedUser = async () => {
         try {
             const { sub, picture } = await fetchUserAttributes();
@@ -42,7 +55,15 @@ const LandingNavBar = () => {
 
     useEffect(()=>{
         currentAuthenticatedUser();
+        return () => document.body.style.overflow = 'auto';
     },[]);
+
+    useEffect(() => {
+        if (width >= 1024) {
+            setShowMenu(false);
+            document.body.style.overflow = 'auto';
+        }
+    }, [width]);
 
   return (
     <nav className='relative w-full  p-3 py-4 flex justify-between z-40'>
@@ -51,23 +72,27 @@ const LandingNavBar = () => {
             <p className="font-bold drop-shadow-xl tracking-wider text-white">Panda CMS</p> 
         </div>
         <div className='flex items-center lg:hidden'>
-            <FaBars className='text-white text-3xl cursor-pointer' onClick={() => setShowMenu(!showMenu)} />
+            {
+                showMenu 
+                ?<RiCloseFill className='text-white hover:text-emerald-400 transition-colors text-[40px] cursor-pointer' onClick={()=>toggleMenu(false)} />
+                :<FaBars className='text-white hover:text-emerald-400 transition-colors text-3xl cursor-pointer' onClick={()=>toggleMenu(true)} />
+            }
         </div>
-        <div className={`${showMenu ? 'h-[18rem] absolute inset-0 z-50 top-[6rem] w-full flex justify-center' : 'hidden'} lg:flex lg:order-2`}>
-            <div className='flex flex-col justify-center items-center gap-3 bg-black/55 w-11/12 rounded-lg lg:flex-row lg:bg-transparent lg:w-full lg:gap-8'>
-                <Link href="" className='text-white font-extrabold text-[17px] hover:text-emerald-300 transition delay-50'>
+        <div className={`${showMenu ? ' h-[1000px] absolute inset-0 z-50 top-[5rem] w-full flex justify-center' : 'hidden'} lg:flex lg:order-2`}>
+            <div className='lg:p-0 p-4 flex flex-col lg:justify-center justify-normal lg:items-center items-start gap-6 bg-zinc-900 w-full rounded-lg lg:flex-row lg:bg-transparent lg:w-full lg:gap-8'>
+                <Link href="" className='lg:w-auto w-full text-gray-200 font-bold text-[17px] hover:text-emerald-300 transition delay-50 '>
                     Why the Panda?
                 </Link>
 
-                <Link href="" className='text-white font-extrabold text-[17px] hover:text-emerald-300 transition delay-50'>
+                <Link href="" className='lg:w-auto w-full text-gray-200 font-bold text-[17px] hover:text-emerald-300 transition delay-50'>
                     Services
                 </Link>
 
-                <Link href="" className='text-white font-extrabold text-[17px] hover:text-emerald-300 transition delay-50'>
+                <Link href="" className='lg:w-auto w-full text-gray-200 font-bold text-[17px] hover:text-emerald-300 transition delay-50'>
                     Security
                 </Link>
 
-                <Link href="" className='text-white font-extrabold text-[17px] hover:text-emerald-300 transition delay-50'>
+                <Link href="" className='lg:w-auto w-full text-gray-200 font-bold text-[17px] hover:text-emerald-300 transition delay-50'>
                     About us
                 </Link>
                 {isLoading ?
@@ -81,7 +106,7 @@ const LandingNavBar = () => {
                     </div>
                 ): 
                 (
-                    <div className=''>
+                    <div className='lg:w-auto w-full'>
                             {isLoggedIn ? (
                                 <Dropdown placement="bottom-start" className='bg-zinc-800'>
                                     <DropdownTrigger>
@@ -117,12 +142,12 @@ const LandingNavBar = () => {
                                     </DropdownMenu>
                                 </Dropdown>
                             ) : (
-                                <div className='flex flex-col lg:flex-row gap-4 items-center justify-around gap-x-4'>
-                                    <Link href="/auth/signin" className='px-5 py-1 font-semibold border-[2px] rounded-lg text-emerald-300 border-emerald-500 bg-transparent text-[18px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
+                                <div className=' lg:w-auto w-full flex flex-col lg:flex-row gap-4 items-center justify-around gap-x-4'>
+                                    <Link href="/auth/signin" className='lg:w-auto w-full px-5 lg:py-1 py-3 font-semibold border-[2px] rounded-lg lg:text-emerald-300 text-black border-emerald-500 lg:bg-transparent bg-white text-center text-[18px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
                                         Log In 
                                     </Link>   
 
-                                    <Link href="/auth/signup" className='px-5 py-1 font-semibold border-[2px] rounded-lg text-white border-emerald-500 bg-emerald-500 text-[18px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
+                                    <Link href="/auth/signup" className='lg:w-auto w-full px-5 lg:py-1 py-3 font-semibold border-[2px] rounded-lg text-white border-emerald-500 bg-emerald-500 text-center text-[18px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
                                         Sign Up 
                                     </Link>  
                                 </div>

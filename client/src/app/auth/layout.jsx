@@ -29,8 +29,8 @@ const AuthLayout = ({children}) => {
   return (
     <div className='h-full'>
       <nav className='bg-zinc-900/30 top-0 w-full p-3 py-4 flex justify-between z-40'>
-          <div className="flex-1"></div>
-          <div className="flex items-center">
+          <div className="md:flex hidden flex-1"></div>
+          <div className="md:flex hidden items-center">
               <div className="flex gap-x-2 items-center">
                   <img src="/panda.png" className="w-[4rem] h-[3rem] drop-shadow-lg" alt="panda_logo" />
                   <p className="font-bold drop-shadow-xl tracking-wider text-[22px] text-white">Panda CMS</p> 
