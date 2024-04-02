@@ -1,44 +1,13 @@
 "use client"
 
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import LandingNavBar from "../components/LandingNavBar";
 import Link from "next/link";
 import { useScroll, motion, useTransform } from "framer-motion";
 import {
   RiArrowRightDoubleFill,
-  RiVideoFill,
-  RiCarFill,
-  RiToolsFill,
-  RiGraduationCapFill,
-  RiCheckDoubleFill,
-  RiStarFill,
-  RiUserStarFill,
-  RiLightbulbFill ,
-  RiAuctionFill,
-  RiYoutubeFill,
-  RiTwitterXFill,
-  RiFacebookBoxFill,
-  RiLinkedinBoxFill ,
 } from "react-icons/ri";
-import { PiCarProfileFill } from "react-icons/pi";
-import DownloadApp from "@/components/modalLanding/DownloadApp";
-import { useDisclosure } from "@nextui-org/react";
-
 const Home = () => {
-
-  const {
-    isOpen: isDownloadAppModalOpen,
-    onOpen: onDownloadAppModalOpen,
-    onOpenChange: onDownloadAppModalOpenChange,
-  } = useDisclosure();
-
-  const [modeApp, setModeApp] = useState("");
-
-  const handleDownloadClick = (mode) => {
-    setModeApp(mode);
-    onDownloadAppModalOpen();
-  }
-
   const ref = useRef(null);
   const ref2 = useRef(null);
   const ref3 = useRef(null);
@@ -60,34 +29,39 @@ const Home = () => {
   const scaleProgress3 = useTransform(progress3,[0, 1],[0.5, 1]);
 
   return (
-    <div className="flex flex-col w-full p-0 bgLandingPage">
+    <div className="flex flex-col w-full p-0 bg-zinc-800">
       <div className="w-full h-full">
-        <div className="w-full h-[500px] mb-16">
+        <div className="w-full h-[750px] relative mb-10">
           <LandingNavBar />
-          <div className="w-full h-full flex flex-col justify-center items-center text-left z-30 px-4 lg:px-0">
-            <div className="xl:w-[1000px] w-full text-center flex flex-col items-center justify-center px-2">
-                <h1 className=" md:text-[70px] text-[50px] text-center mb-1 text-white/90 font-extrabold ">
-                  Getting Your Car Repaired <span className="text-emerald-300">Easier</span>
-                </h1>
-                <p className="text-gray-100 md:text-xl lg:text-[22px] font-bold">Changing the auto repair industry by</p>
-                <p className="text-gray-100 md:text-xl lg:text-[22px] font-bold mb-8">placing power in the small business owner`s hands.</p>
-                <div className="md:w-[500px] w-full flex flex-col lg:flex-row items-center gap-4">
-                  <Link href="/auth/signin" className='md:w-1/2 w-full px-9 py-3 font-semibold border-[2px] rounded-xl text-white border-emerald-500 bg-emerald-500 text-[20px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
-                      Start here
-                  </Link>
+          <div className="absolute top-[30%] lg:left-[20%] flex flex-col text-left z-30 px-4 lg:px-0">
+              <h1 className=" text-[40px] text-left mb-1 text-white/90 font-extrabold ">
+                <span className="text-emerald-400/90 md:text-3xl lg:text-[80px]">Getting</span>{" "}
+                your car repaired
+              </h1>
+              <p className=" mb-7 text-left  text-[30px] text-white/90">
+                Has never been{" "}
+                <span className="text-emerald-400/90 font-extrabold md:text-3xl text-[40px]">
+                  EASIER
+                </span>
+              </p>
+              <p className="text-gray-100 md:text-xl lg:text-[22px] font-bold">Changing the auto repair industry by</p>
+              <p className="text-gray-100 md:text-xl lg:text-[22px] font-bold mb-8">placing power in the small business owner`s hands.</p>
+              <div className="flex flex-col lg:flex-row items-center gap-4">
+                <Link href="/auth" className='w-full md:w-2/6 px-9 py-3 font-semibold border-[2px] rounded-lg text-white border-emerald-500 bg-emerald-500 text-[20px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
+                    Start here
+                </Link>
 
-                  <Link href="/auth" className='md:w-1/2 w-full flex justify-center items-center gap-x-2 px-5 py-3 font-semibold border-[2px] rounded-xl text-zinc-900 border-gray-100 bg-gray-100  text-[20px] hover:bg-gray-300 hover:border-gray-300 hover:text-zinc-950 transition delay-50'>
-                    <RiVideoFill className="text-[20px]"/>
-                    Watch Video
-                  </Link>
-                </div>
-            </div> 
+                <Link href="/auth" className='w-full md:w-2/6 px-5 py-3 font-semibold border-[2px] rounded-lg text-emerald-300 border-emerald-500 bg-transparent text-[20px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
+                  Why the panda? 
+                </Link>
+
+              </div>
           </div>
-          {/* <div className="absolute w-full h-[750px] bg-zinc-800 opacity-70"></div> */}
-          {/* <img
+          <div className="absolute w-full h-[750px] bg-gray-800 opacity-70"></div>
+          <img
             className="w-full h-full object-cover"
             src="https://cdna.artstation.com/p/assets/images/images/040/174/900/large/fabian-geyer-wideshotright.jpg?1628083532"
-          /> */}
+          />
         </div>
 
         <div className="w-full h-full py-8 sm:px-12 px-5 flex flex-col justify-center items-center shadow-xl">  
@@ -387,6 +361,7 @@ const Home = () => {
                 </div>
             </footer>
         </div>
+
       </div>
       <DownloadApp isOpen={isDownloadAppModalOpen} onOpenChange={onDownloadAppModalOpenChange} mode={modeApp}/>
     </div>
