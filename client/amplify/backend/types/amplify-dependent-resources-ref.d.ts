@@ -1,13 +1,12 @@
 export type AmplifyDependentResourcesAttributes = {
   "api": {
-    "pandaapi": {
+    "pandawebapp": {
       "GraphQLAPIEndpointOutput": "string",
-      "GraphQLAPIIdOutput": "string",
-      "GraphQLAPIKeyOutput": "string"
+      "GraphQLAPIIdOutput": "string"
     }
   },
   "auth": {
-    "pandaapi6c754ed6": {
+    "pandawebapp0a05bcd0": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
       "HostedUIDomain": "string",
@@ -19,8 +18,17 @@ export type AmplifyDependentResourcesAttributes = {
       "UserPoolName": "string"
     }
   },
+  "function": {
+    "S3Triggerdf93383d": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    }
+  },
   "storage": {
-    "mypandapistorage": {
+    "pandawebapp": {
       "BucketName": "string",
       "Region": "string"
     }

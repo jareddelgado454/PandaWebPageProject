@@ -57,12 +57,12 @@
 }
 
 .containerDivChangeColor .divChangeColor span.changeColor {
-  color: #18191c; 
+  color: #464f4d; 
   transition: color 0.7s; 
 }
 
 .containerDivChangeColor .divChangeColor p {
-  color: #18191c; 
+  color: #373e3d; 
   transition: color 0.7s; 
 }
 
@@ -74,6 +74,14 @@
 .containerDivChangeColor:hover .divChangeColor p {
   color: #6b7280; 
   transition: color 1s; 
+}
+
+.bgLandingPage{
+  background: linear-gradient(to right, #454b49, #1f2530)
+}
+
+.bgLandingWire{
+  background: linear-gradient(to bottom right, #41464e, #14181f)
 }
 
 .slide-in-left{-webkit-animation:slide-in-left .5s cubic-bezier(.25,.46,.45,.94) both;animation:slide-in-left .5s cubic-bezier(.25,.46,.45,.94) both}
