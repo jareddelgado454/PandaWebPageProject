@@ -16,7 +16,6 @@ import {
 import VerificationCodeModal from "@/components/LoginRegister/modals/VerificationCodeModal";
 import { useDisclosure } from "@nextui-org/react";
 import { handleCreateUserOnDatabase } from "@/api";
-import { useRouter } from "next/navigation";
 const SignUp = () => {
   const status = "inactive";
   const [showPassword, setShowPassword] = useState(false);
