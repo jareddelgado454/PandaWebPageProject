@@ -10,8 +10,7 @@ export const handleCreateUserOnDatabase = async(values) => {
             query: createUser,
             variables: {
                 input: { ...values }
-            },
-            authMode: 'apiKey',
+            }
         });
 
         console.log("added");
