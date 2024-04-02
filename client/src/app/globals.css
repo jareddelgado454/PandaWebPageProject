@@ -28,7 +28,7 @@
 
 .sidebar {
   width: 78px;
-  z-index: 99;
+  z-index: 50;
 }
 
 .sidebar.active {
@@ -55,3 +55,26 @@
 .sidebar.active ~ .tab-pagination {
   display: none;
 }
+
+.containerDivChangeColor .divChangeColor span.changeColor {
+  color: #18191c; 
+  transition: color 0.7s; 
+}
+
+.containerDivChangeColor .divChangeColor p {
+  color: #18191c; 
+  transition: color 0.7s; 
+}
+
+.containerDivChangeColor:hover .divChangeColor span.changeColor {
+  color: #059669; 
+  transition: color 1s; 
+}
+
+.containerDivChangeColor:hover .divChangeColor p {
+  color: #6b7280; 
+  transition: color 1s; 
+}
+
+.slide-in-left{-webkit-animation:slide-in-left .5s cubic-bezier(.25,.46,.45,.94) both;animation:slide-in-left .5s cubic-bezier(.25,.46,.45,.94) both}
+@-webkit-keyframes slide-in-left{0%{-webkit-transform:translateX(-1000px);transform:translateX(-1000px);opacity:0}100%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}}@keyframes slide-in-left{0%{-webkit-transform:translateX(-1000px);transform:translateX(-1000px);opacity:0}100%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}}

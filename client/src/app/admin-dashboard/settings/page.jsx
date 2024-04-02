@@ -1,117 +1,311 @@
-"use client"
-
-import React from 'react'
-import {RiEdit2Line} from "react-icons/ri"
-import Image from 'next/image'
-
+"use client";
+import React, { useEffect, useState } from "react";
+import { client } from "@/contexts/AmplifyContext";
+import * as Yup from "yup";
+import { fetchUserAttributes, updateUserAttributes } from "aws-amplify/auth";
+import { getUserIdByCognitoID } from "@/graphql/custom-queries";
+import { Field, Form, Formik } from "formik";
+import { statesUSA } from "@/assets/data/StatesUSA";
+import { FaCamera } from "react-icons/fa6";
+import { updateInformation } from "@/graphql/users/mutation/users";
+import { toast } from "react-toastify";
 const Settings = () => {
-
-  const user = {
-    image : "https://media.gq.com.mx/photos/609c0fdeee4372271f0b9056/1:1/w_2000,h_2000,c_limit/salir%20guapo%20en%20fotos-605380757.jpg",
-    fullName : "Neil Brown",
-    name : "Neil",
-    lastName : "Brown",
-    email : "neil.brown@panda-mars.com",
-    phone : "+01654651658",
-    address : "1959 NE 153 ST. North Miami",
-    location : "Florida",
+  const [photograph, setPhotograph] = useState(null);
+  const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const retrieveOneUser = async () => {
+    setLoading(true);
+    try {
+      const info = await fetchUserAttributes();
+      const { data } = await client.graphql({
+        query: getUserIdByCognitoID,
+        variables: {
+          cognitoId: info.sub,
+        },
+      });
+      const userId = data.listUsers.items[0].id;
+      await setUser({ ...info, dbId: userId });
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      setError(error);
+    }
+  };
+  useEffect(() => {
+    retrieveOneUser();
+  }, []);
+  const onHandleSubmit = async (values, { setSubmitting }) => {
+    setSubmitting(true);
+    try {
+      await updateUserAttributes({
+        userAttributes: {
+          "custom:fullName": values.fullName,
+          "custom:address": values.address,
+          "custom:city": values.city,
+          "custom:state": values.state,
+          "custom:contactNumber": values.contactNumber,
+          "custom:zipCode": values.zipCode,
+        },
+      });
+      await client.graphql({
+        query: updateInformation,
+        variables: {
+          email: values.email,
+          input: {
+            id: user.dbId,
+            ...values,
+          },
+        },
+      });
+      await retrieveOneUser();
+      toast.success("Updated successfully.");
+    } catch (error) {
+      console.log(error);
+      toast.error(`Error during the process.`);
+    }
+  };
+  function dataURLtoBlob(dataURL) {
+    if (!dataURL) {
+      return null;
+    }
+    var parts = dataURL.split(";base64,");
+    var contentType = parts[0].split(":")[1];
+    var raw = window.atob(parts[1]);
+    var rawLength = raw.length;
+    var uInt8Array = new Uint8Array(rawLength);
+    for (var i = 0; i < rawLength; ++i) {
+      uInt8Array[i] = raw.charCodeAt(i);
+    }
+    return new Blob([uInt8Array], { type: contentType });
   }
-
-  const imageLoader = ({src}) => {
-    return src
+  function handleChangePhotograph(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhotograph(reader.result);
+        handleUpdatePicture(dataURLtoBlob(reader.result));
+      };
+      reader.readAsDataURL(file);
+    }
   }
-
+  const handleUpdatePicture = async (picture) => {
+    const uniqueId = uuidv4();
+    const filename = `user-profile-pictures/${uniqueId}.jpg`;
+    try {
+      const result = await uploadData({
+        key: filename,
+        data: picture,
+        options: {
+          contentType: "image/png",
+          onProgress: ({ transferredBytes, totalBytes }) => {
+            if (totalBytes) {
+              console.log(
+                `Upload progress ${Math.round(
+                  (transferredBytes / totalBytes) * 100
+                )} %`
+              );
+            }
+          },
+        },
+      }).result;
+      console.log("Succeeded: ", result);
+    } catch (error) {
+      console.log(`Error from here : ${error}`);
+    }
+  };
   return (
-    <div className='flex justify-center items-center flex-col'>
-        <div className='bg-white h-[5rem] w-full dark:bg-zinc-800 shadow-md flex justify-center items-center mb-10'>
-          <p className='text-black dark:text-white font-bold text-3xl capitalize tracking-[0.2em]'>Profile Settings</p>
-        </div>
-        <div className='w-[90%]  '>
-          <form >
-              <div className='flex items-center mb-6'>
-                  <div className='w-1/4'>
-                      <p className='text-zinc-800 font-extrabold'>Profile Picture:</p>
-                  </div>
-                  <div className='flex-1'>
-                      <div className='relative mb-2'>
-                        {user.image &&
-                          <Image unoptimized src={user.image} loader={imageLoader} width={80} height={80} alt={`${user.fullName} profile pic`} />
-                        }
-                          <label htmlFor='avatar' className='absolute bg-zinc-600 dark:bg-zinc-800 p-2 left-24 -top-2 rounded-full cursor-pointer hover:bg-secondary-100'>
-                              <RiEdit2Line />
-                          </label>
-                          <input type='file' id='avatar' className='hidden'/>
-                      </div>
-                      <p className='text-gray-600 text-sm'>
-                          Allowed extensions: png, jpg, jpeg
-                      </p>
-                  </div>
-              </div>
-              <div className='flex items-center mb-4'>
-                <div className='w-1/4'>
-                    <p className='text-zinc-800 font-extrabold' >Nombres Completos: <span className='text-red-500'>*</span></p>
-                </div>
-                <div className='flex-1 flex items-center gap-4'>
-                    <div className='w-full'>
-                      <input type="text" value={user.name} className='w-full py-3 px-4 outline-none rounded-lg bg-zinc-600 dark:bg-zinc-800 cursor-default' readOnly/>
-                    </div>
-                    <div className='w-full'>
-                      <input type="text" value={user.lastName} className='w-full py-3 px-4 outline-none rounded-lg bg-zinc-600 dark:bg-zinc-800 cursor-default' readOnly/>
-                    </div>
-                </div>
-              </div>
-              <div className='flex items-center mb-4'>
-                <div className='w-1/4'>
-                    <p className='text-zinc-800 font-extrabold'>Email: <span className='text-red-500'>*</span></p>
-                </div>
-                <div className='flex-1 flex items-center gap-4'>
-                    <div className='w-full'>
-                      <input type="text" value={user.email} className='w-full py-3 px-4 outline-none rounded-lg bg-zinc-600 dark:bg-zinc-800 cursor-default' readOnly/>
-                    </div>
-                </div>
-              </div>
-              <div className='flex items-center mb-4'>
-                <div className='w-1/4'>
-                    <p className='text-zinc-800 font-extrabold'>Phone: <span className='text-red-500'>*</span></p>
-                </div>
-                <div className='flex-1 flex items-center gap-4'>
-                    <div className='w-full'>
-                      <input type="text" value={user.phone} className='w-full py-3 px-4 outline-none rounded-lg bg-zinc-600 dark:bg-zinc-800 cursor-default' readOnly/>
-                    </div>
-                </div>
-              </div>
-              <div className='flex items-center mb-4'>
-                <div className='w-1/4'>
-                    <p className='text-zinc-800 font-extrabold'>Address: <span className='text-red-500'>*</span></p>
-                </div>
-                <div className='flex-1 flex items-center gap-4'>
-                    <div className='w-full'>
-                      <input type="text" value={user.address} className='w-full py-3 px-4 outline-none rounded-lg bg-zinc-600 dark:bg-zinc-800 cursor-default' readOnly/>
-                    </div>
-                </div>
-              </div>
-              <div className='flex items-center mb-8'>
-                <div className='w-1/4'>
-                    <p className='text-zinc-800 font-extrabold'>Location: <span className='text-red-500'>*</span></p>
-                </div>
-                <div className='flex-1 flex items-center gap-4'>
-                    <div className='w-full'>
-                      <input type="text" value={user.location} className='w-full py-3 px-4 outline-none rounded-lg bg-zinc-600 dark:bg-zinc-800 cursor-default' readOnly/>
-                    </div>
-                </div>
-              </div>
-              <div className='flex gap-x-4'>
-                    <button className='bg-zinc-600 dark:bg-zinc-800 text-white px-5 py-2 rounded-lg text-[17px]'>
-                        Edit data
-                    </button>
-                    <button className='bg-emerald-600 dark:bg-emerald-700 text-white px-5 py-2 rounded-lg text-[17px]'>
-                        Save Changes
-                    </button>
-              </div>
-          </form>
-        </div>
-    </div>
-  )
-}
+    <div className="slide-in-left h-full">
+      <div className="bg-white h-[5rem] w-full dark:bg-zinc-800 shadow-md flex justify-center items-center mb-10">
+        <p className="text-black dark:text-white font-bold text-lg lg:text-3xl capitalize tracking-[0.2em]">
+          Profile Settings
+        </p>
+      </div>
 
-export default Settings
+      <div className="w-full flex justify-center items-center">
+        {loading ? (
+          <div>Loading Information</div>
+        ) : error ? (
+          <div>{error}</div>
+        ) : (
+          user && (
+            <div className="flex flex-col gap-8 w-[80%]">
+              <div className="w-full flex justify-center items-center">
+                <div className="relative w-[6rem] h-[6rem] md:w-[12rem] md:h-[12rem] overflow-hidden rounded-full shadow-md group">
+                  <div className="absolute bg-black group-hover:opacity-60 opacity-0 w-full h-full transition-all">
+                    <div className="flex justify-center items-center h-full">
+                      <FaCamera className="text-white text-xl md:text-4xl" />
+                    </div>
+                  </div>
+                  <img
+                    src={
+                      photograph
+                        ? photograph
+                        : user.profilePicture
+                        ? user.profilePicture
+                        : "/image/defaultProfilePicture.jpg"
+                    }
+                    className="rounded-full w-[6rem] h-[6rem] md:w-[12rem] md:h-[12rem] cursor-pointer "
+                    alt="Fotografía de perfil"
+                  />
+                  <input
+                    id="file-upload"
+                    type="file"
+                    name=""
+                    accept="image/gif, image/jpeg, image/png"
+                    className="absolute top-0 right-0 min-w-full min-h-full opacity-0 cursor-pointer bg-center object-cover object-center"
+                    onChange={(event) => {
+                      handleChangePhotograph(event);
+                    }}
+                  />
+                </div>
+              </div>
+              <Formik
+                initialValues={{
+                  fullName: user["custom:fullName"] || "",
+                  email: user.email || "",
+                  contactNumber: user["custom:contactNumber"] || 0,
+                  address: user["custom:address"] || "",
+                  city: user["custom:city"] || "",
+                  state: user["custom:state"] || "",
+                  zipCode: user['custom:zipCode'] || 0,
+                }}
+                onSubmit={onHandleSubmit}
+                validationSchema={formSchema}
+                validateOnChange={true}
+              >
+                {({ errors, isValid }) => {
+                  return (
+                    <Form className="w-full h-full flex flex-col gap-7">
+                      <div className="flex flex-col md:flex-row w-full gap-7 md:gap-12">
+                        <div className="w-full md:w-2/4">
+                          <label
+                            htmlFor="grid-name"
+                            className="block text-gray-700 text-sm font-bold mb-2"
+                          >
+                            FullName
+                          </label>
+                          <Field
+                            type="text"
+                            name="fullName"
+                            className="w-full py-3 px-4 outline-none rounded-lg bg-zinc-600 dark:bg-zinc-800 cursor-default lg:w-full"
+                          />
+                        </div>
+                        <div className="w-full md:w-2/4" >
+                          <label
+                            htmlFor="grid-number"
+                            className="block text-gray-700 text-sm font-bold mb-2"
+                          >
+                            ContactNumber
+                          </label>
+                          <Field
+                            id="grid-number"
+                            type="text"
+                            placeholder="90210"
+                            name="contactNumber"
+                            className="w-full py-3 px-4 outline-none rounded-lg bg-zinc-600 dark:bg-zinc-800 cursor-default lg:w-full"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex flex-col md:flex-row w-full gap-7 md:gap-12">
+                        <div className="w-full md:w-2/4">
+                          <label
+                            htmlFor="grid-number"
+                            className="bg-zinc text-black dark:text-white lg:text-xl"
+                          >
+                            State
+                          </label>
+                          <Field
+                            as="select"
+                            name="state"
+                            className={`block rounded-lg appearance-none w-full bg-zinc-600 dark:bg-zinc-800 text-white dark:text-black border ${
+                              errors.state
+                                ? "border-red-600"
+                                : "border-gray-200"
+                            } text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-zinc-600 focus:border-gray-500`}
+                          >
+                            {statesUSA.map((estado, index) => (
+                              <option
+                                className="bg-zinc-600 dark:bg-zinc-800 text-white dark:text-black"
+                                key={index}
+                                value={estado}
+                              >
+                                {estado}
+                              </option>
+                            ))}
+                          </Field>
+                        </div>
+                        <div className="w-full md:w-2/4">
+                          <label
+                            htmlFor="grid-number"
+                            className="bg-zinc text-black dark:text-white lg:text-xl"
+                          >
+                            City
+                          </label>
+                          <Field
+                            type="text"
+                            name="city"
+                            className="w-full py-3 px-4 outline-none rounded-lg bg-zinc-600 dark:bg-zinc-800 cursor-default lg:w-full"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex flex-col md:flex-row w-full gap-7 md:gap-12">
+                        <div className="w-full md:w-2/4">
+                          <label
+                            htmlFor="grid-number"
+                            className="bg-zinc text-black dark:text-white lg:text-xl"
+                          >
+                            Address
+                          </label>
+                          <Field
+                            type="text"
+                            name="address"
+                            className="w-full py-3 px-4 outline-none rounded-lg bg-zinc-600 dark:bg-zinc-800 cursor-default lg:w-full"
+                          />
+                        </div>
+                        <div className="w-full md:w-2/4">
+                          <label
+                            htmlFor="grid-number"
+                            className="bg-zinc text-black dark:text-white lg:text-xl"
+                          >
+                            ZipCode
+                          </label>
+                          <Field
+                            type="text"
+                            name="zipCode"
+                            className="w-full py-3 px-4 outline-none rounded-lg bg-zinc-600 dark:bg-zinc-800 cursor-default lg:w-full"
+                          />
+                        </div>
+                      </div>
+                      <button
+                        type="submit"
+                        className={`${
+                          !isValid ? "bg-gray-200" : "bg-green-panda"
+                        } bg-green-panda rounded py-3 w-full`}
+                        disabled={!isValid}
+                      >
+                        Update Information
+                      </button>
+                    </Form>
+                  );
+                }}
+              </Formik>
+            </div>
+          )
+        )}
+      </div>
+    </div>
+  );
+};
+
+const formSchema = Yup.object().shape({
+  fullName: Yup.string().required("Required").max(50),
+  email: Yup.string().email().required("Required"),
+  city: Yup.string().required("Required"),
+  state: Yup.string().required("Required"),
+  contactNumber: Yup.number().required("Required").positive().integer(),
+});
+
+export default Settings;
