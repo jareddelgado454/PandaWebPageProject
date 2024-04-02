@@ -17,16 +17,35 @@ import {
   RiErrorWarningFill,
 } from "react-icons/ri";
 import { Hub } from "aws-amplify/utils";
+import { Formik, Form, Field } from "formik";
+import {
+  signInWithRedirect,
+  signIn,
+  signOut,
+  fetchUserAttributes,
+  fetchAuthSession,
+  updateUserAttributes,
+} from "aws-amplify/auth";
 import VerificationCodeModal from "@/components/LoginRegister/modals/VerificationCodeModal";
-import { useDisclosure } from "@nextui-org/react";
-import { Formik, Form, Field } from 'formik'
-import { signInWithRedirect, signIn, signOut, fetchUserAttributes, fetchAuthSession, updateUserAttributes } from 'aws-amplify/auth';
-import AmplifyContext from '@/contexts/AmplifyContext';
-import { handleCreateUserOnDatabase, handleRetrieveMyUser } from '@/api';
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  useDisclosure,
+} from "@nextui-org/react";
+import AmplifyContext from "@/contexts/AmplifyContext";
+import { handleCreateUserOnDatabase, handleRetrieveMyUser } from "@/api";
 const SignIn = () => {
   const status = "inactive";
   const router = useRouter();
-  const {isOpen: isVerifyCodeModalOpen, onOpen: onVerifyCodeModalOpen, onOpenChange: onVerifyCodeModalOpenChange} = useDisclosure();
+  const {
+    isOpen: isVerifyCodeModalOpen,
+    onOpen: onVerifyCodeModalOpen,
+    onOpenChange: onVerifyCodeModalOpenChange,
+  } = useDisclosure();
+  const { isOpen: isLoadingModalOpen, onOpen: onOpenLoadingModal } =
+    useDisclosure();
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState({
     status: false,
@@ -105,42 +124,49 @@ const SignIn = () => {
     const hubListenerCancel = Hub.listen("auth", async ({ payload }) => {
       switch (payload.event) {
         case "signedIn":
+          onOpenLoadingModal(true);
           console.log("user have been signedIn successfully.");
-          const { fullName, email, expiredAt } = await currentAuthenticatedUser();
+          const { fullName, email, expiredAt } =
+            await currentAuthenticatedUser();
           const cognitoId = payload.data.userId;
           const userExist = await handleRetrieveMyUser(cognitoId);
           if (userExist !== null && userExist !== undefined) {
             console.log("user already in DB. Going to /user");
-            Cookies.set("currentUser", JSON.stringify({...userExist, expiredAt}));
-            if(userExist.rol === "admin")
-            {
+            Cookies.set(
+              "currentUser",
+              JSON.stringify({ ...userExist, expiredAt })
+            );
+            if (userExist.rol === "admin") {
               router.replace("/admin-dashboard/");
             } else {
               router.replace("/user/");
             }
           } else {
-            if(fullName){
+            if (fullName) {
               await updateUserAttributes({
                 userAttributes: {
-                    'custom:fullName': fullName,
-                    'custom:status' : status
-                }
+                  "custom:fullName": fullName,
+                  "custom:status": status,
+                },
               });
-            }else{
+            } else {
               await updateUserAttributes({
                 userAttributes: {
-                    'custom:status' : status
-                }
+                  "custom:status": status,
+                },
               });
             }
-            
+
             await handleCreateUserOnDatabase({
               fullName,
               email,
               cognitoId,
               status,
             });
-            Cookies.set("currentUser", JSON.stringify({...userExist, expiredAt}));
+            Cookies.set(
+              "currentUser",
+              JSON.stringify({ ...userExist, expiredAt })
+            );
             router.replace("/user");
           }
           console.log("process completed");
@@ -151,6 +177,10 @@ const SignIn = () => {
   }, []);
   return (
     <AmplifyContext>
+      <CheckoutModal
+        isOpen={isLoadingModalOpen}
+        onOpenChange={onOpenLoadingModal}
+      />
       <div className="h-screen w-full text-white">
         <div className="grid grid-cols-1 lg:grid-cols-2 h-full">
           <div className="flex flex-col gap-4 justify-center px-4 lg:px-12">
@@ -310,5 +340,74 @@ const SignIn = () => {
     </AmplifyContext>
   );
 };
-
 export default SignIn;
+
+const CheckoutModal = ({ isOpen, onOpenChange }) => {
+  const [dots, setDots] = useState("");
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDots((prevDots) => {
+        if (prevDots === "...") {
+          return "";
+        } else {
+          return prevDots + ".";
+        }
+      });
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, []);
+  return (
+    <Modal
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      isDismissable={false}
+      isKeyboardDismissDisabled={true}
+      hideCloseButton={true}
+      classNames={{
+        backdrop: "bg-[#292f46]/50 backdrop-opacity-40",
+      }}
+    >
+      <ModalContent>
+        <ModalBody>
+          <div className="flex flex-col justify-center items-center w-full h-full py-4 gap-4">
+            <div className="flex items-center justify-center">
+              <img
+                src="/panda.png"
+                className="w-[6rem] h-[5.5rem]"
+                alt="panda_logo"
+              />
+              <p className="text-2xl font-black tracking-wider text-zinc-800">
+                PANDA MARS
+              </p>
+            </div>
+            <div className="flex flex-col items-center justify-center gap-9">
+              <p className="font-semibold text-lg w-[16rem] text-center">
+                Please wait while we process your authentication.{dots}
+              </p>
+              <div role="status">
+                <svg
+                  aria-hidden="true"
+                  className="inline w-12 h-12 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300"
+                  viewBox="0 0 100 101"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                    fill="currentColor"
+                  />
+                  <path
+                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                    fill="currentFill"
+                  />
+                </svg>
+                <span className="sr-only">Loading...</span>
+              </div>
+            </div>
+          </div>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
+  );
+};

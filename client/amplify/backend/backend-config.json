@@ -1,34 +1,22 @@
 {
   "api": {
-    "pandaapi": {
+    "pandawebapp": {
       "dependsOn": [
         {
           "attributes": [
             "UserPoolId"
           ],
           "category": "auth",
-          "resourceName": "pandaapi6c754ed6"
+          "resourceName": "pandawebapp0a05bcd0"
         }
       ],
       "output": {
         "authConfig": {
-          "additionalAuthenticationProviders": [
-            {
-              "apiKeyConfig": {
-                "apiKeyExpirationDate": "2024-03-19T13:52:06.373Z",
-                "apiKeyExpirationDays": 7,
-                "description": "access"
-              },
-              "authenticationType": "API_KEY"
-            },
-            {
-              "authenticationType": "AWS_IAM"
-            }
-          ],
+          "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authpandaapi6c754ed6"
+              "userPoolId": "authpandawebapp0a05bcd0"
             }
           }
         }
@@ -38,7 +26,7 @@
     }
   },
   "auth": {
-    "pandaapi6c754ed6": {
+    "pandawebapp0a05bcd0": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -47,20 +35,21 @@
           "SMS"
         ],
         "passwordProtectionSettings": {
-          "passwordPolicyCharacters": [],
+          "passwordPolicyCharacters": [
+            "REQUIRES_LOWERCASE",
+            "REQUIRES_NUMBERS",
+            "REQUIRES_SYMBOLS",
+            "REQUIRES_UPPERCASE"
+          ],
           "passwordPolicyMinLength": 8
         },
         "signupAttributes": [
           "EMAIL"
         ],
         "socialProviders": [
-          "FACEBOOK",
-          "GOOGLE",
-          "APPLE"
+          "GOOGLE"
         ],
-        "usernameAttributes": [
-          "EMAIL"
-        ],
+        "usernameAttributes": [],
         "verificationMechanisms": [
           "EMAIL"
         ]
@@ -69,9 +58,44 @@
       "service": "Cognito"
     }
   },
+  "function": {
+    "S3Triggerdf93383d": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_S3Triggerdf93383d_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "S3Triggerdf93383d"
+        }
+      ]
+    },
+    "AMPLIFY_function_S3Triggerdf93383d_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "S3Triggerdf93383d"
+        }
+      ]
+    }
+  },
   "storage": {
-    "mypandapistorage": {
-      "dependsOn": [],
+    "pandawebapp": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn",
+            "LambdaExecutionRole"
+          ],
+          "category": "function",
+          "resourceName": "S3Triggerdf93383d"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "S3"
     }

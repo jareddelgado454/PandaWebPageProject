@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
 import { FaCamera } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
-import {Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, useSelect} from "@nextui-org/react";
+import {Modal, ModalContent, ModalHeader, ModalBody, useDisclosure} from "@nextui-org/react";
 import { statesUSA } from '@/assets/data/StatesUSA';
 import { updateInformation, updateRol } from "@/graphql/users/mutation/users";
 import { getUserIdByCognitoID } from "@/graphql/custom-queries";
