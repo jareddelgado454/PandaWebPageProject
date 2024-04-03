@@ -51,7 +51,9 @@
           "EMAIL"
         ],
         "socialProviders": [
-          "GOOGLE"
+          "FACEBOOK",
+          "GOOGLE",
+          "APPLE"
         ],
         "usernameAttributes": [],
         "verificationMechanisms": [
