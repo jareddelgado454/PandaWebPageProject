@@ -19,7 +19,6 @@ export const getUserByCognitoID = gql`
         }
     }
 `;
-
 export const getUserIdByCognitoID = gql`
     query MyQuery($cognitoId: String!) {
         listUsers(filter: {cognitoId: {eq: $cognitoId}}) {
