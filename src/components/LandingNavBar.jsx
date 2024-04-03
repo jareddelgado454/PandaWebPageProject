@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, User} from "@nextui-org/react";
-import { getCurrentUser } from 'aws-amplify/auth';
 import { RiCloseFill } from "react-icons/ri";
 import { fetchUserAttributes } from 'aws-amplify/auth';
 import { Amplify } from "aws-amplify";
@@ -114,7 +113,7 @@ const LandingNavBar = () => {
                                             as="button"
                                             avatarProps={{
                                                 isBordered: false,
-                                                src: `${pictureUser ? pictureUser : user.profilePicture ? user?.profilePicture : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" }`,
+                                                src: `${pictureUser ? pictureUser : user && user.profilePicture ? user.profilePicture : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" }`,
                                                 
                                             }}
                                             className="transition-transform text-white w-[12rem] h-full"

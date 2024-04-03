@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import Cookies from "js-cookie";
 import * as Yup from 'yup';
-import { fetchUserAttributes, signOut, updateUserAttributes } from "aws-amplify/auth";
+import { fetchAuthSession, fetchUserAttributes, signOut, updateUserAttributes } from "aws-amplify/auth";
 import { uploadData } from 'aws-amplify/storage';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
@@ -25,6 +25,8 @@ const Page = () => {
         setLoading(true);
         try {
             const info = await fetchUserAttributes();
+            const info2 = await fetchAuthSession();
+            console.log(info2);
             const { data } = await client.graphql({
                 query: getUserIdByCognitoID,
                 variables: {

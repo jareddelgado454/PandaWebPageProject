@@ -73,6 +73,7 @@ const SignUp = () => {
   };
 
   const onHandleCreate = async (values) => {
+    let isAdded = false;
     if (
       !evaluateErrors() &&
       dataSignUp.fullName != "" &&
@@ -98,6 +99,8 @@ const SignUp = () => {
           },
         });
 
+        isAdded = true;
+
         await handleCreateUserOnDatabase({
           fullName: values.fullName,
           email: values.email,
@@ -106,9 +109,7 @@ const SignUp = () => {
           status,
           cognitoId,
           status,
-        });
-
-        console.log("nextStep", nextStep);
+        }, isAdded);
         if (nextStep?.signUpStep == "CONFIRM_SIGN_UP") {
           onVerifyCodeModalOpen();
         }

@@ -5,6 +5,8 @@ type User @model @auth(
     rules: [
         { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
         { allow: owner, ownerField: "cognitoId", operations: [ read, update, create ] }
+        # allow all guest users (not authenticated) to access this data
+        { allow: public, provider: iam, operations: [ create ] }
     ]
 ) {
     id: ID!

@@ -23,9 +23,7 @@ import {
 import { PiCarProfileFill } from "react-icons/pi";
 import DownloadApp from "@/components/modalLanding/DownloadApp";
 import { useDisclosure } from "@nextui-org/react";
-
 const Home = () => {
-
   const {
     isOpen: isDownloadAppModalOpen,
     onOpen: onDownloadAppModalOpen,
