@@ -103,7 +103,7 @@ const Page = () => {
                     'custom:address': values.address,
                     'custom:city' : values.city,
                     'custom:state' : values.state,
-                    'custom:contactNumber' : values.contactNumber,
+                    'custom:phoneNumber' : values.contactNumber,
                     'custom:zipCode' : values.zipCode
                 }
             });
