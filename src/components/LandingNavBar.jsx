@@ -117,7 +117,7 @@ const LandingNavBar = () => {
                                                 
                                             }}
                                             className="transition-transform text-white w-[12rem] h-full"
-                                            description={`${user?.role}`}
+                                            description={`${user?.rol}`}
                                             name={`${user?.fullName}`}
                                         />
                                     </DropdownTrigger>
@@ -127,7 +127,9 @@ const LandingNavBar = () => {
                                             <p className="font-extralight text-sm">{user?.email}</p>
                                         </DropdownItem>
                                         <DropdownItem key="settings">
-                                            My Profile
+                                            <Link href={user?.rol == "admin" ? "/admin-dashboard" : "/user"}>
+                                                My Profile
+                                            </Link>
                                         </DropdownItem>
                                         <DropdownItem key="support">
                                             Contact Support

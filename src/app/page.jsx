@@ -236,7 +236,7 @@ const Home = () => {
                 </motion.div>
             </div>
 
-            <motion.div ref={ref2} style={{ scale : scaleProgress2, opacity : scaleProgress2, transition: 'background-color 1.2s ease' }} className="xl:w-[1200px] w-full flex flex-col mb-10 bg-zinc-800 rounded-3xl shadow-2xl shadow-gray-600/50 cursor-pointer hover:bg-zinc-900 " >
+            <motion.div ref={ref2} style={{ scale : scaleProgress2, opacity : scaleProgress2, transition: "background-color 1.2s ease" }} className="xl:w-[1200px] w-full flex flex-col mb-10 bg-zinc-800 rounded-3xl shadow-2xl shadow-gray-600/50 cursor-pointer hover:bg-zinc-900 " >
                 <div className="lg:w-1/2 w-full pt-8 sm:pl-10 pl-5">
                     <h3 className="sm:text-[35px] text-[30px]  text-white text-left font-bold">Family <span className="text-emerald-400">Legacy</span>, Business Vision</h3>
                 </div>  
@@ -267,14 +267,14 @@ const Home = () => {
                       <h3 className="sm:text-[35px] text-[30px] text-white text-left font-bold">Our <span className="text-emerald-400">MISSION</span></h3>
                   </div> 
                   <div className="w-full px-6 mb-6">
-                      <p className="text-gray-200 text-[18px]">We provide a source of economic power for mobile mechanics. Our goal is to be the best customer relationship management tool any mobile mechanic could need. we focus on customer acquisition and retention so you don't have to.</p>
+                      <p className="text-gray-200 text-[18px]">{"We provide a source of economic power for mobile mechanics. Our goal is to be the best customer relationship management tool any mobile mechanic could need. we focus on customer acquisition and retention so you don't have to."}</p>
                   </div>
                   <div className="w-full px-6 mb-6">
                       <div className="text-[40px] font-extrabold overflow-hidden divChangeColor">
-                          <p className="m-0 p-0" style={{ lineHeight: '1', marginLeft: '-10px' }}><span className="changeColor">EPANDA</span>TECHNICIANSREPAIREDBUSINESSTHEPANDA<span className="changeColor">THEPANDA</span></p>
-                          <p className="m-0 p-0" style={{ lineHeight: '1', marginLeft: '-10px' }}>ANSREPAIREDBUSINESS<span className="changeColor">THEPANDA</span>TECHNNICIANSREPAIR</p>
-                          <p className="m-0 p-0" style={{ lineHeight: '1', marginLeft: '-10px' }}>NESS<span className="changeColor">THEPANDA</span>TECHNICIANSREPAIREDBUSINESSTECHNICI</p>
-                          <p className="m-0 p-0" style={{ lineHeight: '1', marginLeft: '-10px' }}><span className="changeColor">THEPANDA</span>TECHNICIANSREPAIREDBUSINESSTHEPANDA</p>
+                          <p className="m-0 p-0" style={{ lineHeight: "1", marginLeft: "-10px" }}><span className="changeColor">EPANDA</span>TECHNICIANSREPAIREDBUSINESSTHEPANDA<span className="changeColor">THEPANDA</span></p>
+                          <p className="m-0 p-0" style={{ lineHeight: "1", marginLeft: "-10px" }}>ANSREPAIREDBUSINESS<span className="changeColor">THEPANDA</span>TECHNNICIANSREPAIR</p>
+                          <p className="m-0 p-0" style={{ lineHeight: "1", marginLeft: "-10px" }}>NESS<span className="changeColor">THEPANDA</span>TECHNICIANSREPAIREDBUSINESSTECHNICI</p>
+                          <p className="m-0 p-0" style={{ lineHeight: "1", marginLeft: "-10px" }}><span className="changeColor">THEPANDA</span>TECHNICIANSREPAIREDBUSINESSTHEPANDA</p>
                       </div>
                   </div>
               </motion.div>
@@ -322,7 +322,7 @@ const Home = () => {
 
             <motion.div ref={ref5} style={{ scale : scaleProgress5, opacity : scaleProgress5 }} className="xl:w-[1200px] w-full relative mb-20">
                 <h3 className="w-full px-2 text-gray-200 md:text-[50px] text-[30px] font-bold  mb-5">We are constantly <span className="font-extrabold text-white">Improving</span> to give you the best experience</h3>
-                <div className="bg-zinc-800 hover:bg-zinc-900 rounded-3xl w-full flex lg:flex-row flex-col shadow-xl shadow-gray-600/50" style={{ transition: 'background-color 1.2s ease' }}>
+                <div className="bg-zinc-800 hover:bg-zinc-900 rounded-3xl w-full flex lg:flex-row flex-col shadow-xl shadow-gray-600/50" style={{ transition: "background-color 1.2s ease" }}>
                     <div className="lg:w-[50%] w-full flex flex-col p-8">
                         <div className="flex gap-x-3 mb-5">
                             <div className="rounded-3xl w-[80px] h-[80px] overflow-hidden bg-white">
@@ -413,14 +413,14 @@ const Home = () => {
             <div className="xl:w-[1200px] w-full relative mb-40">
                 <h3  className="w-full px-2 text-gray-200 md:text-[50px] text-[30px] font-bold mb-5">People stay with us because</h3>
                 <div className="w-full flex lg:flex-row flex-col gap-4" >
-                    <div className="lg:w-1/3 w-full flex p-6 py-8 flex-col  bg-zinc-800 hover:bg-zinc-900 rounded-3xl shadow-xl shadow-gray-600/50 " style={{ transition: 'background-color 1.2s ease' }}>
+                    <div className="lg:w-1/3 w-full flex p-6 py-8 flex-col  bg-zinc-800 hover:bg-zinc-900 rounded-3xl shadow-xl shadow-gray-600/50 " style={{ transition: "background-color 1.2s ease" }}>
                         <div className="w-[60px] h-[60px] rounded-full bg-white flex justify-center items-center mb-3">
                             <RiLightbulbFill  className="w-full text-zinc-700 text-[30px]"/>
                         </div>
                         <h3 className="text-white font-bold text-[30px] w-full mb-3">The process is fast and transparent</h3>
                         <p className="text-[22px] text-gray-300 ">People get in touch directly, without intermediaries, and <span className="text-emerald-400 font-bold">quickly</span> discuss details</p> 
                     </div>
-                    <div  className="lg:w-1/3 w-full flex p-6 py-8 flex-col  bg-zinc-800 hover:bg-zinc-900 rounded-3xl shadow-xl shadow-gray-600/50 " style={{ transition: 'background-color 1.2s ease' }}>
+                    <div  className="lg:w-1/3 w-full flex p-6 py-8 flex-col  bg-zinc-800 hover:bg-zinc-900 rounded-3xl shadow-xl shadow-gray-600/50 " style={{ transition: "background-color 1.2s ease" }}>
                         <div className="w-[60px] h-[60px] rounded-full bg-white flex justify-center items-center mb-3">
                             <RiUserStarFill  className="w-full text-zinc-700 text-[30px]"/>
                         </div>
