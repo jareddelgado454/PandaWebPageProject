@@ -117,7 +117,7 @@ const LandingNavBar = () => {
                                                 
                                             }}
                                             className="transition-transform text-white w-[12rem] h-full"
-                                            description={`${user?.rol}`}
+                                            description={`${user?.role}`}
                                             name={`${user?.fullName}`}
                                         />
                                     </DropdownTrigger>
