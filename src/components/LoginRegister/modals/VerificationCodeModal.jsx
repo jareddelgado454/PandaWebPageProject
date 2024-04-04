@@ -80,7 +80,7 @@ const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn, userDB}) => {
           const expiredAt = tokens.accessToken.payload.exp;
           Cookies.set(
             "currentUser",
-            JSON.stringify({ ...userDB, expiredAt })
+            JSON.stringify({ userDB, expiredAt })
           );
           router.replace("/user/");
 
