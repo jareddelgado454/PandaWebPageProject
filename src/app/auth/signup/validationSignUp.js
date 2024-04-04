@@ -2,7 +2,7 @@
 const validationSignUp = (dataSignUp) => {
     const errors = {};
     const patternName = /^[A-Za-z\s]+$/;
-    const patternEmail = /^[\w-]+(\.[\w-]+)*@[A-Za-z0-9]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$/
+    const patternEmail = /^[\w-]+(\.[\w-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
     const patternPassword = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     
     if(!patternName.test(dataSignUp.fullName)){
