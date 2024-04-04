@@ -117,8 +117,8 @@ const LandingNavBar = () => {
                                                 
                                             }}
                                             className="transition-transform text-white w-[12rem] h-full"
-                                            description={`${user?.rol}`}
-                                            name={`${user?.fullName}`}
+                                            description={`${user?.rol ? `${user?.rol}` : 'role for update'}`}
+                                            name={`${user?.fullname ? `${user?.fullName}` : 'guest'}`}
                                         />
                                     </DropdownTrigger>
                                     <DropdownMenu aria-label="User Actions" variant="flat" className='bg-zinc-800 text-white '>
