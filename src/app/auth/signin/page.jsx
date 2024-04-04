@@ -115,6 +115,7 @@ const SignIn = () => {
       const { tokens } = await fetchAuthSession({ forceRefresh: true });
       const expiredAt = tokens.accessToken.payload.exp;
       const fullName = given_name + family_name;
+      console.log({ email, fullName, expiredAt });
       return { email, fullName, expiredAt };
     } catch (error) {
       console.log(error);
@@ -126,8 +127,7 @@ const SignIn = () => {
         case "signedIn":
           onOpenLoadingModal(true);
           console.log("user have been signedIn successfully.");
-          const { fullName, email, expiredAt } =
-            await currentAuthenticatedUser();
+          const { fullName, email, expiredAt } = await currentAuthenticatedUser();
           const cognitoId = payload.data.userId;
           const userExist = await handleRetrieveMyUser(cognitoId);
           if (userExist !== null && userExist !== undefined) {
@@ -156,16 +156,16 @@ const SignIn = () => {
                 },
               });
             }
-
-            await handleCreateUserOnDatabase({
+            const { data } = await handleCreateUserOnDatabase({
               fullName,
               email,
               cognitoId,
               status,
             });
+            const userInfo = data && data.createdUser;
             Cookies.set(
               "currentUser",
-              JSON.stringify({ ...userExist, expiredAt })
+              JSON.stringify({ ...userInfo, expiredAt })
             );
             router.replace("/user");
           }
@@ -176,7 +176,7 @@ const SignIn = () => {
     return () => hubListenerCancel();
   }, [onOpenLoadingModal, router]);
   return (
-    <AmplifyContext>
+    <>
       <CheckoutModal
         isOpen={isLoadingModalOpen}
         onOpenChange={onOpenLoadingModal}
@@ -337,7 +337,7 @@ const SignIn = () => {
           dataSignIn={dataPassed}
         />
       </div>
-    </AmplifyContext>
+    </>
   );
 };
 export default SignIn;

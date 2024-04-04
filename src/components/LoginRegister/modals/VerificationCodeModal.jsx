@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button} from "@nextui-org/react";
-import { confirmSignUp, signIn, resendSignUpCode } from 'aws-amplify/auth';
+import { confirmSignUp, signIn, resendSignUpCode, fetchAuthSession } from 'aws-amplify/auth';
 import { RiErrorWarningFill,RiRestartLine } from "react-icons/ri";
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
-const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn}) => {
+const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn, userDB}) => {
 
   const [code, setCode] = useState("");
   const [errorCode, setErrorCode] = useState({
@@ -75,6 +76,12 @@ const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn}) => {
           });
           setShowResendButton(true);
           setCode("");
+          const { tokens } = await fetchAuthSession();
+          const expiredAt = tokens.accessToken.payload.exp;
+          Cookies.set(
+            "currentUser",
+            JSON.stringify({ userDB, expiredAt })
+          );
           router.replace("/user/");
 
           console.log(response);
