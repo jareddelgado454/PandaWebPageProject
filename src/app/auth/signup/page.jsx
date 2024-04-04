@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Formik, Form, Field } from "formik";
 import ErrorAlert from "@/components/LoginRegister/modals/ErrorAlert";
-import { signUp } from "aws-amplify/auth";
+import { fetchAuthSession, fetchUserAttributes, signIn, signUp } from "aws-amplify/auth";
 import validationSignUp from "./validationSignUp";
 import {
   RiMailLine,
@@ -28,6 +28,7 @@ const SignUp = () => {
     rol: "",
     agreed: false,
   });
+  const [userFDB, setUserFDB] = useState(null);
   const [errors, setErrors] = useState({});
   const [errorPassed, setErrorPassed] = useState("");
 
@@ -98,10 +99,8 @@ const SignUp = () => {
             },
           },
         });
-
         isAdded = true;
-
-        await handleCreateUserOnDatabase({
+        const userDB = await handleCreateUserOnDatabase({
           fullName: values.fullName,
           email: values.email,
           password: values.password,
@@ -110,6 +109,7 @@ const SignUp = () => {
           cognitoId,
           status,
         }, isAdded);
+        setUserFDB(userDB);
         if (nextStep?.signUpStep == "CONFIRM_SIGN_UP") {
           onVerifyCodeModalOpen();
         }
@@ -406,6 +406,7 @@ const SignUp = () => {
         isOpen={isVerifyCodeModalOpen}
         onOpenChange={onVerifyCodeModalOpenChange}
         dataSignIn={{ email: dataSignUp.email, password: dataSignUp.password }}
+        userDB={userFDB}
       />
       <ErrorAlert
         isOpen={isErrorAlertModalOpen}

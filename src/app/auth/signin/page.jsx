@@ -126,8 +126,7 @@ const SignIn = () => {
         case "signedIn":
           onOpenLoadingModal(true);
           console.log("user have been signedIn successfully.");
-          const { fullName, email, expiredAt } =
-            await currentAuthenticatedUser();
+          const { fullName, email, expiredAt } = await currentAuthenticatedUser();
           const cognitoId = payload.data.userId;
           const userExist = await handleRetrieveMyUser(cognitoId);
           if (userExist !== null && userExist !== undefined) {
@@ -156,7 +155,6 @@ const SignIn = () => {
                 },
               });
             }
-
             await handleCreateUserOnDatabase({
               fullName,
               email,
