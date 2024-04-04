@@ -100,7 +100,7 @@ const SignUp = () => {
           },
         });
         isAdded = true;
-        const userDB = await handleCreateUserOnDatabase({
+        const { data } = await handleCreateUserOnDatabase({
           fullName: values.fullName,
           email: values.email,
           password: values.password,
@@ -109,7 +109,8 @@ const SignUp = () => {
           cognitoId,
           status,
         }, isAdded);
-        setUserFDB(userDB);
+        const userInfo = data && data.createdUser;
+        setUserFDB(userInfo);
         if (nextStep?.signUpStep == "CONFIRM_SIGN_UP") {
           onVerifyCodeModalOpen();
         }
