@@ -1,7 +1,4 @@
 import { client } from '@/contexts/AmplifyContext';
-import { Amplify } from "aws-amplify";
-import config from "@/amplifyconfiguration.json";
-Amplify.configure(config);
 import { getUserByCognitoID, getUserByEmail } from '@/graphql/custom-queries';
 import { createUser } from '@/graphql/users/mutation/users';
 export const handleCreateUserOnDatabase = async(values) => {
@@ -11,8 +8,7 @@ export const handleCreateUserOnDatabase = async(values) => {
             query: createUser,
             variables: {
                 input: { ...values }
-            },
-            authMode: 'iam'
+            }
         });
         console.log(data);
         console.log("added");
