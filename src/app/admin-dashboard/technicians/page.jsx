@@ -20,7 +20,7 @@ const Technicians = () => {
         query: listUsersFilter,
         variables: {
           email: "test@gmail.com",
-          rol: "technician"
+          role: "technician"
         },
       });
       setUsers(data.listUsers.items);
@@ -99,30 +99,6 @@ const Technicians = () => {
                   )
                 })
               }
-            </div>
-
-            {/* Todo: searchInput */}
-
-            <div className="w-full px-4">
-              <div className='flex justify-between items-center gap-4 bg-white dark:bg-zinc-800 rounded p-5 mb-6 shadow-md flex-wrap md:flex-nowrap'>
-                <div className="w-full flex gap-4 items-center flex-wrap md:flex-nowrap">
-                  <label className="font-extrabold text-zinc-800 dark:text-white tracking-[0.2em] transition-all" htmlFor="search-input">
-                    Search
-                  </label>
-                  <input
-                    type="search"
-                    id="myInput"
-                    onKeyUp={filterInput}
-                    className="dark:bg-zinc-800 border border-[#40C48E] dark:text-white shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  />
-                </div>
-
-                <button
-                  className="bg-green-panda dark:bg-zinc-800 dark:border-2 dark:border-[#40C48E] dark:hover:bg-green-panda hover:bg-[#2e966a] text-white font-bold py-2 px-4 rounded-lg w-full md:w-[10rem] transition-all"
-                >
-                  Add
-                </button>
-              </div>
             </div>
             {/* Todo: Table */}
             <div>  
