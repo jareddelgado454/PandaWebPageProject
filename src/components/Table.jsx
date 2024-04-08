@@ -122,10 +122,10 @@ export const Table = ({ item, callback }) => {
                                     />
                                 </th>
                                 <td className="px-6 py-4">
-                                    {user.fullName}
+                                    {user.fullName ? user.fullName : 'Guest'}
                                 </td>
                                 <td className="px-6 py-4">
-                                    {user.email}
+                                    {user.email ? user.email : 'Guest'}
                                 </td>
                                 <td className="px-6 py-4">
                                     <div>
@@ -137,7 +137,7 @@ export const Table = ({ item, callback }) => {
                                     </div>
                                 </td>
                                 <td className="px-6 py-4">
-                                    {user.contactNumber}
+                                    {user.contactNumber ? user.contactNumber : 'To complete'}
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className='flex gap-4'>
