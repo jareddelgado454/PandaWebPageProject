@@ -36,7 +36,7 @@ export const getUserByEmail = gql`
                 id
                 email
                 fullName
-                rol
+                role
                 profilePicture
             }
         }

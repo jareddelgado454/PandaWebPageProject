@@ -10,7 +10,7 @@ export const getUser = gql`
       email
       fullName
       profilePicture
-      rol
+      role
       state
       zipCode
       subscription
@@ -33,7 +33,7 @@ export const listUsersForGraphics = gql`
       items {
         id
         email
-        rol
+        role
         fullName
         contactNumber
         createdAt
@@ -55,7 +55,7 @@ export const listUsers = gql`
       items {
         id
         email
-        rol
+        role
         fullName
         contactNumber
         createdAt
@@ -72,12 +72,12 @@ export const listUsers = gql`
 `;
 
 export const listUsersFilter = gql`
-  query ListUsers($email: String!, $rol: String!) {
-    listUsers(filter: {email: {ne: $email}, rol: {eq: $rol}}) {
+  query ListUsers($email: String!, $role: String!) {
+    listUsers(filter: {email: {ne: $email}, role: {eq: $role}}) {
       items {
         id
         email
-        rol
+        role
         fullName
         contactNumber
         status
@@ -96,7 +96,7 @@ export const filterUserByRate = gql`
         id
         email
         profilePicture
-        rol
+        role
         cognitoId
         rate
       }
