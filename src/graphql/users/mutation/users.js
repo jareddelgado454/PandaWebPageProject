@@ -5,7 +5,7 @@ export const createUser = gql`
     createUser(input: $input) {
       cognitoId
       email
-      rol
+      role
       status
     }
   }

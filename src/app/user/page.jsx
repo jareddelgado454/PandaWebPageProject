@@ -25,8 +25,7 @@ const Page = () => {
         setLoading(true);
         try {
             const info = await fetchUserAttributes();
-            const info2 = await fetchAuthSession();
-            console.log(info2);
+            console.log(info);
             const { data } = await client.graphql({
                 query: getUserIdByCognitoID,
                 variables: {
@@ -156,7 +155,7 @@ const Page = () => {
                                     city: user['custom:city'] || '',
                                     state: user['custom:state'] || '',
                                     zipCode: user['custom:zipCode'] || 0,
-                                    contactNumber: user['custom:contactNumber'] || 0,
+                                    contactNumber: user['custom:phoneNumber'] || 0,
                                     status: 'active'
                                 }}
                                 validationSchema={formSchema}
