@@ -69,6 +69,35 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "saveSubsFromStripe": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ],
+          "category": "api",
+          "resourceName": "pandawebapp"
+        },
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "pandawebapp0a05bcd0"
+        },
+        {
+          "attributes": [
+            "BucketName"
+          ],
+          "category": "storage",
+          "resourceName": "pandawebapp"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "parameters": {
@@ -85,6 +114,30 @@
         {
           "category": "function",
           "resourceName": "S3Triggerdf93383d"
+        }
+      ]
+    },
+    "AMPLIFY_function_saveSubsFromStripe_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "saveSubsFromStripe"
+        }
+      ]
+    },
+    "AMPLIFY_function_saveSubsFromStripe_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "saveSubsFromStripe"
+        }
+      ]
+    },
+    "AMPLIFY_function_saveSubsFromStripe_stripeTestKey": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "saveSubsFromStripe"
         }
       ]
     }
