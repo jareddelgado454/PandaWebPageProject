@@ -5,7 +5,7 @@ export const publicRoutes = ["/"];
 export function middleware(request) {
   const currentUserCookie = request.cookies.get("currentUser");
   const currentUser = currentUserCookie ? currentUserCookie.value : null;
-  const userRol = currentUserCookie ? JSON.parse(currentUser).rol : null;
+  const userRol = currentUserCookie ? JSON.parse(currentUser).role : null;
   if (
     protectedRoutes.includes(request.nextUrl.pathname) &&
     (!currentUser || Date.now() > new Date((JSON.parse(currentUser).expiredAt) * 1000))

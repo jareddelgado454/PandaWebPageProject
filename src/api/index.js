@@ -11,8 +11,6 @@ export const handleCreateUserOnDatabase = async(values, isAdded) => {
             },
             authMode: isAdded ? 'iam' : 'userPool'
         });
-        console.log(data);
-        console.log("added");
         return data;
 
     } catch (error) {

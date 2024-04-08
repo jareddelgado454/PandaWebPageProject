@@ -126,7 +126,6 @@ const SignIn = () => {
       switch (payload.event) {
         case "signedIn":
           onOpenLoadingModal(true);
-          console.log("user have been signedIn successfully.");
           const { fullName, email, expiredAt } = await currentAuthenticatedUser();
           const cognitoId = payload.data.userId;
           const userExist = await handleRetrieveMyUser(cognitoId);
@@ -136,40 +135,39 @@ const SignIn = () => {
               "currentUser",
               JSON.stringify({ ...userExist, expiredAt })
             );
-            if (userExist.rol === "admin") {
+            if (userExist.role === "admin") {
               router.replace("/admin-dashboard/");
             } else {
               router.replace("/user/");
             }
-          } else {
-            if (fullName) {
-              await updateUserAttributes({
-                userAttributes: {
-                  "custom:fullName": fullName,
-                  "custom:status": status,
-                },
-              });
-            } else {
-              await updateUserAttributes({
-                userAttributes: {
-                  "custom:status": status,
-                },
-              });
-            }
-            const { data } = await handleCreateUserOnDatabase({
-              fullName,
-              email,
-              cognitoId,
-              status,
-            });
-            const userInfo = data && data.createdUser;
-            Cookies.set(
-              "currentUser",
-              JSON.stringify({ ...userInfo, expiredAt })
-            );
-            router.replace("/user");
-          }
-          console.log("process completed");
+          } //else {
+          //   if (fullName) {
+          //     await updateUserAttributes({
+          //       userAttributes: {
+          //         "custom:fullName": fullName,
+          //         "custom:status": status,
+          //       },
+          //     });
+          //   } else {
+          //     await updateUserAttributes({
+          //       userAttributes: {
+          //         "custom:status": status,
+          //       },
+          //     });
+          //   }
+          //   const { data } = await handleCreateUserOnDatabase({
+          //     fullName,
+          //     email,
+          //     cognitoId,
+          //     status,
+          //   });
+          //   const userInfo = data && data.createdUser;
+          //   Cookies.set(
+          //     "currentUser",
+          //     JSON.stringify({ ...userInfo, expiredAt })
+          //   );
+          //   router.replace("/user");
+          // }
           break;
       }
     });
