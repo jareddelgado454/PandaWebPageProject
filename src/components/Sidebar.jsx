@@ -155,13 +155,13 @@ export const Sidebar = () => {
                 }`}
               />
               <div className="overflow-hidden flex flex-col gap-1 w-full">
-                <p className={`font-medium text-sm ${!active && "hidden"}`}>{reduceName(user.fullName)}</p>
+                <p className={`font-medium text-sm ${!active && "hidden"}`}>{user && reduceName(user?.fullName)}</p>
                 <p
                   className={`text-xs text-gray-100 tracking-wide ${
                     !active && "hidden"
                   }`}
                 >
-                  {user.email}
+                  {user && user.email}
                 </p>
                 <p
                   className={`text-[17px] font-extrabold cursor-pointer ${
