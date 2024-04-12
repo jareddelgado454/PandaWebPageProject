@@ -3,8 +3,9 @@ import React from 'react';
 import CountUp from 'react-countup';
 import {Card, CardBody} from "@nextui-org/react";
 import { FaFaceMeh, FaFaceSmile, FaPeopleGroup } from 'react-icons/fa6';
+import {calculateTotalPages} from "@/utils/calculate";
 
-export const CardData = ({ mode, number }) => {
+export const CardData = ({ mode, number, users, setFilteredUsers, page, rowsPerPage, setTotalPages }) => {
     const renderIcon = () => {
         switch (mode) {
           case 'total':
@@ -44,11 +45,36 @@ export const CardData = ({ mode, number }) => {
         }
     }
 
+    const usersFilter = () => {
+        let filtered;
+        let userFiltered;
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        switch (mode) {
+            case 'total':
+                userFiltered = users;
+                break;
+            case 'active':
+
+                userFiltered = users.filter(user => user.status === "active");
+                break;
+            case 'inactive':
+                filtered = "";
+                userFiltered = users.filter(user => user.status === "inactive");
+                break;
+            default:
+                userFiltered = users;
+        }
+        setFilteredUsers(userFiltered.slice(start, end));
+        setTotalPages(calculateTotalPages(userFiltered, rowsPerPage));
+    }
+
   return (
     <Card
         shadow="md"
         className={`h-[11rem] w-11/12 l-g:w-[24rem] dark:bg-zinc-800 ${getColorClass()}`}
         isPressable
+        onClick={usersFilter}
     >
         <CardBody className="overflow-visible p-4 relative">
             {renderIcon()}
