@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import Cookies from "js-cookie";
 import * as Yup from 'yup';
-import { fetchAuthSession, fetchUserAttributes, signOut, updateUserAttributes } from "aws-amplify/auth";
+import { fetchUserAttributes, signOut, updateUserAttributes,  } from "aws-amplify/auth";
 import { uploadData } from 'aws-amplify/storage';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
@@ -33,7 +33,7 @@ const Page = () => {
                 },
             });
             const userId = data.listUsers.items[0].id;
-            await setUser({...info, dbId: userId});
+            await setUser({...info, id: userId});
             setLoading(false);
 
         } catch (error) {
@@ -88,6 +88,16 @@ const Page = () => {
                 }
             }).result;
             console.log('Succeeded: ',result);
+            await client.graphql({
+                query: updateInformation,
+                variables: {
+                    email: user.email,
+                    input: {
+                        id: user.id,
+                        profilePicture: `https://d3nqi6yd86hstw.cloudfront.net/public/${filename}`,
+                    },
+                },
+            });
         } catch (error) {
             console.log(`Error from here : ${ error }`);
         }
@@ -111,7 +121,7 @@ const Page = () => {
                 variables: {
                     email: values.email,
                     input: {
-                        id: user.dbId,
+                        id: user.id,
                         ...values
                     }
                 }
@@ -402,7 +412,7 @@ const CustomModal = ({ isOpen, onOpenChange, user, callback }) => {
                 variables: {
                     email: user.email,
                     input: {
-                        id: user.dbId,
+                        id: user.id,
                         rol: values.rol
                     }
                 }
