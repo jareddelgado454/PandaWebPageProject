@@ -1,21 +1,20 @@
 "use client";
 import React, { useState } from "react";
+import {AddUserModal, DeleteModal, EditModal, ShowInfoModal} from "./admin/index";
+import { client } from "@/contexts/AmplifyContext";
 import {
   FaTrashCan,
   FaPencil,
   FaPersonCircleCheck,
   FaPersonCircleMinus,
   FaSort,
+  FaAddressCard,
 } from "react-icons/fa6";
 import { useDisclosure } from "@nextui-org/react";
 import { updateStatus, deleteUserById } from "@/graphql/users/mutation/users";
-import EditModal from "./admin/modals/EditModal";
-import DeletaModal from "./admin/modals/DeletModal";
-import { client } from "@/contexts/AmplifyContext";
 export const Table = ({ item, callback }) => {
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
-
   const {
     isOpen: isEditModalOpen,
     onOpen: onEditModalOpen,
@@ -26,15 +25,25 @@ export const Table = ({ item, callback }) => {
     onOpen: onDeleteModalOpen,
     onOpenChange: onDeleteModalOpenChange,
   } = useDisclosure();
+  const {
+    isOpen: isShowModalOpen,
+    onOpen: onShowModalOpen,
+    onOpenChange: onShowModalOpenChange
+  } = useDisclosure();
+  const {
+    isOpen: isAddModalOpen,
+    onOpen: onUserAddModalOpen,
+    onOpenChange: onAddUserModalChange
+  } = useDisclosure();
   const [recordSelected, setRecordSelected] = useState({});
   const handleOpenEditModal = (user) => {
     onEditModalOpen();
     setRecordSelected(user);
   };
-  const handleOpenDeleteModal = (user) => {
-    onDeleteModalOpen();
+  const handleOpenInfoModal = (user) => {
+    onShowModalOpen();
     setRecordSelected(user);
-  };
+  }
   const handleUpdateStatus = async (user, value) => {
     console.log(user);
     try {
@@ -103,9 +112,8 @@ export const Table = ({ item, callback }) => {
         return 0;
       })
     : item;
-
   const filterInput = () => {
-    var input, filter, table, tr, td, i, txtValue;
+    let input, filter, table, tr, td, i, txtValue;
     input = document.getElementById("myInput");
     filter = input.value.toUpperCase();
     table = document.getElementById("myTable");
@@ -143,7 +151,10 @@ export const Table = ({ item, callback }) => {
             />
           </div>
 
-          <button className="bg-green-panda dark:bg-zinc-800 dark:border-2 dark:border-[#40C48E] dark:hover:bg-green-panda hover:bg-[#2e966a] text-white font-bold py-2 px-4 rounded-lg w-full md:w-[10rem] transition-all">
+          <button
+              className="bg-green-panda dark:bg-zinc-800 dark:border-2 dark:border-[#40C48E] dark:hover:bg-green-panda hover:bg-[#2e966a] text-white font-bold py-2 px-4 rounded-lg w-full md:w-[10rem] transition-all"
+              onClick={onUserAddModalOpen}
+          >
             Add
           </button>
         </div>
@@ -252,6 +263,13 @@ export const Table = ({ item, callback }) => {
                     </button>
                     <button
                       type="button"
+                      className="bg-blue-500 p-2 rounded text-white"
+                      onClick={() => handleOpenInfoModal(user)}
+                    >
+                      <FaAddressCard />
+                    </button>
+                    <button
+                      type="button"
                       className="bg-yellow-400 p-2 rounded text-white"
                       onClick={() => handleOpenEditModal(user)}
                     >
@@ -284,12 +302,22 @@ export const Table = ({ item, callback }) => {
             callback={callback}
             setRecordSelected={setRecordSelected}
           />
-          <DeletaModal
+          <DeleteModal
             isOpen={isDeleteModalOpen}
             onOpenChange={onDeleteModalOpenChange}
             user={recordSelected}
             callback={callback}
             setRecordSelected={setRecordSelected}
+          />
+          <ShowInfoModal 
+            isOpen={isShowModalOpen}
+            onOpenChange={onShowModalOpenChange}
+            user={recordSelected}
+            setRecordSelected={setRecordSelected}
+          />
+          <AddUserModal
+            isOpen={isAddModalOpen}
+            onOpenChange={onAddUserModalChange}
           />
         </table>
       </div>
