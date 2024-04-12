@@ -9,6 +9,7 @@ import { listUsersFilter } from '@/graphql/users/query/user';
 const Customers = () => {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState(null);
   const [filteredUsers, setFilteredUsers] = useState(null);
@@ -56,7 +57,10 @@ const Customers = () => {
     setPage(pageNumber);
   };
 
-  const totalPages = calculateTotalPages(users, rowsPerPage);
+  useEffect(() => {
+    const total = calculateTotalPages(users, rowsPerPage);
+    setTotalPages(total);
+  }, [users, rowsPerPage]);
   const disablePrevious = page === 1;
   const disableNext = page === totalPages;
   const numbers = totalNumbers(users);
@@ -76,8 +80,18 @@ const Customers = () => {
             <div className='grid grid-cols-1 md:grid-cols-3 gap-2 my-6 place-items-center'>
               {
                 numbers.map((e, i) => {
-                  return(
-                    <CardData key={i} mode={e.mode} number={e.number} />
+                  return (
+                      <CardData
+                          key={i}
+                          mode={e.mode}
+                          number={e.number}
+                          users={users}
+                          filteredUsers={filteredUsers}
+                          setFilteredUsers={setFilteredUsers}
+                          page={page}
+                          rowsPerPage={rowsPerPage}
+                          setTotalPages={setTotalPages}
+                      />
                   )
                 })
               }

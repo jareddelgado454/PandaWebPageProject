@@ -9,6 +9,7 @@ import { client } from "@/contexts/AmplifyContext";
 const Users = () => {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState(null);
   const [filteredUsers, setFilteredUsers] = useState(null);
@@ -20,7 +21,6 @@ const Users = () => {
       const { data } = await client.graphql({
         query: listUsers,
       });
-      console.log(data);
       setUsers(data.listUsers.items);
       setLoading(false);
     } catch (error) {
@@ -53,30 +53,13 @@ const Users = () => {
     setPage(pageNumber);
   };
 
-  const totalPages = calculateTotalPages(users, rowsPerPage);
+  useEffect(() => {
+    const total = calculateTotalPages(users, rowsPerPage);
+    setTotalPages(total);
+  }, [users, rowsPerPage]);
   const disablePrevious = page === 1;
   const disableNext = page === totalPages;
   const numbers = totalNumbers(users);
-
-  const filterInput = () => {
-    var input, filter, table, tr, td, i, txtValue;
-    input = document.getElementById("myInput");
-    filter = input.value.toUpperCase();
-    table = document.getElementById("myTable");
-    tr = table.getElementsByTagName("tr");
-    for (i = 0; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName("td")[1];
-      if (td) {
-        txtValue = td.textContent || td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-          tr[i].style.display = "";
-        } else {
-          tr[i].style.display = "none";
-        }
-      }
-    }
-  };
-
   return (
     <>
       <div className="container mx-auto md:px-0 mb-8 slide-in-left">
@@ -87,7 +70,19 @@ const Users = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 my-6 place-items-center">
           {numbers.map((e, i) => {
-            return <CardData key={i} mode={e.mode} number={e.number} />;
+            return (
+                <CardData
+                    key={i}
+                    mode={e.mode}
+                    number={e.number}
+                    users={users}
+                    filteredUsers={filteredUsers}
+                    setFilteredUsers={setFilteredUsers}
+                    page={page}
+                    rowsPerPage={rowsPerPage}
+                    setTotalPages={setTotalPages}
+                />
+            )
           })}
         </div>   
         {/* Todo: Table */}
@@ -105,7 +100,7 @@ const Users = () => {
             >
               Previous
             </button>
-            {users &&
+            {filteredUsers &&
               Array.from({ length: totalPages }, (_, index) => (
                 <p
                   key={index}

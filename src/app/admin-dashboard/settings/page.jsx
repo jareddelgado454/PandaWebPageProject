@@ -1,14 +1,16 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { client } from "@/contexts/AmplifyContext";
+import { v4 as uuidv4 } from 'uuid';
 import * as Yup from "yup";
-import { fetchUserAttributes, updateUserAttributes } from "aws-amplify/auth";
-import { getUserIdByCognitoID } from "@/graphql/custom-queries";
 import { Field, Form, Formik } from "formik";
-import { statesUSA } from "@/assets/data/StatesUSA";
+import { fetchUserAttributes, updateUserAttributes } from "aws-amplify/auth";
 import { FaCamera } from "react-icons/fa6";
-import { updateInformation } from "@/graphql/users/mutation/users";
 import { toast } from "react-toastify";
+import {uploadData} from "aws-amplify/storage";
+import { client } from "@/contexts/AmplifyContext";
+import { getUserIdByCognitoID } from "@/graphql/custom-queries";
+import { statesUSA } from "@/assets/data/StatesUSA";
+import { updateInformation } from "@/graphql/users/mutation/users";
 const Settings = () => {
   const [photograph, setPhotograph] = useState(null);
   const [user, setUser] = useState({});
@@ -24,8 +26,8 @@ const Settings = () => {
           cognitoId: info.sub,
         },
       });
-      const userId = data.listUsers.items[0].id;
-      await setUser({ ...info, dbId: userId });
+      const user = data.listUsers.items[0];
+      await setUser({ ...info, ...user });
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -45,7 +47,7 @@ const Settings = () => {
           "custom:address": values.address,
           "custom:city": values.city,
           "custom:state": values.state,
-          "custom:contactNumber": values.contactNumber,
+          "custom:phoneNumber": values.contactNumber,
           "custom:zipCode": values.zipCode,
         },
       });
@@ -54,7 +56,7 @@ const Settings = () => {
         variables: {
           email: values.email,
           input: {
-            id: user.dbId,
+            id: user.id,
             ...values,
           },
         },
@@ -84,9 +86,9 @@ const Settings = () => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
+      reader.onloadend = async() => {
         setPhotograph(reader.result);
-        handleUpdatePicture(dataURLtoBlob(reader.result));
+        await handleUpdatePicture(dataURLtoBlob(reader.result));
       };
       reader.readAsDataURL(file);
     }
@@ -112,6 +114,16 @@ const Settings = () => {
         },
       }).result;
       console.log("Succeeded: ", result);
+      await client.graphql({
+        query: updateInformation,
+        variables: {
+          email: user.email,
+          input: {
+            id: user.id,
+            profilePicture: `https://d3nqi6yd86hstw.cloudfront.net/public/${filename}`,
+          },
+        },
+      });
     } catch (error) {
       console.log(`Error from here : ${error}`);
     }
@@ -139,13 +151,8 @@ const Settings = () => {
                       <FaCamera className="text-white text-xl md:text-4xl" />
                     </div>
                   </div>
-                  <img
-                    src={
-                      photograph
-                        ? photograph
-                        : user.profilePicture
-                        ? user.profilePicture
-                        : "/image/defaultProfilePicture.jpg"
+                  <img src={
+                      photograph ? photograph : (user.profilePicture ? user.profilePicture : "/image/defaultProfilePicture.jpg")
                     }
                     className="rounded-full w-[6rem] h-[6rem] md:w-[12rem] md:h-[12rem] cursor-pointer "
                     alt="Fotografía de perfil"
@@ -166,7 +173,7 @@ const Settings = () => {
                 initialValues={{
                   fullName: user["custom:fullName"] || "",
                   email: user.email || "",
-                  contactNumber: user["custom:contactNumber"] || 0,
+                  contactNumber: user["custom:phoneNumber"] || 0,
                   address: user["custom:address"] || "",
                   city: user["custom:city"] || "",
                   state: user["custom:state"] || "",
