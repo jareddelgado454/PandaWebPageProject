@@ -19,6 +19,10 @@
         "S3Triggerdf93383d": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
           "s3Key": "amplify-builds/S3Triggerdf93383d-464f485a6f6748553356-build.zip"
+        },
+        "saveSubsFromStripe": {
+          "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
+          "s3Key": "amplify-builds/saveSubsFromStripe-702b6a74484a624a5743-build.zip"
         }
       },
       "storage": {
