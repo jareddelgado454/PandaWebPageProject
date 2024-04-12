@@ -23,18 +23,15 @@ import {
   signIn,
   signOut,
   fetchUserAttributes,
-  fetchAuthSession,
-  updateUserAttributes,
+  updateUserAttributes, fetchAuthSession,
 } from "aws-amplify/auth";
 import VerificationCodeModal from "@/components/LoginRegister/modals/VerificationCodeModal";
 import {
   Modal,
   ModalContent,
-  ModalHeader,
   ModalBody,
   useDisclosure,
 } from "@nextui-org/react";
-import AmplifyContext from "@/contexts/AmplifyContext";
 import { handleCreateUserOnDatabase, handleRetrieveMyUser } from "@/api";
 const SignIn = () => {
   const status = "inactive";
@@ -140,34 +137,34 @@ const SignIn = () => {
             } else {
               router.replace("/user/");
             }
-          } //else {
-          //   if (fullName) {
-          //     await updateUserAttributes({
-          //       userAttributes: {
-          //         "custom:fullName": fullName,
-          //         "custom:status": status,
-          //       },
-          //     });
-          //   } else {
-          //     await updateUserAttributes({
-          //       userAttributes: {
-          //         "custom:status": status,
-          //       },
-          //     });
-          //   }
-          //   const { data } = await handleCreateUserOnDatabase({
-          //     fullName,
-          //     email,
-          //     cognitoId,
-          //     status,
-          //   });
-          //   const userInfo = data && data.createdUser;
-          //   Cookies.set(
-          //     "currentUser",
-          //     JSON.stringify({ ...userInfo, expiredAt })
-          //   );
-          //   router.replace("/user");
-          // }
+          }else {
+            if (fullName) {
+              await updateUserAttributes({
+                userAttributes: {
+                  "custom:fullName": fullName,
+                  "custom:status": status,
+                },
+              });
+            } else {
+              await updateUserAttributes({
+                userAttributes: {
+                  "custom:status": status,
+                },
+              });
+            }
+            const { data } = await handleCreateUserOnDatabase({
+              fullName,
+              email,
+              cognitoId,
+              status,
+            });
+            const userInfo = data && data.createdUser;
+            Cookies.set(
+              "currentUser",
+              JSON.stringify({ ...userInfo, expiredAt })
+            );
+            router.replace("/user");
+          }
           break;
       }
     });

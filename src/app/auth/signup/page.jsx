@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Formik, Form, Field } from "formik";
 import ErrorAlert from "@/components/LoginRegister/modals/ErrorAlert";
-import { fetchAuthSession, fetchUserAttributes, signIn, signUp } from "aws-amplify/auth";
+import { signUp } from "aws-amplify/auth";
 import validationSignUp from "./validationSignUp";
 import {
   RiMailLine,
@@ -26,7 +26,7 @@ const SignUp = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    rol: "",
+    role: "",
     agreed: false,
   });
   const [userFDB, setUserFDB] = useState(null);
@@ -49,7 +49,7 @@ const SignUp = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    rol: "",
+    role: "",
     agreed: false,
   };
 
@@ -78,11 +78,11 @@ const SignUp = () => {
     let isAdded = false;
     if (
       !evaluateErrors() &&
-      dataSignUp.fullName != "" &&
-      dataSignUp.email != "" &&
-      dataSignUp.password != "" &&
-      dataSignUp.confirmPassword != "" &&
-      dataSignUp.rol != "" &&
+      dataSignUp.fullName !== "" &&
+      dataSignUp.email !== "" &&
+      dataSignUp.password !== "" &&
+      dataSignUp.confirmPassword !== "" &&
+      dataSignUp.role !== "" &&
       dataSignUp.agreed
     ) {
       console.log("podes registrarte no hay errores");
@@ -94,7 +94,7 @@ const SignUp = () => {
           options: {
             userAttributes: {
               email: values.email,
-              "custom:role": values.rol,
+              "custom:role": values.role,
               "custom:fullName": values.fullName,
               "custom:status": status
             },
@@ -105,19 +105,18 @@ const SignUp = () => {
           fullName: values.fullName,
           email: values.email,
           password: values.password,
-          rol: values.rol,
+          role: values.role,
           status,
           cognitoId,
-          status,
         }, isAdded);
         const userInfo = data && data.createdUser;
         setUserFDB(userInfo);
-        if (nextStep?.signUpStep == "CONFIRM_SIGN_UP") {
+        if (nextStep?.signUpStep === "CONFIRM_SIGN_UP") {
           onVerifyCodeModalOpen();
         }
       } catch (error) {
         console.log(error);
-        if (error.name == "UsernameExistsException") {
+        if (error.name === "UsernameExistsException") {
           setErrorPassed("alreadyExists");
           onErrorAlertModalOpen();
         } else {
@@ -328,11 +327,11 @@ const SignUp = () => {
                     </p>
                     <Field
                       as="select"
-                      id="rol"
-                      name="rol"
+                      id="role"
+                      name="role"
                       onChange={(e) => {
-                        setFieldValue("rol", e.target.value);
-                        setDataSignUp({ ...dataSignUp, rol: e.target.value });
+                        setFieldValue("role", e.target.value);
+                        setDataSignUp({ ...dataSignUp, role: e.target.value });
                       }}
                       className="block w-full bg-zinc-800 text-white py-3 px-4 rounded-lg mb-2"
                     >
