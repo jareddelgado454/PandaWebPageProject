@@ -11,7 +11,7 @@ type User @model @auth(
 ) {
     id: ID!
     email: String
-    rol: String
+    role: String
     fullName: String
     contactNumber: String
     status: String
@@ -23,6 +23,7 @@ type User @model @auth(
     zipCode: Int
     subscription: String
     cognitoId: String
+    fee: Int
     rate: Float
     createdAt: AWSDateTime
     updatedAt: AWSDateTime

@@ -5,7 +5,7 @@ import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button} from "
 import CardSubscription from '../CardSubscription';
 import Stripe from "stripe";
 
-const SubscriptionPlan = ({isOpen, onOpenChange}) => {
+const SubscriptionPlan = ({isOpen, onOpenChange, idsPassed}) => {
 
   const [prices, setPrices] = useState([]);
 
@@ -36,7 +36,7 @@ const SubscriptionPlan = ({isOpen, onOpenChange}) => {
                       <CardSubscription freePlan={true} />
                       {
                         prices.length > 0 && prices?.map((price) => {
-                            return <CardSubscription key={price.id} freePlan={false} infoPlan = {price}/>
+                            return <CardSubscription key={price.id} freePlan={false} infoPlan = {price} idsPassed = {idsPassed} />
                         })
                       }
                     </div>

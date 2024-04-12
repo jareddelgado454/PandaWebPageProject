@@ -3,8 +3,9 @@ import { RiTimer2Line,RiCheckboxCircleFill  } from "react-icons/ri";
 import { Stripe } from "stripe";
 import { useRouter } from 'next/navigation';
 
-const CardSubscription = ({freePlan, infoPlan}) => {
+const CardSubscription = ({freePlan, infoPlan, idsPassed}) => {
     const router = useRouter();
+    console.log(infoPlan)
     const handleClick = async () => {
         const stripe = new Stripe("sk_test_51MHZf4JbGPo8jsLC7uInizJy0DjyqYbFZrSYMN0USaP1L3w6r4D1tbTWuF5pwWMOq6UoVlhdeBfsFa68sGIE7tY600NlVl5zAf");
         if(freePlan){
@@ -23,6 +24,7 @@ const CardSubscription = ({freePlan, infoPlan}) => {
                     ],
                     success_url : "http://localhost:3000/user",
                     cancel_url : "http://localhost:3000/user",
+                    metadata : idsPassed ? {...idsPassed} : {},
                 }); 
                 router.push(checkout?.url);
                 console.log(checkout);   

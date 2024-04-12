@@ -23,7 +23,7 @@
         "saveSubsFromStripe": {
           "stripeTestKey": "sk_test_51MHZf4JbGPo8jsLC7uInizJy0DjyqYbFZrSYMN0USaP1L3w6r4D1tbTWuF5pwWMOq6UoVlhdeBfsFa68sGIE7tY600NlVl5zAf",
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/saveSubsFromStripe-4f724973387777506a7a-build.zip"
+          "s3Key": "amplify-builds/saveSubsFromStripe-3934742b485a2f367148-build.zip"
         }
       },
       "storage": {

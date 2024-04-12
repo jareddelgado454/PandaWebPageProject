@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import Cookies from "js-cookie";
 import * as Yup from 'yup';
-import { fetchAuthSession, fetchUserAttributes, signOut, updateUserAttributes } from "aws-amplify/auth";
+import { fetchAuthSession, fetchUserAttributes, signOut, updateUserAttributes, getCurrentUser  } from "aws-amplify/auth";
 import { uploadData } from 'aws-amplify/storage';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
@@ -25,11 +25,15 @@ const Page = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [user, setUser] = useState(null);
+    const [idsPassed, setIdsPassed] = useState({
+        idDatabase : "",
+        cognitoUsername : ""
+    });
     const retrieveOneUser = async() => {
         setLoading(true);
         try {
             const info = await fetchUserAttributes();
-            console.log(info);
+            console.log("info",info);
             const { data } = await client.graphql({
                 query: getUserIdByCognitoID,
                 variables: {
@@ -95,8 +99,18 @@ const Page = () => {
         } catch (error) {
             console.log(`Error from here : ${ error }`);
         }
-    
     }
+
+    const handleSubscriptionModal = async () => {
+        const userId = user?.dbId;
+        const { username } = await getCurrentUser();
+        setIdsPassed({
+            idDatabase : userId,
+            cognitoUsername : username
+        });
+        onSubscriptionModalOpen();
+    }
+
     const onHandleSubmit = async(values, { setSubmitting }) => {
         setSubmitting(true);
         try {
@@ -369,7 +383,7 @@ const Page = () => {
                                         <span className="text-gray-700 text-[13px]">Subscription: </span>
                                         <p className="text-zinc-900 font-semibold">
                                         {
-                                            user.subscription ? (user.subscription) : <span className="">Choose a plan <button onClick={()=>onSubscriptionModalOpen()} className="text-emerald-500 hover:text-emerald-700 transition-colors"><u>here</u></button></span>
+                                            user.subscription ? (user.subscription) : <span className="">Choose a plan <button onClick={()=>handleSubscriptionModal()} className="text-emerald-500 hover:text-emerald-700 transition-colors"><u>here</u></button></span>
                                         }
                                         </p>
                                     </div>                                
@@ -393,7 +407,7 @@ const Page = () => {
                     </div>
                 )
             }
-            <SubscriptionPlan isOpen={isSubscriptionModalOpen} onOpenChange={onSubscriptionModalChange}/>
+            <SubscriptionPlan isOpen={isSubscriptionModalOpen} onOpenChange={onSubscriptionModalChange} idsPassed={idsPassed}/>
         </div>
     );
 };
