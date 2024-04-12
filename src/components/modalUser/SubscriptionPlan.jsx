@@ -33,11 +33,14 @@ const SubscriptionPlan = ({isOpen, onOpenChange, idsPassed}) => {
                     <h2 className='text-[30px] font-extrabold mb-0'>Choose your plan </h2>  
                     <p className='text-gray-700 m-0 p-0 mb-3'>All our subscription plans have their benefits.</p>
                     <div className='w-full flex justify-around'>
-                      <CardSubscription freePlan={true} />
+                      <CardSubscription freePlan={true} idsPassed={idsPassed}/>
                       {
-                        prices.length > 0 && prices?.map((price) => {
-                            return <CardSubscription key={price.id} freePlan={false} infoPlan = {price} idsPassed = {idsPassed} />
-                        })
+                        prices.length > 0 && prices.filter((price) => price.nickname === "annual" || price.nickname === "monthly")
+                            .sort((a, b) => a.unit_amount - b.unit_amount)
+                            .map((price) => {
+                              return <CardSubscription key={price.id} freePlan={false} infoPlan = {price} idsPassed={idsPassed} />
+                            }
+                        )
                       }
                     </div>
                     

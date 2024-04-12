@@ -12,20 +12,36 @@ Amplify Params - DO NOT EDIT */
 
 const { DynamoDBClient , UpdateItemCommand} = require("@aws-sdk/client-dynamodb");
 const { CognitoIdentityProviderClient, AdminUpdateUserAttributesCommand } = require("@aws-sdk/client-cognito-identity-provider");
-
-const stripe = require('stripe')("sk_test_51MHZf4JbGPo8jsLC7uInizJy0DjyqYbFZrSYMN0USaP1L3w6r4D1tbTWuF5pwWMOq6UoVlhdeBfsFa68sGIE7tY600NlVl5zAf");
+const {
+  SecretsManagerClient,
+  GetSecretValueCommand,
+} = require("@aws-sdk/client-secrets-manager");
 
 exports.handler = async (event) => {
-
   try {
+      const secret_name = "STRIPE_TEST_KEY";
+      const clientSecrets = new SecretsManagerClient({
+        region: "us-east-1",
+      });
+
+      const response = await clientSecrets.send(
+        new GetSecretValueCommand({
+          SecretId: secret_name,
+          VersionStage: "AWSCURRENT", 
+        })
+      );
+
+      const secret = JSON.parse(response.SecretString);
+      console.log("This are the secreeeeeeeeeeets", secret);
+
+      const stripe = require('stripe')(secret.STRIPE_TEST_KEY);
+
       const signHeader = event.headers['stripe-signature'];
       const eventBody = event.body;
-      const STRIPE_WEBHOOK_SECRET = "whsec_GuTmaAuH7TIzAd8FuJi7QEy7yKAEcb4C" 
-      console.log( "eventBodyyyy",eventBody, "  ....signHeadeeeeeeeeeeeer",signHeader);
 
       const eventReceived = stripe.webhooks.constructEvent(eventBody, 
         signHeader,
-        "whsec_GuTmaAuH7TIzAd8FuJi7QEy7yKAEcb4C",
+        secret.STRIPE_WEBHOOK_SECRET,
       );
 
       switch( eventReceived.type ){
@@ -46,10 +62,11 @@ exports.handler = async (event) => {
               const cognitoClient = new CognitoIdentityProviderClient({ region: "us-east-1" });
 
               const cognitoUpdateParams = {
-                  UserPoolId: "us-east-1_H9Y0GkM7h",
+                  UserPoolId: secret.PANDA_WEB_USER_POOL,
                   Username: cognitoUsername,
                   UserAttributes: [
-                      { Name: "custom:subscription", Value: `${checkoutSessionCompleted.amount_total === 500000 ? "annual" : "monthly"}` }
+                      { Name: "custom:subscription", Value: `${checkoutSessionCompleted.amount_total === 500000 ? "annual" : "monthly"}` },
+                      { Name: "custom:fee", Value: "0" }
                   ]
               };
 
@@ -58,9 +75,10 @@ exports.handler = async (event) => {
                   Key: {
                       "id": { S: idPassed } 
                   },
-                  UpdateExpression: "SET subscription = :subscriptionValue",
+                  UpdateExpression: "SET subscription = :subscriptionValue, fee = :feeValue",
                   ExpressionAttributeValues: {
-                      ":subscriptionValue": { S: `${checkoutSessionCompleted.amount_total == 5000000 ? "annual" : "monthly"}` } 
+                      ":subscriptionValue": { S: `${checkoutSessionCompleted.amount_total == 500000 ? "annual" : "monthly"}` },
+                      ":feeValue": { N: "0" } 
                   },
                   ReturnValues: "UPDATED_NEW"
               };
@@ -98,12 +116,4 @@ exports.handler = async (event) => {
           body: JSON.stringify({ message: 'Error ocurred' })
       };
   }
-
-  // console.log(`EVENT: ${JSON.stringify(event)}`);
-  // for (const record of event.Records) {
-  //   console.log(record.eventID);
-  //   console.log(record.eventName);
-  //   console.log('DynamoDB Record: %j', record.dynamodb);
-  // }
-  // return Promise.resolve('Successfully processed DynamoDB record');
 };

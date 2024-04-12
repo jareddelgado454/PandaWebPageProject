@@ -11,6 +11,7 @@
     "@aws-sdk/client-cognito-identity-provider": "^3.552.0",
     "@aws-sdk/client-dynamodb": "^3.552.0",
     "@aws-sdk/client-s3": "^3.552.0",
+    "@aws-sdk/client-secrets-manager": "^3.554.0",
     "stripe": "^14.24.0"
   }
 }

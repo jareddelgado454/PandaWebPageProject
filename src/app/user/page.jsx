@@ -15,6 +15,7 @@ import { updateInformation, updateRol } from "@/graphql/users/mutation/users";
 import { getUserIdByCognitoID } from "@/graphql/custom-queries";
 import { client } from "@/contexts/AmplifyContext";
 import SubscriptionPlan from "@/components/modalUser/SubscriptionPlan";
+import { RiVipCrownFill, RiAlertFill } from "react-icons/ri";
 
 const Page = () => {
 
@@ -379,14 +380,16 @@ const Page = () => {
                                     <div className="w-full bg-gray-100 rounded-xl flex flex-col border-[1px] border-gray-300 p-2 mb-2">
                                         <span className="text-gray-700 text-[13px]">Status: </span><span className={`uppercase text-[16px] font-semibold ${user['custom:status'] === 'active' ? 'text-[#40C48E]' : 'text-rose-600'}`}>{user['custom:status']}</span>
                                     </div> 
-                                    <div className="w-full bg-gray-100 rounded-xl flex flex-col border-[1px] border-gray-300 p-2">
-                                        <span className="text-gray-700 text-[13px]">Subscription: </span>
-                                        <p className="text-zinc-900 font-semibold">
-                                        {
-                                            user.subscription ? (user.subscription) : <span className="">Choose a plan <button onClick={()=>handleSubscriptionModal()} className="text-emerald-500 hover:text-emerald-700 transition-colors"><u>here</u></button></span>
-                                        }
-                                        </p>
-                                    </div>                                
+                                    {
+                                      user['custom:role'] === "technician" && <div className="w-full bg-gray-100 rounded-xl flex flex-col border-[1px] border-gray-300 p-2">
+                                            <span className="text-gray-700 text-[13px]">Subscription: </span>
+                                            <p className="text-zinc-900 font-semibold">
+                                            {
+                                                user['custom:subscription'] !== "pending" ? (<span className="flex gap-x-1 items-center">Business pro {`${user['custom:subscription']}`} <RiVipCrownFill className="text-emerald-600"/></span> ) : <span className="flex gap-x-1 items-center"><RiAlertFill className="text-emerald-600 text-[19px]"/> Choose a plan <button onClick={()=>handleSubscriptionModal()} className="text-emerald-500 hover:text-emerald-700 transition-colors"><u>here</u></button></span>
+                                            }
+                                            </p>
+                                        </div>
+                                    }                                
                                 </div>
                             </div>
                             <div className="absolute bottom-0 -left-0 w-full">
@@ -436,7 +439,8 @@ const CustomModal = ({ isOpen, onOpenChange, user, callback }) => {
                     email: user.email,
                     input: {
                         id: user.dbId,
-                        rol: values.rol
+                        rol: values.rol,
+                        subscription: values.rol === "technician" ? "pending" : "",
                     }
                 }
             })
@@ -453,7 +457,8 @@ const CustomModal = ({ isOpen, onOpenChange, user, callback }) => {
         try {
             await updateUserAttributes({
                 userAttributes: {
-                    'custom:role': rol
+                    'custom:role': rol,
+                    'custom:subscription': rol === "technician" ? "pending" : "",
                 }
             });
         } catch (error) {
