@@ -1,4 +1,4 @@
-import { gql} from "@apollo/client";
+import { gql } from "@apollo/client";
 
 export const createUser = gql`
   mutation CreateUser($input: CreateUserInput!) {
@@ -35,7 +35,7 @@ export const updateInformation = gql`
     updateUser(input: $input, condition: {email: {eq: $email}}){
       id
       email
-      rol
+      role
       fullName
       contactNumber
       status

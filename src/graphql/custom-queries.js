@@ -24,6 +24,7 @@ export const getUserIdByCognitoID = gql`
         listUsers(filter: {cognitoId: {eq: $cognitoId}}) {
             items {
                 id
+                profilePicture
             }
         }
     }
