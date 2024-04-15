@@ -3,7 +3,11 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import Cookies from "js-cookie";
 import * as Yup from 'yup';
+<<<<<<< HEAD
 import { fetchUserAttributes, signOut, updateUserAttributes,  } from "aws-amplify/auth";
+=======
+import { fetchAuthSession, fetchUserAttributes, signOut, updateUserAttributes, getCurrentUser  } from "aws-amplify/auth";
+>>>>>>> d089aa4b8546d652ddd47424b803e8b7caf35a8f
 import { uploadData } from 'aws-amplify/storage';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
@@ -14,18 +18,27 @@ import { statesUSA } from '@/assets/data/StatesUSA';
 import { updateInformation, updateRol } from "@/graphql/users/mutation/users";
 import { getUserIdByCognitoID } from "@/graphql/custom-queries";
 import { client } from "@/contexts/AmplifyContext";
+import SubscriptionPlan from "@/components/modalUser/SubscriptionPlan";
+import { RiVipCrownFill, RiAlertFill } from "react-icons/ri";
+
 const Page = () => {
+
     const router = useRouter();
-    const {isOpen, onOpen, onOpenChange} = useDisclosure();
+    const {isOpen:isCustomModalOpen, onOpen:onCustomModalOpen, onOpenChange:onOpenCustomModalChange} = useDisclosure();
+    const {isOpen:isSubscriptionModalOpen, onOpen:onSubscriptionModalOpen, onOpenChange:onSubscriptionModalChange} = useDisclosure();
     const [photograph, setPhotograph] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [user, setUser] = useState(null);
+    const [idsPassed, setIdsPassed] = useState({
+        idDatabase : "",
+        cognitoUsername : ""
+    });
     const retrieveOneUser = async() => {
         setLoading(true);
         try {
             const info = await fetchUserAttributes();
-            console.log(info);
+            console.log("info",info);
             const { data } = await client.graphql({
                 query: getUserIdByCognitoID,
                 variables: {
@@ -101,8 +114,18 @@ const Page = () => {
         } catch (error) {
             console.log(`Error from here : ${ error }`);
         }
-    
     }
+
+    const handleSubscriptionModal = async () => {
+        const userId = user?.dbId;
+        const { username } = await getCurrentUser();
+        setIdsPassed({
+            idDatabase : userId,
+            cognitoUsername : username
+        });
+        onSubscriptionModalOpen();
+    }
+
     const onHandleSubmit = async(values, { setSubmitting }) => {
         setSubmitting(true);
         try {
@@ -139,12 +162,12 @@ const Page = () => {
         }
     }, [user]);
     const handleUserSelected = (user) => {
-        onOpen(true);
+        onCustomModalOpen(true);
         setUser(user);
     }
     return (
         <div className="w-full h-screen relative">
-            <CustomModal isOpen={isOpen} onOpenChange={onOpenChange} user={user} callback={retrieveOneUser} />
+            <CustomModal isOpen={isCustomModalOpen} onOpenChange={onOpenCustomModalChange} user={user} callback={retrieveOneUser} />
             <img
                 src="https://autenticos4x4.com/wp-content/uploads/2019/03/taller-mecanico-reparacion-vehiculos.jpg"
                 alt="background_user"
@@ -178,9 +201,17 @@ const Page = () => {
                                             className="w-full h-full flex flex-col gap-7"
                                             autoComplete="off"
                                         >
-                                            <p className="text-xl text-[#40C48E] font-bold my-4">
-                                                General Information
-                                            </p>
+                                            <div className="bg-gray-200 h-[40px] w-[600px] flex rounded-xl">
+                                                <div className="w-1/3 rounded-xl text-center hover:bg-gray-400 flex items-center justify-center transition-colors cursor-pointer">
+                                                    My profile
+                                                </div>
+                                                <div className="w-1/3 rounded-xl text-center hover:bg-gray-400 flex items-center justify-center transition-colors cursor-pointer">
+                                                    News & Releases
+                                                </div>
+                                                <div onClick={()=> requestPrices()} className="w-1/3 rounded-xl text-center hover:bg-gray-400 flex items-center justify-center transition-colors cursor-pointer">
+                                                    Subscriptions
+                                                </div>
+                                            </div>
                                             <div className="flex flex-col md:flex-row w-full gap-7 md:gap-12">
                                                 <div className="w-full md:w-2/4">
                                                     <label
@@ -322,7 +353,7 @@ const Page = () => {
                         
                         <div className="bg-white rounded-lg shadow-lg p-4 w-full h-2/5 md:w-2/12 md:h-3/4 relative">
                             <div className="flex flex-row md:flex-col gap-6 items-center justify-center mb-10">
-                                <div className="relative w-[6rem] h-[6rem] md:w-[12rem] md:h-[12rem] overflow-hidden rounded-full shadow-md group">
+                                <div className="relative w-[6rem] h-[6rem] md:w-[10rem] md:h-[10rem] overflow-hidden rounded-full shadow-md group">
                                     <div className="absolute bg-black group-hover:opacity-60 opacity-0 w-full h-full transition-all">
                                         <div className="flex justify-center items-center h-full">
                                         <FaCamera className="text-white text-xl md:text-4xl" />
@@ -332,7 +363,7 @@ const Page = () => {
                                          src={
                                             photograph ? photograph : (user.profilePicture ? user.profilePicture : "/image/defaultProfilePicture.jpg")
                                         }
-                                        className="rounded-full w-[6rem] h-[6rem] md:w-[12rem] md:h-[12rem] cursor-pointer "
+                                        className="rounded-full w-[6rem] h-[6rem] md:w-[10rem] md:h-[10rem] cursor-pointer "
                                         alt="Fotografía de perfil"
                                     />
                                     <input
@@ -347,23 +378,32 @@ const Page = () => {
                                     />
                                 </div>
 
-                                <div className="flex flex-col justify-center items-center gap-5 my-6">
-                                    <strong>{user.fullName}</strong>
-                                    <p>{user.email}</p>
-                                    <div className="flex gap-1">
-                                        <strong>Subscription: </strong>
-                                        <p className="text-[#40C48E]">{user.subscription}</p>
-                                        <span className="text-sky-500 font-bold cursor-pointer">
-                                        {" "}
-                                        update
-                                        </span>
+                                <div className="flex flex-col justify-center items-center mb-6">
+                                    <div className="w-full text-center text-[27px] font-bold p-0 m-0 ">
+                                    {
+                                        user['custom:fullName'] ? user['custom:fullName'] : "Personal Information"
+                                    }
                                     </div>
-                                    <div className="flex gap-1">
-                                        <strong>Status: </strong><span className={`${user['custom:status'] === 'active' ? 'text-[#40C48E]' : 'text-rose-600'}`}>{user['custom:status']}</span>
+                                    <p className="text-gray-700 mb-2">{user.email}</p>
+                                    <div className="w-full flex justify-center items-center  mb-6 p-0">
+                                        <div className="w-[110px] text-center text-[14px] rounded-lg border-[1px] border-green-400 bg-green-100 text-green-600">Account Verified</div>
                                     </div>
-                                    <div className="flex gap-1">
-                                        <strong>Role: </strong><span className="text-[#40C48E]">{user['custom:role']}</span>
+                                    <div className="w-full bg-gray-100 rounded-xl flex flex-col border-[1px] border-gray-300 p-2 mb-2">
+                                        <span className="text-gray-700 text-[13px]">Role:</span><span className="text-emerald-500 font-bold uppercase text-[16px]">{user['custom:role']}</span>
                                     </div>
+                                    <div className="w-full bg-gray-100 rounded-xl flex flex-col border-[1px] border-gray-300 p-2 mb-2">
+                                        <span className="text-gray-700 text-[13px]">Status: </span><span className={`uppercase text-[16px] font-semibold ${user['custom:status'] === 'active' ? 'text-[#40C48E]' : 'text-rose-600'}`}>{user['custom:status']}</span>
+                                    </div> 
+                                    {
+                                      user['custom:role'] === "technician" && <div className="w-full bg-gray-100 rounded-xl flex flex-col border-[1px] border-gray-300 p-2">
+                                            <span className="text-gray-700 text-[13px]">Subscription: </span>
+                                            <p className="text-zinc-900 font-semibold">
+                                            {
+                                                user['custom:subscription'] !== "pending" ? (<span className="flex gap-x-1 items-center">Business pro {`${user['custom:subscription']}`} <RiVipCrownFill className="text-emerald-600"/></span> ) : <span className="flex gap-x-1 items-center"><RiAlertFill className="text-emerald-600 text-[19px]"/> Choose a plan <button onClick={()=>handleSubscriptionModal()} className="text-emerald-500 hover:text-emerald-700 transition-colors"><u>here</u></button></span>
+                                            }
+                                            </p>
+                                        </div>
+                                    }                                
                                 </div>
                             </div>
                             <div className="absolute bottom-0 -left-0 w-full">
@@ -384,7 +424,7 @@ const Page = () => {
                     </div>
                 )
             }
-            
+            <SubscriptionPlan isOpen={isSubscriptionModalOpen} onOpenChange={onSubscriptionModalChange} idsPassed={idsPassed}/>
         </div>
     );
 };
@@ -412,8 +452,9 @@ const CustomModal = ({ isOpen, onOpenChange, user, callback }) => {
                 variables: {
                     email: user.email,
                     input: {
-                        id: user.id,
-                        rol: values.rol
+                        id: user.dbId,
+                        rol: values.rol,
+                        subscription: values.rol === "technician" ? "pending" : "",
                     }
                 }
             })
@@ -430,7 +471,8 @@ const CustomModal = ({ isOpen, onOpenChange, user, callback }) => {
         try {
             await updateUserAttributes({
                 userAttributes: {
-                    'custom:role': rol
+                    'custom:role': rol,
+                    'custom:subscription': rol === "technician" ? "pending" : "",
                 }
             });
         } catch (error) {

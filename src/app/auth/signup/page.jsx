@@ -96,7 +96,8 @@ const SignUp = () => {
               email: values.email,
               "custom:role": values.role,
               "custom:fullName": values.fullName,
-              "custom:status": status
+              "custom:status": status,
+              "custom:subscription" : values.rol === "technician" ? "pending" : "",
             },
           },
         });
@@ -107,6 +108,8 @@ const SignUp = () => {
           password: values.password,
           role: values.role,
           status,
+          role: values.rol,
+          subscription: `${values.rol === "technician" ? "pending" : ""}`,
           cognitoId,
         }, isAdded);
         const userInfo = data && data.createdUser;
