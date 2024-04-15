@@ -132,6 +132,14 @@
           "resourceName": "saveSubsFromStripe"
         }
       ]
+    },
+    "AMPLIFY_function_saveSubsFromStripe_stripeTestKey": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "saveSubsFromStripe"
+        }
+      ]
     }
   },
   "storage": {
