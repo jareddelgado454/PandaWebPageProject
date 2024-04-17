@@ -31,6 +31,14 @@ export const deleteUserById = gql`
 
 `;
 
+export const deleteUserFromDB = gql`
+  mutation MyMutation($id: ID!) {
+    deleteUser(input: {id: $id}){
+      id
+    }
+  }
+`;
+
 export const updateInformation = gql`
   mutation MyMutation($input: UpdateUserInput!, $email: String!) {
     updateUser(input: $input, condition: {email: {eq: $email}}){
