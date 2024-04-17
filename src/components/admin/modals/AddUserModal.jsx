@@ -11,7 +11,7 @@ const AddUserModal = ({ isOpen, onOpenChange }) => {
     const createUserInCognito = async(values) => {
         let isAdded = false;
         try {
-            const { userId } = await signUp({
+            const signUpResponse = await signUp({
                 username: values.email,
                 password: values.password,
                 options: {
@@ -24,7 +24,7 @@ const AddUserModal = ({ isOpen, onOpenChange }) => {
                 }
             });
             isAdded = true;
-            return { userId, isAdded };
+            return { signUpResponse, isAdded };
         }catch (error) {
             console.log(error);
             toast.error("Something went wrong.");
@@ -36,13 +36,14 @@ const AddUserModal = ({ isOpen, onOpenChange }) => {
 
         setSubmitting(true);
         try {
-            const { userId, isAdded } = await createUserInCognito(values);
-            const { data } = await handleCreateUserOnDatabase({
+            const { signUpResponse } = await createUserInCognito(values);
+            await handleCreateUserOnDatabase({
                 fullName: values.fullName,
                 email: values.email,
                 password: values.password,
                 role: values.role,
                 status: values.status,
+                cognitoId: signUpResponse.userId
             });
 
             toast.success(`User ${values.fullName} has been created.`);
