@@ -11,10 +11,19 @@ import { signOut } from "aws-amplify/auth";
 import { getUserByCognitoID } from "@/graphql/custom-queries";
 import { FaBars } from 'react-icons/fa6';
 import { useWindowSize } from 'react-use';
+import { useDisclosure } from '@nextui-org/react';
+import AuthOption from './modalLanding/AuthOption';
 import useMedia from 'use-media';
 Amplify.configure(config);
 
 const LandingNavBar = () => {
+
+    const {
+        isOpen: isAuthOptionsModalOpen,
+        onOpen: onAuthOptionsModalOpen,
+        onOpenChange: onAuthOptionsModalOpenChange,
+    } = useDisclosure();
+
     const [user,setUser] = useState({});
     const [pictureUser, setPictureUser] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -143,20 +152,17 @@ const LandingNavBar = () => {
                                     </DropdownMenu>
                                 </Dropdown>
                             ) : (
-                                <div className=' lg:w-auto w-full flex flex-col lg:flex-row gap-4 items-center justify-around gap-x-4'>
-                                    <Link href="/auth/signin" className='lg:w-auto w-full px-5 lg:py-1 py-3 font-semibold border-[2px] rounded-lg lg:text-emerald-300 text-black border-emerald-500 lg:bg-transparent bg-white text-center text-[18px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
-                                        Log In 
-                                    </Link>   
-
-                                    <Link href="/auth/signup" className='lg:w-auto w-full px-5 lg:py-1 py-3 font-semibold border-[2px] rounded-lg text-white border-emerald-500 bg-emerald-500 text-center text-[18px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
-                                        Sign Up 
-                                    </Link>  
+                                <div className=' lg:w-auto w-full flex flex-col lg:flex-row gap-4 items-center justify-around pr-4'>
+                                    <button onClick={()=>onAuthOptionsModalOpen()}  className='lg:w-auto w-full px-5 lg:py-1 py-3 font-semibold border-[2px] rounded-lg text-white border-emerald-500 bg-emerald-500 text-center text-[18px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
+                                        Get into
+                                    </button>  
                                 </div>
                             )}
                         </div>
                 )}
             </div>
-        </div>               
+        </div>     
+        <AuthOption  isOpen={isAuthOptionsModalOpen} onOpenChange={onAuthOptionsModalOpenChange}/>          
     </nav>
   )
 }
