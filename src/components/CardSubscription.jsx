@@ -21,6 +21,7 @@ const CardSubscription = ({freePlan, infoPlan, idsPassed}) => {
                     }
                 });
                 console.log("subscription cognitooooooooo updated");
+                console.log(idsPassed);
                 const { data } = await client.graphql({
                     query: updateSubscriptionAndFee,
                     variables: {

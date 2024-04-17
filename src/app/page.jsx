@@ -48,6 +48,7 @@ const Home = () => {
     onOpenChange: onDownloadAppModalOpenChange,
   } = useDisclosure();
 
+
   const [modeApp, setModeApp] = useState("");
 
   const handleDownloadClick = (mode) => {

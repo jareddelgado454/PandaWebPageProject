@@ -112,7 +112,8 @@ const Page = () => {
     }
 
     const handleSubscriptionModal = async () => {
-        const userId = user?.dbId;
+        const userId = user?.id;
+        console.log(user)
         const { username } = await getCurrentUser();
         setIdsPassed({
             idDatabase: userId,
