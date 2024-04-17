@@ -1,3 +1,4 @@
+import { signOut } from 'aws-amplify/auth';
 import { NextResponse } from 'next/server'
 export const protectedRoutes = ["/admin-dashboard", "/user"];
 export const authRoutes = ["/auth/signup", "/auth/signin"];
@@ -10,6 +11,7 @@ export function middleware(request) {
     protectedRoutes.includes(request.nextUrl.pathname) &&
     (!currentUser || Date.now() > new Date((JSON.parse(currentUser).expiredAt) * 1000))
   ) {
+    signOut();
     request.cookies.delete("currentUser");
     const response = NextResponse.redirect(new URL("/", request.url));
     response.cookies.delete("currentUser");
