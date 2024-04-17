@@ -85,7 +85,6 @@ const SignUp = () => {
       dataSignUp.role !== "" &&
       dataSignUp.agreed
     ) {
-      console.log("podes registrarte no hay errores");
       setMessageDataMissing(false);
       try {
         const { userId: cognitoId, nextStep } = await signUp({
@@ -108,7 +107,7 @@ const SignUp = () => {
           password: values.password,
           role: values.role,
           status,
-          role: values.rol,
+          role: values.role,
           subscription: `${values.rol === "technician" ? "pending" : ""}`,
           cognitoId,
         }, isAdded);
