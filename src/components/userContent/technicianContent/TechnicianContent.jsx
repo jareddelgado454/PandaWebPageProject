@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import UserProfile from "../UserProfile";
 import SubscriptionTechnician from "./SubscriptionTechnician";
-import Availability from "./Availability";
+import Availability from "./availability/Availability";
 
 const TechnicianContent = ({ user, retrieveOneUser }) => {
   const [optionSelected, setOptionSelected] = useState("profile");
