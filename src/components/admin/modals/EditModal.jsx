@@ -47,7 +47,7 @@ const EditModal = ({ isOpen, onOpenChange, user, callback, setRecordSelected }) 
                 <ModalBody>
                   <div className='flex flex-col w-full gap-y-6 justify-center items-center'>
                       <Select
-                          label={`${user.rol.toUpperCase()} status`}
+                          label={`${user.role.toUpperCase()} status`}
                           placeholder="Select a status"
                           defaultSelectedKeys={[user.status]}
                           className=" w-full"

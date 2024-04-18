@@ -4,11 +4,12 @@ export const totalNumbers = (list = []) => {
     const totalActiveUser   = list !== null ? list.filter((e) => e.status === "active").length : 0;
     const totalInactiveUser = list !== null ? list.filter((e) => e.status === "inactive").length : 0;
 
-    const numbers = [
-      {mode: 'total', number: totalUsers}, {mode: 'active', number: totalActiveUser}, {mode: 'inactive', number: totalInactiveUser}
-    ]
-
-    return numbers;
+    return [
+        {mode: 'total', number: totalUsers}, {mode: 'active', number: totalActiveUser}, {
+            mode: 'inactive',
+            number: totalInactiveUser
+        }
+    ];
 
   }
 

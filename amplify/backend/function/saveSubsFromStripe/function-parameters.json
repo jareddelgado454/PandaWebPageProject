@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "auth": {
+      "pandawebapp0a05bcd0": [
+        "read",
+        "update"
+      ]
+    },
+    "storage": {
+      "pandawebapp": [
+        "read",
+        "update"
+      ]
+    }
+  },
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "stripeTestKey",
+      "environmentVariableName": "STRIPE_TEST_KEY"
+    }
+  ]
+}

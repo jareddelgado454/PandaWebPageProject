@@ -23,18 +23,15 @@ import {
   signIn,
   signOut,
   fetchUserAttributes,
-  fetchAuthSession,
-  updateUserAttributes,
+  updateUserAttributes, fetchAuthSession,
 } from "aws-amplify/auth";
 import VerificationCodeModal from "@/components/LoginRegister/modals/VerificationCodeModal";
 import {
   Modal,
   ModalContent,
-  ModalHeader,
   ModalBody,
   useDisclosure,
 } from "@nextui-org/react";
-import AmplifyContext from "@/contexts/AmplifyContext";
 import { handleCreateUserOnDatabase, handleRetrieveMyUser } from "@/api";
 const SignIn = () => {
   const status = "inactive";
@@ -115,6 +112,7 @@ const SignIn = () => {
       const { tokens } = await fetchAuthSession({ forceRefresh: true });
       const expiredAt = tokens.accessToken.payload.exp;
       const fullName = given_name + family_name;
+      console.log({ email, fullName, expiredAt });
       return { email, fullName, expiredAt };
     } catch (error) {
       console.log(error);
@@ -125,9 +123,7 @@ const SignIn = () => {
       switch (payload.event) {
         case "signedIn":
           onOpenLoadingModal(true);
-          console.log("user have been signedIn successfully.");
-          const { fullName, email, expiredAt } =
-            await currentAuthenticatedUser();
+          const { fullName, email, expiredAt } = await currentAuthenticatedUser();
           const cognitoId = payload.data.userId;
           const userExist = await handleRetrieveMyUser(cognitoId);
           if (userExist !== null && userExist !== undefined) {
@@ -136,12 +132,12 @@ const SignIn = () => {
               "currentUser",
               JSON.stringify({ ...userExist, expiredAt })
             );
-            if (userExist.rol === "admin") {
+            if (userExist.role === "admin") {
               router.replace("/admin-dashboard/");
             } else {
               router.replace("/user/");
             }
-          } else {
+          }else {
             if (fullName) {
               await updateUserAttributes({
                 userAttributes: {
@@ -156,27 +152,26 @@ const SignIn = () => {
                 },
               });
             }
-
-            await handleCreateUserOnDatabase({
+            const { data } = await handleCreateUserOnDatabase({
               fullName,
               email,
               cognitoId,
               status,
             });
+            const userInfo = data && data.createdUser;
             Cookies.set(
               "currentUser",
-              JSON.stringify({ ...userExist, expiredAt })
+              JSON.stringify({ ...userInfo, expiredAt })
             );
             router.replace("/user");
           }
-          console.log("process completed");
           break;
       }
     });
     return () => hubListenerCancel();
-  }, []);
+  }, [onOpenLoadingModal, router]);
   return (
-    <AmplifyContext>
+    <>
       <CheckoutModal
         isOpen={isLoadingModalOpen}
         onOpenChange={onOpenLoadingModal}
@@ -230,7 +225,7 @@ const SignIn = () => {
 
             <div className=" border-transparent flex flex-col border-t-[2px] border-zinc-600 pt-8 pb-4">
               <p className="text-white mb-3">
-                You still don't have an account?{" "}
+                {"You still don't have an account?"}{" "}
                 <Link
                   className="hover:text-emerald-300 text-emerald-400 text-[18px] font-bold hover:font-bold cursor-pointer"
                   href="/auth/signup"
@@ -275,7 +270,7 @@ const SignIn = () => {
                     )}
                   </div>
                   <div className="text-white mb-4">
-                    I don't remember my password,{" "}
+                    {"I don't remember my password,"}{" "}
                     <Link
                       href="/auth/password-recovery"
                       className="text-emerald-400 font-semibold cursor-pointer text-[19px] hover:text-emerald-300"
@@ -320,7 +315,7 @@ const SignIn = () => {
               </div>
               <div className="flex items-center text-[18px] gap-x-3 font-semibold mb-3">
                 <RiListCheck3 className="text-emerald-400 text-[35px]" />
-                We focus on customer acquisition and retention so you don't have
+                {"We focus on customer acquisition and retention so you don't have"}
                 to.
               </div>
             </div>
@@ -337,7 +332,7 @@ const SignIn = () => {
           dataSignIn={dataPassed}
         />
       </div>
-    </AmplifyContext>
+    </>
   );
 };
 export default SignIn;

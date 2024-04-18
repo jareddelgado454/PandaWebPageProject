@@ -122,7 +122,7 @@ const SignInModal = ({isOpen,onOpenChange}) => {
                     </p>
                     <div className=" border-transparent border-r-[1px] border-r-white/10 flex flex-col items-center justify-center text-center px-8 ">
                       <p className="text-white mb-3">
-                        Don't have an account? <Link className="hover:text-emerald-300 text-[18px] font-bold hover:font-bold cursor-pointer" href="/auth" >Sign up for free</Link>
+                        {"Don't have an accsount?"} <Link className="hover:text-emerald-300 text-[18px] font-bold hover:font-bold cursor-pointer" href="/auth" >Sign up for free</Link>
                       </p>
                     </div>
                     

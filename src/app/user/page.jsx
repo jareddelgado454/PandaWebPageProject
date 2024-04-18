@@ -3,25 +3,35 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import Cookies from "js-cookie";
 import * as Yup from 'yup';
-import { fetchUserAttributes, signOut, updateUserAttributes } from "aws-amplify/auth";
+import { signOut, updateUserAttributes, getCurrentUser, fetchUserAttributes } from "aws-amplify/auth";
 import { uploadData } from 'aws-amplify/storage';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
-import { FaCamera } from "react-icons/fa6";
+import { FaCamera, FaCircleExclamation, FaKey, FaUserXmark } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
-import {Modal, ModalContent, ModalHeader, ModalBody, useDisclosure} from "@nextui-org/react";
+import { RiVipCrownFill, RiAlertFill } from "react-icons/ri";
+import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, Tooltip } from "@nextui-org/react";
 import { statesUSA } from '@/assets/data/StatesUSA';
 import { updateInformation, updateRol } from "@/graphql/users/mutation/users";
 import { getUserIdByCognitoID } from "@/graphql/custom-queries";
 import { client } from "@/contexts/AmplifyContext";
-const page = () => {
+import { SubscriptionPlanModal, DeleteUserModal, PassWordModal } from "@/components/modalUser";
+const Page = () => {
+
     const router = useRouter();
-    const {isOpen, onOpen, onOpenChange} = useDisclosure();
+    const { isOpen: isCustomModalOpen, onOpen: onCustomModalOpen, onOpenChange: onOpenCustomModalChange } = useDisclosure();
+    const { isOpen: isSubscriptionModalOpen, onOpen: onSubscriptionModalOpen, onOpenChange: onSubscriptionModalChange } = useDisclosure();
+    const { isOpen: isDeleteUserModalOpen, onOpen: onDeleteUserModalOpen, onOpenChange: onDeleteUserModalChange } = useDisclosure();
+    const { isOpen: isChangePasswordModalOpen, onOpen: onChangePasswordModalOpen, onOpenChange: onChangePasswordModalChange } = useDisclosure();
     const [photograph, setPhotograph] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [user, setUser] = useState(null);
-    const retrieveOneUser = async() => {
+    const [idsPassed, setIdsPassed] = useState({
+        idDatabase: "",
+        cognitoUsername: ""
+    });
+    const retrieveOneUser = async () => {
         setLoading(true);
         try {
             const info = await fetchUserAttributes();
@@ -32,7 +42,7 @@ const page = () => {
                 },
             });
             const userId = data.listUsers.items[0].id;
-            await setUser({...info, dbId: userId});
+            await setUser({ ...info, id: userId });
             setLoading(false);
 
         } catch (error) {
@@ -40,10 +50,10 @@ const page = () => {
             setError(error);
         }
     }
-    useEffect(() => { retrieveOneUser(); }, []);    
+    useEffect(() => { retrieveOneUser(); }, []);
     function dataURLtoBlob(dataURL) {
         if (!dataURL) {
-          return null;
+            return null;
         }
         var parts = dataURL.split(';base64,');
         var contentType = parts[0].split(':')[1];
@@ -51,22 +61,22 @@ const page = () => {
         var rawLength = raw.length;
         var uInt8Array = new Uint8Array(rawLength);
         for (var i = 0; i < rawLength; ++i) {
-          uInt8Array[i] = raw.charCodeAt(i);
+            uInt8Array[i] = raw.charCodeAt(i);
         }
         return new Blob([uInt8Array], { type: contentType });
     }
     function handleChangePhotograph(event) {
         const file = event.target.files[0];
         if (file) {
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            setPhotograph(reader.result);
-            handleUpdatePicture(dataURLtoBlob(reader.result));
-          };
-          reader.readAsDataURL(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPhotograph(reader.result);
+                handleUpdatePicture(dataURLtoBlob(reader.result));
+            };
+            reader.readAsDataURL(file);
         }
-    }  
-    const handleUpdatePicture = async(picture) => {
+    }
+    const handleUpdatePicture = async (picture) => {
         const uniqueId = uuidv4();
         const filename = `user-profile-pictures/${uniqueId}.jpg`;
         try {
@@ -77,32 +87,52 @@ const page = () => {
                     contentType: "image/png",
                     onProgress: ({ transferredBytes, totalBytes }) => {
                         if (totalBytes) {
-                          console.log(
-                            `Upload progress ${
-                              Math.round((transferredBytes / totalBytes) * 100)
-                            } %`
-                          );
+                            console.log(
+                                `Upload progress ${Math.round((transferredBytes / totalBytes) * 100)
+                                } %`
+                            );
                         }
                     }
                 }
             }).result;
-            console.log('Succeeded: ',result);
+            console.log('Succeeded: ', result);
+            await client.graphql({
+                query: updateInformation,
+                variables: {
+                    email: user.email,
+                    input: {
+                        id: user.id,
+                        profilePicture: `https://d3nqi6yd86hstw.cloudfront.net/public/${filename}`,
+                    },
+                },
+            });
         } catch (error) {
-            console.log(`Error from here : ${ error }`);
+            console.log(`Error from here : ${error}`);
         }
-    
     }
-    const onHandleSubmit = async(values, { setSubmitting }) => {
+
+    const handleSubscriptionModal = async () => {
+        const userId = user?.id;
+        console.log(user)
+        const { username } = await getCurrentUser();
+        setIdsPassed({
+            idDatabase: userId,
+            cognitoUsername: username
+        });
+        onSubscriptionModalOpen();
+    }
+
+    const onHandleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
         try {
             await updateUserAttributes({
                 userAttributes: {
-                    'custom:fullName' : values.fullName,
+                    'custom:fullName': values.fullName,
                     'custom:address': values.address,
-                    'custom:city' : values.city,
-                    'custom:state' : values.state,
-                    'custom:contactNumber' : values.contactNumber,
-                    'custom:zipCode' : values.zipCode
+                    'custom:city': values.city,
+                    'custom:state': values.state,
+                    'custom:phoneNumber': values.contactNumber,
+                    'custom:zipCode': values.zipCode
                 }
             });
             await client.graphql({
@@ -110,7 +140,7 @@ const page = () => {
                 variables: {
                     email: values.email,
                     input: {
-                        id: user.dbId,
+                        id: user.id,
                         ...values
                     }
                 }
@@ -123,29 +153,102 @@ const page = () => {
         }
     }
     useEffect(() => {
-        if(user && !user['custom:role']) {
+        if (user && !user['custom:role']) {
             handleUserSelected(user);
         }
     }, [user]);
     const handleUserSelected = (user) => {
-        onOpen(true);
+        onCustomModalOpen(true);
         setUser(user);
     }
     return (
         <div className="w-full h-screen relative">
-            <CustomModal isOpen={isOpen} onOpenChange={onOpenChange} user={user} callback={retrieveOneUser} />
+            <CustomModal isOpen={isCustomModalOpen} onOpenChange={onOpenCustomModalChange} user={user} callback={retrieveOneUser} />
+            <SubscriptionPlanModal isOpen={isSubscriptionModalOpen} onOpenChange={onSubscriptionModalChange} idsPassed={idsPassed} />
+            <DeleteUserModal isOpen={isDeleteUserModalOpen} onOpenChange={onDeleteUserModalChange} user={user} />
+            <PassWordModal isOpen={isChangePasswordModalOpen} onOpenChange={onChangePasswordModalChange} />
             <img
                 src="https://autenticos4x4.com/wp-content/uploads/2019/03/taller-mecanico-reparacion-vehiculos.jpg"
-                alt="background_user"
                 className="absolute w-full h-full object-cover bg-center"
                 loading="eager"
+                alt="background_user"
             />
             <div className="absolute w-full h-full bg-gray-600 opacity-80" />
-            {
-                loading ? (<div>Loading Information</div>) : error ? (<div>{error}</div>) : user &&
+            {loading ? (<div>Loading Information</div>) : error ? (<div>{error}</div>) : user &&
                 (
-                    <div className="absolute w-full h-full flex flex-col md:flex-row justify-center items-center gap-10 px-4 md:px-0 py-4 md:py-0">
-                        <div className="w-full overflow-y-auto md:w-2/4 bg-white rounded-lg shadow-lg p-4 h-3/4 relative order-1">
+                    <div className="w-full h-full flex flex-col md:flex-row justify-center items-center gap-10 px-4 md:px-0 py-4 md:py-0">
+                        <div className="bg-white rounded-lg shadow-lg w-full h-5/6 md:w-[21%] 2xl:w-2/12 relative overflow-y-auto order-1">
+                            <div className="flex flex-row md:flex-col gap-6 items-center justify-center mb-10 p-4">
+                                <div className="relative w-[6rem] h-[6rem] md:w-[10rem] md:h-[10rem] overflow-hidden rounded-full shadow-md group">
+                                    <div className="absolute bg-black group-hover:opacity-60 opacity-0 w-full h-full transition-all">
+                                        <div className="flex justify-center items-center h-full">
+                                            <FaCamera className="text-white text-xl md:text-4xl" />
+                                        </div>
+                                    </div>
+                                    <img
+                                        src={
+                                            photograph ? photograph : (user.profilePicture ? user.profilePicture : "/image/defaultProfilePicture.jpg")
+                                        }
+                                        className="rounded-full w-[6rem] h-[6rem] md:w-[10rem] md:h-[10rem] cursor-pointer "
+                                        alt="Fotografía de perfil"
+                                    />
+                                    <input
+                                        id="file-upload"
+                                        type="file"
+                                        name=""
+                                        accept="image/gif, image/jpeg, image/png"
+                                        className="absolute top-0 right-0 min-w-full min-h-full opacity-0 cursor-pointer bg-center object-cover object-center"
+                                        onChange={(event) => {
+                                            handleChangePhotograph(event);
+                                        }}
+                                    />
+                                </div>
+
+                                <div className="flex flex-col justify-center gap-2 items-center mb-6">
+                                    <p className="text-center text-lg">
+                                        {
+                                            user['custom:fullName'] ? user['custom:fullName'] : "Personal Information"
+                                        }
+                                    </p>
+                                    <p className="text-gray-700 mb-2 text-sm">{user.email}</p>
+                                    <div className="w-full flex justify-center items-center  mb-6 p-0">
+                                        <div className="w-full text-center text-sm p-1 rounded-lg border-[1px] border-green-400 bg-green-100 text-green-600">Account Verified</div>
+                                    </div>
+                                    <div className="w-full bg-gray-100 rounded-xl flex flex-col border-[1px] border-gray-300 p-2 mb-2">
+                                        <span className="text-gray-700 text-[13px]">Role:</span><span className="text-emerald-500 font-bold uppercase text-[16px]">{user['custom:role']}</span>
+                                    </div>
+                                    <div className="w-full bg-gray-100 rounded-xl flex flex-col border-[1px] border-gray-300 p-2 mb-2">
+                                        <span className="text-gray-700 text-[13px]">Status: </span><span className={`uppercase text-[16px] font-semibold ${user['custom:status'] === 'active' ? 'text-[#40C48E]' : 'text-rose-600'}`}>{user['custom:status']}</span>
+                                    </div>
+                                    {
+                                        user['custom:role'] === "technician" && <div className="w-full bg-gray-100 rounded-xl flex flex-col border-[1px] border-gray-300 p-2">
+                                            <span className="text-gray-700 text-[13px]">Subscription: </span>
+                                            <p className="text-zinc-900 font-semibold">
+                                                {
+                                                    user['custom:subscription'] !== "pending" ? (<span className="flex gap-x-1 items-center">Business pro {`${user['custom:subscription']}`} <RiVipCrownFill className="text-emerald-600" /></span>) : <span className="flex gap-x-1 items-center"><RiAlertFill className="text-emerald-600 text-[19px]" /> Choose a plan <button onClick={() => handleSubscriptionModal()} className="text-emerald-500 hover:text-emerald-700 transition-colors"><u>here</u></button></span>
+                                                }
+                                            </p>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <div className="2xl:absolute 2xl:bottom-0 w-full">
+                                <div className="flex flex-col">
+                                    <button
+                                        onClick={() => {
+                                            Cookies.remove("currentUser");
+                                            signOut();
+                                            router.replace("/");
+                                        }}
+                                        className="rounded-b-lg bg-green-panda h-[2.5rem] md:h-[3.5rem] font-bold text-white flex justify-center items-center"
+                                    >
+                                        Sign Out
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="relative w-full overflow-y-auto md:w-2/4 bg-white rounded-lg shadow-lg p-4 h-5/6 order-2">
                             <Formik
                                 initialValues={{
                                     fullName: user['custom:fullName'] || '',
@@ -154,7 +257,7 @@ const page = () => {
                                     city: user['custom:city'] || '',
                                     state: user['custom:state'] || '',
                                     zipCode: user['custom:zipCode'] || 0,
-                                    contactNumber: user['custom:contactNumber'] || 0,
+                                    contactNumber: user['custom:phoneNumber'] || 0,
                                     status: 'active'
                                 }}
                                 validationSchema={formSchema}
@@ -162,21 +265,29 @@ const page = () => {
                                 onSubmit={onHandleSubmit}
                             >
                                 {({ errors, isValid }) => {
-                                    return(
+                                    return (
                                         <Form
                                             className="w-full h-full flex flex-col gap-7"
                                             autoComplete="off"
                                         >
-                                            <p className="text-xl text-[#40C48E] font-bold my-4">
-                                                General Information
-                                            </p>
+                                            <div className="bg-gray-200 h-[40px] w-[600px] flex rounded-xl">
+                                                <div className="w-1/3 rounded-xl text-center hover:bg-gray-400 flex items-center justify-center transition-colors cursor-pointer">
+                                                    My profile
+                                                </div>
+                                                <div className="w-1/3 rounded-xl text-center hover:bg-gray-400 flex items-center justify-center transition-colors cursor-pointer">
+                                                    News & Releases
+                                                </div>
+                                                <div onClick={() => requestPrices()} className="w-1/3 rounded-xl text-center hover:bg-gray-400 flex items-center justify-center transition-colors cursor-pointer">
+                                                    Subscriptions
+                                                </div>
+                                            </div>
                                             <div className="flex flex-col md:flex-row w-full gap-7 md:gap-12">
                                                 <div className="w-full md:w-2/4">
                                                     <label
                                                         htmlFor="grid-fullName"
                                                         className="block text-gray-700 text-sm font-bold mb-2"
                                                     >
-                                                    Full Name
+                                                        Full Name
                                                     </label>
                                                     <Field
                                                         type="text"
@@ -191,7 +302,7 @@ const page = () => {
                                                         htmlFor="grid-email"
                                                         className="block text-gray-700 text-sm font-bold mb-2"
                                                     >
-                                                    Email
+                                                        Email
                                                     </label>
                                                     <Field
                                                         type="email"
@@ -209,7 +320,7 @@ const page = () => {
                                                         className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                                                         htmlFor="states"
                                                     >
-                                                    State
+                                                        State
                                                     </label>
                                                     <Field
                                                         as="select"
@@ -229,7 +340,7 @@ const page = () => {
                                                         className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                                                         htmlFor="grid-city"
                                                     >
-                                                    Address
+                                                        Address
                                                     </label>
                                                     <Field
                                                         className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${errors.address ? 'border-red-600' : 'border-gray-200'} rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
@@ -282,7 +393,7 @@ const page = () => {
                                                         className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                                                         htmlFor="grid-contactNumber"
                                                     >
-                                                    Contact Number
+                                                        Contact Number
                                                     </label>
                                                     <Field
                                                         className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${errors.contectNumber ? 'border-red-600' : 'border-gray-200'} rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
@@ -298,7 +409,7 @@ const page = () => {
                                                 <button
                                                     type="submit"
                                                     disabled={!isValid}
-                                                    className={`${ !isValid ? 'bg-gray-200' : 'bg-green-panda' } p-3 rounded-lg text-white font-bold w-full transition-all`}
+                                                    className={`${!isValid ? 'bg-gray-200' : 'bg-green-panda'} p-3 rounded-lg text-white font-bold w-full transition-all ease-in-out delay-150 hover:-translate-y-1 hover:scale-95 duration-300`}
                                                 >
                                                     Update Information
                                                 </button>
@@ -308,66 +419,23 @@ const page = () => {
                                 }}
                             </Formik>
                         </div>
-                        
-                        <div className="bg-white rounded-lg shadow-lg p-4 w-full h-2/5 md:w-2/12 md:h-3/4 relative">
-                            <div className="flex flex-row md:flex-col gap-6 items-center justify-center mb-10">
-                                <div className="relative w-[6rem] h-[6rem] md:w-[12rem] md:h-[12rem] overflow-hidden rounded-full shadow-md group">
-                                    <div className="absolute bg-black group-hover:opacity-60 opacity-0 w-full h-full transition-all">
-                                        <div className="flex justify-center items-center h-full">
-                                        <FaCamera className="text-white text-xl md:text-4xl" />
-                                        </div>
+                        <div className="bg-white rounded-lg w-[4%] order-3 z-10">
+                            <div className="flex flex-col items-center gap-4 py-4">
+                                <Tooltip key="left" placement="right" content="Delete My Account" color="danger">    
+                                    <div onClick={onDeleteUserModalOpen} className="p-4 bg-rose-600 rounded-lg cursor-pointer transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300">    
+                                        <FaUserXmark className="text-white" />
                                     </div>
-                                    <img
-                                         src={
-                                            photograph ? photograph : (user.profilePicture ? user.profilePicture : "/image/defaultProfilePicture.jpg")
-                                        }
-                                        className="rounded-full w-[6rem] h-[6rem] md:w-[12rem] md:h-[12rem] cursor-pointer "
-                                        alt="Fotografía de perfil"
-                                    />
-                                    <input
-                                        id="file-upload"
-                                        type="file"
-                                        name=""
-                                        accept="image/gif, image/jpeg, image/png"
-                                        className="absolute top-0 right-0 min-w-full min-h-full opacity-0 cursor-pointer bg-center object-cover object-center"
-                                        onChange={(event) => {
-                                            handleChangePhotograph(event);
-                                        }}
-                                    />
-                                </div>
-
-                                <div className="flex flex-col justify-center items-center gap-5 my-6">
-                                    <strong>{user.fullName}</strong>
-                                    <p>{user.email}</p>
-                                    <div className="flex gap-1">
-                                        <strong>Subscription: </strong>
-                                        <p className="text-[#40C48E]">{user.subscription}</p>
-                                        <span className="text-sky-500 font-bold cursor-pointer">
-                                        {" "}
-                                        update
-                                        </span>
+                                </Tooltip>
+                                <Tooltip key="left" placement="right" content="Change my password" color="primary">
+                                    <div onClick={onChangePasswordModalOpen} className="p-4 bg-cyan-600 rounded-lg cursor-pointer transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300">
+                                        <FaKey className="text-white" />
                                     </div>
-                                    <div className="flex gap-1">
-                                        <strong>Status: </strong><span className={`${user['custom:status'] === 'active' ? 'text-[#40C48E]' : 'text-rose-600'}`}>{user['custom:status']}</span>
+                                </Tooltip>
+                                <Tooltip key="left" placement="right" content="Send a report" color="warning">
+                                    <div className="p-4 bg-amber-400 rounded-lg cursor-pointer transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300">
+                                        <FaCircleExclamation className="text-white" />
                                     </div>
-                                    <div className="flex gap-1">
-                                        <strong>Role: </strong><span className="text-[#40C48E]">{user['custom:role']}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="absolute bottom-0 -left-0 w-full">
-                                <div className="flex flex-col">
-                                <button
-                                    onClick={() => {
-                                        Cookies.remove("currentUser");
-                                        signOut();
-                                        router.replace("/");
-                                    }}
-                                    className="rounded-b-lg bg-green-panda h-[2.5rem] md:h-[3.5rem] font-bold text-white flex justify-center items-center"
-                                >
-                                    Sign Out
-                                </button>
-                                </div>
+                                </Tooltip>            
                             </div>
                         </div>
                     </div>
@@ -382,27 +450,25 @@ const formSchema = Yup.object().shape({
     fullName: Yup.string().required('Required').max(50),
     email: Yup.string().email().required('Required'),
     city: Yup.string().required('Required'),
-    state:  Yup.string().required('Required'),
+    state: Yup.string().required('Required'),
     zipCode: Yup.number().required('Required').positive().integer(),
     contactNumber: Yup.number().required('Required').positive().integer()
 });
 
 const CustomModal = ({ isOpen, onOpenChange, user, callback }) => {
 
-    const onHandleSubmit = async(values, { setSubmitting }) => {
+    const onHandleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
-
         try {
-            
             if (!user) return;
-
             await client.graphql({
                 query: updateRol,
                 variables: {
                     email: user.email,
                     input: {
                         id: user.dbId,
-                        rol: values.rol
+                        rol: values.rol,
+                        subscription: values.rol === "technician" ? "pending" : "",
                     }
                 }
             })
@@ -415,11 +481,12 @@ const CustomModal = ({ isOpen, onOpenChange, user, callback }) => {
             toast.error(`Error during the process.`);
         }
     };
-    const updateCustomRol = async(rol) => {
+    const updateCustomRol = async (rol) => {
         try {
             await updateUserAttributes({
                 userAttributes: {
-                    'custom:role': rol
+                    'custom:role': rol,
+                    'custom:subscription': rol === "technician" ? "pending" : "",
                 }
             });
         } catch (error) {
@@ -430,63 +497,63 @@ const CustomModal = ({ isOpen, onOpenChange, user, callback }) => {
         <>
             {
                 user && (
-                    
-            <Modal
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-                isDismissable={false}
-                isKeyboardDismissDisabled={true}
-                hideCloseButton={true}
-                classNames={{
-                    backdrop: 'bg-[#292f46]/50 backdrop-opacity-40'
-                }}
-            >
-                <ModalContent>
-                    <>
-                        <ModalHeader className="flex flex-col gap-1 text-center">¡Attention!</ModalHeader>
-                        <ModalBody>
-                            <p className="tracking-widest text-justify"> 
-                                You have to complete your general information to use our app. (obligatory)
-                            </p>
-                            <p className="tracking-widest text-justify">
-                                Please, select the type of user you are going to be in our application.
-                            </p>
-                        </ModalBody>
-                        <ModalBody>
-                            <Formik
-                                initialValues={{
-                                    rol: 'customer'
-                                }}
-                                onSubmit={onHandleSubmit}
-                            >
-                                {({handleSubmit}) => (
-                                    <Form onSubmit={handleSubmit} className="flex flex-col gap-8">
-                                        <Field
-                                            as="select"
-                                            name="rol"
-                                            className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none"
-                                        >
-                                            <option value="customer">Customer</option>
-                                            <option value="technician">Technician</option>
-                                        </Field>
 
-                                        <button
-                                            type="submit"
-                                            className="bg-green-panda hover:bg-green-400 text-white font-bold py-2 px-4 rounded transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300"
-                                        >
-                                            Update
-                                        </button>
-                                    </Form>
-                                )}
-                            </Formik>
-                        </ModalBody>
-                    </>
-                </ModalContent>
-            </Modal>
+                    <Modal
+                        isOpen={isOpen}
+                        onOpenChange={onOpenChange}
+                        isDismissable={false}
+                        isKeyboardDismissDisabled={true}
+                        hideCloseButton={true}
+                        classNames={{
+                            backdrop: 'bg-[#292f46]/50 backdrop-opacity-40'
+                        }}
+                    >
+                        <ModalContent>
+                            <>
+                                <ModalHeader className="flex flex-col gap-1 text-center">¡Attention!</ModalHeader>
+                                <ModalBody>
+                                    <p className="tracking-widest text-justify">
+                                        You have to complete your general information to use our app. (obligatory)
+                                    </p>
+                                    <p className="tracking-widest text-justify">
+                                        Please, select the type of user you are going to be in our application.
+                                    </p>
+                                </ModalBody>
+                                <ModalBody>
+                                    <Formik
+                                        initialValues={{
+                                            rol: 'customer'
+                                        }}
+                                        onSubmit={onHandleSubmit}
+                                    >
+                                        {({ handleSubmit }) => (
+                                            <Form onSubmit={handleSubmit} className="flex flex-col gap-8">
+                                                <Field
+                                                    as="select"
+                                                    name="rol"
+                                                    className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none"
+                                                >
+                                                    <option value="customer">Customer</option>
+                                                    <option value="technician">Technician</option>
+                                                </Field>
+
+                                                <button
+                                                    type="submit"
+                                                    className="bg-green-panda hover:bg-green-400 text-white font-bold py-2 px-4 rounded transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300"
+                                                >
+                                                    Update
+                                                </button>
+                                            </Form>
+                                        )}
+                                    </Formik>
+                                </ModalBody>
+                            </>
+                        </ModalContent>
+                    </Modal>
                 )
             }
         </>
     );
 };
 
-export default page;
+export default Page;

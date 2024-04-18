@@ -9,6 +9,7 @@ import { listUsersFilter } from '@/graphql/users/query/user';
 const Customers = () => {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState(null);
   const [filteredUsers, setFilteredUsers] = useState(null);
@@ -21,7 +22,7 @@ const Customers = () => {
         query: listUsersFilter,
         variables: {
           email: "test@gmail.com",
-          rol: "customer"
+          role: "customer"
         },
       });
       setUsers(data.listUsers.items);
@@ -56,29 +57,13 @@ const Customers = () => {
     setPage(pageNumber);
   };
 
-  const totalPages = calculateTotalPages(users, rowsPerPage);
+  useEffect(() => {
+    const total = calculateTotalPages(users, rowsPerPage);
+    setTotalPages(total);
+  }, [users, rowsPerPage]);
   const disablePrevious = page === 1;
   const disableNext = page === totalPages;
   const numbers = totalNumbers(users);
-
-  const filterInput = () => {
-    var input, filter, table, tr, td, i, txtValue;
-    input = document.getElementById("myInput");
-    filter = input.value.toUpperCase();
-    table = document.getElementById("myTable");
-    tr = table.getElementsByTagName("tr");
-    for (i = 0; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName("td")[1];
-      if (td) {
-        txtValue = td.textContent || td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-          tr[i].style.display = "";
-        } else {
-          tr[i].style.display = "none";
-        }
-      }
-    }
-  };
   return (
     <>
       {/* {
@@ -95,35 +80,21 @@ const Customers = () => {
             <div className='grid grid-cols-1 md:grid-cols-3 gap-2 my-6 place-items-center'>
               {
                 numbers.map((e, i) => {
-                  return(
-                    <CardData key={i} mode={e.mode} number={e.number} />
+                  return (
+                      <CardData
+                          key={i}
+                          mode={e.mode}
+                          number={e.number}
+                          users={users}
+                          filteredUsers={filteredUsers}
+                          setFilteredUsers={setFilteredUsers}
+                          page={page}
+                          rowsPerPage={rowsPerPage}
+                          setTotalPages={setTotalPages}
+                      />
                   )
                 })
               }
-            </div>
-
-            {/* Todo: searchInput */}
-
-            <div className="w-full px-4">
-              <div className='flex justify-between items-center gap-4 bg-white dark:bg-zinc-800 rounded p-5 mb-6 shadow-md flex-wrap md:flex-nowrap'>
-                <div className="w-full flex gap-4 items-center flex-wrap md:flex-nowrap">
-                  <label className="font-extrabold text-zinc-800 dark:text-white tracking-[0.2em] transition-all" htmlFor="search-input">
-                    Search
-                  </label>
-                  <input
-                    type="search"
-                    id="myInput"
-                    onKeyUp={filterInput}
-                    className="dark:bg-zinc-800 border border-[#40C48E] dark:text-white shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  />
-                </div>
-
-                <button
-                  className="bg-green-panda dark:bg-zinc-800 dark:border-2 dark:border-[#40C48E] dark:hover:bg-green-panda hover:bg-[#2e966a] text-white font-bold py-2 px-4 rounded-lg w-full md:w-[10rem] transition-all"
-                >
-                  Add
-                </button>
-              </div>
             </div>
             {/* Todo: Table */}
             <div className='px-4'>  

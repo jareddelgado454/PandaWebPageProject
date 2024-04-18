@@ -1,21 +1,31 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import Link from 'next/link'
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, User} from "@nextui-org/react";
-import { getCurrentUser } from 'aws-amplify/auth';
+import Link from 'next/link';
+import { FaBars } from 'react-icons/fa6';
+import { useWindowSize } from 'react-use';
+import { useDisclosure } from '@nextui-org/react';
+import AuthOption from './modalLanding/AuthOption';
+import useMedia from 'use-media';
+import Cookies from 'js-cookie';
+import { signOut } from "aws-amplify/auth";
 import { RiCloseFill } from "react-icons/ri";
 import { fetchUserAttributes } from 'aws-amplify/auth';
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, User} from "@nextui-org/react";
 import { Amplify } from "aws-amplify";
 import { client } from "@/contexts/AmplifyContext";
 import config from "@/amplifyconfiguration.json";
-import { signOut } from "aws-amplify/auth";
 import { getUserByCognitoID } from "@/graphql/custom-queries";
-import { FaBars } from 'react-icons/fa6';
-import { useWindowSize } from 'react-use';
-import useMedia from 'use-media';
+
 Amplify.configure(config);
 
 const LandingNavBar = () => {
+
+    const {
+        isOpen: isAuthOptionsModalOpen,
+        onOpen: onAuthOptionsModalOpen,
+        onOpenChange: onAuthOptionsModalOpenChange,
+    } = useDisclosure();
+
     const [user,setUser] = useState({});
     const [pictureUser, setPictureUser] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -110,17 +120,12 @@ const LandingNavBar = () => {
                             {isLoggedIn ? (
                                 <Dropdown placement="bottom-start" className='bg-zinc-800'>
                                     <DropdownTrigger>
-                                        <User
+                                        <Avatar
                                             as="button"
-                                            avatarProps={{
-                                                isBordered: false,
-                                                src: `${pictureUser ? pictureUser : user.profilePicture ? user?.profilePicture : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" }`,
-                                                
-                                            }}
-                                            className="transition-transform text-white w-[12rem] h-full"
-                                            description={`${user?.rol}`}
-                                            name={`${user?.fullName}`}
-                                        />
+                                            className='transition-transform'
+                                            src={pictureUser ? pictureUser : user && user.profilePicture ? user.profilePicture : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                                        >
+                                        </Avatar>
                                     </DropdownTrigger>
                                     <DropdownMenu aria-label="User Actions" variant="flat" className='bg-zinc-800 text-white '>
                                         <DropdownItem key="profile" className="h-14 gap-2">
@@ -128,7 +133,9 @@ const LandingNavBar = () => {
                                             <p className="font-extralight text-sm">{user?.email}</p>
                                         </DropdownItem>
                                         <DropdownItem key="settings">
-                                            My Profile
+                                            <Link href={user?.role === "admin" ? "/admin-dashboard" : "/user"}>
+                                                My Profile
+                                            </Link>
                                         </DropdownItem>
                                         <DropdownItem key="support">
                                             Contact Support
@@ -136,26 +143,27 @@ const LandingNavBar = () => {
                                         <DropdownItem key="review">
                                             Review & Feedback
                                         </DropdownItem>
-                                        <DropdownItem key="logout" className='text-emerald-400' onClick={()=>{signOut(); setIsLoggedIn(false)}}>
+                                        <DropdownItem key="logout" className='text-emerald-400' onClick={()=>{
+                                            signOut();
+                                            setIsLoggedIn(false);
+                                            Cookies.remove("currentUser");
+                                        }}>
                                             Log Out
                                         </DropdownItem>
                                     </DropdownMenu>
                                 </Dropdown>
                             ) : (
-                                <div className=' lg:w-auto w-full flex flex-col lg:flex-row gap-4 items-center justify-around gap-x-4'>
-                                    <Link href="/auth/signin" className='lg:w-auto w-full px-5 lg:py-1 py-3 font-semibold border-[2px] rounded-lg lg:text-emerald-300 text-black border-emerald-500 lg:bg-transparent bg-white text-center text-[18px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
-                                        Log In 
-                                    </Link>   
-
-                                    <Link href="/auth/signup" className='lg:w-auto w-full px-5 lg:py-1 py-3 font-semibold border-[2px] rounded-lg text-white border-emerald-500 bg-emerald-500 text-center text-[18px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
-                                        Sign Up 
-                                    </Link>  
+                                <div className=' lg:w-auto w-full flex flex-col lg:flex-row gap-4 items-center justify-around pr-4'>
+                                    <button onClick={()=>onAuthOptionsModalOpen()}  className='lg:w-auto w-full px-5 lg:py-1 py-3 font-semibold border-[2px] rounded-lg text-white border-emerald-500 bg-emerald-500 text-center text-[18px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
+                                        Get into
+                                    </button>  
                                 </div>
                             )}
                         </div>
                 )}
             </div>
-        </div>               
+        </div>     
+        <AuthOption  isOpen={isAuthOptionsModalOpen} onOpenChange={onAuthOptionsModalOpenChange}/>          
     </nav>
   )
 }

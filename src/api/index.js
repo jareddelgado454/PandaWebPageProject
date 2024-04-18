@@ -1,20 +1,17 @@
 import { client } from '@/contexts/AmplifyContext';
 import { getUserByCognitoID, getUserByEmail } from '@/graphql/custom-queries';
 import { createUser } from '@/graphql/users/mutation/users';
-export const handleCreateUserOnDatabase = async(values) => {
+export const handleCreateUserOnDatabase = async(values, isAdded) => {
+    
     try {
-
-        console.log(values);
-
-        await client.graphql({
+        const { data } = await client.graphql({
             query: createUser,
             variables: {
                 input: { ...values }
             },
-            authMode: 'apiKey',
+            authMode: isAdded ? 'iam' : 'userPool'
         });
-
-        console.log("added");
+        return data;
 
     } catch (error) {
         console.log(error);

@@ -1,12 +1,13 @@
-import { gql} from "@apollo/client";
+import { gql } from "@apollo/client";
 
 export const createUser = gql`
   mutation CreateUser($input: CreateUserInput!) {
     createUser(input: $input) {
       cognitoId
       email
-      rol
+      role
       status
+      subscription
     }
   }
 `;
@@ -30,12 +31,20 @@ export const deleteUserById = gql`
 
 `;
 
+export const deleteUserFromDB = gql`
+  mutation MyMutation($id: ID!) {
+    deleteUser(input: {id: $id}){
+      id
+    }
+  }
+`;
+
 export const updateInformation = gql`
   mutation MyMutation($input: UpdateUserInput!, $email: String!) {
     updateUser(input: $input, condition: {email: {eq: $email}}){
       id
       email
-      rol
+      role
       fullName
       contactNumber
       status
@@ -53,6 +62,20 @@ export const updateRol = gql`
       id
       email
       rol
+      subscription
+    }
+  }
+`;
+
+export const updateSubscriptionAndFee = gql`
+  mutation MyMutation($id: ID!, $subscription: String!, $fee: Int!) {
+    updateUser(input: { id: $id, subscription: $subscription, fee: $fee }) {
+      id
+      email
+      role
+      status
+      subscription
+      fee
     }
   }
 `;

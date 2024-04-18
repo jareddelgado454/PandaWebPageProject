@@ -4,7 +4,7 @@ export const getUserByCognitoID = gql`
     query MyQuery($cognitoId: String!) {
         listUsers(filter: {cognitoId: {eq: $cognitoId}}) {
             items {
-                rol
+                role
                 fullName
                 id
                 email
@@ -19,12 +19,12 @@ export const getUserByCognitoID = gql`
         }
     }
 `;
-
 export const getUserIdByCognitoID = gql`
     query MyQuery($cognitoId: String!) {
         listUsers(filter: {cognitoId: {eq: $cognitoId}}) {
             items {
                 id
+                profilePicture
             }
         }
     }
@@ -37,7 +37,7 @@ export const getUserByEmail = gql`
                 id
                 email
                 fullName
-                rol
+                role
                 profilePicture
             }
         }
