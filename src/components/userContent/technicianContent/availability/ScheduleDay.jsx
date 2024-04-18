@@ -1,11 +1,12 @@
+"use client"
+
 import React from 'react'
 
 const ScheduleDay = ({daySchedule}) => {
   return (
-    <div>
-        {
-            daySchedule?.day
-        }
+    <div className='flex'>
+        <h4>{daySchedule?.day}</h4>
+         
     </div>
   )
 }
