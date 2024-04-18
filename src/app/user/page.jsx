@@ -11,11 +11,12 @@ import { FaCamera, FaCircleExclamation, FaKey, FaUserXmark } from "react-icons/f
 import { useRouter } from "next/navigation";
 import { RiVipCrownFill, RiAlertFill } from "react-icons/ri";
 import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure, Tooltip } from "@nextui-org/react";
-import { statesUSA } from '@/assets/data/StatesUSA';
 import { updateInformation, updateRol } from "@/graphql/users/mutation/users";
 import { getUserIdByCognitoID } from "@/graphql/custom-queries";
 import { client } from "@/contexts/AmplifyContext";
 import { SubscriptionPlanModal, DeleteUserModal, PassWordModal } from "@/components/modalUser";
+import TechnicianContent from "@/components/userContent/technicianContent/TechnicianContent";
+import CustomerContent from "@/components/userContent/customerContent/CustomerContent";
 const Page = () => {
 
     const router = useRouter();
@@ -173,11 +174,11 @@ const Page = () => {
                 loading="eager"
                 alt="background_user"
             />
-            <div className="absolute w-full h-full bg-gray-600 opacity-80" />
+            <div className="absolute w-full h-full bg-zinc-700 opacity-80" />
             {loading ? (<div>Loading Information</div>) : error ? (<div>{error}</div>) : user &&
                 (
                     <div className="w-full h-full flex flex-col md:flex-row justify-center items-center gap-10 px-4 md:px-0 py-4 md:py-0">
-                        <div className="bg-white rounded-lg shadow-lg w-full h-5/6 md:w-[21%] 2xl:w-2/12 relative overflow-y-auto order-1">
+                        <div className="bg-zinc-800 text-white rounded-lg shadow-lg w-full h-5/6 md:w-[21%] 2xl:w-2/12 relative overflow-y-auto order-1">
                             <div className="flex flex-row md:flex-col gap-6 items-center justify-center mb-10 p-4">
                                 <div className="relative w-[6rem] h-[6rem] md:w-[10rem] md:h-[10rem] overflow-hidden rounded-full shadow-md group">
                                     <div className="absolute bg-black group-hover:opacity-60 opacity-0 w-full h-full transition-all">
@@ -205,27 +206,27 @@ const Page = () => {
                                 </div>
 
                                 <div className="flex flex-col justify-center gap-2 items-center mb-6">
-                                    <p className="text-center text-lg">
+                                    <p className="text-center text-[25px]">
                                         {
                                             user['custom:fullName'] ? user['custom:fullName'] : "Personal Information"
                                         }
                                     </p>
-                                    <p className="text-gray-700 mb-2 text-sm">{user.email}</p>
-                                    <div className="w-full flex justify-center items-center  mb-6 p-0">
-                                        <div className="w-full text-center text-sm p-1 rounded-lg border-[1px] border-green-400 bg-green-100 text-green-600">Account Verified</div>
+                                    <p className="text-gray-300 mb-2 font-bold text-[17px]">{user.email}</p>
+                                    <div className=" flex justify-center items-center  mb-6 p-0">
+                                        <div className="w-full text-center text-sm p-1 rounded-lg border-[1px] border-green-500 bg-green-500 text-white">Account Verified</div>
                                     </div>
-                                    <div className="w-full bg-gray-100 rounded-xl flex flex-col border-[1px] border-gray-300 p-2 mb-2">
-                                        <span className="text-gray-700 text-[13px]">Role:</span><span className="text-emerald-500 font-bold uppercase text-[16px]">{user['custom:role']}</span>
+                                    <div className="w-full bg-zinc-700 border-[1px] border-zinc-700 rounded-xl flex flex-col  p-2 mb-2">
+                                        <span className="text-gray-400 text-[13px]">Role:</span><span className="text-emerald-400 font-bold uppercase text-[16px]">{user['custom:role']}</span>
                                     </div>
-                                    <div className="w-full bg-gray-100 rounded-xl flex flex-col border-[1px] border-gray-300 p-2 mb-2">
-                                        <span className="text-gray-700 text-[13px]">Status: </span><span className={`uppercase text-[16px] font-semibold ${user['custom:status'] === 'active' ? 'text-[#40C48E]' : 'text-rose-600'}`}>{user['custom:status']}</span>
+                                    <div className="w-full bg-zinc-700 border-[1px] border-zinc-700 rounded-xl flex flex-col  p-2 mb-2">
+                                        <span className="text-gray-400 text-[13px]">Status: </span><span className={`uppercase text-[16px] font-semibold ${user['custom:status'] === 'active' ? 'text-[#40C48E]' : 'text-rose-400'}`}>{user['custom:status']}</span>
                                     </div>
                                     {
-                                        user['custom:role'] === "technician" && <div className="w-full bg-gray-100 rounded-xl flex flex-col border-[1px] border-gray-300 p-2">
-                                            <span className="text-gray-700 text-[13px]">Subscription: </span>
-                                            <p className="text-zinc-900 font-semibold">
+                                        user['custom:role'] === "technician" && <div className="w-full bg-zinc-700 border-[1px] border-zinc-700 rounded-xl flex flex-col  p-2">
+                                            <span className="text-gray-400 text-[13px]">Subscription: </span>
+                                            <p className="text-zinc-100 font-semibold">
                                                 {
-                                                    user['custom:subscription'] !== "pending" ? (<span className="flex gap-x-1 items-center">Business pro {`${user['custom:subscription']}`} <RiVipCrownFill className="text-emerald-600" /></span>) : <span className="flex gap-x-1 items-center"><RiAlertFill className="text-emerald-600 text-[19px]" /> Choose a plan <button onClick={() => handleSubscriptionModal()} className="text-emerald-500 hover:text-emerald-700 transition-colors"><u>here</u></button></span>
+                                                    user['custom:subscription'] !== "pending" ? (<span className="flex gap-x-1 items-center">Business pro {`${user['custom:subscription']}`} <RiVipCrownFill className="text-emerald-400" /></span>) : <span className="flex gap-x-1 items-center"><RiAlertFill className="text-emerald-600 text-[19px]" /> Choose a plan <button onClick={() => handleSubscriptionModal()} className="text-emerald-500 hover:text-emerald-700 transition-colors"><u>here</u></button></span>
                                                 }
                                             </p>
                                         </div>
@@ -241,14 +242,21 @@ const Page = () => {
                                             signOut();
                                             router.replace("/");
                                         }}
-                                        className="rounded-b-lg bg-green-panda h-[2.5rem] md:h-[3.5rem] font-bold text-white flex justify-center items-center"
+                                        className="rounded-b-lg bg-emerald-500 h-[2.5rem] md:h-[3.5rem] font-bold text-white flex justify-center items-center"
                                     >
                                         Sign Out
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <div className="relative w-full overflow-y-auto md:w-2/4 bg-white rounded-lg shadow-lg p-4 h-5/6 order-2">
+
+                        { 
+                            user['custom:role'] === "technician" 
+                                ?  <TechnicianContent user={user} retrieveOneUser={retrieveOneUser}/>
+                                :  <CustomerContent user={user} retrieveOneUser={retrieveOneUser}/>
+                        }
+
+                        {/* <div className="relative w-full overflow-y-auto md:w-2/4 bg-zinc-700 text-white rounded-lg shadow-lg p-4 h-5/6 order-2">
                             <Formik
                                 initialValues={{
                                     fullName: user['custom:fullName'] || '',
@@ -270,7 +278,7 @@ const Page = () => {
                                             className="w-full h-full flex flex-col gap-7"
                                             autoComplete="off"
                                         >
-                                            <div className="bg-gray-200 h-[40px] w-[600px] flex rounded-xl">
+                                            <div className="bg-zinc-800 h-[40px] w-[600px] flex rounded-xl">
                                                 <div className="w-1/3 rounded-xl text-center hover:bg-gray-400 flex items-center justify-center transition-colors cursor-pointer">
                                                     My profile
                                                 </div>
@@ -418,8 +426,8 @@ const Page = () => {
                                     )
                                 }}
                             </Formik>
-                        </div>
-                        <div className="bg-white rounded-lg w-[4%] order-3 z-10">
+                        </div> */}
+                        <div className="bg-zinc-800 rounded-lg w-[4%] order-3 z-10">
                             <div className="flex flex-col items-center gap-4 py-4">
                                 <Tooltip key="left" placement="right" content="Delete My Account" color="danger">    
                                     <div onClick={onDeleteUserModalOpen} className="p-4 bg-rose-600 rounded-lg cursor-pointer transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300">    
