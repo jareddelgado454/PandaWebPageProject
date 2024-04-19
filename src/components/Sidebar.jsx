@@ -157,8 +157,8 @@ export const Sidebar = () => {
               <img
                 src={user && user.profilePicture ? user.profilePicture : "/image/defaultProfilePicture.jpg"}
                 alt="user_logo"
-                className={`rounded-full   ${
-                  active ? "w-[3rem] h-[3rem]" : "w-[1.5rem] h-[1.5rem]"
+                className={`rounded-full ${
+                  active ? "w-[4rem] h-[3rem]" : "w-[2rem] h-[1.8rem]"
                 }`}
               />
               <div className="overflow-hidden flex flex-col gap-1 w-full">
