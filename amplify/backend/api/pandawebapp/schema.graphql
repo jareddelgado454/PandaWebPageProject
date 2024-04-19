@@ -2,8 +2,9 @@
 #input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
 
 enum ReportStatus {
-  resolved
-  unsolved
+  solved
+  pending
+  processed
 }
 
 type Report @model @auth(
