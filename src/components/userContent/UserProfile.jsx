@@ -36,8 +36,7 @@ function UserProfile({ user }) {
     }
 }
   return (
-    <div className="relative w-full overflow-y-auto md:w-2/4 bg-zinc-700 text-white rounded-lg shadow-lg p-4 h-5/6 order-2">
-      <Formik
+    <Formik
         initialValues={{
           fullName: user['custom:fullName'] || '',
           email: user.email || '',
@@ -58,29 +57,18 @@ function UserProfile({ user }) {
               className="w-full h-full flex flex-col gap-7"
               autoComplete="off"
             >
-              <div className="bg-zinc-800 h-[40px] w-[600px] flex rounded-xl">
-                <div className="w-1/3 rounded-xl text-center hover:bg-gray-400 flex items-center justify-center transition-colors cursor-pointer">
-                  My profile
-                </div>
-                <div className="w-1/3 rounded-xl text-center hover:bg-gray-400 flex items-center justify-center transition-colors cursor-pointer">
-                  News & Releases
-                </div>
-                <div onClick={() => requestPrices()} className="w-1/3 rounded-xl text-center hover:bg-gray-400 flex items-center justify-center transition-colors cursor-pointer">
-                  Subscriptions
-                </div>
-              </div>
               <div className="flex flex-col md:flex-row w-full gap-7 md:gap-12">
                 <div className="w-full md:w-2/4">
                   <label
                     htmlFor="grid-fullName"
-                    className="block text-gray-700 text-sm font-bold mb-2"
+                    className="block text-gray-300 text-sm font-bold mb-2"
                   >
                     Full Name
                   </label>
                   <Field
                     type="text"
                     name="fullName"
-                    className={`block appearance-none w-full bg-gray-200 border ${errors.fullName ? 'border-red-600' : 'border-gray-200'} text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                    className={`block appearance-none w-full bg-zinc-700 border ${errors.fullName ? 'border-red-600' : 'border-zinc-700'} text-white py-3 px-4 rounded-lg leading-tight focus:outline-none focus:border-emerald-500`}
                     id="grid-fullName"
                   />
                   <ErrorMessage name="fullName" component={() => (<div className="text-red-600">{errors.fullName}</div>)} />
@@ -88,7 +76,7 @@ function UserProfile({ user }) {
                 <div className="w-full md:w-2/4">
                   <label
                     htmlFor="grid-email"
-                    className="block text-gray-700 text-sm font-bold mb-2"
+                    className="block text-gray-300 text-sm font-bold mb-2"
                   >
                     Email
                   </label>
@@ -96,7 +84,7 @@ function UserProfile({ user }) {
                     type="email"
                     name="email"
                     disabled
-                    className={`block appearance-none w-full bg-gray-200 border ${errors.email ? 'border-red-600' : 'border-gray-200'} text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                    className={`block appearance-none w-full bg-zinc-700 border ${errors.fullName ? 'border-red-600' : 'border-zinc-700'} text-white py-3 px-4 rounded-lg leading-tight focus:outline-none focus:border-emerald-500`}
                   />
                   <ErrorMessage name="email" component={() => (<div className="text-red-600">{errors.email}</div>)} />
                 </div>
@@ -105,7 +93,7 @@ function UserProfile({ user }) {
               <div className="flex flex-col md:flex-row w-full gap-7 md:gap-12">
                 <div className="w-full md:w-2/4 md:mb-0">
                   <label
-                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    className="block uppercase tracking-wide text-gray-300 text-xs font-bold mb-2"
                     htmlFor="states"
                   >
                     State
@@ -113,7 +101,7 @@ function UserProfile({ user }) {
                   <Field
                     as="select"
                     name="state"
-                    className={`block appearance-none w-full bg-gray-200 border ${errors.state ? 'border-red-600' : 'border-gray-200'} text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                    className={`block appearance-none w-full bg-zinc-700 border ${errors.fullName ? 'border-red-600' : 'border-zinc-700'} text-white py-3 px-4 rounded-lg leading-tight focus:outline-none focus:border-emerald-500`}
                   >
                     {statesUSA.map((estado, index) => (
                       <option key={index} value={estado}>
@@ -125,13 +113,13 @@ function UserProfile({ user }) {
                 </div>
                 <div className="w-full md:w-2/4 md:mb-0">
                   <label
-                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    className="block uppercase tracking-wide text-gray-300 text-xs font-bold mb-2"
                     htmlFor="grid-city"
                   >
                     Address
                   </label>
                   <Field
-                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${errors.address ? 'border-red-600' : 'border-gray-200'} rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                    className={`block appearance-none w-full bg-zinc-700 border ${errors.fullName ? 'border-red-600' : 'border-zinc-700'} text-white py-3 px-4 rounded-lg leading-tight focus:outline-none focus:border-emerald-500`}
                     type="text"
                     placeholder="address"
                     name="address"
@@ -143,13 +131,13 @@ function UserProfile({ user }) {
               <div className="flex flex-col md:flex-row w-full gap-7 md:gap-12">
                 <div className="w-full md:w-2/4 md:mb-0">
                   <label
-                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    className="block uppercase tracking-wide text-gray-300 text-xs font-bold mb-2"
                     htmlFor="grid-zip"
                   >
                     Zip
                   </label>
                   <Field
-                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${errors.zipCode ? 'border-red-600' : 'border-gray-200'} rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                    className={`block appearance-none w-full bg-zinc-700 border ${errors.fullName ? 'border-red-600' : 'border-zinc-700'} text-white py-3 px-4 rounded-lg leading-tight focus:outline-none focus:border-emerald-500`}
                     id="grid-zip"
                     type="text"
                     placeholder="90210"
@@ -159,13 +147,13 @@ function UserProfile({ user }) {
                 </div>
                 <div className="w-full md:w-2/4 md:mb-0">
                   <label
-                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    className="block uppercase tracking-wide text-gray-300 text-xs font-bold mb-2"
                     htmlFor="grid-city"
                   >
                     City
                   </label>
                   <Field
-                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${errors.city ? 'border-red-600' : 'border-gray-200'} rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                    className={`block appearance-none w-full bg-zinc-700 border ${errors.fullName ? 'border-red-600' : 'border-zinc-700'} text-white py-3 px-4 rounded-lg leading-tight focus:outline-none focus:border-emerald-500`}
                     id="grid-city"
                     type="text"
                     placeholder="Miami"
@@ -178,13 +166,13 @@ function UserProfile({ user }) {
               <div className="flex flex-col md:flex-row w-full gap-7 md:gap-12">
                 <div className="w-full md:w-2/4 md:mb-0">
                   <label
-                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    className="block uppercase tracking-wide text-gray-300 text-xs font-bold mb-2"
                     htmlFor="grid-contactNumber"
                   >
                     Contact Number
                   </label>
                   <Field
-                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border ${errors.contectNumber ? 'border-red-600' : 'border-gray-200'} rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                    className={`block appearance-none w-full bg-zinc-700 border ${errors.fullName ? 'border-red-600' : 'border-zinc-700'} text-white py-3 px-4 rounded-lg leading-tight focus:outline-none focus:border-emerald-500`}
                     id="grid-contactNumber"
                     type="text"
                     placeholder="90210"
@@ -206,7 +194,6 @@ function UserProfile({ user }) {
           )
         }}
       </Formik>
-    </div>
   )
 }
 
