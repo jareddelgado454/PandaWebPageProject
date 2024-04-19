@@ -16,7 +16,7 @@ type Report @model @auth(
     user: User! @hasOne
     title: String!
     description: String!
-    image: String!
+    image: String
     createdAt: AWSDateTime
     status: ReportStatus!
 }
