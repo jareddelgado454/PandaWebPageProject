@@ -4,7 +4,6 @@ import { Table } from "@/components/Table";
 import { CardData } from "@/components/admin/cards/CardData";
 import { calculateTotalPages, totalNumbers } from "@/utils/calculate";
 import { listUsers } from "@/graphql/users/query/user";
-import { Spinner } from "@nextui-org/react";
 import { client } from "@/contexts/AmplifyContext";
 const Users = () => {
   const [page, setPage] = useState(1);
