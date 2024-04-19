@@ -183,15 +183,8 @@ export const TableComponent = ({ item, callback }) => {
                       type="button"
                       className="bg-blue-500 p-2 rounded text-white"
                     >
-                      <FaAddressCard />
-                    </button>
-                    <button
-                      type="button"
-                      className="bg-yellow-400 p-2 rounded text-white"
-                    >
                       <FaRectangleList />
-                    </button>
-                    
+                    </button>           
                   </div>
                 </td>
               </tr>
