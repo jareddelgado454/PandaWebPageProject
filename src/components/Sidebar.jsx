@@ -12,6 +12,7 @@ import {
   FaChartSimple,
   FaGear,
   FaBars,
+  FaFlag,
 } from "react-icons/fa6";
 import { getUserByMail } from "@/api";
 export const Sidebar = () => {
@@ -115,7 +116,13 @@ export const Sidebar = () => {
         </ul>
         <div className="w-full px-4 absolute bottom-4 transition-all">
           <div className="bg-zinc-600 dark:bg-green-panda shadow-xl p-3 rounded-md mb-4">
-            <ul className="">
+            <ul className="flex flex-col flex-wrap gap-4">
+              <Link href={`/admin-dashboard/issues`} className="flex gap-3 items-center">
+                <FaFlag className="text-xl transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
+                <p className={`text-xl font-medium ${!active && "hidden"}`}>
+                  Issues
+                </p>
+              </Link>
               <Link
                 href={`/admin-dashboard/graphs`}
                 className="flex gap-3 items-center"
@@ -127,7 +134,7 @@ export const Sidebar = () => {
               </Link>
               <Link
                 href={`/admin-dashboard/settings`}
-                className="flex gap-3 items-center mt-5"
+                className="flex gap-3 items-center"
               >
                 <FaGear className="text-xl transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
                 <p
