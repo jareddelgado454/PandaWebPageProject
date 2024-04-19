@@ -48,7 +48,7 @@ const DeleteUserModal = ({ isOpen, onOpenChange, user }) => {
                                 Are you sure you want to delete your account? This action cannot be undone.
                                 Deleting your account will permanently remove all of your data and information associated with it from our system.
                                 You will no longer be able to access your account or any associated services.
-                                If you proceed, please type <span className='text-rose-800 font-semibold'>"delete"</span> in the box below to confirm your decision.
+                                If you proceed, please type <span className='text-rose-800 font-semibold'>{"delete"}</span> in the box below to confirm your decision.
                             </p>
                             <input
                                 type="text"
