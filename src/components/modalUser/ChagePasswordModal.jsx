@@ -31,7 +31,7 @@ const ChagePasswordModal = ({ isOpen, onOpenChange }) => {
     }
     return (
         <Modal backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
-            <ModalContent>
+            <ModalContent className='dark:bg-zinc-800 dark:text-white'>
                 {(onClose) => (
                     <>
                         <ModalHeader className="flex justify-center items-center">
@@ -98,7 +98,7 @@ const ChagePasswordModal = ({ isOpen, onOpenChange }) => {
                             </Formik>
                         </ModalBody>
                         <ModalFooter>
-                            <Button color="default" variant="light" onPress={onClose}>
+                            <Button color="default" variant="light" onPress={onClose} className='dark:text-white'>
                                 Cancel
                             </Button>
                         </ModalFooter>

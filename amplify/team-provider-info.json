@@ -16,11 +16,11 @@
         "saveSubsFromStripe": {
           "stripeTestKey": "",
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/saveSubsFromStripe-3972446353666b436772-build.zip"
+          "s3Key": "amplify-builds/saveSubsFromStripe-702b6a74484a624a5743-build.zip"
         },
         "S3Triggerdf93383d": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/S3Triggerdf93383d-464f485a6f6748553356-build.zip"
+          "s3Key": "amplify-builds/S3Triggerdf93383d-425156556d3253444f76-build.zip"
         }
       },
       "auth": {
