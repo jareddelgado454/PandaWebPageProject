@@ -33,7 +33,11 @@ export default function InformationModal({ isOpen, onOpenChange, issueSelected }
                       </p>
                     </div>
                     <div className='flex justify-center items-center'>
-                      <div className='w-[18rem] h-[14rem] shadow-md rounded-sm' />
+                      <div className='w-full h-[14rem] shadow-md rounded-sm dark:bg-zinc-800'>
+                        <p className='flex justify-center items-center h-full'>
+                          Photo
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
