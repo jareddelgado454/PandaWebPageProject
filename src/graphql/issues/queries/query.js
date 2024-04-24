@@ -13,9 +13,13 @@ export const getAllIssues = gql`
             updatedAt
             status
             user {
+                id
                 city
                 address
                 cognitoId
+                profilePicture
+                fullName
+                email
             }
             }
         }

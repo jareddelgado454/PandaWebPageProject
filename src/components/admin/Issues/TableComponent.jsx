@@ -4,12 +4,20 @@ import React, { useState } from "react";
 import {
   FaTrashCan,
   FaSort,
-  FaAddressCard,
   FaRectangleList,
 } from "react-icons/fa6";
-export const TableComponent = ({ item, callback }) => {
+import { useDisclosure } from "@nextui-org/react";
+import InputSearchFilter from "./InputSearchFilter";
+import { IssueInformationModal } from "..";
+export default function TableComponent({ item, callback }) {
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
+  const [issueSelected, setIssueSelected] = useState(null);
+  const {
+    isOpen: isIssueInformationModalOpen,
+    onOpen: onIssueInformationModalOpen,
+    onOpenChange: onIssueInformationModalChange,
+  } = useDisclosure();
   const handleSort = (key) => {
     let direction = "asc";
     if (sortedColumn === key && sortDirection === "asc") {
@@ -18,69 +26,37 @@ export const TableComponent = ({ item, callback }) => {
     setSortedColumn(key);
     setSortDirection(direction);
   };
-
   const sortedData = sortedColumn
     ? [...item].sort((a, b) => {
-        const aValue = a[sortedColumn];
-        const bValue = b[sortedColumn];
+      const aValue = a[sortedColumn];
+      const bValue = b[sortedColumn];
 
-        // Handle null values
-        if (aValue === null && bValue !== null) {
-          return sortDirection === "asc" ? 1 : -1;
-        }
-        if (aValue !== null && bValue === null) {
-          return sortDirection === "asc" ? -1 : 1;
-        }
-
-        // Compare values
-        if (aValue < bValue) {
-          return sortDirection === "asc" ? -1 : 1;
-        }
-        if (aValue > bValue) {
-          return sortDirection === "asc" ? 1 : -1;
-        }
-        return 0;
-      })
-    : item;
-  const filterInput = () => {
-    let input, filter, table, tr, td, i, txtValue;
-    input = document.getElementById("myInput");
-    filter = input.value.toUpperCase();
-    table = document.getElementById("myTable");
-    tr = table.getElementsByTagName("tr");
-    for (i = 0; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName("td")[1];
-      if (td) {
-        txtValue = td.textContent || td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-          tr[i].style.display = "";
-        } else {
-          tr[i].style.display = "none";
-        }
+      // Handle null values
+      if (aValue === null && bValue !== null) {
+        return sortDirection === "asc" ? 1 : -1;
       }
-    }
-  };
+      if (aValue !== null && bValue === null) {
+        return sortDirection === "asc" ? -1 : 1;
+      }
+
+      // Compare values
+      if (aValue < bValue) {
+        return sortDirection === "asc" ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return sortDirection === "asc" ? 1 : -1;
+      }
+      return 0;
+    })
+    : item;
+  const handleModalInformation = (issueRow) => {
+    setIssueSelected(issueRow);
+    onIssueInformationModalOpen();
+  }
   return (
     <>
-      {/* Todo: searchInput */}
-      <div className="w-full">
-        <div className="flex justify-between items-center gap-4 bg-white dark:bg-zinc-800 rounded p-5 mb-6 shadow-md flex-wrap md:flex-nowrap">
-          <div className="w-full flex gap-4 items-center flex-wrap md:flex-nowrap">
-            <label
-              className="font-extrabold text-zinc-800 dark:text-white tracking-[0.2em] transition-all"
-              htmlFor="search-input"
-            >
-              Search
-            </label>
-            <input
-              type="search"
-              id="myInput"
-              onKeyUp={filterInput}
-              className="dark:bg-zinc-800 border border-[#40C48E] dark:text-white shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-        </div>
-      </div>
+      <IssueInformationModal isOpen={isIssueInformationModalOpen} onOpenChange={onIssueInformationModalChange} issueSelected={issueSelected} />
+      <InputSearchFilter />
       <div className="relative overflow-x-auto rounded-lg shadow-lg p-6 bg-white dark:bg-zinc-800">
         <table
           id="myTable"
@@ -106,7 +82,7 @@ export const TableComponent = ({ item, callback }) => {
                   className="flex gap-2 items-center cursor-pointer"
                   onClick={() => handleSort("description")}
                 >
-                    DECRIPTION
+                  DECRIPTION
                   <FaSort />
                 </div>
               </th>
@@ -139,30 +115,30 @@ export const TableComponent = ({ item, callback }) => {
                 className={`bg-white border-b text-gray-700 dark:bg-zinc-800 dark:border-[#40C48E] dark:text-white dark:font-medium`}
                 key={i}
               >
-                <th
+                <td
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
                   {
                     issue.createdBy
                   }
-                </th>
+                </td>
                 <td className="px-6 py-4">
-                  { issue.title }
+                  {issue.title}
                 </td>
                 <td className="px-6 py-4">
                   <p className="text-justify">
-                    { issue.description }
+                    {issue.description}
                   </p>
                 </td>
                 <td className="px-6 py-4">
                   <div>
                     <p
-                      className={`py-1 font-medium rounded-2xl brightness-125 w-20 flex justify-center ${
-                        issue.status === "solved"
-                          ? "bg-emerald-700 text-green-500"
-                          : "bg-rose-700 text-rose-300"
-                      }`}
+                      className={`py-1 font-medium rounded-2xl brightness-125 w-20 flex justify-center
+                        ${issue.status === "solved" && "bg-emerald-700 text-green-300"}
+                        ${issue.status === "pending" && "bg-amber-600 text-amber-300"}
+                        ${issue.status === "processed" && "bg-indigo-600 text-indigo-300"}
+                      `}
                     >
                       {issue.status}
                     </p>
@@ -182,9 +158,10 @@ export const TableComponent = ({ item, callback }) => {
                     <button
                       type="button"
                       className="bg-blue-500 p-2 rounded text-white"
+                      onClick={() => handleModalInformation(issue)}
                     >
                       <FaRectangleList />
-                    </button>           
+                    </button>
                   </div>
                 </td>
               </tr>

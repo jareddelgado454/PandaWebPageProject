@@ -15,7 +15,7 @@ export const ReportForm = () => {
                     input: {
                         ...values,
                         reportUserId: userParsed.id,
-                        status: "unsolved"
+                        status: "pending"
                     }
                 }
             })
@@ -23,7 +23,7 @@ export const ReportForm = () => {
             resetForm();
 
         } catch (error) {
-            console.log(error);
+            toast.error(error);
         }
     }
     return (

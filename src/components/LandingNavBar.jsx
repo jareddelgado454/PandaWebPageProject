@@ -53,7 +53,6 @@ const LandingNavBar = () => {
                         cognitoId: sub,
                     },
                 });
-                console.log(data)
                 setUser(data.listUsers.items[0]);
             }
             setIsLoading(false);
@@ -132,7 +131,7 @@ const LandingNavBar = () => {
                                             <p className="font-bold">Signed in as</p>
                                             <p className="font-extralight text-sm">{user?.email}</p>
                                         </DropdownItem>
-                                        <DropdownItem key="settings">
+                                        <DropdownItem key="settings" textValue='My Profile'>
                                             <Link href={user?.role === "admin" ? "/admin-dashboard" : "/user"}>
                                                 My Profile
                                             </Link>
