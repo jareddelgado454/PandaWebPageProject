@@ -18,7 +18,7 @@ const ChagePasswordModal = ({ isOpen, onOpenChange }) => {
         try {
             const oldPassword = values.oldPassword;
             const newPassword = values.newPassword;
-            if (newPassword === confirmPassword) {
+            if (newPassword === values.confirmPassword) {
                 await updatePassword({ oldPassword, newPassword });
                 toast.success('Password changed succesfully :D');
                 resetForm();

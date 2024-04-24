@@ -8,3 +8,28 @@ export const createReport = gql`
     }
     }
 `;
+
+export const UpdateReportStatus = gql`
+    mutation UpdateReportStatus($input: UpdateReportInput!) {
+        updateReport(input: $input) {
+            id
+            user {
+            id
+            email
+            }
+            title
+            description
+            reportUserId
+            createdBy
+        }
+    }
+`;
+
+export const DeleteReportById = gql`
+    mutation DeleteReportById($reportId: ID!) {
+        deleteReport(input: { id: $reportId })
+        {
+            id
+        }
+    }
+`;
