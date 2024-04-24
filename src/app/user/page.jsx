@@ -23,8 +23,8 @@ const Page = () => {
                     cognitoId: info.sub,
                 },
             });
-            const userId = data.listUsers.items[0].id;
-            await setUser({ ...info, id: userId });
+            const userDB = data.listUsers.items[0];
+            await setUser({ ...info, id: userDB.id, profilePicture: userDB.profilePicture });
             setLoading(false);
 
         } catch (error) {
