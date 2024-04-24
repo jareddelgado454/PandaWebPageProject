@@ -3,14 +3,17 @@ import React, { useState } from 'react';
 import { useRouter } from "next/navigation";
 import { uploadData } from 'aws-amplify/storage';
 import { v4 as uuidv4 } from 'uuid';
+import { RiUserFill, RiCalendarTodoFill, RiDashboardFill, RiLogoutCircleLine, RiSettings4Fill  } from "react-icons/ri";
+import { TbDiamondFilled } from "react-icons/tb";
+import Link from 'next/link';
 import { signOut } from "aws-amplify/auth";
 import Cookies from "js-cookie";
 import { FaCamera } from "react-icons/fa6";
-import { RiVipCrownFill, RiAlertFill } from "react-icons/ri";
 import { useDisclosure } from "@nextui-org/react";
-import { SubscriptionPlanModal } from '../modalUser';
+import { SubscriptionPlanModal } from '@/components/modalUser';
 import { getCurrentUser } from "aws-amplify/auth";
-function UserInformation({ user }) {
+function UserSidebar({ user }) {
+    console.log("user",user)
     const router = useRouter();
     const [photograph, setPhotograph] = useState(null);
     const { isOpen: isSubscriptionModalOpen, onOpen: onSubscriptionModalOpen, onOpenChange: onSubscriptionModalChange } = useDisclosure();
@@ -90,9 +93,9 @@ function UserInformation({ user }) {
     return (
         <>
             <SubscriptionPlanModal isOpen={isSubscriptionModalOpen} onOpenChange={onSubscriptionModalChange} idsPassed={idsPassed} />
-            <div className="bg-zinc-800 text-white rounded-lg shadow-lg w-full h-5/6 md:w-[21%] 2xl:w-2/12 relative overflow-y-auto order-1">
-                <div className="flex flex-row md:flex-col gap-6 items-center justify-center mb-10 p-4">
-                    <div className="relative w-[6rem] h-[6rem] md:w-[10rem] md:h-[10rem] overflow-hidden rounded-full shadow-md group">
+            <div className=" text-white rounded-lg shadow-lg h-screen  w-[300px] relative">
+                <div className="flex flex-row md:flex-col items-center justify-center px-[20px] py-0">
+                    {/* <div className="relative w-[6rem] h-[6rem] md:w-[10rem] md:h-[10rem] overflow-hidden rounded-full shadow-md group">
                         <div className="absolute bg-black group-hover:opacity-60 opacity-0 w-full h-full transition-all">
                             <div className="flex justify-center items-center h-full">
                                 <FaCamera className="text-white text-xl md:text-4xl" />
@@ -115,49 +118,59 @@ function UserInformation({ user }) {
                                 handleChangePhotograph(event);
                             }}
                         />
+                    </div> */}
+
+                    <div className="h-[80px] flex gap-x-1 items-center justify-start w-full">
+                        <img src="/panda.png" className="w-[65px] h-[50px] drop-shadow-lg" alt="panda_logo" />
+                        <p className="font-bold drop-shadow-xl tracking-wider text-white">PANDA <span className='text-emerald-300'>TECHS</span></p> 
                     </div>
 
-                    <div className="flex flex-col justify-center gap-2 items-center mb-6">
-                        <p className="text-center text-[25px]">
-                            {
-                                user['custom:fullName'] ? user['custom:fullName'] : "Personal Information"
-                            }
-                        </p>
-                        <p className="text-gray-300 mb-2 font-bold text-[17px]">{user.email}</p>
-                        <div className=" flex justify-center items-center  mb-6 p-0">
-                            <div className="w-full text-center text-sm p-1 rounded-lg border-[1px] border-green-500 bg-green-500 text-white">Account Verified</div>
-                        </div>
-                        <div className="w-full bg-zinc-700 border-[1px] border-zinc-700 rounded-xl flex flex-col  p-2 mb-2">
-                            <span className="text-gray-400 text-[13px]">Role:</span><span className="text-emerald-400 font-bold uppercase text-[16px]">{user['custom:role']}</span>
-                        </div>
-                        <div className="w-full bg-zinc-700 border-[1px] border-zinc-700 rounded-xl flex flex-col  p-2 mb-2">
-                            <span className="text-gray-400 text-[13px]">Status: </span><span className={`uppercase text-[16px] font-semibold ${user['custom:status'] === 'active' ? 'text-[#40C48E]' : 'text-rose-400'}`}>{user['custom:status']}</span>
-                        </div>
-                        {
-                            user['custom:role'] === "technician" && <div className="w-full bg-zinc-700 border-[1px] border-zinc-700 rounded-xl flex flex-col  p-2">
-                                <span className="text-gray-400 text-[13px]">Subscription: </span>
-                                <p className="text-zinc-100 font-semibold">
-                                    {
-                                        user['custom:subscription'] !== "pending" ? (<span className="flex gap-x-1 items-center">Business pro {`${user['custom:subscription']}`} <RiVipCrownFill className="text-emerald-400" /></span>) : <span className="flex gap-x-1 items-center"><RiAlertFill className="text-emerald-600 text-[19px]" /> Choose a plan <button onClick={() => handleSubscriptionModal()} className="text-emerald-500 hover:text-emerald-700 transition-colors"><u>here</u></button></span>
-                                    }
-                                </p>
+                    <div className="w-full h-[calc(100vh-100px)] rounded-2xl bg-zinc-800 flex flex-col items-center justify-between gap-2 overflow-y-auto">
+                        
+                        <div className="w-full flex flex-col items-center p-4 ">
+                            <h4 className='font-bold text-gray-200 w-full text-left mb-2'>Main Menu</h4>
+                            <div className='w-full flex flex-col gap-y-2 border-b-[2px] border-zinc-700 pb-4 mb-4'>
+                                <Link href={'/user'} className={`w-full rounded-md bg-emerald-500 flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
+                                    <RiUserFill />
+                                    Profile
+                                </Link>
+                                <Link href={'/user/subscription'} className={`w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
+                                    <TbDiamondFilled />
+                                    Subscription
+                                </Link>
+                                <Link href={'/user/schedule'} className={`w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
+                                    <RiCalendarTodoFill  />
+                                    Schedule
+                                </Link>
+                            </div>    
+                            <h4 className='font-bold text-gray-200 w-full text-left mb-2'>Finances</h4> 
+                            <div className='w-full flex flex-col gap-y-2  border-b-[2px] border-zinc-700 pb-4 mb-4'>
+                                <Link href={'/user/finances'} className={`w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
+                                    <RiDashboardFill  />
+                                    Overview
+                                </Link>
                             </div>
-                        }
-                    </div>
-                </div>
-
-                <div className="2xl:absolute 2xl:bottom-0 w-full">
-                    <div className="flex flex-col">
-                        <button
-                            onClick={() => {
-                                Cookies.remove("currentUser");
-                                signOut();
-                                router.replace("/");
-                            }}
-                            className="rounded-b-lg bg-emerald-500 h-[2.5rem] md:h-[3.5rem] font-bold text-white flex justify-center items-center"
-                        >
-                            Sign Out
-                        </button>
+                            <h4 className='font-bold text-gray-200 w-full text-left mb-2'>Account</h4> 
+                            <div className='w-full flex flex-col gap-y-2  mb-4'>
+                                <Link href={'/user/settings'} className={`w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
+                                    <RiSettings4Fill  />
+                                    Settings
+                                </Link>
+                            </div>               
+                        </div>
+                        <div className="w-full flex items-center p-4 ">
+                            <div 
+                                onClick={() => {
+                                    Cookies.remove("currentUser");
+                                    signOut();
+                                    router.replace("/");
+                                }} 
+                                className={`w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 pt-4 cursor-pointer border-t-[2px] border-zinc-700 `}
+                            >
+                                <RiLogoutCircleLine  />
+                                Logout
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -165,4 +178,4 @@ function UserInformation({ user }) {
     )
 }
 
-export default UserInformation
+export default UserSidebar
