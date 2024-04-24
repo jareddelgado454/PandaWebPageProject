@@ -58,7 +58,7 @@ function page() {
       <p className="text-xl md:text-3xl text-center bg-white text-zinc-800 dark:text-white dark:bg-zinc-800 rounded-b-lg font-bold py-6 tracking-[0.1em] drop-shadow-lg transition-all">
         Issues Management
       </p>
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-2 my-6 place-items-center">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 my-6 place-items-center">
         {numbers.map((issue, i) => {
           return (
             <CardIssue
@@ -78,7 +78,7 @@ function page() {
       {/* Todo: Table */}
       <div className="px-4">
         {filteredIssues && (
-          <IssueTable item={filteredIssues} callback={retrieveData} />
+          <IssueTable data={filteredIssues} callback={retrieveData} />
         )}
       </div>
       <IssuePagination
