@@ -1,16 +1,4 @@
-<<<<<<< HEAD
-import React from 'react'
-
-const videoModal = () => {
-  return (
-    <div>videoModal</div>
-  )
-}
-
-export default videoModal
-=======
 "use client"
-
 import React from 'react'
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button} from "@nextui-org/react";
 
@@ -38,4 +26,3 @@ const VideoModal = ({isOpen, onOpenChange}) => {
 }
 
 export default VideoModal
->>>>>>> develop
