@@ -7,13 +7,13 @@ function CardIssue({ mode, number, issues, setFilteredIssues, page, rowsPerPage,
     const renderIcon = () => {
         switch (mode) {
             case 'total':
-                return <FaTableList className='md:text-5xl text-white dark:text-white' />;
+                return <FaTableList className='text-3xl md:text-5xl text-white dark:text-white' />;
             case 'solved':
-                return <FaFaceSmile className='md:text-5xl text-white dark:text-white' />;
+                return <FaFaceSmile className='text-3xl md:text-5xl text-white dark:text-white' />;
             case 'pending':
-                return <FaClock className='md:text-5xl text-white dark:text-white' />;
+                return <FaClock className='text-3xl md:text-5xl text-white dark:text-white' />;
             case 'processed':
-                return <FaPersonWalkingArrowRight className='md:text-5xl text-white dark:text-white' />;
+                return <FaPersonWalkingArrowRight className='text-3xl md:text-5xl text-white dark:text-white' />;
             default:
                 return null; // En caso de que el valor de 'mode' no coincida con ninguna opción
         }
@@ -74,14 +74,14 @@ function CardIssue({ mode, number, issues, setFilteredIssues, page, rowsPerPage,
         <Card
             isDisabled={!issues}
             shadow="md"
-            className={`h-[11rem] w-11/12 l-g:w-[24rem] dark:bg-zinc-800 ${getColorClass()}`}
+            className={`h-[10rem] w-11/12 lg:w-[20.5rem] dark:bg-zinc-800 ${getColorClass()}`}
             isPressable
             onClick={issuesFilter}
         >
             <CardBody className="overflow-visible p-4 relative">
                 {renderIcon()}
                 <div className='absolute left-4 bottom-4'>
-                    <p className='text-xl text-white font-bold'>
+                    <p className='text-sm md:text-xl text-white font-bold'>
                         {getText()} <CountUp end={number} duration={2.5} />
                     </p>
                 </div>

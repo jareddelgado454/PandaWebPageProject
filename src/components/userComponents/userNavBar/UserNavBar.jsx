@@ -2,8 +2,12 @@ import React from "react";
 import { RiSearchLine, RiNotification3Fill, RiSunFill } from "react-icons/ri";
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, User} from "@nextui-org/react";
 import Link from "next/link";
+import { signOut } from "aws-amplify/auth";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const UserNavBar = ({user}) => {
+  const router = useRouter();
   return (
     <div className="w-full h-[80px] flex items-center justify-between ">
       <div className="text-[20px] flex justify-center items-center text-white font-bold">
@@ -62,8 +66,9 @@ const UserNavBar = ({user}) => {
                 className="text-emerald-400"
                 onClick={() => {
                   signOut();
-                  setIsLoggedIn(false);
+                  // setIsLoggedIn(false);
                   Cookies.remove("currentUser");
+                  router.replace("/");
                 }}
               >
                 Log Out

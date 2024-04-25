@@ -10,8 +10,14 @@ import {
   Button
 } from "@nextui-org/react";
 import { DateFormatter } from "@/utils/parseDate";
+import { AdminSetUserPassword } from "@/api/sdk";
+import { generateTempoPassword } from "@/utils/GenerateTempoPassword";
 const ShowInformation = ({ isOpen, onOpenChange, user }) => {
-    
+    const handleSetUserPassword = async() => {
+        const passwordGenerated = generateTempoPassword();
+        console.log(passwordGenerated);
+        await AdminSetUserPassword(user.email, passwordGenerated);
+    }
     return (
         <Modal backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">
             <ModalContent>
@@ -49,7 +55,7 @@ const ShowInformation = ({ isOpen, onOpenChange, user }) => {
                             <div>
                                 <p><strong>Member since:</strong> { DateFormatter(user.createdAt) }</p>
                             </div>
-                            <div className="flex gap-2">
+                            <div className="flex gap-2" onClick={handleSetUserPassword}>
                                 <strong>Options: </strong>
                                 <p className="text-red-500 cursor-pointer">Reset Password</p>
                             </div>

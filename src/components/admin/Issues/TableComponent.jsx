@@ -1,15 +1,17 @@
 "use client";
-import { DateFormatter } from "@/utils/parseDate";
 import React, { useState } from "react";
 import {
   FaTrashCan,
   FaSort,
   FaRectangleList,
 } from "react-icons/fa6";
+import { DateFormatter } from "@/utils/parseDate";
 import { useDisclosure } from "@nextui-org/react";
+import { client } from "@/contexts/AmplifyContext";
 import InputSearchFilter from "./InputSearchFilter";
 import { IssueInformationModal } from "..";
-export default function TableComponent({ item, callback }) {
+import { DeleteReportById } from "@/graphql/issues/mutations/mutation";
+export default function TableComponent({ data, callback }) {
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
   const [issueSelected, setIssueSelected] = useState(null);
@@ -27,7 +29,7 @@ export default function TableComponent({ item, callback }) {
     setSortDirection(direction);
   };
   const sortedData = sortedColumn
-    ? [...item].sort((a, b) => {
+    ? [...data].sort((a, b) => {
       const aValue = a[sortedColumn];
       const bValue = b[sortedColumn];
 
@@ -48,14 +50,24 @@ export default function TableComponent({ item, callback }) {
       }
       return 0;
     })
-    : item;
+    : data;
   const handleModalInformation = (issueRow) => {
     setIssueSelected(issueRow);
     onIssueInformationModalOpen();
   }
+  const handleDeleteReport = async (reportId) => {
+    await client.graphql({
+      query: DeleteReportById,
+      variables: {
+        reportId
+      }
+
+    });
+    callback();
+  }
   return (
     <>
-      <IssueInformationModal isOpen={isIssueInformationModalOpen} onOpenChange={onIssueInformationModalChange} issueSelected={issueSelected} />
+      <IssueInformationModal callback={callback} isOpen={isIssueInformationModalOpen} onOpenChange={onIssueInformationModalChange} issueSelected={issueSelected} />
       <InputSearchFilter />
       <div className="relative overflow-x-auto rounded-lg shadow-lg p-6 bg-white dark:bg-zinc-800">
         <table
@@ -63,19 +75,19 @@ export default function TableComponent({ item, callback }) {
           className="w-full text-sm text-left rtl:text-right  transition-all"
         >
           <thead className="text-xs text-gray-700 dark:text-white uppercase rounded-full bg-zinc-200 dark:bg-zinc-800">
-            <tr>
-              <th scope="col" className="px-6 py-3 flex gap-2 w-full rounded-l-lg cursor-pointer" onClick={() => handleSort("createdBy")}>
-                CREATED BY
-                <FaSort />
-              </th>
-              <th scope="col" className="px-6 py-3">
+            <tr className="">
+              <th scope="col" className="px-6 py-3 rounded-l-lg">
                 <div
-                  className="flex gap-2 items-center cursor-pointer"
+                  className="flex gap-2 items-center cursor-pointer "
                   onClick={() => handleSort("title")}
                 >
                   TITLE
                   <FaSort />
                 </div>
+              </th>
+              <th scope="col" className="px-6 py-3 flex gap-2 w-full cursor-pointer " onClick={() => handleSort("createdBy")}>
+                CREATED BY
+                <FaSort />
               </th>
               <th scope="col" className="px-6 py-3">
                 <div
@@ -115,6 +127,9 @@ export default function TableComponent({ item, callback }) {
                 className={`bg-white border-b text-gray-700 dark:bg-zinc-800 dark:border-[#40C48E] dark:text-white dark:font-medium`}
                 key={i}
               >
+                <td className="px-6 py-4">
+                  {issue.title}
+                </td>
                 <td
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -122,9 +137,6 @@ export default function TableComponent({ item, callback }) {
                   {
                     issue.createdBy
                   }
-                </td>
-                <td className="px-6 py-4">
-                  {issue.title}
                 </td>
                 <td className="px-6 py-4">
                   <p className="text-justify">
@@ -152,6 +164,7 @@ export default function TableComponent({ item, callback }) {
                     <button
                       type="button"
                       className="bg-rose-500 p-2 rounded text-white"
+                      onClick={() => handleDeleteReport(issue.id)}
                     >
                       <FaTrashCan />
                     </button>

@@ -3,16 +3,19 @@ import React, { useState } from 'react';
 import { useRouter } from "next/navigation";
 import { uploadData } from 'aws-amplify/storage';
 import { v4 as uuidv4 } from 'uuid';
-import { signOut } from "aws-amplify/auth";
+import { toast } from 'react-toastify';
+import { signOut,getCurrentUser } from "aws-amplify/auth";
 import Cookies from "js-cookie";
 import { FaCamera } from "react-icons/fa6";
 import { RiVipCrownFill, RiAlertFill } from "react-icons/ri";
-import { useDisclosure } from "@nextui-org/react";
+import { Progress, useDisclosure } from "@nextui-org/react";
+import { client } from '@/contexts/AmplifyContext';
 import { SubscriptionPlanModal } from '../modalUser';
-import { getCurrentUser } from "aws-amplify/auth";
+import { updateInformation } from '@/graphql/users/mutation/users';
 function UserInformation({ user }) {
     const router = useRouter();
     const [photograph, setPhotograph] = useState(null);
+    const [percent, setPercent] = useState(0)
     const { isOpen: isSubscriptionModalOpen, onOpen: onSubscriptionModalOpen, onOpenChange: onSubscriptionModalChange } = useDisclosure();
     const [idsPassed, setIdsPassed] = useState({
         idDatabase: "",
@@ -54,15 +57,12 @@ function UserInformation({ user }) {
                     contentType: "image/png",
                     onProgress: ({ transferredBytes, totalBytes }) => {
                         if (totalBytes) {
-                            console.log(
-                                `Upload progress ${Math.round((transferredBytes / totalBytes) * 100)
-                                } %`
-                            );
+                            setPercent(Math.round((transferredBytes / totalBytes) * 100))
                         }
                     }
                 }
             }).result;
-            console.log('Succeeded: ', result);
+            toast.success(`Upload successfully`);
             await client.graphql({
                 query: updateInformation,
                 variables: {
@@ -74,7 +74,7 @@ function UserInformation({ user }) {
                 },
             });
         } catch (error) {
-            console.log(`Error from here : ${error}`);
+            console.log(error);
         }
     }
     const handleSubscriptionModal = async () => {
@@ -161,6 +161,9 @@ function UserInformation({ user }) {
                     </div>
                 </div>
             </div>
+            {
+                percent > 0 && <Progress className='absolute z-20 bottom-0' color={`${percent >= 95 ? 'success' : 'primary'}`} aria-label="Loading..." value={percent} />
+            }
         </>
     )
 }
