@@ -75,10 +75,7 @@ const EditModal = ({ isOpen, onOpenChange, user, callback, setRecordSelected }) 
                             }
                         />
                       }
-
-                      
                   </div>
-                    
                 </ModalBody>
                 <ModalFooter>
                   <Button color="danger" variant="light" onPress={onClose} >
