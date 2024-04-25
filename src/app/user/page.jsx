@@ -17,28 +17,28 @@ import Image from "next/image";
 import { useDisclosure } from "@nextui-org/react";
 const Page = () => {
     const { isOpen: isCustomModalOpen, onOpen: onCustomModalOpen, onOpenChange: onOpenCustomModalChange } = useDisclosure();
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [user, setUser] = useState(null);
-    const retrieveOneUser = async () => {
-        setLoading(true);
-        try {
-            const info = await fetchUserAttributes();
-            const { data } = await client.graphql({
-                query: getUserIdByCognitoID,
-                variables: {
-                    cognitoId: info.sub,
-                },
-            });
-            const userDB = data.listUsers.items[0];
-            await setUser({ ...info, id: userDB.id, profilePicture: userDB.profilePicture });
-            setLoading(false);
-        }catch(error){
-          console.log(error);
-        }
-    }
-  // const { user, loading, error } = useContext(Contexto);
-  // console.log("valores del contextoooo", user, loading, error);
+    // const [loading, setLoading] = useState(true);
+    // const [error, setError] = useState(null);
+    // const [user, setUser] = useState(null);
+    // const retrieveOneUser = async () => {
+    //     setLoading(true);
+    //     try {
+    //         const info = await fetchUserAttributes();
+    //         const { data } = await client.graphql({
+    //             query: getUserIdByCognitoID,
+    //             variables: {
+    //                 cognitoId: info.sub,
+    //             },
+    //         });
+    //         const userDB = data.listUsers.items[0];
+    //         await setUser({ ...info, id: userDB.id, profilePicture: userDB.profilePicture });
+    //         setLoading(false);
+    //     }catch(error){
+    //       console.log(error);
+    //     }
+    // }
+  const { user, loading, error } = useContext(Contexto);
+  console.log("valores del contextoooo", user, loading, error);
   return (
     <div className="w-full h-[calc(100vh-100px)] relative pr-[20px]">
       {loading ? (
