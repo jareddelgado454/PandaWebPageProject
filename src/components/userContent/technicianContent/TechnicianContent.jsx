@@ -15,19 +15,19 @@ const TechnicianContent = ({ user, retrieveOneUser }) => {
       }
   }
   return (
-    <div className="relative w-full overflow-y-auto md:w-2/4 bg-zinc-800 text-white rounded-lg shadow-lg p-4 h-5/6 order-2">
+    <div className="relative h-[calc(100vh-100px)] w-full overflow-y-auto bg-zinc-800 text-white rounded-2xl shadow-lg p-4 order-2">
         <div className="bg-zinc-700 h-[40px] w-[600px] flex rounded-xl mb-10">
-          <div onClick={()=>setOptionSelected("profile")} className={` ${optionSelected === "profile" ? "bg-emerald-600 transform scale-105 duration-150 delay-150 shadow-lg text-[18px] font-bold " : "bg-transparent hover:bg-zinc-600 "} w-1/3 rounded-xl text-center flex items-center justify-center transition-colors cursor-pointer`}>
+          <div onClick={()=>setOptionSelected("profile")} className={` ${optionSelected === "profile" ? "bg-zinc-500 transform scale-105 duration-150 delay-150 shadow-lg text-[18px] font-bold " : "bg-transparent hover:bg-zinc-600 "} w-1/3 rounded-xl text-center flex items-center justify-center transition-colors cursor-pointer`}>
             My profile
           </div>
-          <div onClick={()=>setOptionSelected("subscription")} className={` ${optionSelected === "subscription" ? "bg-emerald-600 transform scale-105 duration-150 delay-150 shadow-lg text-[18px] font-bold" : "bg-transparent hover:bg-zinc-600"} w-1/3 rounded-xl text-center  flex items-center justify-center transition-colors cursor-pointer`}>
+          <div onClick={()=>setOptionSelected("subscription")} className={` ${optionSelected === "subscription" ? "bg-zinc-500 transform scale-105 duration-150 delay-150 shadow-lg text-[18px] font-bold" : "bg-transparent hover:bg-zinc-600"} w-1/3 rounded-xl text-center  flex items-center justify-center transition-colors cursor-pointer`}>
             My subscription
           </div>
           <div
             onClick={()=>setOptionSelected("availability")}
-            className={` ${optionSelected === "availability" ? "bg-emerald-600 transform scale-105 duration-150 delay-150 shadow-lg text-[18px] font-bold" : "bg-transparent hover:bg-zinc-600"} w-1/3 rounded-xl text-center  flex items-center justify-center transition-colors cursor-pointer`}
+            className={` ${optionSelected === "availability" ? "bg-zinc-500 transform scale-105 duration-150 delay-150 shadow-lg text-[18px] font-bold" : "bg-transparent hover:bg-zinc-600"} w-1/3 rounded-xl text-center  flex items-center justify-center transition-colors cursor-pointer`}
           >
-            My availability
+            My schedule
           </div>
         </div>
         {

@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { uploadData } from 'aws-amplify/storage';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
-import { signOut } from "aws-amplify/auth";
+import { signOut,getCurrentUser } from "aws-amplify/auth";
 import Cookies from "js-cookie";
 import { FaCamera } from "react-icons/fa6";
 import { RiVipCrownFill, RiAlertFill } from "react-icons/ri";
