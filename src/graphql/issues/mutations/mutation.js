@@ -1,0 +1,35 @@
+import { gql } from 'graphql-tag';
+export const createReport = gql`
+    mutation MyMutation($input:CreateReportInput!){
+    createReport(input: $input){
+        id
+        title
+        description
+    }
+    }
+`;
+
+export const UpdateReportStatus = gql`
+    mutation UpdateReportStatus($input: UpdateReportInput!) {
+        updateReport(input: $input) {
+            id
+            user {
+            id
+            email
+            }
+            title
+            description
+            reportUserId
+            createdBy
+        }
+    }
+`;
+
+export const DeleteReportById = gql`
+    mutation DeleteReportById($reportId: ID!) {
+        deleteReport(input: { id: $reportId })
+        {
+            id
+        }
+    }
+`;

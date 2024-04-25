@@ -25,7 +25,7 @@ import { PiCarProfileFill } from "react-icons/pi";
 import DownloadApp from "@/components/modalLanding/DownloadApp";
 import VideoModal from "@/components/modalLanding/VideoModal";
 import { useDisclosure } from "@nextui-org/react";
-import phoneMap2 from "../../public/image/phoneMap2.png"
+import phoneMap2 from "../../public/image/phoneMap2.webp"
 import Image from "next/image";
 import car from "../../public/image/car.png"
 import arrowTime from "../../public/image/arrowTime.png"

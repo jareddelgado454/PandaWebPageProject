@@ -18,7 +18,7 @@ const ChagePasswordModal = ({ isOpen, onOpenChange }) => {
         try {
             const oldPassword = values.oldPassword;
             const newPassword = values.newPassword;
-            if (newPassword === confirmPassword) {
+            if (newPassword === values.confirmPassword) {
                 await updatePassword({ oldPassword, newPassword });
                 toast.success('Password changed succesfully :D');
                 resetForm();
@@ -31,7 +31,7 @@ const ChagePasswordModal = ({ isOpen, onOpenChange }) => {
     }
     return (
         <Modal backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
-            <ModalContent>
+            <ModalContent className='dark:bg-zinc-800 dark:text-white'>
                 {(onClose) => (
                     <>
                         <ModalHeader className="flex justify-center items-center">
@@ -53,8 +53,8 @@ const ChagePasswordModal = ({ isOpen, onOpenChange }) => {
                             >
                                 {({ handleSubmit, errors, isValid }) => (
                                     <Form onSubmit={handleSubmit}>
-                                        <div className='my-2'>
-                                            <label htmlFor="oldPassword">
+                                        <div className='my-2 flex flex-col gap-3'>
+                                            <label htmlFor="oldPassword" >
                                                 Old Password
                                             </label>
                                             <Field
@@ -64,8 +64,8 @@ const ChagePasswordModal = ({ isOpen, onOpenChange }) => {
                                             />
                                             <ErrorMessage name="oldPassword" component={() => (<div className="text-red-600">{errors.oldPassword}</div>)} />
                                         </div>
-                                        <div className='my-2'>
-                                            <label htmlFor="ConfirmPassword">
+                                        <div className='my-2 flex flex-col gap-3'>
+                                            <label htmlFor="ConfirmPassword" >
                                                 New Password
                                             </label>
                                             <Field
@@ -75,8 +75,8 @@ const ChagePasswordModal = ({ isOpen, onOpenChange }) => {
                                             />
                                             <ErrorMessage name="newPassword" component={() => (<div className="text-red-600">{errors.newPassword}</div>)} />
                                         </div>
-                                        <div className='my-2'>
-                                            <label htmlFor="ConfirmPassword">
+                                        <div className='my-2 flex flex-col gap-3'>
+                                            <label htmlFor="ConfirmPassword" >
                                                 Confirm your new password
                                             </label>
                                             <Field
@@ -87,9 +87,9 @@ const ChagePasswordModal = ({ isOpen, onOpenChange }) => {
                                             <ErrorMessage name="confirmPassword" component={() => (<div className="text-red-600">{errors.confirmPassword}</div>)} />
                                         </div>
                                         <button
-                                            type=''
+                                            type='submit'
                                             disabled={!isValid}
-                                            className={`bg-green-panda px-4 py-2 w-full rounded text-white ${!isValid && 'bg-opacity-50 cursor-not-allowed'}`}
+                                            className={`bg-green-panda mt-4 px-4 py-2 w-full rounded text-white ${!isValid && 'bg-opacity-50 cursor-not-allowed'}`}
                                         >
                                             Change
                                         </button>
@@ -98,7 +98,7 @@ const ChagePasswordModal = ({ isOpen, onOpenChange }) => {
                             </Formik>
                         </ModalBody>
                         <ModalFooter>
-                            <Button color="default" variant="light" onPress={onClose}>
+                            <Button color="default" variant="light" onPress={onClose} className='dark:text-white'>
                                 Cancel
                             </Button>
                         </ModalFooter>

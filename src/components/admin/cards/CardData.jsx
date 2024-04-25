@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import CountUp from 'react-countup';
-import {Card, CardBody} from "@nextui-org/react";
+import {Card, CardBody, user} from "@nextui-org/react";
 import { FaFaceMeh, FaFaceSmile, FaPeopleGroup } from 'react-icons/fa6';
 import {calculateTotalPages} from "@/utils/calculate";
 
@@ -55,22 +55,22 @@ export const CardData = ({ mode, number, users, setFilteredUsers, page, rowsPerP
                 userFiltered = users;
                 break;
             case 'active':
-
                 userFiltered = users.filter(user => user.status === "active");
                 break;
             case 'inactive':
-                filtered = "";
                 userFiltered = users.filter(user => user.status === "inactive");
                 break;
             default:
                 userFiltered = users;
         }
+        if(!userFiltered === null) setFilteredUsers(users);
         setFilteredUsers(userFiltered.slice(start, end));
         setTotalPages(calculateTotalPages(userFiltered, rowsPerPage));
     }
 
   return (
     <Card
+        isDisabled={!users}
         shadow="md"
         className={`h-[11rem] w-11/12 l-g:w-[24rem] dark:bg-zinc-800 ${getColorClass()}`}
         isPressable
