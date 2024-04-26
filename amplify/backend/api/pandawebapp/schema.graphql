@@ -48,3 +48,43 @@ type User @model @auth(
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
 }
+
+type Technician @model @auth(
+    rules: [
+        { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
+        { allow: owner, ownerField: "id", operations: [ read, update, create, delete ] }
+        { allow: public, provider: iam, operations: [ create ] }
+    ]
+) {
+    id: ID!  
+    email: String
+    fullName: String
+    contactNumber: String
+    status: String
+    address: String
+    city: String
+    state: String
+    profilePicture: String
+    zipCode: Int
+    subscription: String
+    fee: Int
+    rate: Float
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+    schedule: Schedule
+}
+
+type Schedule {
+    monday: DailySchedule
+    tuesday: DailySchedule
+    wednesday: DailySchedule
+    thursday: DailySchedule
+    friday: DailySchedule
+    saturday: DailySchedule
+    sunday: DailySchedule
+}
+
+type DailySchedule {
+    opening: String
+    closing: String
+}
