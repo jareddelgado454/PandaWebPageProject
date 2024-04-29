@@ -20,6 +20,18 @@ type Report @model @auth(
     image: String
     createdAt: AWSDateTime
     status: ReportStatus!
+    answers: [Answer] @hasMany(indexName: "byReport", fields: ["id"])
+}
+
+type Answer @model @auth(
+    rules: [{ allow: private, operations: [ read, update, create, delete ] }]
+) {
+    id: ID!
+    user: User! @hasOne
+    text: String!
+    reportId: ID! @index(name: "byReport")
+    report: Report! @belongsTo(fields: ["reportId"])
+    createdAt: AWSDateTime
 }
 
 type User @model @auth(
@@ -48,3 +60,66 @@ type User @model @auth(
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
 }
+
+type Technician @model @auth(
+    rules: [
+        { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
+        { allow: owner, ownerField: "id", operations: [ read, update, create, delete ] }
+        { allow: public, provider: iam, operations: [ create ] }
+    ]
+) {
+    id: ID!  
+    email: String
+    fullName: String
+    contactNumber: String
+    status: String
+    address: String
+    city: String
+    state: String
+    profilePicture: String
+    zipCode: Int
+    subscription: String
+    fee: Int
+    rate: Float
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+    schedule: Schedule
+}
+
+type Schedule {
+    monday: DailySchedule
+    tuesday: DailySchedule
+    wednesday: DailySchedule
+    thursday: DailySchedule
+    friday: DailySchedule
+    saturday: DailySchedule
+    sunday: DailySchedule
+}
+
+type DailySchedule {
+    opening: String
+    closing: String
+}
+
+# type Chat @model @auth(
+#     rules: [
+#         { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
+#         { allow: owner, ownerField: "members", operations: [ read, update, create, delete ] }
+#     ]
+# ) {
+#     id: ID!
+#     messages: [Message] @hasMany
+#     members: [User]! @hasMany
+# }
+
+# type Message @model @auth(
+#     rules: [
+#         { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
+#         { allow: owner, ownerField: "sender", operations: [ read, update, create, delete ] }
+#     ]
+# ){
+#     id: ID!
+#     content: String!
+#     sender: ID!
+#     chat: Chat @belongsTo
+# }
