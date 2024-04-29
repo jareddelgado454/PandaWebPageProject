@@ -33,3 +33,21 @@ export const DeleteReportById = gql`
         }
     }
 `;
+
+export const AnswerReport = gql`
+    mutation AnswerReport($input: CreateAnswerInput!) {
+        createAnswer(input: $input){
+            id
+            text
+            reportId
+            answerUserId
+            createdAt
+            user{
+                id
+                email
+                fullName
+                profilePicture
+            }
+        }
+    }
+`;
