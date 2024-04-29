@@ -1,9 +1,39 @@
-import React from 'react'
+'use client';
+import React, { useState } from 'react'
+import { FaPaperPlane } from 'react-icons/fa6'
+import { client } from '@/contexts/AmplifyContext';
+import { AnswerReport } from '@/graphql/issues/mutations/mutation';
+import Cookies from 'js-cookie';
 
-export default function AnswerInput() {
+export default function AnswerInput({ reportId }) {
+    const parsedUser = JSON.parse(Cookies.get("currentUser"));
+    const [text, setText] = useState("");
+    const handleSendText = async() => {
+        await client.graphql({
+            query: AnswerReport,
+            variables: {
+                input: {
+                    text,
+                    answerUserId: parsedUser.id,
+                    reportId
+                }
+            }
+        });
+    }
     return (
-        <div className='w-full slide-in-right overflow-hidden px-4'>
-            
+        <div className='sticky bottom-0 w-full'>
+            <div className='bg-zinc-200 dark:bg-zinc-900 min-h-full p-4'>
+                <div className='flex justify-center gap-4 items-center w-full h-full'>
+                    <textarea
+                        type="text"
+                        id="input"
+                        className='m-0 w-full resize-none border-0 focus:ring-0 focus-visible:ring-0 dark:bg-zinc-800 max-h-[3rem] placeholder-black/50 dark:placeholder-white/50'
+                        name="message"
+                        onChange={({target}) => setText(target.value)}
+                    />
+                    <FaPaperPlane className='dark:text-[#40C48E] text-2xl cursor-pointer' onClick={handleSendText} />
+                </div>
+            </div>
         </div>
     )
 }
