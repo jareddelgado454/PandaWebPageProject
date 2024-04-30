@@ -20,7 +20,7 @@ export function middleware(request) {
 
   if (authRoutes.includes(request.nextUrl.pathname) && currentUser) {
     console.log("allowed");
-    if(JSON.parse(currentUser).rol === 'admin') {
+    if(JSON.parse(currentUser).role === 'admin') {
       return NextResponse.redirect(new URL("/admin-dashboard/", request.url));
     }else {
       return NextResponse.redirect(new URL("/user", request.url));

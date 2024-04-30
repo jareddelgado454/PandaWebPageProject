@@ -118,58 +118,58 @@ const SignIn = () => {
       console.log(error);
     }
   }
-  useEffect(() => {
-    const hubListenerCancel = Hub.listen("auth", async ({ payload }) => {
-      switch (payload.event) {
-        case "signedIn":
-          onOpenLoadingModal(true);
-          const { fullName, email, expiredAt } = await currentAuthenticatedUser();
-          const cognitoId = payload.data.userId;
-          const userExist = await handleRetrieveMyUser(cognitoId);
-          if (userExist !== null && userExist !== undefined) {
-            console.log("user already in DB. Going to /user");
-            Cookies.set(
-              "currentUser",
-              JSON.stringify({ ...userExist, expiredAt })
-            );
-            if (userExist.role === "admin") {
-              router.replace("/admin-dashboard/");
-            } else {
-              router.replace("/user/");
-            }
-          }else {
-            if (fullName) {
-              await updateUserAttributes({
-                userAttributes: {
-                  "custom:fullName": fullName,
-                  "custom:status": status,
-                },
-              });
-            } else {
-              await updateUserAttributes({
-                userAttributes: {
-                  "custom:status": status,
-                },
-              });
-            }
-            const { data } = await handleCreateUserOnDatabase({
-              fullName,
-              email,
-              cognitoId,
-              status,
-            });
-            const userInfo = data && data.createdUser;
-            Cookies.set(
-              "currentUser",
-              JSON.stringify({ ...userInfo, expiredAt })
-            );
-            router.replace("/user");
-          }
-          break;
-      }
-    });
-    return () => hubListenerCancel();
-  }, [onOpenLoadingModal, router]);
+  // useEffect(() => {
+  //   const hubListenerCancel = Hub.listen("auth", async ({ payload }) => {
+  //     switch (payload.event) {
+  //       case "signedIn":
+  //         onOpenLoadingModal(true);
+  //         const { fullName, email, expiredAt } = await currentAuthenticatedUser();
+  //         const cognitoId = payload.data.userId;
+  //         const userExist = await handleRetrieveMyUser(cognitoId);
+  //         if (userExist !== null && userExist !== undefined) {
+  //           console.log("user already in DB. Going to /user");
+  //           Cookies.set(
+  //             "currentUser",
+  //             JSON.stringify({ ...userExist, expiredAt })
+  //           );
+  //           if (userExist.role === "admin") {
+  //             router.replace("/admin-dashboard/");
+  //           } else {
+  //             router.replace("/user/");
+  //           }
+  //         }else {
+  //           if (fullName) {
+  //             await updateUserAttributes({
+  //               userAttributes: {
+  //                 "custom:fullName": fullName,
+  //                 "custom:status": status,
+  //               },
+  //             });
+  //           } else {
+  //             await updateUserAttributes({
+  //               userAttributes: {
+  //                 "custom:status": status,
+  //               },
+  //             });
+  //           }
+  //           const { data } = await handleCreateUserOnDatabase({
+  //             fullName,
+  //             email,
+  //             cognitoId,
+  //             status,
+  //           });
+  //           const userInfo = data && data.createdUser;
+  //           Cookies.set(
+  //             "currentUser",
+  //             JSON.stringify({ ...userInfo, expiredAt })
+  //           );
+  //           router.replace("/user");
+  //         }
+  //         break;
+  //     }
+  //   });
+  //   return () => hubListenerCancel();
+  // }, [onOpenLoadingModal, router]);
   return (
     <>
       <CheckoutModal
