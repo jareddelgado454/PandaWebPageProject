@@ -48,7 +48,6 @@ type User @model @auth(
     contactNumber: String
     status: String
     address: String
-    password: String
     city: String
     state: String
     profilePicture: String
@@ -84,6 +83,29 @@ type Technician @model @auth(
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
     schedule: Schedule
+}
+
+type Customer @model @auth(
+    rules: [
+        { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
+        { allow: owner, ownerField: "cognitoId", operations: [ read, update, create, delete ] }
+        { allow: public, provider: iam, operations: [ create ] }
+    ]
+) {
+    id: ID!
+    email: String
+    fullName: String
+    contactNumber: String
+    status: String
+    address: String
+    city: String
+    state: String
+    profilePicture: String
+    zipCode: Int
+    subscription: String
+    cognitoId: String
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
 }
 
 type Schedule {
