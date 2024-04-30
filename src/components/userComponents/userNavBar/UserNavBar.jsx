@@ -40,7 +40,7 @@ const UserNavBar = ({user}) => {
                 }}
                 className="transition-transform text-white"
                 description={user['custom:role']}
-                name={user['custom:fullName']}
+                name={user["custom:fullName"] ? user["custom:fullName"].split(' ').slice(0, 2).join(' ') : user.name.split(' ').slice(0, 2).join(' ')}
               ></User>
             </DropdownTrigger>
             <DropdownMenu

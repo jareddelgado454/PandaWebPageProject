@@ -19,7 +19,6 @@ import {
 import { Hub } from "aws-amplify/utils";
 import { Formik, Form, Field } from "formik";
 import {
-  signInWithRedirect,
   signIn,
   signOut,
   fetchUserAttributes,
@@ -176,14 +175,14 @@ const SignIn = () => {
         isOpen={isLoadingModalOpen}
         onOpenChange={onOpenLoadingModal}
       />
-      <div className="h-screen w-full text-white">
+      <div className="h-screen bg-gradient-to-b from-zinc-900 to-zinc-800 w-full text-white">
         <div className="grid grid-cols-1 lg:grid-cols-2 h-[calc(100%-100px)]">
           <div className="flex flex-col gap-4 justify-center px-4 lg:px-12">
             <div className="my-4">
               <h2 className="text-[30px] font-bold">SIGN-IN</h2>
               <p>enter with your account</p>
             </div>
-            <div className="w-full flex items-center justify-between">
+            {/* <div className="w-full flex items-center justify-between">
               <button
                 onClick={() =>
                   signInWithRedirect({
@@ -221,7 +220,7 @@ const SignIn = () => {
             </div>
             <p className="w-full text-center text-[18px] font-semibold mb-3">
               or
-            </p>
+            </p> */}
 
             <div className=" border-transparent flex flex-col border-t-[2px] border-zinc-600 pt-8 pb-4">
               <p className="text-white mb-3">
@@ -319,7 +318,7 @@ const SignIn = () => {
                 to.
               </div>
             </div>
-            <div className="absolute top-0 w-full h-full bg-zinc-800 opacity-60"></div>
+            <div className="absolute top-0 w-full h-full bg-gradient-to-b from-zinc-900 to-zinc-800 opacity-70"></div>
             <img
               src="https://cdna.artstation.com/p/assets/images/images/040/174/900/large/fabian-geyer-wideshotright.jpg?1628083532"
               className="object-cover h-[calc(100%-100px)] md:h-[44rem] xl:h-full"
