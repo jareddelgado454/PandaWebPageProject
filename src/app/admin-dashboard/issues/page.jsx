@@ -5,6 +5,7 @@ import { client } from "@/contexts/AmplifyContext";
 import { calculateTotalPages, totalNumbers } from "@/utils/issues/CalculateIssues";
 import { getAllIssues } from "@/graphql/issues/queries/query";
 import { IssuePagination, IssueTable } from "@/components/admin";
+import { ListenStatusReportById, onUpdateReport } from "@/graphql/issues/subscriptions/subscription";
 function page() {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -27,6 +28,35 @@ function page() {
   };
   useEffect(() => {
     retrieveData();
+
+    const subscription = client
+      .graphql({ query: onUpdateReport })
+      .subscribe({
+        next: ({ data }) => {
+          // Update previous state with new answers
+          console.log(data);
+          setIssues(prevIssues => {
+            // Crea una copia del estado anterior
+            const updatedIssues = prevIssues.map(issue => {
+              // Si el ID del issue coincide con el ID del issue actualizado
+              if (issue.id === data.onUpdateReport.id) {
+                // Devuelve un nuevo objeto con el status actualizado
+                return { ...issue, status: data.onUpdateReport.status };
+              }
+              // Devuelve el issue sin cambios
+              return issue;
+            });
+            // Devuelve la nueva lista de issues actualizada
+            return updatedIssues;
+          });
+        },
+        error: (error) => console.warn(error)
+      });
+
+    return () => {
+      // Cancel the subscription when this component's life cycle ends
+      subscription.unsubscribe();
+    };
   }, []);
   useEffect(() => {
     if (issues !== null) {

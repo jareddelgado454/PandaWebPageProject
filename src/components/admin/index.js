@@ -9,4 +9,3 @@ export { default as IssueTable } from './Issues/TableComponent';
 export { default as IssueInformationModal } from './Issues/modals/InformationModal';
 export { default as IssuePagination } from './Issues/PaginationComponent';
 // Admin-Issues Inputs
-export { default as AnswerInput } from './Issues/inputs/AnswerInput';

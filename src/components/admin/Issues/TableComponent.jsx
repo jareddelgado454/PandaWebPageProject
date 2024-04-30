@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaTrashCan,
   FaSort,
@@ -11,6 +11,7 @@ import { client } from "@/contexts/AmplifyContext";
 import InputSearchFilter from "./InputSearchFilter";
 import { IssueInformationModal } from "..";
 import { DeleteReportById } from "@/graphql/issues/mutations/mutation";
+import { onUpdateReport } from "@/graphql/issues/subscriptions/subscription";
 export default function TableComponent({ data, callback }) {
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
@@ -65,6 +66,24 @@ export default function TableComponent({ data, callback }) {
     });
     callback();
   }
+  useEffect(() => {
+    
+    const subscription = client
+      .graphql({ query: onUpdateReport })
+      .subscribe({
+        next: ({ data }) => {
+          // Update previous state
+          setIssueSelected(data.onUpdateReport);
+        },
+        error: (error) => console.warn(error)
+      });
+
+    return () => {
+      // Cancel the subscription when this component's life cycle ends
+      subscription.unsubscribe();
+    };
+  }, []);
+  
   return (
     <>
       <IssueInformationModal callback={callback} isOpen={isIssueInformationModalOpen} onOpenChange={onIssueInformationModalChange} issueSelected={issueSelected} />

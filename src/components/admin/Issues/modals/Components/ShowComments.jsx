@@ -1,14 +1,16 @@
 'use client';
 import { SecondDateFormatter } from '@/utils/parseDate';
 import { Tooltip } from '@nextui-org/react';
-import React, { useEffect, useState } from 'react';
-import AnswerInput from './AnswerInput';
+import React, { useEffect, useRef, useState } from 'react';
 import { client } from '@/contexts/AmplifyContext';
 import { getAnswersByReport } from '@/graphql/issues/queries/query';
-import { ListenAnswersById } from '@/graphql/issues/subscriptions/subscription';
-import { FaEllipsisVertical } from 'react-icons/fa6';
+import { ListenAnswersById, onDeleteAnswersSubscription } from '@/graphql/issues/subscriptions/subscription';
+import { FaXmark } from 'react-icons/fa6';
+import { onDeleteAnswerById } from '@/graphql/issues/mutations/mutation';
+import 'animate.css';
 export default function ShowComments({ reportId }) {
     const [answers, setAnswers] = useState([]);
+    const answerRefs = useRef({});
     const retrieveAnswers = async () => {
 
         try {
@@ -19,14 +21,30 @@ export default function ShowComments({ reportId }) {
                 }
             });
             setAnswers(data.listAnswers.items);
+            console.log(data.listAnswers.items);
         } catch (error) {
             console.log(error);
         }
     };
+    const onHandleDeleteAnswer = async(userId, answerId, reportId) => {
+        try {
+            await client.graphql({
+                query: onDeleteAnswerById,
+                variables: {
+                    input: {
+                        id: answerId
+                    },
+                    reportId,
+                    userId
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
     useEffect(() => {
         retrieveAnswers();
-
-        const subscription = client
+        const subscriptionToAnswers = client
             .graphql({ query: ListenAnswersById, variables: { reportId } })
             .subscribe({
                 next: ({ data }) => {
@@ -35,19 +53,34 @@ export default function ShowComments({ reportId }) {
                 },
                 error: (error) => console.warn(error)
             });
+            
+        const subscriptionToDeleteAnswer = client
+            .graphql({ query: onDeleteAnswersSubscription })
+            .subscribe({
+                next: ({ data }) => {
+                    // Update previous state with new answers
+                    const answerId = data.onDeleteAnswer.id;
+                    answerRefs.current[answerId].classList.remove('animate__bounceInRight');
+                    answerRefs.current[answerId].classList.add('animate__backOutRight');
+                    setTimeout(() => {
+                        setAnswers(prevAnswers => {
+                            return prevAnswers.filter((item) => item.id !== answerId);
+                        });
+                    }, 1000);
+                },
+                error: (error) => console.warn(error)
+            });
 
         return () => {
             // Cancel the subscription when this component's life cycle ends
-            subscription.unsubscribe();
+            subscriptionToAnswers.unsubscribe();
+            subscriptionToDeleteAnswer.unsubscribe();
         };
     }, []);
     return (
-        <div
-            id='answers_admins'
-            className=' relative flex flex-col flex-nowrap gap-5 rounded-lg 2xl:h-[32.5rem] overflow-y-scroll slide-in-right '
-        >
-            {answers.map((answer, i) => (
-                <div key={i} className='flex flex-col px-4 dark:bg-zinc-800 bg-white py-4 rounded-lg' id='responses_admin'>
+        <>
+            {answers.length ? answers.map((answer, i) => (
+                <div key={i} ref={el => (answerRefs.current[answer.id] = el)} className='flex flex-col px-4 dark:bg-zinc-800 bg-white py-4 rounded-lg animate__animated animate__bounceInRight' id='responses_admin'>
                     <div className='flex gap-2 w-full h-[4rem] justify-between'>
                         <div className='flex gap-2 w-full h-[4rem]'>
                             <Tooltip color='default' content={`id: ${answer.user.id}`}>
@@ -65,8 +98,8 @@ export default function ShowComments({ reportId }) {
                                 <p className='text-zinc-400 font-light text-sm'>{answer.user.email}</p>
                             </div>
                         </div>
-                        <div>
-                            <FaEllipsisVertical />
+                        <div className='relative'>
+                            <FaXmark className='text-center hover:text-rose-600 cursor-pointer' onClick={() => onHandleDeleteAnswer(answer.user.id, answer.id, answer.reportId)} />
                         </div>
                     </div>
                     <div className='bg-zinc-100 dark:bg-zinc-700 rounded-md p-4'>
@@ -76,9 +109,7 @@ export default function ShowComments({ reportId }) {
                     </div>
                     <p className='text-xs text-zinc-400 my-2'>{SecondDateFormatter(new Date(answer.createdAt))}</p>
                 </div>
-            ))}
-            <div className="flex-grow"></div>
-            <AnswerInput reportId={reportId} />
-        </div>
+            )) : (<div className='w-full h-full flex justify-center items-center'>No Answers Yet</div>)}
+        </>
     )
 }
