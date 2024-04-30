@@ -8,15 +8,17 @@ import { TbDiamondFilled } from "react-icons/tb";
 import Link from 'next/link';
 import { signOut } from "aws-amplify/auth";
 import Cookies from "js-cookie";
-import { FaCamera } from "react-icons/fa6";
+import { FaCamera, FaCircleExclamation, FaKey, FaUserXmark } from "react-icons/fa6";
 import { useDisclosure } from "@nextui-org/react";
-import { SubscriptionPlanModal } from '@/components/modalUser';
+import { DeleteUserModal, PassWordModal, SendReportModal, SubscriptionPlanModal } from '@/components/modalUser';
 import { getCurrentUser } from "aws-amplify/auth";
 function UserSidebar({ user }) {
-    console.log("user",user)
     const router = useRouter();
     const [photograph, setPhotograph] = useState(null);
     const { isOpen: isSubscriptionModalOpen, onOpen: onSubscriptionModalOpen, onOpenChange: onSubscriptionModalChange } = useDisclosure();
+    const { isOpen: isDeleteUserModalOpen, onOpen: onDeleteUserModalOpen, onOpenChange: onDeleteUserModalChange } = useDisclosure();
+    const { isOpen: isChangePasswordModalOpen, onOpen: onChangePasswordModalOpen, onOpenChange: onChangePasswordModalChange } = useDisclosure();
+    const { isOpen: isSendReportModalOpen, onOpen: onSendReportModalOpen, onOpenChange: onSendReportModalChange } = useDisclosure();
     const [idsPassed, setIdsPassed] = useState({
         idDatabase: "",
         cognitoUsername: ""
@@ -93,6 +95,9 @@ function UserSidebar({ user }) {
     return (
         <>
             <SubscriptionPlanModal isOpen={isSubscriptionModalOpen} onOpenChange={onSubscriptionModalChange} idsPassed={idsPassed} />
+            <DeleteUserModal isOpen={isDeleteUserModalOpen} onOpenChange={onDeleteUserModalChange} user={user} />
+            <PassWordModal isOpen={isChangePasswordModalOpen} onOpenChange={onChangePasswordModalChange} />
+            <SendReportModal isOpen={isSendReportModalOpen} onOpenChange={onSendReportModalChange} />
             <div className=" text-white rounded-lg shadow-lg h-screen  w-[300px] relative">
                 <div className="flex flex-row md:flex-col items-center justify-center px-[20px] py-0">
                     {/* <div className="relative w-[6rem] h-[6rem] md:w-[10rem] md:h-[10rem] overflow-hidden rounded-full shadow-md group">
@@ -156,7 +161,26 @@ function UserSidebar({ user }) {
                                     <RiSettings4Fill  />
                                     Settings
                                 </Link>
-                            </div>               
+                            </div>
+                            <h4 className='font-bold text-gray-200 w-full text-left mb-2'>Additional</h4> 
+                            <div className='w-full flex flex-col gap-y-2  mb-4'>
+                                <div onClick={onDeleteUserModalOpen} className={`text-rose-600 w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
+                                    <FaUserXmark />
+                                    Delete Account
+                                </div>
+                            </div>
+                            <div className='w-full flex flex-col gap-y-2  mb-4'>
+                                <div onClick={onChangePasswordModalOpen} className={`text-cyan-600 w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
+                                    <FaKey/>
+                                    Change Password
+                                </div>
+                            </div>
+                            <div className='w-full flex flex-col gap-y-2  mb-4'>
+                                <div onClick={onSendReportModalOpen} className={`text-amber-400 w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
+                                    <FaCircleExclamation />
+                                    Report an issue
+                                </div>
+                            </div>
                         </div>
                         <div className="w-full flex items-center p-4 ">
                             <div 

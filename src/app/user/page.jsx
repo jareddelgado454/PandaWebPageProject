@@ -38,7 +38,6 @@ const Page = () => {
     //     }
     // }
   const { user, loading, error } = useContext(Contexto);
-  console.log("valores del contextoooo", user, loading, error);
   return (
     <div className="w-full h-[calc(100vh-100px)] relative pr-[20px]">
       {loading ? (

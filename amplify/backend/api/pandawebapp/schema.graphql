@@ -20,6 +20,18 @@ type Report @model @auth(
     image: String
     createdAt: AWSDateTime
     status: ReportStatus!
+    answers: [Answer] @hasMany(indexName: "byReport", fields: ["id"])
+}
+
+type Answer @model @auth(
+    rules: [{ allow: private, operations: [ read, update, create, delete ] }]
+) {
+    id: ID!
+    user: User! @hasOne
+    text: String!
+    reportId: ID! @index(name: "byReport")
+    report: Report! @belongsTo(fields: ["reportId"])
+    createdAt: AWSDateTime
 }
 
 type User @model @auth(
@@ -88,3 +100,26 @@ type DailySchedule {
     opening: String
     closing: String
 }
+
+# type Chat @model @auth(
+#     rules: [
+#         { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
+#         { allow: owner, ownerField: "members", operations: [ read, update, create, delete ] }
+#     ]
+# ) {
+#     id: ID!
+#     messages: [Message] @hasMany
+#     members: [User]! @hasMany
+# }
+
+# type Message @model @auth(
+#     rules: [
+#         { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
+#         { allow: owner, ownerField: "sender", operations: [ read, update, create, delete ] }
+#     ]
+# ){
+#     id: ID!
+#     content: String!
+#     sender: ID!
+#     chat: Chat @belongsTo
+# }

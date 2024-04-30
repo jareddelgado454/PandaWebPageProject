@@ -1,0 +1,1 @@
+export const baseUrl = "https://d3nqi6yd86hstw.cloudfront.net/public/";

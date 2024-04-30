@@ -1,13 +1,71 @@
 'use client';
-import React from 'react';
-import { client } from '@/contexts/AmplifyContext';
+import React, { useState } from 'react';
 import { Field, Form, Formik } from 'formik';
+import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
-import { createReport } from '@/graphql/issues/mutations/mutation';
 import Cookies from 'js-cookie';
+import { createReport } from '@/graphql/issues/mutations/mutation';
+import { client } from '@/contexts/AmplifyContext';
+import { Progress } from '@nextui-org/react';
+import { uploadData } from 'aws-amplify/storage';
 export const ReportForm = () => {
-    const onSubmit = async (values, { resetForm, setSubmitting }) => {
+    const [percent, setPercent] = useState(0);
+    const [photograph, setPhotograph] = useState(null);
+    const [imageUploaded, setImageUploaded] = useState(null);
+    function handleChangePhotograph(event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onloadend = async() => {
+            setPhotograph(reader.result);
+          };
+          reader.readAsDataURL(file);
+        }
+    }
+    const dataURLtoBlob = (dataURL) => {
+        if (!dataURL) {
+            return null;
+        }
+        var parts = dataURL.split(";base64,");
+        var contentType = parts[0].split(":")[1];
+        var raw = window.atob(parts[1]);
+        var rawLength = raw.length;
+        var uInt8Array = new Uint8Array(rawLength);
+        for (var i = 0; i < rawLength; ++i) {
+            uInt8Array[i] = raw.charCodeAt(i);
+        }
+        return new Blob([uInt8Array], { type: contentType });
+    };
+    const updateReportPicture = async (picture) => {
+        const uniqueId = uuidv4();
+        const filename = `user-report-issues-image/${uniqueId}.jpg`;
         try {
+            const result = await uploadData({
+                key: filename,
+                data: picture,
+                options: {
+                    contentType: "image/png",
+                    onProgress: ({ transferredBytes, totalBytes }) => {
+                        if (totalBytes) {
+                            setPercent(Math.round((transferredBytes / totalBytes) * 100));
+                        }
+                    },
+                },
+            }).result;
+            console.log("Succeeded: ", result);
+            return result.key;
+            return result.key;
+        } catch (error) {
+            console.log(`Error from here : ${error}`);
+        }
+    };
+    const onSubmit = async (values, { resetForm, setSubmitting }) => {
+        let image;
+        try {
+            if(photograph) {
+                image = await updateReportPicture(dataURLtoBlob(photograph));
+            }
+
             const userParsed = JSON.parse(Cookies.get("currentUser"));
             await client.graphql({
                 query: createReport,
@@ -15,12 +73,15 @@ export const ReportForm = () => {
                     input: {
                         ...values,
                         reportUserId: userParsed.id,
+                        image: image,
                         status: "pending"
                     }
                 }
             })
             toast.success('Report sended.');
             resetForm();
+            setPercent(0);
+            setPhotograph(null);
 
         } catch (error) {
             toast.error(error);
@@ -31,7 +92,6 @@ export const ReportForm = () => {
             initialValues={{
                 title: '',
                 description: '',
-                image: '',
             }}
             onSubmit={onSubmit}
         >
@@ -62,14 +122,23 @@ export const ReportForm = () => {
                         <label htmlFor="image" className='text-gray-700 text-sm font-bold'>
                             Screenshot *optional
                         </label>
-                        <input className="text-sm text-stone-500 file:mr-5 file:py-1 file:px-3 file:border-[1px] file:text-xs file:font-medium file:bg-stone-50 file:text-stone-700 hover:file:cursor-pointer hover:file:bg-blue-50 hover:file:text-blue-700" id="file_input" type="file" />
+                        <input
+                            id="file-upload"
+                            type="file"
+                            accept="image/gif, image/jpeg, image/png"
+                            onChange={(event) => {
+                                handleChangePhotograph(event);
+                            }}
+                        />
                     </div>
                     <button
                         type='submit'
                         disabled={!isValid}
                         className={`bg-green-panda px-4 py-2 w-full rounded text-white ${!isValid && 'bg-opacity-50 cursor-not-allowed'}`}
                     >
-                        Submit Report
+                        {
+                            percent > 1 ? <Progress size="md" color='success' aria-label="Loading..." value={percent} /> : 'Submit'
+                        }
                     </button>
                 </Form>
             )}
