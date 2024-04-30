@@ -10,17 +10,34 @@ export const createReport = gql`
 `;
 
 export const UpdateReportStatus = gql`
-    mutation UpdateReportStatus($input: UpdateReportInput!) {
-        updateReport(input: $input) {
+    mutation UpdateReportStatus($id: ID!, $status: ReportStatus!) {
+        updateReport(input: {id: $id, status: $status}) {
             id
+            status
+            description
+            image
+            title
+            createdBy
+            createdAt
             user {
             id
+            fullName
             email
+            profilePicture
             }
-            title
-            description
-            reportUserId
-            createdBy
+            answers {
+                items {
+                    id
+                    user {
+                        email
+                        fullName
+                        id
+                        profilePicture
+                    }
+                    text
+                    createdAt
+                }   
+            }
         }
     }
 `;
@@ -48,6 +65,14 @@ export const AnswerReport = gql`
                 fullName
                 profilePicture
             }
+        }
+    }
+`;
+
+export const onDeleteAnswerById = gql`
+    mutation DeleteAnswer($input: DeleteAnswerInput!, $reportId: ID!, $userId: ID!) {
+        deleteAnswer(input: $input, condition: {reportId: {eq: $reportId}, and: {answerUserId: {eq: $userId}}}) {
+            id
         }
     }
 `;

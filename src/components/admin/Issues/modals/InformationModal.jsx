@@ -7,19 +7,18 @@ import { client } from '@/contexts/AmplifyContext';
 import { UpdateReportStatus } from '@/graphql/issues/mutations/mutation';
 import ShowComments from './Components/ShowComments';
 import { baseUrl } from '@/utils/CloudFront';
-export default function InformationModal({ callback, isOpen, onOpenChange, issueSelected }) {
+import AnswerInput from './Components/AnswerInput';
+import 'animate.css';
+export default function InformationModal({ isOpen, onOpenChange, issueSelected }) {
   const [zoom, setZoom] = useState(false);
   const handleUpdateStatus = async(id, status) => {
     await client.graphql({
       query: UpdateReportStatus,
       variables: {
-        input: {
-          id,
-          status
-        }
+        id,
+        status
       }
     });
-    callback();
   }
   return (
     <Modal backdrop='opaque' isOpen={isOpen} onOpenChange={onOpenChange} size='5xl' placement='center'
@@ -31,7 +30,7 @@ export default function InformationModal({ callback, isOpen, onOpenChange, issue
             <ModalHeader className="flex flex-col gap-1">
               <p className='text-center bg-white dark:bg-zinc-800 rounded-lg py-2 mx-4'>{`Issue's Title: ${issueSelected.title}`}</p>
             </ModalHeader>
-            <ModalBody className='flex justify-center items-center'>
+            <ModalBody className='flex justify-center items-center animate__animated'>
               <div className='grid grid-cols-1 lg:grid-cols-2 w-full gap-x-2 gap-y-10 mt-2 mb-6'>
                 <div className={`dark:bg-zinc-800 bg-white rounded-lg slide-in-left transition-all ease-in-out relative overflow-hidden ${zoom ? 'p-0' : 'p-4'}`}>
                   <div className='flex flex-col flex-wrap gap-2'>
@@ -68,17 +67,17 @@ export default function InformationModal({ callback, isOpen, onOpenChange, issue
                       <p className='mb-2 text-sm'>Actions:</p>
                       <div className='flex flex-row flex-nowrap gap-4'>
                         <p
-                          className={`p-2 text-xs ${issueSelected.status === 'solved' ? 'bg-emerald-700 text-green-300 rounded-lg  cursor-not-allowed' : 'cursor-pointer'}`}
+                          className={`p-2 text-xs transition-all ${issueSelected.status === 'solved' ? 'bg-emerald-700 text-green-300 rounded-lg  cursor-not-allowed' : 'bg-transparent cursor-pointer hover:bg-emerald-700 hover:text-green-300 hover:rounded-lg'}`}
                           onClick={() => handleUpdateStatus(issueSelected.id, "solved")}
                         >Solved</p>
                         <p
-                          className={`p-2 text-xs ${issueSelected.status === 'pending' ? 'bg-amber-600 text-amber-300 rounded-lg cursor-not-allowed' : 'cursor-pointer' }`}
+                          className={`p-2 text-xs transition-all ${issueSelected.status === 'pending' ? 'bg-amber-600 text-amber-300 rounded-lg cursor-not-allowed' : 'bg-transparent cursor-pointer hover:bg-amber-600 hover:text-amber-300 hover:rounded-lg' }`}
                           onClick={() => handleUpdateStatus(issueSelected.id, "pending")}  
                         >
                             Pending
                           </p>
                         <p
-                          className={`p-2 text-xs ${issueSelected.status === 'processed' ? 'bg-indigo-600 text-indigo-300 rounded-lg cursor-not-allowed' : 'cursor-pointer'}`}
+                          className={`p-2 text-xs transition-all ease-in ${issueSelected.status === 'processed' ? 'bg-indigo-600 text-indigo-300 rounded-lg cursor-not-allowed' : 'bg-transparent cursor-pointer hover:bg-indigo-600 hover:text-indigo-300 hover:rounded-lg'}`}
                           onClick={() => handleUpdateStatus(issueSelected.id, "processed")}
                         >
                             Processed
@@ -87,7 +86,14 @@ export default function InformationModal({ callback, isOpen, onOpenChange, issue
                     </div>
                   </div>
                 </div>
-                {issueSelected.answers ? <ShowComments reportId={issueSelected.id} /> : (<div>No answers yet</div>)}
+                <div
+                    id='answers_admins'
+                    className=' relative flex flex-col flex-nowrap gap-5 rounded-lg 2xl:h-[32.5rem] overflow-y-scroll slide-in-right overflow-hidden'
+                >
+                  <ShowComments reportId={issueSelected.id} />
+                  <div className="flex-grow"></div>
+                  <AnswerInput reportId={issueSelected.id} />
+                </div>
               </div>
             </ModalBody>
           </>

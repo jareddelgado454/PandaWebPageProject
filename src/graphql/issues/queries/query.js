@@ -20,15 +20,15 @@ export const getAllIssues = gql`
                 }
                 answers {
                     items {
-                    id
-                    user {
-                        email
-                        fullName
                         id
-                        profilePicture
-                    }
-                    text
-                    createdAt
+                        user {
+                            email
+                            fullName
+                            id
+                            profilePicture
+                        }
+                        text
+                        createdAt
                     }
                 }
             }
