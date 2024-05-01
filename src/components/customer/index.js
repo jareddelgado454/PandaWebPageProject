@@ -1,0 +1,1 @@
+export { default as CustomerBar } from './components/CustomerSidebar';
