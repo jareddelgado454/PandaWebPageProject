@@ -4,9 +4,6 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  RiGoogleFill,
-  RiAppleFill,
-  RiFacebookCircleFill,
   RiMailLine,
   RiLockLine,
   RiEyeLine,
@@ -16,13 +13,14 @@ import {
   RiListCheck3,
   RiErrorWarningFill,
 } from "react-icons/ri";
-import { Hub } from "aws-amplify/utils";
+import { ConsoleLogger, Hub } from "aws-amplify/utils";
 import { Formik, Form, Field } from "formik";
 import {
   signIn,
   signOut,
   fetchUserAttributes,
-  updateUserAttributes, fetchAuthSession,
+  updateUserAttributes,
+  fetchAuthSession,
 } from "aws-amplify/auth";
 import VerificationCodeModal from "@/components/LoginRegister/modals/VerificationCodeModal";
 import {
@@ -71,7 +69,7 @@ const SignIn = () => {
         });
         setDataPassed({ email: values.email, password: values.password });
         if (isSignedIn) {
-          console.log("Login successfully");
+          console.log("Login succesfull");
         } else {
           if (nextStep?.signInStep === "CONFIRM_SIGN_UP") {
             onVerifyCodeModalOpen();
@@ -105,70 +103,41 @@ const SignIn = () => {
       });
     }
   };
-  async function currentAuthenticatedUser() {
+  const currentAuthenticatedUser = async () => {
     try {
-      const { email, family_name, given_name } = await fetchUserAttributes();
+      const data = await fetchUserAttributes();
       const { tokens } = await fetchAuthSession({ forceRefresh: true });
       const expiredAt = tokens.accessToken.payload.exp;
-      const fullName = given_name + family_name;
-      console.log({ email, fullName, expiredAt });
-      return { email, fullName, expiredAt };
+      return { role:data['custom:role'], expiredAt };
     } catch (error) {
       console.log(error);
     }
-  }
-  // useEffect(() => {
-  //   const hubListenerCancel = Hub.listen("auth", async ({ payload }) => {
-  //     switch (payload.event) {
-  //       case "signedIn":
-  //         onOpenLoadingModal(true);
-  //         const { fullName, email, expiredAt } = await currentAuthenticatedUser();
-  //         const cognitoId = payload.data.userId;
-  //         const userExist = await handleRetrieveMyUser(cognitoId);
-  //         if (userExist !== null && userExist !== undefined) {
-  //           console.log("user already in DB. Going to /user");
-  //           Cookies.set(
-  //             "currentUser",
-  //             JSON.stringify({ ...userExist, expiredAt })
-  //           );
-  //           if (userExist.role === "admin") {
-  //             router.replace("/admin-dashboard/");
-  //           } else {
-  //             router.replace("/user/");
-  //           }
-  //         }else {
-  //           if (fullName) {
-  //             await updateUserAttributes({
-  //               userAttributes: {
-  //                 "custom:fullName": fullName,
-  //                 "custom:status": status,
-  //               },
-  //             });
-  //           } else {
-  //             await updateUserAttributes({
-  //               userAttributes: {
-  //                 "custom:status": status,
-  //               },
-  //             });
-  //           }
-  //           const { data } = await handleCreateUserOnDatabase({
-  //             fullName,
-  //             email,
-  //             cognitoId,
-  //             status,
-  //           });
-  //           const userInfo = data && data.createdUser;
-  //           Cookies.set(
-  //             "currentUser",
-  //             JSON.stringify({ ...userInfo, expiredAt })
-  //           );
-  //           router.replace("/user");
-  //         }
-  //         break;
-  //     }
-  //   });
-  //   return () => hubListenerCancel();
-  // }, [onOpenLoadingModal, router]);
+  };
+  useEffect(() => {
+    const hubListenerCancel = Hub.listen("auth", async ({ payload }) => {
+      switch (payload.event) {
+        case "signedIn":
+          onOpenLoadingModal(true);
+          const { role, expiredAt } = await currentAuthenticatedUser();
+          // const cognitoId = payload.data.userId;
+          console.log(role, expiredAt);
+          Cookies.set(
+            "currentUser",
+            JSON.stringify({ role,expiredAt })
+          );
+          if (role === "admin") {
+            router.replace("/admin-dashboard/");
+          } else if(role === "technician") {
+            router.replace("/user");
+          } else if(role === "customer"){
+            router.replace("/customer");
+          }
+
+          break;
+      }
+    });
+    return () => hubListenerCancel();
+  }, [onOpenLoadingModal, router]);
   return (
     <>
       <CheckoutModal
@@ -182,45 +151,6 @@ const SignIn = () => {
               <h2 className="text-[30px] font-bold">SIGN-IN</h2>
               <p>enter with your account</p>
             </div>
-            {/* <div className="w-full flex items-center justify-between">
-              <button
-                onClick={() =>
-                  signInWithRedirect({
-                    provider: "Google",
-                    customState: "shopping-cart",
-                  })
-                }
-                className="w-[30%]  bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 px-5"
-              >
-                <RiGoogleFill className="text-[20px] text-red-400" /> Google
-              </button>
-              <button
-                onClick={() =>
-                  signInWithRedirect({
-                    provider: "Facebook",
-                    customState: "shopping-cart",
-                  })
-                }
-                className="w-[30%] bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50 text-[15px]  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 "
-              >
-                <RiFacebookCircleFill className="text-[20px] text-blue-400" />{" "}
-                Facebook
-              </button>
-              <button
-                onClick={() =>
-                  signInWithRedirect({
-                    provider: "Apple",
-                    customState: "shopping-cart",
-                  })
-                }
-                className="w-[30%] bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 px-5"
-              >
-                <RiAppleFill className="text-[20px]" /> Apple
-              </button>
-            </div>
-            <p className="w-full text-center text-[18px] font-semibold mb-3">
-              or
-            </p> */}
 
             <div className=" border-transparent flex flex-col border-t-[2px] border-zinc-600 pt-8 pb-4">
               <p className="text-white mb-3">
@@ -314,7 +244,9 @@ const SignIn = () => {
               </div>
               <div className="flex items-center text-[18px] gap-x-3 font-semibold mb-3">
                 <RiListCheck3 className="text-emerald-400 text-[35px]" />
-                {"We focus on customer acquisition and retention so you don't have"}
+                {
+                  "We focus on customer acquisition and retention so you don't have"
+                }
                 to.
               </div>
             </div>

@@ -37,7 +37,7 @@ export const handleCreateTechnicianOnDataBase = async(values, isAdded) => {
     }
 }
 
-<<<<<<< HEAD
+
 export const handleRetrieveTechnician = async (id) => {
     try {
         const { data } = await client.graphql({
@@ -52,7 +52,7 @@ export const handleRetrieveTechnician = async (id) => {
     }
 } 
 // TECHNICIAN TECHNICIAN TECHNICIAN
-=======
+
 export const handleCreateCustomerOnDataBase = async(values, isAdded) => {
     try {
         const { data } = await client.graphql({
@@ -67,7 +67,7 @@ export const handleCreateCustomerOnDataBase = async(values, isAdded) => {
         console.log(error);
     }
 }
->>>>>>> develop
+
 
 export const handleRetrieveMyUser = async (cognitoId) => {
     try {
