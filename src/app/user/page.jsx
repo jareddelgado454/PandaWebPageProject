@@ -12,13 +12,23 @@ import { client } from "@/contexts/AmplifyContext";
 import profileDefaultPicture from "../../../public/image/defaultProfilePicture.jpg";
 import { Contexto } from "./layout";
 import Image from "next/image";
+import loading3 from "../../../public/loading/loading3.gif"
 import { useDisclosure } from "@nextui-org/react";
 const Page = () => {
   const { user, loading } = useContext(Contexto);
   return (
     <div className="w-full h-[calc(100vh-100px)] relative pr-[20px]">
       {loading ? (
-        <div>Loading Information</div>
+        <div className="w-full h-full flex flex-col justify-center pb-[200px] items-center">
+          <div className="relative w-[600px] h-[200px]  flex items-center justify-center">
+            <Image 
+              src={loading3}
+              quality={100}
+              className="w-[100px] h-[100px]"
+            />
+            <h3 className="text-[40px] text-center font-bold text-gray-100 absolute bottom-2 left-0 w-full">Almost done! wait please.</h3>
+          </div>
+        </div>
       )  : (
         user && (
           <div className="w-full h-[calc(100vh-100px)] flex flex-col px-4 bg-zinc-800 rounded-xl pt-4">

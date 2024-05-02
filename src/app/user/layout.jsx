@@ -41,7 +41,7 @@ const UserLayout = ({children}) => {
     return (
             <div className='w-full h-screen bg-zinc-900'>
                 {/* <CustomModal isOpen={isCustomModalOpen} onOpenChange={onOpenCustomModalChange} user={user} callback={retrieveOneUser} /> */}
-                {loading ? (<div className='text-white'>Loading Information</div>) : user &&
+                {loading ? (<div className='text-white'></div>) : user &&
                     (
                         <div className="w-full h-full flex justify-center items-center p-0">
                             <UserSidebar user={user}/>

@@ -68,7 +68,6 @@ const UserNavBar = ({user}) => {
                   signOut();
                   // setIsLoggedIn(false);
                   Cookies.remove("currentUser");
-                  router.replace("/");
                 }}
               >
                 Log Out

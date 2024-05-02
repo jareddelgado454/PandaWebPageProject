@@ -116,22 +116,22 @@ const CallbackPage = () => {
 
       console.log("Stored in database")
 
-      await updateUserAttributes({
-        userAttributes: {
-          "custom:role": "customer",
-        },
-      });
-      console.log("Stored customer in cognito")
+      // await updateUserAttributes({
+      //   userAttributes: {
+      //     "custom:role": "customer",
+      //   },
+      // });
+      // console.log("Stored customer in cognito")
 
-      const { tokens } = await fetchAuthSession({ forceRefresh: true });
-      const expiredAt = tokens.accessToken.payload.exp;
+      // const { tokens } = await fetchAuthSession({ forceRefresh: true });
+      // const expiredAt = tokens.accessToken.payload.exp;
 
-      Cookies.set("currentUser", JSON.stringify({ role : "customer" , expiredAt }));
-      router.replace("/user");
-      setSelectingTechnician(false);
+      // Cookies.set("currentUser", JSON.stringify({ role : "customer" , expiredAt }));
+      // router.replace("/user");
+      // setSelectingTechnician(false);
     } catch (error) {
       console.log(error);
-      setSelectingTechnician(false);
+      // setSelectingTechnician(false);
     }
   };
 
