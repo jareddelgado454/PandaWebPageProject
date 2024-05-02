@@ -1,5 +1,6 @@
 import { client } from '@/contexts/AmplifyContext';
 import { getUserByCognitoID, getUserByEmail } from '@/graphql/custom-queries';
+import { createCustomer } from '@/graphql/users/mutation/customer';
 import { createTechnician } from '@/graphql/users/mutation/technicians';
 import { createUser } from '@/graphql/users/mutation/users';
 import { getTechnician } from '@/graphql/users/query/technician';
@@ -36,6 +37,7 @@ export const handleCreateTechnicianOnDataBase = async(values, isAdded) => {
     }
 }
 
+<<<<<<< HEAD
 export const handleRetrieveTechnician = async (id) => {
     try {
         const { data } = await client.graphql({
@@ -50,6 +52,22 @@ export const handleRetrieveTechnician = async (id) => {
     }
 } 
 // TECHNICIAN TECHNICIAN TECHNICIAN
+=======
+export const handleCreateCustomerOnDataBase = async(values, isAdded) => {
+    try {
+        const { data } = await client.graphql({
+            query: createCustomer,
+            variables: {
+                input: { ...values }
+            },
+            authMode: isAdded ? 'iam' : 'userPool'
+        });
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+>>>>>>> develop
 
 export const handleRetrieveMyUser = async (cognitoId) => {
     try {

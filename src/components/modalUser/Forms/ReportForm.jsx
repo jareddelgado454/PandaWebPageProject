@@ -98,28 +98,28 @@ export const ReportForm = () => {
             {({ isValid, handleSubmit }) => (
                 <Form onSubmit={handleSubmit}>
                     <div className='mt-4 flex flex-col gap-4'>
-                        <label htmlFor="title" className='text-gray-700 text-sm font-bold'>
+                        <label htmlFor="title" className='dark:text-white text-gray-700 text-sm font-bold'>
                             Title of issue *
                         </label>
                         <Field
                             type="text"
                             name="title"
-                            className={`shadow appearance-none border ${!isValid && 'border-rose-600'} bg-transparent rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                            className={`dark:text-white shadow appearance-none border ${!isValid && 'border-rose-600'} bg-transparent rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
                         />
                     </div>
                     <div className='mt-4 flex flex-col gap-4'>
-                        <label htmlFor="description" className='text-gray-700 text-sm font-bold'>
+                        <label htmlFor="description" className='dark:text-white text-gray-700 text-sm font-bold'>
                             Description of issue *
                         </label>
                         <Field
                             type="text"
                             component="textarea" rows="6"
                             name="description"
-                            className={`shadow appearance-none border ${!isValid && 'border-rose-600'} bg-transparent rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                            className={`dark:text-white shadow appearance-none border ${!isValid && 'border-rose-600'} bg-transparent rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
                         />
                     </div>
                     <div className='mt-4 flex flex-col gap-4 mb-6'>
-                        <label htmlFor="image" className='text-gray-700 text-sm font-bold'>
+                        <label htmlFor="image" className='dark:text-white text-gray-700 text-sm font-bold'>
                             Screenshot *optional
                         </label>
                         <input

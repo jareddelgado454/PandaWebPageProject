@@ -21,14 +21,13 @@ import { Button } from "@nextui-org/react";
 
 import { Amplify } from "aws-amplify";
 import config from "@/amplifyconfiguration.json";
-import { handleCreateTechnicianOnDataBase } from "@/api";
+import { handleCreateCustomerOnDataBase, handleCreateTechnicianOnDataBase } from "@/api";
 import Image from "next/image";
 Amplify.configure(config);
 
 const CallbackPage = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [selecting, setSelecting] = useState(false);
   const [selectingCustomer, setSelectingCustomer] = useState(false);
   const [selectingTechnician, setSelectingTechnician] = useState(false);
   const router = useRouter();
@@ -55,7 +54,7 @@ const CallbackPage = () => {
               router.push("/user");
               break;
             case "customer":
-              router.push("/user");
+              router.push("/customer");
               break;
             case "admin":
               router.push("/admin-dashboard");
@@ -107,31 +106,28 @@ const CallbackPage = () => {
     setSelectingCustomer(true);
     try {
       
-      // Store in database
-      // const { data } = await handleCreateTechnicianOnDataBase({
-      //   id: user?.sub,
-      //   email: user?.email,
-      //   fullName: user?.name,
-      // });
+      const result = await handleCreateCustomerOnDataBase({
+        id: user?.sub,
+        email: user?.email,
+        fullName: user?.name,
+      });
 
-      console.log("Stored in database")
+      await updateUserAttributes({
+        userAttributes: {
+          "custom:role": "customer",
+        },
+      });
+      console.log("Stored customer in cognito");
 
-      // await updateUserAttributes({
-      //   userAttributes: {
-      //     "custom:role": "customer",
-      //   },
-      // });
-      // console.log("Stored customer in cognito")
+      const { tokens } = await fetchAuthSession({ forceRefresh: true });
+      const expiredAt = tokens.accessToken.payload.exp;
 
-      // const { tokens } = await fetchAuthSession({ forceRefresh: true });
-      // const expiredAt = tokens.accessToken.payload.exp;
-
-      // Cookies.set("currentUser", JSON.stringify({ role : "customer" , expiredAt }));
-      // router.replace("/user");
-      // setSelectingTechnician(false);
+      Cookies.set("currentUser", JSON.stringify({ role : "customer" , expiredAt, id: result.createCustomer.id }));
+      router.replace("/customer");
+      setSelectingCustomer(false);
     } catch (error) {
       console.log(error);
-      // setSelectingTechnician(false);
+      setSelectingCustomer(false);
     }
   };
 

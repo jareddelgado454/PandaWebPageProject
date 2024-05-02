@@ -12,7 +12,7 @@ import {
 } from "@nextui-org/react";
 import { client } from '@/contexts/AmplifyContext';
 import { deleteUser } from 'aws-amplify/auth';
-import { deleteUserFromDB } from '@/graphql/users/mutation/users';
+import { deleteCustomerFromDB } from '@/graphql/users/mutation/users';
 const DeleteUserModal = ({ isOpen, onOpenChange, user }) => {
     const router = useRouter();
     const [confirmation, setConfirmation] = useState('');
@@ -20,9 +20,9 @@ const DeleteUserModal = ({ isOpen, onOpenChange, user }) => {
         try {
             if (confirmation.toLocaleLowerCase() === 'delete') {
                 await client.graphql({
-                    query: deleteUserFromDB,
+                    query: deleteCustomerFromDB,
                     variables: {
-                        id: user.id,
+                        id: user.sub,
                     },
                     authMode: 'userPool'
                 });
