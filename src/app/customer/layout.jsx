@@ -26,7 +26,7 @@ export default function layout({ children }) {
     <div className='min-h-screen h-full bg-stone-200 dark:bg-zinc-700'>
       <div className='flex flex-row items-center h-screen px-4 gap-2'>
         <CustomerBar />
-        <div className='w-full bg-white dark:bg-zinc-800 h-[80vh] shadow-lg rounded-lg relative overflow-hidden'>
+        <div className='w-full bg-white dark:bg-zinc-800 h-[calc(100vh-100px)] shadow-lg rounded-lg relative overflow-hidden'>
           {children}
         </div>
         <button
