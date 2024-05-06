@@ -1,7 +1,8 @@
 import React from 'react'
-import ClientProfile from './ClientProfile'
+import ClientService from './ClientService'
+
 export default function page() {
   return (
-    <ClientProfile />
+    <ClientService />
   )
 }

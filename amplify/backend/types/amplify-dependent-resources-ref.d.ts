@@ -27,6 +27,14 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string"
     }
   },
+  "geo": {
+    "pandamap": {
+      "Arn": "string",
+      "Name": "string",
+      "Region": "string",
+      "Style": "string"
+    }
+  },
   "storage": {
     "pandawebapp": {
       "BucketName": "string",

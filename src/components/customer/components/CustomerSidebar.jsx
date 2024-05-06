@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
-import { FaCar, FaCircleExclamation, FaHandPointUp, FaKey, FaListCheck, FaUserXmark } from "react-icons/fa6";
+import { FaCar, FaCircleExclamation, FaHandPointUp, FaHouse, FaKey, FaListCheck, FaUserXmark } from "react-icons/fa6";
 import { RiUserFill, RiLogoutCircleLine, RiSettings4Fill } from "react-icons/ri";
 import { useDisclosure } from "@nextui-org/react";
 import { DeleteUserModal, PassWordModal, SendReportModal } from '@/components/modalUser';
@@ -29,12 +29,18 @@ export default function CustomerSidebar() {
   }
   useEffect(() => { retrieveOneUser(); }, []);
   return (
-    <div className="w-2/12 h-[calc(100vh-100px)] rounded-2xl bg-white shadow-lg dark:bg-zinc-800 flex flex-col items-center justify-between gap-2 overflow-y-auto">
+    <div className="md:w-[21%] 2xl:w-2/12 md:h-[calc(100vh-50px)] 2xl:h-[calc(100vh-100px)] rounded-2xl bg-white shadow-lg dark:bg-zinc-800 flex flex-col items-center justify-between gap-2 overflow-y-auto">
       <DeleteUserModal isOpen={isDeleteUserModalOpen} onOpenChange={onDeleteUserModalChange} user={user} />
       <PassWordModal isOpen={isChangePasswordModalOpen} onOpenChange={onChangePasswordModalChange} />
       <SendReportModal isOpen={isSendReportModalOpen} onOpenChange={onSendReportModalChange} />
       <div className="w-full flex flex-col items-center p-4 gap-2">
         <h4 className='font-bold text-[#40C48E] dark:text-gray-200 w-full text-left mb-2'>Main Menu</h4>
+        <div className='w-full flex flex-col gap-y-2'>
+          <Link href={'/customer'} className={`w-full  rounded-md transition-all hover:bg-emerald-500 flex gap-x-2 hover:text-white text-[16px] items-center p-2 px-3 cursor-pointer`}>
+            <FaHouse />
+            Home
+          </Link>
+        </div>
         <div className='w-full flex flex-col gap-y-2'>
           <Link href={'/customer/profile'} className={`w-full  rounded-md transition-all hover:bg-emerald-500 flex gap-x-2 hover:text-white text-[16px] items-center p-2 px-3 cursor-pointer`}>
             <RiUserFill />
@@ -42,7 +48,7 @@ export default function CustomerSidebar() {
           </Link>
         </div>
         <div className='w-full flex flex-col gap-y-2 '>
-          <Link href={'/'} className={`w-full  rounded-md transition-all hover:bg-emerald-500 flex gap-x-2 hover:text-white text-[16px] items-center p-2 px-3 cursor-pointer`}>
+          <Link href={'/customer/service'} className={`w-full  rounded-md transition-all hover:bg-emerald-500 flex gap-x-2 hover:text-white text-[16px] items-center p-2 px-3 cursor-pointer`}>
             <FaHandPointUp />
             Service Request
           </Link>
@@ -72,18 +78,9 @@ export default function CustomerSidebar() {
             Report an issue
           </div>
         </div>
-        <h4 className='font-bold text-[#40C48E] dark:text-gray-200 w-full text-left mb-2'>Notifications</h4>
-        <div className='w-full flex flex-col gap-y-2 h-[10rem] overflow-y-scroll'>
-          <div className='p-4 w-full h-[3rem] bg-zinc-300 dark:bg-zinc-900 flex items-center hover:bg-green-panda transition-all ease-in duration-200 cursor-pointer rounded-lg'>
-            Notification 1
-          </div>
-          <div className='p-4 w-full h-[3rem] bg-zinc-300 dark:bg-zinc-900 flex items-center hover:bg-green-panda transition-all ease-in duration-200 cursor-pointer rounded-lg'>
-            Notification 2
-          </div>
-          <div className='p-4 w-full h-[3rem] bg-zinc-300 dark:bg-zinc-900 flex items-center hover:bg-green-panda transition-all ease-in duration-200 cursor-pointer rounded-lg'>
-            Notification 3
-          </div>
-        </div>
+      </div>
+      <div>
+        <p className='text-left'>reference</p>
       </div>
       <div className="w-full flex items-center p-4 ">
         <div

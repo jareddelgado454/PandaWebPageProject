@@ -13,7 +13,7 @@ export default function RootLayout({ children }) {
       <body className={`${robotoFlex.className} dark antialiased bg-zinc-800 dark:bg-zinc-800`}>
         <ToastContainer />
             <AmplifyContext>
-                    {children}
+              {children}
             </AmplifyContext>
       </body>
     </html>

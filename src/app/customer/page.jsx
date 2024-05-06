@@ -1,15 +1,9 @@
-'use client';
-import { BtnLocation } from '@/components/customer';
-import Image from 'next/image';
-import React, { useState } from 'react';
-import { FaList, FaLocationCrosshairs } from 'react-icons/fa6';
-import { RiAlertFill } from 'react-icons/ri';
-
+import React from 'react';
+import Client_Component from './Client_Component';
 export default function page() {
-  const [notiActive, setNotiActive] = useState(false)
   return (
     <>
-      
+      <Client_Component />
     </>
   )
 }

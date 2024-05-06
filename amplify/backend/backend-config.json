@@ -71,6 +71,24 @@
       "service": "Lambda"
     }
   },
+  "geo": {
+    "pandamap": {
+      "accessType": "AuthorizedAndGuestUsers",
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "pandawebapp0a05bcd0"
+        }
+      ],
+      "isDefault": true,
+      "mapStyle": "VectorEsriStreets",
+      "providerPlugin": "awscloudformation",
+      "service": "Map"
+    }
+  },
   "parameters": {
     "AMPLIFY_function_S3Triggerdf93383d_deploymentBucketName": {
       "usedBy": [
