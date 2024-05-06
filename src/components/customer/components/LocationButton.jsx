@@ -2,7 +2,7 @@
 import React from 'react';
 import { FaLocationCrosshairs } from 'react-icons/fa6';
 
-export default function LocationButton() {
+export default function LocationButton({ setMyLocation }) {
     const handleLocationClick = () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -10,6 +10,7 @@ export default function LocationButton() {
                     const { latitude, longitude } = position.coords;
                     console.log(`Ubicación obtenida: Latitud ${latitude}, Longitud ${longitude}`);
                     localStorage.setItem('userLocation', JSON.stringify({ latitude, longitude }));
+                    setMyLocation([longitude, latitude]);
                 },
                 (error) => {
                     console.error('Error al obtener la ubicación:', error.message);
