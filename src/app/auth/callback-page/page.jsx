@@ -86,6 +86,7 @@ const CallbackPage = () => {
       await updateUserAttributes({
         userAttributes: {
           "custom:role": "technician",
+          "custom:infoCompleted" : "false"
         },
       });
       console.log("Stored role in cognito")
