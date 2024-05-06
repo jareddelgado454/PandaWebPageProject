@@ -26,6 +26,9 @@
       },
       "api": {
         "pandawebapp": {}
+      },
+      "geo": {
+        "pandamap": {}
       }
     }
   }

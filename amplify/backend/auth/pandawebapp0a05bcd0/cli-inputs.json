@@ -2,7 +2,7 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "pandawebapp0a05bcd0_identitypool_0a05bcd0",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "pandaw0a05bcd0",
     "userPoolName": "pandawebapp0a05bcd0_userpool_0a05bcd0",
     "autoVerifiedAttributes": [
