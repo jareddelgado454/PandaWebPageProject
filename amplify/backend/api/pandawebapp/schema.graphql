@@ -7,6 +7,12 @@ enum ReportStatus {
   processed
 }
 
+enum ServiceOfferStatus {
+    pending
+    accepted
+    rejected
+}
+
 type Report @model @auth(
     rules: [
         { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
@@ -121,6 +127,30 @@ type Schedule {
 type DailySchedule {
     opening: String
     closing: String
+}
+
+type Service @model {
+    id: ID!
+    title: String!
+    description: String!
+    type: String!
+    status: String!
+    originLatitude: Float!
+    originLongitude: Float!
+    customer: Customer! @hasOne
+    technician: Technician! @hasOne
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type ServiceOffer @model {
+    id: ID!
+    service: Service @hasOne
+    technician: Technician @hasOne
+    destLatitude: Float!
+    destLongitude: Float!
+    amount: Float!
+    status: ServiceOfferStatus!
 }
 
 # type Chat @model @auth(
