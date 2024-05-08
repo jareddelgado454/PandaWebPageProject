@@ -97,6 +97,10 @@
   background: linear-gradient(to bottom right, #41464e, #14181f)
 }
 
+.custom-gradient-profilePicture{
+  background: linear-gradient(to bottom, transparent 0%,rgba(19, 19, 19, 0.4) 10%, rgba(19, 19, 19, 0.7) 20%, rgba(19, 19, 19, 0.9) 30%, rgb(19, 19, 19) 50%);
+}
+
 .slide-in-right{-webkit-animation:slide-in-right .5s cubic-bezier(.25,.46,.45,.94) both;animation:slide-in-right .5s cubic-bezier(.25,.46,.45,.94) both}
 @-webkit-keyframes slide-in-right{0%{-webkit-transform:translateX(1000px);transform:translateX(1000px);opacity:0}100%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}}@keyframes slide-in-right{0%{-webkit-transform:translateX(1000px);transform:translateX(1000px);opacity:0}100%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}}
 
