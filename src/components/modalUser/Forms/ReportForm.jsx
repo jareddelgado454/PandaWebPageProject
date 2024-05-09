@@ -54,7 +54,6 @@ export const ReportForm = () => {
             }).result;
             console.log("Succeeded: ", result);
             return result.key;
-            return result.key;
         } catch (error) {
             console.log(`Error from here : ${error}`);
         }
@@ -84,7 +83,7 @@ export const ReportForm = () => {
             setPhotograph(null);
 
         } catch (error) {
-            toast.error(error);
+            console.error(error);
         }
     }
     return (
