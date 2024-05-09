@@ -5,7 +5,7 @@ import { client } from "@/contexts/AmplifyContext";
 import { calculateTotalPages, totalNumbers } from "@/utils/issues/CalculateIssues";
 import { getAllIssues } from "@/graphql/issues/queries/query";
 import { IssuePagination, IssueTable } from "@/components/admin";
-import { ListenStatusReportById, onUpdateReport } from "@/graphql/issues/subscriptions/subscription";
+import { onUpdateReport } from "@/graphql/issues/subscriptions/subscription";
 function page() {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -20,6 +20,7 @@ function page() {
         query: getAllIssues,
       });
       setIssues(data.listReports.items);
+      console.log(data);
       setLoading(false);
     } catch (error) {
       console.log(error);
