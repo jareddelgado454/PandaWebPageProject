@@ -108,8 +108,6 @@ type Customer @model @auth(
     state: String
     profilePicture: String
     zipCode: Int
-    subscription: String
-    cognitoId: String
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
 }
@@ -129,7 +127,12 @@ type DailySchedule {
     closing: String
 }
 
-type Service @model {
+type Service @model @auth(
+    rules: [
+        { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
+        { allow: owner, operations: [ read, update, create, delete ] }
+    ]
+) {
     id: ID!
     title: String!
     description: String!
@@ -138,7 +141,7 @@ type Service @model {
     originLatitude: Float!
     originLongitude: Float!
     customer: Customer! @hasOne
-    technician: Technician! @hasOne
+    technician: Technician @hasOne
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
 }
