@@ -1,11 +1,16 @@
 'use client';
-import React, { useEffect } from 'react';
-import { createMap, drawPoints } from 'maplibre-gl-js-amplify';
+import React, { useContext, useLayoutEffect, useRef } from 'react';
+import { createMap } from 'maplibre-gl-js-amplify';
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css';
 import "maplibre-gl-js-amplify/dist/public/amplify-map.css";
+import { PlaceContext } from '@/contexts/place/PlaceContext';
+import { MapContext } from '@/contexts/map/MapContext';
+export default function Map() {
+  const mapDiv = useRef(null);
+  const { userLocation, isLoading } = useContext(PlaceContext);
+  const { setMap } = useContext(MapContext);
 
-export default function Map({ myLocation }) {
   const geojson = {
     'type': 'FeatureCollection',
     'features': [
@@ -13,70 +18,106 @@ export default function Map({ myLocation }) {
         'type': 'Feature',
         'properties': {
           'message': 'Foo',
-          'iconSize': [60, 60]
         },
         'geometry': {
           'type': 'Point',
-          'coordinates': [-66.324462890625, -16.024695711685304]
+          'coordinates': [-77.02761691395426, -12.04260133525865]
         }
       },
       {
         'type': 'Feature',
         'properties': {
           'message': 'Bar',
-          'iconSize': [50, 50]
         },
         'geometry': {
           'type': 'Point',
-          'coordinates': [-61.2158203125, -15.97189158092897]
+          'coordinates': [-77.02886488213905, -12.042742305265621]
         }
       },
-      {
-        'type': 'Feature',
-        'properties': {
-          'message': 'Baz',
-          'iconSize': [40, 40]
-        },
-        'geometry': {
-          'type': 'Point',
-          'coordinates': [-63.29223632812499, -18.28151823530889]
-        }
-      }
     ]
   };
-  useEffect(() => {
+  const geojson2 = {
+    'type': 'Feature',
+    'properties': {},
+    'geometry': {
+      'type': 'LineString',
+      'coordinates': [
+        [-77.02761691395426, -12.04260133525865],
+        userLocation
+      ]
+    }
+  };
+  useLayoutEffect(() => {
     const initializeMap = async () => {
-      const map = await createMap({
-        container: 'map',
-        center: myLocation ? myLocation : [-123.1187, 49.2819],
-        zoom: 16
-      });
-      geojson.features.forEach((marker) => {
-        // create a DOM element for the marker
-        const el = document.createElement('div');
-        el.className = 'marker';
-        el.style.backgroundImage =
-          `url(https://picsum.photos/${marker.properties.iconSize.join('/')
-          }/)`;
-        el.style.width = `${marker.properties.iconSize[0]}px`;
-        el.style.height = `${marker.properties.iconSize[1]}px`;
-
-        el.addEventListener('click', () => {
-          window.alert(marker.properties.message);
+      if (!isLoading) {
+        const map = await createMap({
+          container: mapDiv.current,
+          center: userLocation ? userLocation : [-123.1187, 49.2819],
+          zoom: 14
         });
+        setMap(map);
+        map.on('load', () => {
+          map.addSource('LineString', {
+            'type': 'geojson',
+            'data': geojson2
+          });
+          map.addLayer({
+            'id': 'LineString',
+            'type': 'line',
+            'source': 'LineString',
+            'layout': {
+              'line-join': 'round',
+              'line-cap': 'round'
+            },
+            'paint': {
+              'line-color': '#BF93E4',
+              'line-width': 5
+            }
+          });
+        })
+        if (userLocation) {
+          map.flyTo({
+            center: userLocation,
+            zoom: 16,
+            duration: 2000,
+            easing: (t) => t,
+          });
 
-        // add marker to map
-        new maplibregl.Marker({ element: el })
-          .setLngLat(marker.geometry.coordinates)
-          .addTo(map);
-      });
+          const pulsatingCircle = document.createElement('div');
+          pulsatingCircle.className = 'pulsating-circle';
+
+          new maplibregl.Marker(pulsatingCircle)
+            .setLngLat(userLocation)
+            .addTo(map);
+
+          geojson.features.forEach((marker) => {
+            // create a DOM element for the marker
+            const el = document.createElement('img');
+            el.src = `https://www.pngkey.com/png/full/60-601527_car-png-top.png`;
+            el.style.width = '30px'; // Set fixed width
+            el.style.height = '30px';
+
+            el.addEventListener('click', () => {
+              window.alert(marker.properties.message);
+            });
+
+            // add marker to map
+            new maplibregl.Marker({ element: el })
+              .setLngLat(marker.geometry.coordinates)
+              .addTo(map);
+          });
+
+        }
+
+      }
+
     };
     initializeMap();
-  }, [myLocation]);
+  }, [isLoading]);
 
   return (
     <>
-      <div id='map' className='map h-[100%] w-[100%] rounded-lg'></div>
+      <div ref={mapDiv} id='map' className='map h-[100%] w-[100%] rounded-lg'></div>
     </>
   );
 }

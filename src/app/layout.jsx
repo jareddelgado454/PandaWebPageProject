@@ -10,7 +10,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="max-h-full">
-      <body className={`${robotoFlex.className} dark antialiased bg-zinc-800 dark:bg-zinc-800`}>
+      <body className={`${robotoFlex.className} antialiased dark:bg-zinc-800`}>
         <ToastContainer />
             <AmplifyContext>
               {children}

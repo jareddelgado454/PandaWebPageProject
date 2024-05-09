@@ -1,8 +1,8 @@
 'use client';
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
-import { FaCar, FaCircleExclamation, FaHandPointUp, FaHouse, FaKey, FaListCheck, FaUserXmark } from "react-icons/fa6";
-import { RiUserFill, RiLogoutCircleLine, RiSettings4Fill } from "react-icons/ri";
+import { FaCircleExclamation, FaHandPointUp, FaHouse, FaKey, FaListCheck, FaUserXmark } from "react-icons/fa6";
+import { RiUserFill, RiLogoutCircleLine } from "react-icons/ri";
 import { useDisclosure } from "@nextui-org/react";
 import { DeleteUserModal, PassWordModal, SendReportModal } from '@/components/modalUser';
 import Cookies from 'js-cookie';

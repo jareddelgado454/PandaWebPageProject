@@ -43,11 +43,11 @@ const CallbackPage = () => {
         setUser(fetchedUser);
         if (userRole) {
           console.log("Is stored in database");
-          const { tokens } = await fetchAuthSession({ forceRefresh: true });
+          const { tokens, userSub } = await fetchAuthSession({ forceRefresh: true });
           const expiredAt = tokens.accessToken.payload.exp;
           Cookies.set(
             "currentUser",
-            JSON.stringify({ role: userRole, expiredAt })
+            JSON.stringify({ role: userRole, expiredAt, id: userSub })
           );
           switch (userRole) {
             case "technician":
@@ -91,10 +91,10 @@ const CallbackPage = () => {
       });
       console.log("Stored role in cognito")
 
-      const { tokens } = await fetchAuthSession({ forceRefresh: true });
+      const { tokens, userSub } = await fetchAuthSession({ forceRefresh: true });
       const expiredAt = tokens.accessToken.payload.exp;
 
-      Cookies.set("currentUser", JSON.stringify({ role : "technician" , expiredAt }));
+      Cookies.set("currentUser", JSON.stringify({ role : "technician" , expiredAt, id: userSub }));
       router.replace("/user");
       setSelectingTechnician(false);
     } catch (error) {

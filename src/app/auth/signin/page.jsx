@@ -106,9 +106,9 @@ const SignIn = () => {
   const currentAuthenticatedUser = async () => {
     try {
       const data = await fetchUserAttributes();
-      const { tokens } = await fetchAuthSession({ forceRefresh: true });
+      const { tokens, userSub } = await fetchAuthSession({ forceRefresh: true });
       const expiredAt = tokens.accessToken.payload.exp;
-      return { role:data['custom:role'], expiredAt };
+      return { role:data['custom:role'], expiredAt, userSub };
     } catch (error) {
       console.log(error);
     }
@@ -118,12 +118,10 @@ const SignIn = () => {
       switch (payload.event) {
         case "signedIn":
           onOpenLoadingModal(true);
-          const { role, expiredAt } = await currentAuthenticatedUser();
-          // const cognitoId = payload.data.userId;
-          console.log(role, expiredAt);
+          const { role, expiredAt, userSub } = await currentAuthenticatedUser();
           Cookies.set(
             "currentUser",
-            JSON.stringify({ role,expiredAt })
+            JSON.stringify({ role,expiredAt, id: userSub })
           );
           if (role === "admin") {
             router.replace("/admin-dashboard/");

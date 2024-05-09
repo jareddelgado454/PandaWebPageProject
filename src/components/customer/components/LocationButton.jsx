@@ -1,24 +1,22 @@
 'use client'
-import React from 'react';
+import { MapContext } from '@/contexts/map/MapContext';
+import { PlaceContext } from '@/contexts/place/PlaceContext';
+import React, { useContext } from 'react';
 import { FaLocationCrosshairs } from 'react-icons/fa6';
 
-export default function LocationButton({ setMyLocation }) {
+export default function LocationButton() {
+    const { map, isMapReady } = useContext(MapContext);
+    const { userLocation } = useContext(PlaceContext);
     const handleLocationClick = () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const { latitude, longitude } = position.coords;
-                    console.log(`Ubicación obtenida: Latitud ${latitude}, Longitud ${longitude}`);
-                    localStorage.setItem('userLocation', JSON.stringify({ latitude, longitude }));
-                    setMyLocation([longitude, latitude]);
-                },
-                (error) => {
-                    console.error('Error al obtener la ubicación:', error.message);
-                }
-            );
-        } else {
-            console.error('El navegador no soporta la geolocalización.');
-        }
+        if(!isMapReady) throw new Error('Map is not ready.');
+        if(!userLocation) throw new Error('There is not location from user.');
+
+        map.flyTo({
+            center: userLocation,
+            zoom: 16,
+            duration: 3000,
+            easing: (t) => t,
+        });
     };
     return (
         <div className='flex flex-col gap-2 items-center'>
