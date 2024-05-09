@@ -6,7 +6,7 @@
   "aws_cognito_identity_pool_id": "us-east-1:bd81a969-a3df-46d6-8240-70f312d609eb",
   "aws_cognito_region": "us-east-1",
   "aws_user_pools_id": "us-east-1_H9Y0GkM7h",
-  "aws_user_pools_web_client_id": "5en5kvbf67elloqveuqv6i1fab",
+  "aws_user_pools_web_client_id": "10qotjddvo47gidn38hb9lhgv0",
   "oauth": {
     "domain": "panda-mars-dev.auth.us-east-1.amazoncognito.com",
     "scope": [
@@ -16,8 +16,8 @@
       "profile",
       "aws.cognito.signin.user.admin"
     ],
-    "redirectSignIn": "https://www.auth.panda-mars.com/auth/signin",
-    "redirectSignOut": "https://www.auth.panda-mars.com/",
+    "redirectSignIn": "http://localhost:3000/auth/callback-page",
+    "redirectSignOut": "http://localhost:3000/",
     "responseType": "code"
   },
   "federationTarget": "COGNITO_USER_POOLS",

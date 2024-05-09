@@ -9,41 +9,25 @@ import Cookies from "js-cookie";
 import { motion } from "framer-motion";
 import { updateUserAttributes } from "aws-amplify/auth";
 
-const UserNavBar = ({user}) => {
-  const [statusToggle, setStatusToggle] = useState(user["custom:isOnline"] === "true" ? true : false);
-
-  const handleChangeStatus = async() => {
-    try {
-      const attributes = await updateUserAttributes({
-        userAttributes: {
-          ["custom:isOnline"]: statusToggle ? "false" : "true",
-        },
-      });
-      setStatusToggle(!statusToggle);
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-
+const UserNavBar = ({user, isOnline, handleChangeStatus}) => {
   return (
     <div className="w-full h-[80px] flex items-center justify-between ">
       <div className="text-[20px] flex justify-center items-center text-white font-bold">
         Dashboard
       </div>
       <div className="flex gap-x-3 items-center pr-5">
-        <div>{statusToggle ? <span className="text-emerald-300 text-[17px]  font-bold">Online</span> : <span className="text-zinc-400 font-bold text-[16px]">Off-Line</span>}</div>
+        <div>{isOnline ? <span className="text-emerald-300 text-[17px]  font-bold">Online</span> : <span className="text-zinc-400 font-bold text-[16px]">Off-Line</span>}</div>
         <div
           onClick={() => handleChangeStatus()}
           className={`w-[55px] h-[30px] flex items-center rounded-full ${
-            statusToggle
+            isOnline
               ? "bg-emerald-500 border-[2px] border-emerald-500 justify-end p-[2px]"
               : "border-[2px] border-zinc-500 bg-zinc-700 justify-start p-[4px]"
           }  cursor-pointer`}
         >
           <motion.div
             transition={{ type: "spring", damping: 30, stiffness: 700 }}
-            animate={{ height: statusToggle ? "26px" : "15px", width: statusToggle ? "26px" : "15px", backgroundColor: statusToggle ? "#2C3137" : "#61666C" }}
+            animate={{ height: isOnline ? "26px" : "15px", width: isOnline ? "26px" : "15px", backgroundColor: isOnline ? "#2C3137" : "#61666C" }}
             className= "rounded-full"
           />
         </div>

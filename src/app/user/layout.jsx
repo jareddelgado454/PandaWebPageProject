@@ -16,19 +16,27 @@ export const Contexto = createContext();
 const UserLayout = ({children}) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isOnline, setIsOnline] = useState(null)
+
+    const handleChangeStatus = async() => {
+        try {
+          const attributes = await updateUserAttributes({
+            userAttributes: {
+              ["custom:isOnline"]: isOnline ? "false" : "true",
+            },
+          });
+          setIsOnline(!isOnline);
+        } catch (error) {
+          console.log(error)
+        }
+    }
 
     const retrieveOneUser = async () => {
         setLoading(true);
         try {
             const userInfo = await fetchUserAttributes();
-            // const { data } = await client.graphql({
-            //     query: getUserIdByCognitoID,
-            //     variables: {
-            //         cognitoId: info.sub,
-            //     },
-            // });
-            // const userId = data.listUsers.items[0].id;
             setUser({ ...userInfo });
+            setIsOnline(userInfo["custom:isOnline"] === "true" ? true : false);
             setLoading(false);
     
         } catch (error) {
@@ -46,8 +54,8 @@ const UserLayout = ({children}) => {
                         <div className="w-full h-full flex justify-center items-center p-0">
                             <UserSidebar user={user}/>
                             <div className='flex-1 flex flex-col h-screen'>
-                                <UserNavBar user={user}/>
-                                <Contexto.Provider value={{ user, loading, retrieveOneUser }}>
+                                <UserNavBar user={user} isOnline={isOnline} handleChangeStatus={handleChangeStatus}/>
+                                <Contexto.Provider value={{ user, loading, isOnline, handleChangeStatus, retrieveOneUser }}>
                                     {children}
                                 </Contexto.Provider>
                             </div>
