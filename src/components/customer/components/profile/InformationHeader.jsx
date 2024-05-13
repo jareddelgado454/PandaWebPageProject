@@ -8,11 +8,12 @@ export default function InformationHeader({ user }) {
     >
       <div className='absolute top-3'>
         <div className='flex items-center gap-5 h-full px-8'>
+          
           <Image
             src={`https://d3nqi6yd86hstw.cloudfront.net/public/user-profile-pictures/ded0fd80-2ab7-4a57-92eb-4440987a358f.jpg`}
             width={400}
             height={400}
-            className='rounded-full h-[9rem] w-[9rem]'
+            className='rounded-full h-[9rem] w-[9rem] border-emerald-600 border-3'
             alt='profile_customer_picture'
           />
           <div className='flex flex-col gap-2'>

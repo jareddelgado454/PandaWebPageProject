@@ -1,9 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
-import { FaCircleExclamation, FaHandPointUp, FaHouse, FaKey, FaListCheck, FaUserXmark } from "react-icons/fa6";
+import { FaBug, FaCircleExclamation, FaComments, FaHandPointUp, FaHouse, FaKey, FaListCheck, FaUserXmark } from "react-icons/fa6";
 import { RiUserFill, RiLogoutCircleLine } from "react-icons/ri";
-import { useDisclosure } from "@nextui-org/react";
+import { Badge, useDisclosure } from "@nextui-org/react";
 import { DeleteUserModal, PassWordModal, SendReportModal } from '@/components/modalUser';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
@@ -55,8 +55,16 @@ export default function CustomerSidebar() {
         </div>
         <div className='w-full flex flex-col gap-y-2'>
           <Link href={'/customer/reports'} className={`w-full rounded-md transition-all hover:bg-emerald-500 hover:text-white flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
-            <FaListCheck />
+            <FaBug />
             My Reports
+          </Link>
+        </div>
+        <div className='w-full flex flex-col gap-y-2'>
+          <Link href={'/customer/reports'} className={`w-full rounded-md transition-all hover:bg-emerald-500 hover:text-white flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
+            <Badge color="default" size={'sm'} content={0} shape="circle">
+              <FaComments />
+            </Badge>
+            Messages
           </Link>
         </div>
         <h4 className='font-bold text-[#40C48E] dark:text-gray-200 w-full text-left mb-2'>Additional</h4>
@@ -78,9 +86,6 @@ export default function CustomerSidebar() {
             Report an issue
           </div>
         </div>
-      </div>
-      <div>
-        <p className='text-left'>reference</p>
       </div>
       <div className="w-full flex items-center p-4 ">
         <div

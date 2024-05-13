@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { FaArrowUp } from 'react-icons/fa6';
 import ServiceForm from './ServiceForm';
 export default function RequestInput() {
-    const [isInputActive, setIsInputActive] = useState(true);
+    const [isInputActive, setIsInputActive] = useState(false);
     return (
         <>
             <div className={`transtion-all duration-300 absolute ${isInputActive ? 'bottom-[13rem]' : 'bottom-0 delay-[10ms]'} left-[48%] transform w-full`}>
