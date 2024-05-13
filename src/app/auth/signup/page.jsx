@@ -5,6 +5,7 @@ import { Formik, Form, Field } from "formik";
 import ErrorAlert from "@/components/LoginRegister/modals/ErrorAlert";
 import { signUp } from "aws-amplify/auth";
 import validationSignUp from "./validationSignUp";
+import { handleCreateTechnicianOnDataBase, handleCreateCustomerOnDataBase } from "@/api";
 import {
   RiMailLine,
   RiLockLine,
@@ -29,7 +30,7 @@ const SignUp = () => {
     role: "",
     agreed: false,
   });
-  const [userFDB, setUserFDB] = useState(null);
+  const [roleSelected, setRoleSelected] = useState(null);
   const [errors, setErrors] = useState({});
   const [errorPassed, setErrorPassed] = useState("");
 
@@ -101,17 +102,23 @@ const SignUp = () => {
           },
         });
         isAdded = true;
-        const { data } = await handleCreateUserOnDatabase({
-          fullName: values.fullName,
-          email: values.email,
-          password: values.password,
-          role: values.role,
-          status,
-          subscription: `${values.role === "technician" ? "pending" : ""}`,
-          cognitoId,
-        }, isAdded);
-        const userInfo = data && data.createdUser;
-        setUserFDB(userInfo);
+        if(values.role === "technician"){
+          const data = await handleCreateTechnicianOnDataBase({
+            id: cognitoId,
+            email: values.email,
+            fullName: values.fullName,
+            status,
+            subscription: `${values.role === "technician" ? "pending" : ""}`
+          });   
+        } else {
+          const result = await handleCreateCustomerOnDataBase({
+            id: cognitoId,
+            email: values.email,
+            fullName: values.fullName,
+            status,
+          });
+        }
+        setRoleSelected(values.role);
         if (nextStep?.signUpStep === "CONFIRM_SIGN_UP") {
           onVerifyCodeModalOpen();
         }
@@ -409,7 +416,7 @@ const SignUp = () => {
           isOpen={isVerifyCodeModalOpen}
           onOpenChange={onVerifyCodeModalOpenChange}
           dataSignIn={{ email: dataSignUp.email, password: dataSignUp.password }}
-          userDB={userFDB}
+          roleSelected={roleSelected}
         />
         <ErrorAlert
           isOpen={isErrorAlertModalOpen}

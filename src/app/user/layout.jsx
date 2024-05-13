@@ -36,6 +36,7 @@ const UserLayout = ({children}) => {
         try {
             const userInfo = await fetchUserAttributes();
             setUser({ ...userInfo });
+            console.log("Este es el coos del tecnico",userInfo.sub);
             setIsOnline(userInfo["custom:isOnline"] === "true" ? true : false);
             setLoading(false);
     
