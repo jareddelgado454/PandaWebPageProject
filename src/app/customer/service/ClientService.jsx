@@ -3,6 +3,7 @@ import React from 'react';
 import Map from '@/components/Map';
 import LocationButton from '@/components/customer/components/LocationButton';
 import RequestInput from '@/components/customer/components/Map/RequestInput';
+import OfferDetails from '@/components/customer/components/Map/OfferDetails';
 export default function ClientService() {
   return (
     <div className='w-full h-full p-4'>
@@ -14,6 +15,7 @@ export default function ClientService() {
           <LocationButton />
         </div>
         <RequestInput />
+        <OfferDetails />
         {/* <div className='absolute bottom-5 left-0 w-full'>
           <div className='flex justify-between items-center px-2'>
 
