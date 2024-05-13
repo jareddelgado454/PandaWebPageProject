@@ -71,6 +71,7 @@ type Technician @model @auth(
         { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
         { allow: owner, ownerField: "id", operations: [ read, update, create, delete ] }
         { allow: public, provider: iam, operations: [ create ] }
+        { allow: private, operations: [ read ] }
     ]
 ) {
     id: ID!  
@@ -96,6 +97,7 @@ type Customer @model @auth(
         { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
         { allow: owner, ownerField: "cognitoId", operations: [ read, update, create, delete ] }
         { allow: public, provider: iam, operations: [ create ] }
+        { allow: private, operations: [ read ] }
     ]
 ) {
     id: ID!
@@ -142,8 +144,8 @@ type Service @model @auth(
     originLongitude: Float!
     customer: Customer! @hasOne
     technicianSelected: Technician @hasOne
-    destLatitude: Float!
-    destLongitude: Float!
+    destLatitude: Float
+    destLongitude: Float
     offers: [Offer] @hasMany(indexName: "byOffer", fields: ["id"])
     createdAt: AWSDateTime
     updatedAt: AWSDateTime

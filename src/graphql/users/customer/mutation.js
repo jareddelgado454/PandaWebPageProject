@@ -1,8 +1,27 @@
-import { gql } from "@apollo/client";
+import gql from "graphql-tag";
 
 export const createService = gql`
     mutation CreateService($input: CreateServiceInput!) {
-        createService(input: $input){
+        createService(input: $input) {
+            id
+            originLatitude
+            originLongitude
+            status
+            customer {
+                id
+                fullName
+                email
+            }
+            createdAt
+            updatedAt
+        }
+    }
+
+`;
+
+export const updateService = gql`
+    mutation updateService($input: UpdateServiceInput!) {
+        updateService(input: $input){
             id
             title
             description
@@ -10,12 +29,21 @@ export const createService = gql`
             status
             originLatitude
             originLongitude
-            customer {
+            customer{
+                id
                 email
-                fullName
+                contactNumber
+                profilePicture
             }
-            createdAt
+            technicianSelected{
+                id
+                email
+                contactNumber
+                profilePicture
+            }
+            destLatitude
+            destLongitude
             updatedAt
         }
-    }  
+    }
 `;
