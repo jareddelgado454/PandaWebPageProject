@@ -13,11 +13,23 @@ import profileDefaultPicture from "../../../public/image/defaultProfilePicture.j
 import { Contexto } from "./layout";
 import Image from "next/image";
 import loading3 from "../../../public/loading/loading3.gif"
+import RepairRequestModal from "@/components/modalServices/modalServicesTechnician/RepairRequestModal";
 import { useDisclosure } from "@nextui-org/react";
 const Page = () => {
   const { user, loading } = useContext(Contexto);
+  const {
+    isOpen: isRequestServiceModalOpen,
+    onOpen: onRequestServiceModalOpen,
+    onOpenChange: onRequestServiceModalOpenChange,
+  } = useDisclosure();
+
+  useEffect(()=>{
+    onRequestServiceModalOpen();
+  },[]);
+
   return (
     <div className="w-full h-[calc(100vh-100px)] relative pr-[20px]">
+      <RepairRequestModal isOpen={isRequestServiceModalOpen} onOpenChange={onRequestServiceModalOpenChange}/>
       {loading ? (
         <div className="w-full h-full flex flex-col justify-center pb-[200px] items-center">
           <div className="relative w-[600px] h-[200px]  flex items-center justify-center">
