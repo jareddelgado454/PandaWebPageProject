@@ -22,7 +22,7 @@ import ModalDetailRequest from "@/components/serviceRequest/ModalDetailRequest";
 
 
 const Requests = () => {
-  const { isOnline, handleChangeStatus, user } = useContext(Contexto);
+  const { isOnline, handleChangeStatus, user, setTechnicianActivityStatus } = useContext(Contexto);
   const [requests, setRequests] = useState(null);
   const [loading, setLoading] = useState(true);
   const [idSelected, setIdSelected] = useState(null);
@@ -75,7 +75,7 @@ const Requests = () => {
 
   return (
     <div className="w-full h-[calc(100vh-100px)] relative pr-[20px]">
-      <ModalDetailRequest isOpen={isDetailRequestModalOpen} onOpenChange={onDetailRequestModalOpenChange} id={idSelected} technicianId={user.sub}/>
+      <ModalDetailRequest isOpen={isDetailRequestModalOpen} onOpenChange={onDetailRequestModalOpenChange} id={idSelected} technicianId={user.sub} setTechnicianActivityStatus={setTechnicianActivityStatus}/>
       <div className="w-full h-[calc(100vh-100px)] flex flex-col px-4 bg-zinc-800 rounded-xl pt-4">
         <div className="w-full mb-6">
           <div className="w-[250px] bg-zinc-700 rounded-2xl flex items-center justify-center p-2 ">
