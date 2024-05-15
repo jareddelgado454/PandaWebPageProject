@@ -12,6 +12,7 @@ import { TechnicianInformationModal } from './customer';
 export default function Map() {
   const mapDiv = useRef(null);
   const { userLocation, isLoading } = useContext(PlaceContext);
+<<<<<<< HEAD
   const { map, setMap, isMapReady } = useContext(MapContext);
   const [technicianSelected, setTechnicianSelected] = useState(null);
   const { serviceRequest, setServiceRequest } = useContext(ServiceContext);
@@ -46,6 +47,36 @@ export default function Map() {
   //     ]
   //   }
   // };
+=======
+  const { setMap } = useContext(MapContext);
+
+  const geojson = {
+    'type': 'FeatureCollection',
+    'features': [
+      {
+        'type': 'Feature',
+        'properties': {
+          'message': 'Foo',
+        },
+        'geometry': {
+          'type': 'Point',
+          'coordinates': [-77.02761691395426, -12.04260133525865]
+        }
+      },
+    ]
+  };
+  const geojson2 = {
+    'type': 'Feature',
+    'properties': {},
+    'geometry': {
+      'type': 'LineString',
+      'coordinates': [
+        [-77.02761691395426, -12.04260133525865],
+        userLocation
+      ]
+    }
+  };
+>>>>>>> a7cec37 (from remote)
   useLayoutEffect(() => {
     const initializeMap = async () => {
       if (!isLoading) {
@@ -55,6 +86,7 @@ export default function Map() {
           zoom: 14
         });
         setMap(map);
+<<<<<<< HEAD
         // map.on('load', () => {
         //   map.addSource('LineString', {
         //     'type': 'geojson',
@@ -74,6 +106,8 @@ export default function Map() {
         //     }
         //   });
         // })
+=======
+>>>>>>> a7cec37 (from remote)
         if (userLocation) {
           map.flyTo({
             center: userLocation,
@@ -89,12 +123,21 @@ export default function Map() {
             .setLngLat(userLocation)
             .addTo(map);
 
+<<<<<<< HEAD
           // geojson.features.forEach((marker) => {
           //   // create a DOM element for the marker
           //   const el = document.createElement('img');
           //   el.src = `https://www.pngkey.com/png/full/60-601527_car-png-top.png`;
           //   el.style.width = '30px'; // Set fixed width
           //   el.style.height = '30px';
+=======
+          geojson.features.forEach((marker) => {
+            // create a DOM element for the marker
+            const el = document.createElement('img');
+            el.src = `/car-left.png`;
+            el.style.width = '30px'; // Set fixed width
+            el.style.height = '30px';
+>>>>>>> a7cec37 (from remote)
 
           //   el.addEventListener('click', () => {
           //     window.alert(marker.properties.message);

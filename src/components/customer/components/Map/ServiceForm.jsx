@@ -40,6 +40,7 @@ export default function ServiceForm() {
 
     const onHandleSubmit = async (values) => {
         const [longitude, latitude] = userLocation;
+        console.log(values);
         const sub = await retrieveSubFromCognito();
         try {
             const { data } = await client.graphql({
@@ -52,7 +53,8 @@ export default function ServiceForm() {
                         originLongitude: longitude,
                         serviceCustomerId: sub,
                         status: 'pending',
-                        type: 'inmediate'
+                        type: 'inmediate',
+                        car: values.car
                     }
                 }
             });
@@ -74,13 +76,19 @@ export default function ServiceForm() {
                 <Formik
                     initialValues={{
                         title: '',
-                        description: ''
+                        description: '',
+                        car: ''
                     }}
                     onSubmit={onHandleSubmit}
                     validationSchema={formSchema}
                 >
+<<<<<<< HEAD
                     {({ handleSubmit, errors, isValid }) => (
                         <Form className={`flex flex-col gap-6 ${(service && service.status === 'pending') && 'opacity-25'}`} onSubmit={handleSubmit}>
+=======
+                    {({ handleSubmit, errors, isValid, setFieldValue }) => (
+                        <Form className={`flex flex-col gap-6 ${(status === 'pending' || service.status === 'pending') && 'opacity-25'}`} onSubmit={handleSubmit}>
+>>>>>>> a7cec37 (from remote)
                             <p className='my-4'>Make a service request</p>
                             <div className='flex gap-6'>
                                 <div className='flex flex-col gap-2 w-full'>
@@ -107,9 +115,10 @@ export default function ServiceForm() {
                                     as='select'
                                     className='block appearance-none border border-gray-200 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-gray-500 w-2/4'
                                     placeholder="My cars"
+                                    onChange={({ target }) => setFieldValue('car', target.value)}
                                 >
-                                    <option value="">Hyundai</option>
-                                    <option value="">Toyota</option>
+                                    <option value="Hyundai">Hyundai</option>
+                                    <option value="Toyota">Toyota</option>
                                 </Field>
                                 <button disabled={!isValid} type="submit" className={`w-2/4 rounded-lg ${!isValid ? 'bg-gray-200 dark:bg-stone-800 text-gray-300' : 'bg-green-panda hover:bg-emerald-700 text-white'}  font-semibold`}>
                                     Send Request
