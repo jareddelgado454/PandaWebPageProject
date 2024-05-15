@@ -5,7 +5,7 @@ import { RiErrorWarningFill,RiRestartLine } from "react-icons/ri";
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 
-const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn, userDB}) => {
+const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn, roleSelected}) => {
 
   const [code, setCode] = useState("");
   const [errorCode, setErrorCode] = useState({
@@ -80,9 +80,14 @@ const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn, userDB}) => {
           const expiredAt = tokens.accessToken.payload.exp;
           Cookies.set(
             "currentUser",
-            JSON.stringify({ userDB, expiredAt })
+            JSON.stringify({ role:roleSelected , expiredAt })
           );
-          router.replace("/user/");
+          if(roleSelected === "technician"){
+            router.replace("/user/");
+          }else{
+            router.replace("/customer/");
+          }
+          
 
           console.log(response);
           // router.replace("/admin-dashboard");

@@ -19,7 +19,7 @@ function page() {
       const { data } = await client.graphql({
         query: getAllIssues,
       });
-      setIssues(data.listReports.items);
+      setIssues(data.listReports);
       console.log(data);
       setLoading(false);
     } catch (error) {

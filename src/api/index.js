@@ -1,5 +1,7 @@
 import { client } from '@/contexts/AmplifyContext';
 import { getUserByCognitoID, getUserByEmail } from '@/graphql/custom-queries';
+import { createOffer } from '@/graphql/services/mutations/mutation';
+import { getRequestServiceById } from '@/graphql/services/queries/query';
 import { createCustomer } from '@/graphql/users/mutation/customer';
 import { createTechnician } from '@/graphql/users/mutation/technicians';
 import { createUser } from '@/graphql/users/mutation/users';
@@ -52,6 +54,38 @@ export const handleRetrieveTechnician = async (id) => {
     }
 } 
 // TECHNICIAN TECHNICIAN TECHNICIAN
+
+//REQUEST SERVICEEEEEES 
+
+export const handleRetrieveRequestService = async (id) => {
+    try {
+        const { data } = await client.graphql({
+            query: getRequestServiceById,
+            variables : {
+                id : id
+            }
+        })
+        return data
+    } catch (error) {
+        console.log(error);
+    }
+} 
+
+export const handleCreateOffer = async(values) => {
+    try {
+        const { data } = await client.graphql({
+            query: createOffer,
+            variables: {
+                input: { ...values }
+            },
+        });
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+//REQUEST SERVICEEEEEES 
 
 export const handleCreateCustomerOnDataBase = async(values, isAdded) => {
     try {
