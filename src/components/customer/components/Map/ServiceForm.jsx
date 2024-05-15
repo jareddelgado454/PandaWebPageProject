@@ -7,13 +7,12 @@ import Cookies from 'js-cookie';
 import { client } from '@/contexts/AmplifyContext';
 import { PlaceContext } from '@/contexts/place/PlaceContext';
 import { createService } from '@/graphql/users/customer/mutation';
-import { onCreateOffers } from '@/graphql/users/customer/subscription';
 import { ServiceContext } from '@/contexts/service/ServiceContext';
+import Link from 'next/link';
 
 export default function ServiceForm() {
     const { userLocation } = useContext(PlaceContext);
-    const { setServiceRequest } =useContext(ServiceContext);
-    const [status, setStatus] = useState(null);
+    const { serviceRequest, setServiceRequest } =useContext(ServiceContext);
     const [service, setService] = useState({});
 
     const retrieveSubFromCognito = async () => {
@@ -57,7 +56,6 @@ export default function ServiceForm() {
                     }
                 }
             });
-            setStatus(data.createService.status);
             setServiceRequest(data.createService);
             Cookies.set(
                 "ServiceRequest",
@@ -67,27 +65,12 @@ export default function ServiceForm() {
             console.error(error);
         }
     }
-    useEffect(() => {
 
-        const subscription = client
-            .graphql({ query: onCreateOffers })
-            .subscribe({
-                next: ({ data }) => {
-                    // Update previous state
-                    console.log(data.onCreateOffer);
-                },
-                error: (error) => console.warn(error)
-            });
-
-        return () => {
-            // Cancel the subscription when this component's life cycle ends
-            subscription.unsubscribe();
-        };
-    }, []);
+    useEffect(() => { setService(serviceRequest); }, [setServiceRequest]);
 
     return (
         <div className='relative h-full overflow-hidden'>
-            <div className='container mx-auto px-4 w-[90%]'>
+            <div className={`container mx-auto px-4 w-[90%] ${service && service.status === 'in progress' && 'hidden'}`}>
                 <Formik
                     initialValues={{
                         title: '',
@@ -97,7 +80,7 @@ export default function ServiceForm() {
                     validationSchema={formSchema}
                 >
                     {({ handleSubmit, errors, isValid }) => (
-                        <Form className={`flex flex-col gap-6 ${(status === 'pending' || service.status === 'pending') && 'opacity-25'}`} onSubmit={handleSubmit}>
+                        <Form className={`flex flex-col gap-6 ${(service && service.status === 'pending') && 'opacity-25'}`} onSubmit={handleSubmit}>
                             <p className='my-4'>Make a service request</p>
                             <div className='flex gap-6'>
                                 <div className='flex flex-col gap-2 w-full'>
@@ -137,11 +120,19 @@ export default function ServiceForm() {
                 </Formik>
             </div>
             {
-                (status === 'pending' || service.status === 'pending') && (
+                (service && service.status === 'pending') && (
                     <div className='transition-all absolute w-full h-full flex justify-center items-center bg-white/35 top-0'>
                         <div className='loader bg-green-pan' />
                     </div>
                 )
+            }
+            {
+                (service && service.status === 'in progress' && (
+                    <div className='w-full h-full flex flex-col gap-4 justify-center items-center'>
+                        <p className='font-semibold'>You already have a service petition. Click here to see full detail:</p>
+                        <Link href={`/customer/request/${serviceRequest.id}`} className='bg-green-panda rounded px-2 py-2 shadow-lg text-white'>Service Detail</Link>
+                    </div>
+                ))
             }
         </div>
     )
