@@ -1,7 +1,6 @@
 import React from 'react'
 import { Steppers } from '@/components/LoginRegister/Steppers';
 export default function ServiceTracking({ service }) {
-  console.log(service);
   const meterToKilometer = (meter) => {
     var km = meter / 1000;
     return km.toFixed(1);
@@ -32,7 +31,7 @@ export default function ServiceTracking({ service }) {
       <div className='w-[50%] flex flex-col justify-center gap-2 py-2'>
         <p>Type of service: <strong>{service.type}</strong></p>
         <p>Customer Name: <strong>{service.customer.fullName}</strong></p>
-        <p>Car: <strong>Hyundai</strong></p>
+        <p>Car: <strong>{service.car.model}</strong></p>
         <p className='text-xs'><strong>{calculateDistance([service.destLongitude, service.destLatitude], [service.originLongitude, service.originLatitude])} km</strong> from your location</p>
       </div>
     </div>

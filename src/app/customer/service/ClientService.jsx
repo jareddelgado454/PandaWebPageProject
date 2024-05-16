@@ -4,6 +4,7 @@ import Map from '@/components/Map';
 import LocationButton from '@/components/customer/components/LocationButton';
 import RequestInput from '@/components/customer/components/Map/RequestInput';
 import OfferDetails from '@/components/customer/components/Map/OfferDetails';
+import CancelService from '@/components/customer/components/Map/CancelService';
 export default function ClientService() {
   return (
     <div className='w-full h-full p-4'>
@@ -16,6 +17,7 @@ export default function ClientService() {
         </div>
         <RequestInput />
         <OfferDetails />
+        <CancelService />
         {/* <div className='absolute bottom-5 left-0 w-full'>
           <div className='flex justify-between items-center px-2'>
 

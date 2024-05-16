@@ -22,7 +22,6 @@ export default function TechnicianDetail({ technician }) {
             <div className='flex flex-row gap-1 items-center'>
               <p className='text-xs lg:text-base'>Rate:</p> <FaStar className='text-amber-500' /><FaStar className='text-amber-500' /><FaStar className='text-amber-500' /><FaStar className='text-amber-500' />
             </div>
-            <p className='text-xs lg:text-base'>Contact Number: {`(+1) ${technician.contactNumber}`}</p>
           </div>
         </div>
         <div className='w-full lg:w-[10%] flex flex-row h-full gap-4 justify-center'>

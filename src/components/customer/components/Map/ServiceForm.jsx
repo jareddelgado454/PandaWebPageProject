@@ -1,5 +1,7 @@
 'use client';
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import Link from 'next/link';
+import { FaCcStripe, FaMoneyBill } from 'react-icons/fa6';
 import { fetchUserAttributes } from 'aws-amplify/auth';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
@@ -8,12 +10,27 @@ import { client } from '@/contexts/AmplifyContext';
 import { PlaceContext } from '@/contexts/place/PlaceContext';
 import { createService } from '@/graphql/users/customer/mutation';
 import { ServiceContext } from '@/contexts/service/ServiceContext';
-import Link from 'next/link';
+import { listCarsById } from '@/graphql/users/customer/query';
 
 export default function ServiceForm() {
+    const user = Cookies.get("currentUser") && JSON.parse(Cookies.get("currentUser"));
     const { userLocation } = useContext(PlaceContext);
-    const { serviceRequest, setServiceRequest } =useContext(ServiceContext);
+    const { serviceRequest, setServiceRequest } = useContext(ServiceContext);
     const [service, setService] = useState({});
+    const [myCars, setMyCars] = useState([]);
+    const retrieveMyCars = async () => {
+        try {
+            const { data } = await client.graphql({
+                query: listCarsById,
+                variables: {
+                    customerId: user.id
+                }
+            });
+            setMyCars(data.listCars.items);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     const retrieveSubFromCognito = async () => {
         try {
@@ -23,11 +40,11 @@ export default function ServiceForm() {
             console.error(error);
         }
     }
-    useEffect(() => { retrieveSubFromCognito(); }, []);
+    useEffect(() => { retrieveSubFromCognito(); retrieveMyCars(); }, []);
 
     useLayoutEffect(() => {
         const savedService = Cookies.get("ServiceRequest");
-        
+
         if (savedService) {
             try {
                 const parsedService = JSON.parse(savedService);
@@ -53,8 +70,9 @@ export default function ServiceForm() {
                         originLongitude: longitude,
                         serviceCustomerId: sub,
                         status: 'pending',
-                        type: 'inmediate',
-                        car: values.car
+                        type: values.type,
+                        paymentMethod: values.paymentMethod,
+                        serviceCarId: values.car
                     }
                 }
             });
@@ -71,53 +89,98 @@ export default function ServiceForm() {
     useEffect(() => { setService(serviceRequest); }, [setServiceRequest]);
 
     return (
-        <div className='relative h-full overflow-hidden'>
-            <div className={`container mx-auto px-4 w-[90%] ${service && service.status === 'in progress' && 'hidden'}`}>
+        <div className='relative h-full '>
+            <div className={`container mx-auto px-4 w-[90%] h-full ${service && service.status === 'in progress' && 'hidden'}`}>
                 <Formik
                     initialValues={{
                         title: '',
                         description: '',
-                        car: ''
+                        car: '',
+                        type: 'repair',
+                        paymentMethod: 'in cash'
                     }}
                     onSubmit={onHandleSubmit}
                     validationSchema={formSchema}
+                    validateOnChange={false}
                 >
-                    {({ handleSubmit, errors, isValid, setFieldValue }) => (
-                        <Form className={`flex flex-col gap-6 ${(status === 'pending' || service && service.status === 'pending') && 'opacity-25'}`} onSubmit={handleSubmit}>
-                            <p className='my-4'>Make a service request</p>
-                            <div className='flex gap-6'>
-                                <div className='flex flex-col gap-2 w-full'>
+                    {({ handleSubmit, errors, isValid, setFieldValue, values }) => (
+                        <Form className={`grid grid-cols-1 2xl:grid-cols-3 gap-6 h-full ${(service && service.status === 'pending') && 'opacity-25'}`} onSubmit={handleSubmit}>
+                            <div className='flex flex-col gap-4 justify-center'>
+                                <div className='flex flex-col gap-2 w-full justify-center'>
+                                    <label htmlFor="title">Title of service *</label>
                                     <Field
                                         name='title'
                                         type="text"
-                                        className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-white leading-tight focus:outline-none focus:shadow-outline ${errors.title && 'border-red-600'}`}
+                                        className={`shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 dark:text-white leading-tight focus:outline-none focus:shadow-outline ${errors.title && 'border-red-600'}`}
                                         placeholder="Title of service"
                                     />
                                     <ErrorMessage name="title" component={() => (<div className="text-red-600 text-sm">{errors.title}</div>)} />
                                 </div>
                                 <div className='flex flex-col gap-2 w-full'>
+                                    <label htmlFor="description">Description of service *</label>
                                     <Field
                                         name='description'
                                         type="text"
-                                        className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-white leading-tight focus:outline-none focus:shadow-outline ${errors.description && 'border-red-600'}`}
+                                        className={`shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 dark:text-white leading-tight focus:outline-none focus:shadow-outline ${errors.description && 'border-red-600'}`}
                                         placeholder="Description of service"
                                     />
                                     <ErrorMessage name="description" component={() => (<div className="text-red-600 text-sm">{errors.description}</div>)} />
                                 </div>
                             </div>
-                            <div className='flex gap-6'>
-                                <Field
-                                    as='select'
-                                    className='block appearance-none border border-gray-200 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-gray-500 w-2/4'
-                                    placeholder="My cars"
-                                    onChange={({ target }) => setFieldValue('car', target.value)}
-                                >
-                                    <option value="Hyundai">Hyundai</option>
-                                    <option value="Toyota">Toyota</option>
-                                </Field>
-                                <button disabled={!isValid} type="submit" className={`w-2/4 rounded-lg ${!isValid ? 'bg-gray-200 dark:bg-stone-800 text-gray-300' : 'bg-green-panda hover:bg-emerald-700 text-white'}  font-semibold`}>
-                                    Send Request
-                                </button>
+                            <div className='flex flex-col gap-6 justify-center'>
+                                <div className='flex flex-col gap-3 justify-center'>
+                                    <label htmlFor="car">Select car *</label>
+                                    <Field
+                                        as='select'
+                                        name='car'
+                                        className='block appearance-none border border-gray-200 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-gray-500 w-full'
+                                        placeholder="My cars"
+                                    >
+                                        <option value="default">Choose a car</option>
+                                        {myCars.length > 0 ? (
+                                            myCars.map((car, i) => (
+                                                <option key={i} value={car.id}>{car.brand}</option>
+                                            ))
+                                        ) : (
+                                            <option disabled value="">You need to add a car</option>
+                                        )}
+                                    </Field>
+                                    <label htmlFor="car">Select type of service *</label>
+                                    <Field
+                                        as='select'
+                                        name='type'
+                                        className='block appearance-none border border-gray-200 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-gray-500 w-full'
+                                        placeholder="My cars"
+                                        onChange={({ target }) => setFieldValue('type', target.value)}
+                                    >
+                                        <option value="repair">Repair</option>
+                                        <option value="towing">Towing</option>
+                                    </Field>
+                                </div>
+                            </div>
+                            <div className='flex flex-col gap-6 justify-center'>
+                                <div className='flex flex-col gap-4 justify-center'>
+                                    <div className='flex flex-col gap-2 w-full h-full'>
+                                        <div className='flex flex-row gap-2'>
+                                            <label htmlFor="paymentMethod">Payment method</label>
+                                            {values.paymentMethod === 'stripe' && <FaCcStripe className='text-xl flex justify-center items-center h-full ' />}
+                                            {values.paymentMethod === 'in cash' && <FaMoneyBill className='text-xl flex justify-center items-center h-full' />}
+                                        </div>
+                                        <Field
+                                            as='select'
+                                            name='paymentMethod'
+                                            className='block appearance-none border border-gray-200 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-gray-500 w-full'
+                                            placeholder="My cars"
+                                            onChange={({ target }) => setFieldValue('paymentMethod', target.value)}
+                                        >
+                                            <option value="in cash"> In Cash</option>
+                                            <option value="stripe">Stripe</option>
+                                        </Field>
+                                    </div>
+                                    <button disabled={!isValid} type="submit" className={`w-full h-[50%] rounded-lg py-2 transition-all duration-300 ${!isValid ? 'bg-gray-200 dark:bg-stone-800 text-gray-300' : 'bg-green-panda hover:bg-emerald-700 text-white'}  font-semibold`}>
+                                        Send Request
+                                    </button>
+                                </div>
                             </div>
                         </Form>
                     )}

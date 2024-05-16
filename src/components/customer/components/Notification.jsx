@@ -9,13 +9,8 @@ export default function Notification() {
       <div className='flex justify-between'>
         <p className='font-semibold'>Notifications</p>
         <Badge content="5" color="primary">
-          <Avatar
-            radius="md"
-            size="lg"
-            src="https://i.pravatar.cc/300?u=a042581f4e29026709d"
-          />
+          <FaBell className='text-xl' />
         </Badge>
-        <FaBell className='text-xl' />
       </div>
       {numbers.map((item, i) => (
         <div key={i} className='dark:bg-zinc-800 bg-white h-[5rem] rounded-lg p-4'>
