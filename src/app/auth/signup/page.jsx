@@ -102,21 +102,32 @@ const SignUp = () => {
           },
         });
         isAdded = true;
+        console.log("El roooooool del usuario que vamos a crear en la base de datos es:",values.role)
         if(values.role === "technician"){
-          const data = await handleCreateTechnicianOnDataBase({
-            id: cognitoId,
-            email: values.email,
-            fullName: values.fullName,
-            status,
-            subscription: `${values.role === "technician" ? "pending" : ""}`
-          });   
+          try {
+            const data = await handleCreateTechnicianOnDataBase({
+              id: cognitoId,
+              email: values.email,
+              fullName: values.fullName,
+              status,
+              subscription: `${values.role === "technician" ? "pending" : ""}`
+            }); 
+            console.log("after technician created...", data);  
+          } catch (error) {
+            console.log(error)
+          } 
         } else {
-          const result = await handleCreateCustomerOnDataBase({
-            id: cognitoId,
-            email: values.email,
-            fullName: values.fullName,
-            status,
-          });
+          try {
+            const result = await handleCreateCustomerOnDataBase({
+              id: cognitoId,
+              email: values.email,
+              fullName: values.fullName,
+              status,
+            });  
+            console.log("after customer created...", data);
+          } catch (error) {
+            console.log(error);
+          }
         }
         setRoleSelected(values.role);
         if (nextStep?.signUpStep === "CONFIRM_SIGN_UP") {

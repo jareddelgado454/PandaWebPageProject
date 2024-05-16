@@ -24,6 +24,7 @@
     "aws-amplify": "^6.2.0",
     "chart.js": "^4.4.2",
     "dayjs": "^1.11.10",
+    "embla-carousel-react": "^8.0.4",
     "formik": "^2.4.5",
     "framer-motion": "^11.0.22",
     "graphql": "^16.8.1",

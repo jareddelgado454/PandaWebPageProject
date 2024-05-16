@@ -1,171 +1,142 @@
-"use client"
+"use client";
 
-import React, {useState, useEffect, useContext, createContext } from 'react'
-import UserSidebar from '@/components/userComponents/userSideBar/UserSideBar'
-import { client } from "@/contexts/AmplifyContext";
-import { getUserIdByCognitoID } from "@/graphql/custom-queries";
-// import { Modal, ModalContent, ModalHeader, ModalBody, useDisclosure } from "@nextui-org/react";
-import { Formik, Form, Field } from 'formik';
-import { toast } from 'react-toastify';
-import { updateRol } from "@/graphql/users/mutation/users";
+import React, { useState, useEffect, useContext, createContext } from "react";
+import UserSidebar from "@/components/userComponents/userSideBar/UserSideBar";
 import { updateUserAttributes, fetchUserAttributes } from "aws-amplify/auth";
-import UserNavBar from '@/components/userComponents/userNavBar/UserNavBar';
+import UserNavBar from "@/components/userComponents/userNavBar/UserNavBar";
+import { listenUpdateService } from "@/graphql/services/subscriptions/subscription";
+import AssignedTechnicianModal from "@/components/serviceRequest/AssignedTechnicianModal";
+import { useDisclosure } from "@nextui-org/react";
+import { client } from "@/contexts/AmplifyContext";
 
 export const Contexto = createContext();
 
-const UserLayout = ({children}) => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [isOnline, setIsOnline] = useState(null)
+const UserLayout = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isOnline, setIsOnline] = useState(null);
+  const [technicianActivityStatus, setTechnicianActivityStatus] = useState(null);
+  const [serviceIdWaitingFor, setServiceIdWaitingFor] = useState(null);
+  const {
+    isOpen: isAssignedTechnicianModalOpen,
+    onOpen: onAssignedTechnicianModalOpen,
+    onOpenChange: onAssignedTechnicianModalOpenChange,
+  } = useDisclosure();
 
-    const handleChangeStatus = async() => {
-        try {
-          const attributes = await updateUserAttributes({
-            userAttributes: {
-              ["custom:isOnline"]: isOnline ? "false" : "true",
-            },
-          });
-          setIsOnline(!isOnline);
-        } catch (error) {
-          console.log(error)
-        }
+  const handleChangeStatus = async () => {
+    try {
+      const attributes = await updateUserAttributes({
+        userAttributes: {
+          ["custom:isOnline"]: isOnline ? "false" : "true",
+        },
+      });
+      setIsOnline(!isOnline);
+    } catch (error) {
+      console.log(error);
     }
+  };
 
-    const retrieveOneUser = async () => {
-        setLoading(true);
-        try {
-            const userInfo = await fetchUserAttributes();
-            setUser({ ...userInfo });
-            console.log("Este es el coos del tecnico",userInfo.sub);
-            setIsOnline(userInfo["custom:isOnline"] === "true" ? true : false);
-            setLoading(false);
+  const retrieveOneUser = async () => {
+    setLoading(true);
+    try {
+      const userInfo = await fetchUserAttributes();
+      setUser({ ...userInfo });
+      console.log("Este es el coso del tecnico", userInfo.sub);
+      setIsOnline(userInfo["custom:isOnline"] === "true" ? true : false);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      setError(error);
+    }
+  };
+  useEffect(() => {
+    retrieveOneUser();
+    setTechnicianActivityStatus("assigned");
+    onAssignedTechnicianModalOpen();
+  }, []);
+
+  useEffect(() => {
+    if (!user ) {
+      return;
+    }
+    if(serviceIdWaitingFor){
+      console.log("este es el id del tecnico", user.sub);
+      const subscription = client
+        .graphql({
+          query: listenUpdateService,
+          variables: { serviceId: serviceIdWaitingFor ,technicianId: user.sub },
+        })
+        .subscribe({
+          next: ({ data }) => {
+            console.log(data);
+            setTechnicianActivityStatus("inService");
+            onAssignedTechnicianModalOpen();
+          },
+          error: (error) => console.warn(error)
+        });
+  
+      return () => {
+        subscription.unsubscribe();
+      };
+    }
     
-        } catch (error) {
-            setLoading(false);
-            setError(error);
-        }
-    }
-    useEffect(() => { retrieveOneUser(); }, []);
+  }, [user, serviceIdWaitingFor]);
 
-    return (
-            <div className='w-full h-screen bg-zinc-900'>
-                {/* <CustomModal isOpen={isCustomModalOpen} onOpenChange={onOpenCustomModalChange} user={user} callback={retrieveOneUser} /> */}
-                {loading ? (<div className='text-white'></div>) : user &&
-                    (
-                        <div className="w-full h-full flex justify-center items-center p-0">
-                            <UserSidebar user={user}/>
-                            <div className='flex-1 flex flex-col h-screen'>
-                                <UserNavBar user={user} isOnline={isOnline} handleChangeStatus={handleChangeStatus}/>
-                                <Contexto.Provider value={{ user, loading, isOnline, handleChangeStatus, retrieveOneUser }}>
-                                    {children}
-                                </Contexto.Provider>
-                            </div>
-                        </div>
-                    )
-                }          
+  return (
+    <div className="w-full h-screen bg-zinc-900">
+      {loading ? (
+        <div className="text-white"></div>
+      ) : (
+        user && (
+          <div
+            className={`w-full h-full flex justify-center items-center p-0 ${
+              technicianActivityStatus === "waitingResponse" ? "relative" : ""
+            }`}
+          >
+            {technicianActivityStatus === "waitingResponse" && (
+              <div className="text-white font-bold text-[17px] flex flex-col absolute bottom-3 right-3 border-[2px] border-emerald-400 bg-emerald-600 shadow-emerald-500/20 shadow-lg w-[250px] h-[80px] z-50 rounded-md p-3">
+                <div className="flex w-full gap-x-2 items-center">
+                  Client reviewing offer{" "}
+                  <img
+                    src="/loading/loading4.gif"
+                    className="w-[25px] h-[25px]"
+                  />
+                </div>
+                <u className="cursor-pointer text-[15px] text-zinc-100">
+                  Go to the Offer
+                </u>
+              </div>
+            )}
+            <UserSidebar user={user} />
+            <div className="flex-1 flex flex-col h-screen">
+              <UserNavBar
+                user={user}
+                isOnline={isOnline}
+                handleChangeStatus={handleChangeStatus}
+              />
+              <Contexto.Provider
+                value={{
+                  user,
+                  loading,
+                  isOnline,
+                  handleChangeStatus,
+                  retrieveOneUser,
+                  setTechnicianActivityStatus,
+                  setServiceIdWaitingFor
+                }}
+              >
+                {children}
+              </Contexto.Provider>
             </div>
-    )
-}
+            <AssignedTechnicianModal
+                isOpen={isAssignedTechnicianModalOpen}
+                onOpenChange={onAssignedTechnicianModalOpenChange}
+            />
+          </div>
+        )
+      )}
+    </div>
+  );
+};
 
 export default UserLayout;
-
-
-// const CustomModal = ({ isOpen, onOpenChange, user, callback }) => {
-
-//     const onHandleSubmit = async (values, { setSubmitting }) => {
-//         setSubmitting(true);
-//         try {
-//             if (!user) return;
-//             await client.graphql({
-//                 query: updateRol,
-//                 variables: {
-//                     email: user.email,
-//                     input: {
-//                         id: user.dbId,
-//                         rol: values.rol,
-//                         subscription: values.rol === "technician" ? "pending" : "",
-//                     }
-//                 }
-//             })
-//             onOpenChange(false);
-//             await updateCustomRol(values.rol);
-//             callback();
-//             toast.success("Updated successfully.");
-
-//         } catch (error) {
-//             toast.error(`Error during the process.`);
-//         }
-//     };
-//     const updateCustomRol = async (rol) => {
-//         try {
-//             await updateUserAttributes({
-//                 userAttributes: {
-//                     'custom:role': rol,
-//                     'custom:subscription': rol === "technician" ? "pending" : "",
-//                 }
-//             });
-//         } catch (error) {
-//             console.log(error);
-//         }
-//     }
-//     return (
-//         <>
-//             {
-//                 user && (
-//                     <Modal
-//                         isOpen={isOpen}
-//                         onOpenChange={onOpenChange}
-//                         isDismissable={false}
-//                         isKeyboardDismissDisabled={true}
-//                         hideCloseButton={true}
-//                         classNames={{
-//                             backdrop: 'bg-[#292f46]/50 backdrop-opacity-40'
-//                         }}
-//                     >
-//                         <ModalContent>
-//                             <>
-//                                 <ModalHeader className="flex flex-col gap-1 text-center">¡Attention!</ModalHeader>
-//                                 <ModalBody>
-//                                     <p className="tracking-widest text-justify">
-//                                         You have to complete your general information to use our app. (obligatory)
-//                                     </p>
-//                                     <p className="tracking-widest text-justify">
-//                                         Please, select the type of user you are going to be in our application.
-//                                     </p>
-//                                 </ModalBody>
-//                                 <ModalBody>
-//                                     <Formik
-//                                         initialValues={{
-//                                             rol: 'customer'
-//                                         }}
-//                                         onSubmit={onHandleSubmit}
-//                                     >
-//                                         {({ handleSubmit }) => (
-//                                             <Form onSubmit={handleSubmit} className="flex flex-col gap-8">
-//                                                 <Field
-//                                                     as="select"
-//                                                     name="rol"
-//                                                     className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none"
-//                                                 >
-//                                                     <option value="customer">Customer</option>
-//                                                     <option value="technician">Technician</option>
-//                                                 </Field>
-
-//                                                 <button
-//                                                     type="submit"
-//                                                     className="bg-green-panda hover:bg-green-400 text-white font-bold py-2 px-4 rounded transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300"
-//                                                 >
-//                                                     Update
-//                                                 </button>
-//                                             </Form>
-//                                         )}
-//                                     </Formik>
-//                                 </ModalBody>
-//                             </>
-//                         </ModalContent>
-//                     </Modal>
-//                 )
-//             }
-//         </>
-//     );
-// };

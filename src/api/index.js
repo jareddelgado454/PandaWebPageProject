@@ -31,7 +31,7 @@ export const handleCreateTechnicianOnDataBase = async(values, isAdded) => {
             variables: {
                 input: { ...values }
             },
-            authMode: isAdded ? 'iam' : 'userPool'
+            // authMode: isAdded ? 'iam' : 'userPool'
         });
         return data;
     } catch (error) {

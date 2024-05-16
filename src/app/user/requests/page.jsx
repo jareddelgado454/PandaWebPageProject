@@ -7,8 +7,9 @@ import {
   RiMailOpenFill,
   RiAlertFill,
   RiErrorWarningFill,
-  RiArrowRightSLine  , RiMapPin2Fill,
-  RiCarFill ,
+  RiArrowRightSLine,
+  RiMapPin2Fill,
+  RiCarFill,
 } from "react-icons/ri";
 import { Contexto } from "../layout";
 import Image from "next/image";
@@ -20,9 +21,14 @@ import { client } from "@/contexts/AmplifyContext";
 import { useDisclosure } from "@nextui-org/react";
 import ModalDetailRequest from "@/components/serviceRequest/ModalDetailRequest";
 
-
 const Requests = () => {
-  const { isOnline, handleChangeStatus, user } = useContext(Contexto);
+  const {
+    isOnline,
+    handleChangeStatus,
+    user,
+    setTechnicianActivityStatus,
+    setServiceIdWaitingFor,
+  } = useContext(Contexto);
   const [requests, setRequests] = useState(null);
   const [loading, setLoading] = useState(true);
   const [idSelected, setIdSelected] = useState(null);
@@ -36,7 +42,7 @@ const Requests = () => {
     setIdSelected(id);
     console.log("abrite hijo de remilputa");
     onDetailRequestModalOpen();
-  }
+  };
 
   const retrieveData = async () => {
     try {
@@ -45,37 +51,47 @@ const Requests = () => {
         query: getAllRequestServices,
       });
       console.log(data);
-      setRequests(data.listServices.items);  
+      setRequests(data.listServices.items);
       setLoading(false);
     } catch (error) {
       console.log(error);
       setLoading(false);
-    }  
-  }
+    }
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     retrieveData();
-  },[]);
+  }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     const subscription = client.graphql({ query: ListenService }).subscribe({
       next: (data) => {
-        setRequests((prevRequests) => [...prevRequests, data.data.onCreateService]);
+        setRequests((prevRequests) => [
+          ...prevRequests,
+          data.data.onCreateService,
+        ]);
       },
       error: (error) => {
         console.error("Error in the subscription:", error);
       },
     });
-    console.log("subscription",subscription)
+    console.log("subscription", subscription);
 
     return () => {
       subscription.unsubscribe();
     };
-  },[]);
+  }, []);
 
   return (
     <div className="w-full h-[calc(100vh-100px)] relative pr-[20px]">
-      <ModalDetailRequest isOpen={isDetailRequestModalOpen} onOpenChange={onDetailRequestModalOpenChange} id={idSelected} technicianId={user.sub}/>
+      <ModalDetailRequest
+        isOpen={isDetailRequestModalOpen}
+        onOpenChange={onDetailRequestModalOpenChange}
+        id={idSelected}
+        technicianId={user.sub}
+        setTechnicianActivityStatus={setTechnicianActivityStatus}
+        setServiceIdWaitingFor={setServiceIdWaitingFor}
+      />
       <div className="w-full h-[calc(100vh-100px)] flex flex-col px-4 bg-zinc-800 rounded-xl pt-4">
         <div className="w-full mb-6">
           <div className="w-[250px] bg-zinc-700 rounded-2xl flex items-center justify-center p-2 ">
@@ -108,12 +124,19 @@ const Requests = () => {
                   Click on the request to see information and be able to accept
                 </div>
                 <div className="w-full flex flex-col gap-y-2">
-                  {
-                    loading ? <span>Loading...</span> : 
-                    requests.map((request)=>{
-                      return <ServiceRequest key={request.id} id={request.id} showDetailRequest={showDetailRequest} />
+                  {loading ? (
+                    <span>Loading...</span>
+                  ) : (
+                    requests.map((request) => {
+                      return (
+                        <ServiceRequest
+                          key={request.id}
+                          id={request.id}
+                          showDetailRequest={showDetailRequest}
+                        />
+                      );
                     })
-                  }
+                  )}
                 </div>
               </div>
             </div>
