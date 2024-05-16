@@ -23,7 +23,7 @@ export const createService = gql`
 
 export const updateService = gql`
     mutation MyMutation($serviceId: ID!, $serviceTechnicianSelectedId: ID!) {
-        updateService(input: {id: $serviceId, serviceTechnicianSelectedId: $serviceTechnicianSelectedId, destLatitude: -77.09353, destLongitude: -12.04109, type: "repair", status: "in progress"}){
+        updateService(input: {id: $serviceId, serviceTechnicianSelectedId: $serviceTechnicianSelectedId, destLatitude: -71.53157, destLongitude: -16.44717, type: "repair", status: "in progress"}){
             id
             originLatitude
             originLongitude
@@ -43,5 +43,18 @@ export const updateService = gql`
             createdAt
             updatedAt
         }
+    }
+`;
+
+export const saveMyCar = gql`
+    mutation SaveCar($input: CreateCarInput!) {
+    createCar(input: $input) {
+        id
+        brand
+        image
+        model
+        fuel
+        createdAt
+    }
     }
 `;

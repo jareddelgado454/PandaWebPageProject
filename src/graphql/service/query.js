@@ -10,22 +10,32 @@ export const getServiceById = gql`
         status
         originLatitude
         originLongitude
+        price
+        repairPrice
+        total
+        paymentMethod
+        car{
+            id
+            brand
+            fuel
+            model
+        }
         customer{
-        id
-        fullName
-        contactNumber
+            id
+            fullName
+            contactNumber
         }
         technicianSelected{
-        id
-        email
-        fullName
-        contactNumber
-        profilePicture
-        rate
-        createdAt
+            id
+            email
+            fullName
+            contactNumber
+            profilePicture
+            rate
+            createdAt
         }
         destLatitude
-            destLongitude
+        destLongitude
     }
     }
 `;

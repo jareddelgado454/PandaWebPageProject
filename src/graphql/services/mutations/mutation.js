@@ -38,3 +38,12 @@ export const OnChangeStatusService = gql`
     }
   }
 `;
+
+export const DeleteMyRequest = gql`
+  mutation DeleteRequest($serviceId: ID!, $serviceCustomerId: ID!) {
+    deleteService(input: {id: $serviceId}, condition: {serviceCustomerId: {eq: $serviceCustomerId}}){
+      id
+    }
+  }
+
+`;
