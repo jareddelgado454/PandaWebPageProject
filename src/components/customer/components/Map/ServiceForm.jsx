@@ -82,13 +82,8 @@ export default function ServiceForm() {
                     onSubmit={onHandleSubmit}
                     validationSchema={formSchema}
                 >
-<<<<<<< HEAD
-                    {({ handleSubmit, errors, isValid }) => (
-                        <Form className={`flex flex-col gap-6 ${(service && service.status === 'pending') && 'opacity-25'}`} onSubmit={handleSubmit}>
-=======
                     {({ handleSubmit, errors, isValid, setFieldValue }) => (
-                        <Form className={`flex flex-col gap-6 ${(status === 'pending' || service.status === 'pending') && 'opacity-25'}`} onSubmit={handleSubmit}>
->>>>>>> a7cec37 (from remote)
+                        <Form className={`flex flex-col gap-6 ${(status === 'pending' || service && service.status === 'pending') && 'opacity-25'}`} onSubmit={handleSubmit}>
                             <p className='my-4'>Make a service request</p>
                             <div className='flex gap-6'>
                                 <div className='flex flex-col gap-2 w-full'>

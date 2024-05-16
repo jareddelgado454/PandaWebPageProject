@@ -1,7 +1,5 @@
 import "./globals.css";
 import { robotoFlex } from "./font";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import AmplifyContext from "@/contexts/AmplifyContext";
 export const metadata = {
   title: "The panda App",
@@ -11,7 +9,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="max-h-full">
       <body className={`${robotoFlex.className} antialiased dark:bg-zinc-800`}>
-        <ToastContainer />
             <AmplifyContext>
               {children}
             </AmplifyContext>

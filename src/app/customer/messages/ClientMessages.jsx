@@ -17,7 +17,7 @@ export default function ClientMessages() {
           </div>
           <div className='flex flex-col gap-2 w-full overflow-y-auto'>
             {numbers.map((item) => (
-              <div id="chat_technician" className='flex flex-row justify-between gap-2 dark:hover:bg-zinc-700 hover:rounded-lg transition-all duration-300 ease-in cursor-pointer p-3'>
+              <div key={item} id="chat_technician" className='flex flex-row justify-between gap-2 dark:hover:bg-zinc-700 hover:rounded-lg transition-all duration-300 ease-in cursor-pointer p-3'>
                 <div className='flex flex-row gap-2'>
                   <Image
                     src={`/logo.jpg`}

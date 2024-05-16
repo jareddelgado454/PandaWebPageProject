@@ -122,7 +122,7 @@ const LandingNavBar = () => {
                                         <Avatar
                                             as="button"
                                             className='transition-transform'
-                                            src={pictureUser ? pictureUser : user && user.profilePicture ? user.profilePicture : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                                            src={pictureUser ? pictureUser : user && user.profilePicture ? user.profilePicture : "/image/defaultProfilePicture.jpg"}
                                         >
                                         </Avatar>
                                     </DropdownTrigger>
