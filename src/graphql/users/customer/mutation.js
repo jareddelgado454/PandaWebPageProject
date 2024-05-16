@@ -11,6 +11,8 @@ export const createService = gql`
                 id
                 fullName
                 email
+                contactNumber
+                profilePicture
             }
             createdAt
             updatedAt
@@ -20,29 +22,25 @@ export const createService = gql`
 `;
 
 export const updateService = gql`
-    mutation updateService($input: UpdateServiceInput!) {
-        updateService(input: $input){
+    mutation MyMutation($serviceId: ID!, $serviceTechnicianSelectedId: ID!) {
+        updateService(input: {id: $serviceId, serviceTechnicianSelectedId: $serviceTechnicianSelectedId, destLatitude: -77.09353, destLongitude: -12.04109, type: "repair", status: "in progress"}){
             id
-            title
-            description
-            type
-            status
             originLatitude
             originLongitude
-            customer{
-                id
-                email
-                contactNumber
-                profilePicture
-            }
+            status
+            serviceTechnicianSelectedId
             technicianSelected{
                 id
                 email
+                fullName
                 contactNumber
                 profilePicture
+                rate
             }
             destLatitude
             destLongitude
+            type
+            createdAt
             updatedAt
         }
     }

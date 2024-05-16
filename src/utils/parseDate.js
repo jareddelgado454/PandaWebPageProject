@@ -26,3 +26,15 @@ export const SecondDateFormatter = (date) => {
     return `${month} ${day}, ${year} ${hours}:${minutes} ${amOrPm}`;
 
 }
+
+export const ThirdDateFormatter = (date) => {
+
+    const createdAt = new Date(date);
+    const currentDate = new Date();
+
+    const differenceMs = currentDate - createdAt;
+    const days = Math.floor(differenceMs / (1000 * 60 * 60 * 24));
+
+    return `Total days as technician: ${days} days`;
+
+}

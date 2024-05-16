@@ -29,11 +29,11 @@ export default function CustomerSidebar() {
   }
   useEffect(() => { retrieveOneUser(); }, []);
   return (
-    <div className="md:w-[21%] 2xl:w-2/12 md:h-[calc(100vh-50px)] 2xl:h-[calc(100vh-100px)] rounded-2xl bg-white shadow-lg dark:bg-zinc-800 flex flex-col items-center justify-between gap-2 overflow-y-auto">
+    <div className="w-full md:w-[21%] 2xl:w-2/12 md:h-[calc(100vh-50px)] 2xl:h-[calc(100vh-100px)] rounded-2xl bg-white shadow-lg dark:bg-zinc-800 flex flex-row lg:flex-col items-center justify-between gap-2 overflow-x-auto">
       <DeleteUserModal isOpen={isDeleteUserModalOpen} onOpenChange={onDeleteUserModalChange} user={user} />
       <PassWordModal isOpen={isChangePasswordModalOpen} onOpenChange={onChangePasswordModalChange} />
       <SendReportModal isOpen={isSendReportModalOpen} onOpenChange={onSendReportModalChange} />
-      <div className="w-full flex flex-col items-center p-4 gap-2">
+      <div className="w-full flex flex-row lg:flex-col items-center p-4 gap-2">
         <h4 className='font-bold text-[#40C48E] dark:text-gray-200 w-full text-left mb-2'>Main Menu</h4>
         <div className='w-full flex flex-col gap-y-2'>
           <Link href={'/customer'} className={`w-full  rounded-md transition-all hover:bg-emerald-500 flex gap-x-2 hover:text-white text-[16px] items-center p-2 px-3 cursor-pointer`}>
@@ -60,7 +60,7 @@ export default function CustomerSidebar() {
           </Link>
         </div>
         <div className='w-full flex flex-col gap-y-2'>
-          <Link href={'/customer/reports'} className={`w-full rounded-md transition-all hover:bg-emerald-500 hover:text-white flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
+          <Link href={'/customer/messages'} className={`w-full rounded-md transition-all hover:bg-emerald-500 hover:text-white flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
             <Badge color="default" size={'sm'} content={0} shape="circle">
               <FaComments />
             </Badge>
@@ -86,18 +86,18 @@ export default function CustomerSidebar() {
             Report an issue
           </div>
         </div>
-      </div>
-      <div className="w-full flex items-center p-4 ">
-        <div
-          onClick={() => {
-            Cookies.remove("currentUser");
-            signOut();
-            router.replace("/");
-          }}
-          className={`w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 pt-4 cursor-pointer border-t-[2px] border-zinc-700 `}
-        >
-          <RiLogoutCircleLine />
-          Logout
+        <div className="w-full flex items-center p-4 ">
+          <div
+            onClick={() => {
+              Cookies.remove("currentUser");
+              signOut();
+              router.replace("/");
+            }}
+            className={`w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 pt-4 cursor-pointer border-t-[2px] border-zinc-700 `}
+          >
+            <RiLogoutCircleLine />
+            Logout
+          </div>
         </div>
       </div>
     </div>

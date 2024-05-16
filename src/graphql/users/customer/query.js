@@ -14,6 +14,7 @@ export const listOffersByServiceId = gql`
                     fullName
                     rate
                 }
+                serviceId
             }
         }
     }
