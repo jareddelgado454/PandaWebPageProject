@@ -29,7 +29,7 @@ import serviceImage1 from "../../../public/serviceImages/serviceImage1.jpg"
 import serviceImage2 from "../../../public/serviceImages/serviceImage2.jpg"
 import serviceImage3 from "../../../public/serviceImages/serviceImage3.jpg"
 
-const ModalDetailRequest = ({ isOpen, onOpenChange, id, technicianId, setTechnicianActivityStatus }) => {
+const ModalDetailRequest = ({ isOpen, onOpenChange, id, technicianId, setTechnicianActivityStatus, setServiceIdWaitingFor }) => {
   const [loading, setLoading] = useState(true);
   const [request, setRequest] = useState(null);
   const [priceRepair, setPriceRepair] = useState(0);
@@ -54,6 +54,7 @@ const ModalDetailRequest = ({ isOpen, onOpenChange, id, technicianId, setTechnic
         setSendingOffer(false);
         onOpenChange(false);
         setTechnicianActivityStatus("waitingResponse");
+        setServiceIdWaitingFor(data.createOffer.serviceId);
       } catch (error) {
         console.log(error);
         setSendingOffer(false);

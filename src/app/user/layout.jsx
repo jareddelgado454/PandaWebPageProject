@@ -4,6 +4,10 @@ import React, { useState, useEffect, useContext, createContext } from "react";
 import UserSidebar from "@/components/userComponents/userSideBar/UserSideBar";
 import { updateUserAttributes, fetchUserAttributes } from "aws-amplify/auth";
 import UserNavBar from "@/components/userComponents/userNavBar/UserNavBar";
+import { listenUpdateService } from "@/graphql/services/subscriptions/subscription";
+import AssignedTechnicianModal from "@/components/serviceRequest/AssignedTechnicianModal";
+import { useDisclosure } from "@nextui-org/react";
+import { client } from "@/contexts/AmplifyContext";
 
 export const Contexto = createContext();
 
@@ -12,6 +16,12 @@ const UserLayout = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [isOnline, setIsOnline] = useState(null);
   const [technicianActivityStatus, setTechnicianActivityStatus] = useState(null);
+  const [serviceIdWaitingFor, setServiceIdWaitingFor] = useState(null);
+  const {
+    isOpen: isAssignedTechnicianModalOpen,
+    onOpen: onAssignedTechnicianModalOpen,
+    onOpenChange: onAssignedTechnicianModalOpenChange,
+  } = useDisclosure();
 
   const handleChangeStatus = async () => {
     try {
@@ -41,7 +51,36 @@ const UserLayout = ({ children }) => {
   };
   useEffect(() => {
     retrieveOneUser();
+    setTechnicianActivityStatus("assigned");
+    onAssignedTechnicianModalOpen();
   }, []);
+
+  useEffect(() => {
+    if (!user ) {
+      return;
+    }
+    if(serviceIdWaitingFor){
+      console.log("este es el id del tecnico", user.sub);
+      const subscription = client
+        .graphql({
+          query: listenUpdateService,
+          variables: { serviceId: serviceIdWaitingFor ,technicianId: user.sub },
+        })
+        .subscribe({
+          next: ({ data }) => {
+            console.log(data);
+            setTechnicianActivityStatus("inService");
+            onAssignedTechnicianModalOpen();
+          },
+          error: (error) => console.warn(error)
+        });
+  
+      return () => {
+        subscription.unsubscribe();
+      };
+    }
+    
+  }, [user, serviceIdWaitingFor]);
 
   return (
     <div className="w-full h-screen bg-zinc-900">
@@ -49,14 +88,25 @@ const UserLayout = ({ children }) => {
         <div className="text-white"></div>
       ) : (
         user && (
-          <div className={`w-full h-full flex justify-center items-center p-0 ${technicianActivityStatus === "waitingResponse" ? "relative" : ""}`}>
-            {
-                technicianActivityStatus === "waitingResponse" &&
-                <div className="text-white font-bold text-[17px] flex flex-col absolute bottom-3 right-3 border-[2px] border-emerald-400 bg-emerald-600 shadow-emerald-500/20 shadow-lg w-[250px] h-[80px] z-50 rounded-md p-3">
-                    <div className="flex w-full gap-x-2 items-center">Client reviewing offer <img src="/loading/loading4.gif" className="w-[25px] h-[25px]"/></div>
-                    <u className="cursor-pointer text-[15px] text-zinc-100">Go to the Offer</u>
+          <div
+            className={`w-full h-full flex justify-center items-center p-0 ${
+              technicianActivityStatus === "waitingResponse" ? "relative" : ""
+            }`}
+          >
+            {technicianActivityStatus === "waitingResponse" && (
+              <div className="text-white font-bold text-[17px] flex flex-col absolute bottom-3 right-3 border-[2px] border-emerald-400 bg-emerald-600 shadow-emerald-500/20 shadow-lg w-[250px] h-[80px] z-50 rounded-md p-3">
+                <div className="flex w-full gap-x-2 items-center">
+                  Client reviewing offer{" "}
+                  <img
+                    src="/loading/loading4.gif"
+                    className="w-[25px] h-[25px]"
+                  />
                 </div>
-            }
+                <u className="cursor-pointer text-[15px] text-zinc-100">
+                  Go to the Offer
+                </u>
+              </div>
+            )}
             <UserSidebar user={user} />
             <div className="flex-1 flex flex-col h-screen">
               <UserNavBar
@@ -71,12 +121,17 @@ const UserLayout = ({ children }) => {
                   isOnline,
                   handleChangeStatus,
                   retrieveOneUser,
-                  setTechnicianActivityStatus
+                  setTechnicianActivityStatus,
+                  setServiceIdWaitingFor
                 }}
               >
                 {children}
               </Contexto.Provider>
             </div>
+            <AssignedTechnicianModal
+                isOpen={isAssignedTechnicianModalOpen}
+                onOpenChange={onAssignedTechnicianModalOpenChange}
+            />
           </div>
         )
       )}
