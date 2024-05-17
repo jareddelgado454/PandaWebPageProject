@@ -181,6 +181,7 @@ export const Sidebar = () => {
                   }`}
                   onClick={() => {
                     signOut();
+                    router.replace("/");
                     Cookies.remove("currentUser");
                   }}
                 >
