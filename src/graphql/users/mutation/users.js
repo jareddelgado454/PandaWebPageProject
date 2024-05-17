@@ -53,14 +53,9 @@ export const updateInformation = gql`
     updateUser(input: $input, condition: {email: {eq: $email}}){
       id
       email
-      role
       fullName
       contactNumber
       status
-      address
-      password
-      city
-      state
     }
   }
 `;

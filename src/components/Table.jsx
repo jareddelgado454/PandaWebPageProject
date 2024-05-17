@@ -12,7 +12,8 @@ import {
 } from "react-icons/fa6";
 import { useDisclosure } from "@nextui-org/react";
 import { updateStatus, deleteUserById } from "@/graphql/users/mutation/users";
-export const Table = ({ item, callback }) => {
+import Image from "next/image";
+export const Table = ({ item, callback, typeUser }) => {
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
   const {
@@ -44,25 +45,6 @@ export const Table = ({ item, callback }) => {
     onShowModalOpen();
     setRecordSelected(user);
   }
-  const handleUpdateStatus = async (user, value) => {
-    console.log(user);
-    try {
-      if (!user) {
-        return;
-      }
-      await client.graphql({
-        query: updateStatus,
-        variables: {
-          id: user.id,
-          status: value,
-          email: user.email,
-        },
-      });
-      callback();
-    } catch (error) {
-      console.log();
-    }
-  };
   const handleDeleteUserId = async (id, email) => {
     try {
       if (!id && !email) {
@@ -151,12 +133,12 @@ export const Table = ({ item, callback }) => {
             />
           </div>
 
-          <button
+          {/* <button
               className="bg-green-panda dark:bg-zinc-800 dark:border-2 dark:border-[#40C48E] dark:hover:bg-green-panda hover:bg-[#2e966a] text-white font-bold py-2 px-4 rounded-lg w-full md:w-[10rem] transition-all"
               onClick={onUserAddModalOpen}
           >
             Add
-          </button>
+          </button> */}
         </div>
       </div>
       <div className="relative overflow-x-auto rounded-lg shadow-lg p-6 bg-white dark:bg-zinc-800">
@@ -220,7 +202,7 @@ export const Table = ({ item, callback }) => {
                   scope="row"
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
-                  <img
+                  <Image
                     src={
                       user.profilePicture
                         ? user.profilePicture
@@ -228,6 +210,8 @@ export const Table = ({ item, callback }) => {
                     }
                     alt="logo_image"
                     className="w-[2rem] h-[2rem] rounded-lg object-cover bg-center"
+                    height={100}
+                    width={100}
                   />
                 </th>
                 <td className="px-6 py-4">
@@ -275,21 +259,6 @@ export const Table = ({ item, callback }) => {
                     >
                       <FaPencil />
                     </button>
-                    {user.status === "active" ? (
-                      <button
-                        type="button"
-                        onClick={() => handleUpdateStatus(user, "inactive")}
-                      >
-                        <FaPersonCircleCheck className="text-2xl text-emerald-400" />
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => handleUpdateStatus(user, "active")}
-                      >
-                        <FaPersonCircleMinus className="text-2xl text-rose-600" />
-                      </button>
-                    )}
                   </div>
                 </td>
               </tr>
@@ -300,6 +269,7 @@ export const Table = ({ item, callback }) => {
             onOpenChange={onEditModalOpenChange}
             user={recordSelected}
             callback={callback}
+            typeUser={typeUser}
             setRecordSelected={setRecordSelected}
           />
           <DeleteModal

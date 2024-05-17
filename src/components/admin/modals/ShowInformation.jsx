@@ -47,9 +47,6 @@ const ShowInformation = ({ isOpen, onOpenChange, user }) => {
                                 <p><strong>Email:</strong> { user.email }</p>
                             </div>
                             <div>
-                                <p><strong>Role:</strong> { user.role }</p>
-                            </div>
-                            <div>
                                 <p><strong>Status:</strong> { user.status }</p>
                             </div>
                             <div>

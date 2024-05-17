@@ -7,18 +7,23 @@ import Cookies from 'js-cookie';
 export default function AnswerInput({ reportId }) {
     const parsedUser = JSON.parse(Cookies.get("currentUser"));
     const [text, setText] = useState("");
-    const handleSendText = async(e) => {
+    const handleSendText = async (e) => {
         e.preventDefault();
-        await client.graphql({
-            query: AnswerReport,
-            variables: {
-                input: {
-                    text,
-                    answerUserId: parsedUser.id,
-                    reportId
+        try {
+            await client.graphql({
+                query: AnswerReport,
+                variables: {
+                    input: {
+                        text,
+                        answerUserId: parsedUser.id,
+                        reportId
+                    }
                 }
-            }
-        });
+            });
+        } catch (error) {
+            console.log();
+        }
+        setText("");
     }
     return (
         <div className='sticky bottom-0 w-full'>
@@ -29,7 +34,7 @@ export default function AnswerInput({ reportId }) {
                         id="input"
                         className='m-0 w-full rounded-lg bg-zinc-200 dark:bg-zinc-900 resize-none border-0 focus:ring-0 focus-visible:ring-0 max-h-[3rem] placeholder-black/50 dark:placeholder-white/50'
                         name="message"
-                        onChange={({target}) => setText(target.value)}
+                        onChange={({ target }) => setText(target.value)}
                     />
                     <FaPaperPlane className='dark:text-[#40C48E] text-2xl cursor-pointer' onClick={handleSendText} />
                 </form>
