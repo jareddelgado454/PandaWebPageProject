@@ -60,6 +60,21 @@ type User @model @auth(
     updatedAt: AWSDateTime
 }
 
+type Rate @model @auth(
+    rules: [
+        { allow: owner, ownerField: "customer", operations: [create, update, delete, read] }
+        { allow: private, operations: [ read ] }
+    ]
+) {
+    id: ID!
+    technicianId: ID! @index(name: "byTechnician")
+    technician: Technician @belongsTo(fields: ["technicianId"])
+    customer: Customer! @hasOne
+    rate: Float!
+    comment: String
+    createdAt: AWSDateTime
+}
+
 type Technician @model @auth(
     rules: [
         { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
@@ -80,7 +95,7 @@ type Technician @model @auth(
     zipCode: Int
     subscription: String
     fee: Int
-    rate: Float
+    rate: [Rate] @hasMany(indexName: "byTechnician", fields: ["id"])
     loLatitude: Float!
     loLongitude: Float!
     createdAt: AWSDateTime
@@ -96,11 +111,11 @@ type Car @model @auth(
     ]
 ) {
     id: ID! @index
-    description: String!
+    description: String
     brand: String!
     image: String!
     model: String!
-    fuel: String!
+    year: String!
 }
 
 type Customer @model @auth(
@@ -152,7 +167,7 @@ type Service @model @auth(
     description: String!
     type: String!
     status: String!
-    completed: String!
+    completed: String
     originLatitude: Float!
     originLongitude: Float!
     customer: Customer! @hasOne
@@ -164,6 +179,7 @@ type Service @model @auth(
     paymentMethod: String!
     price: Float
     repairPrice: Float
+    fee: Float
     total: Float
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
