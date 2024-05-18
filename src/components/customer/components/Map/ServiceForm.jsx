@@ -1,7 +1,7 @@
 'use client';
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import Link from 'next/link';
-import { FaCcStripe, FaMoneyBill } from 'react-icons/fa6';
+import { FaCreditCard, FaMoneyBill } from 'react-icons/fa6';
 import { fetchUserAttributes } from 'aws-amplify/auth';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
@@ -55,7 +55,7 @@ export default function ServiceForm() {
         }
     }, []);
 
-    const onHandleSubmit = async (values) => {
+    const onHandleSubmit = async (values, { resetForm }) => {
         const [longitude, latitude] = userLocation;
         console.log(values);
         const sub = await retrieveSubFromCognito();
@@ -81,6 +81,7 @@ export default function ServiceForm() {
                 "ServiceRequest",
                 JSON.stringify(data.createService)
             );
+            resetForm();
         } catch (error) {
             console.error(error);
         }
@@ -163,7 +164,7 @@ export default function ServiceForm() {
                                     <div className='flex flex-col gap-2 w-full h-full'>
                                         <div className='flex flex-row gap-2'>
                                             <label htmlFor="paymentMethod">Payment method</label>
-                                            {values.paymentMethod === 'stripe' && <FaCcStripe className='text-xl flex justify-center items-center h-full ' />}
+                                            {values.paymentMethod === 'card' && <FaCreditCard className='text-xl flex justify-center items-center h-full ' />}
                                             {values.paymentMethod === 'in cash' && <FaMoneyBill className='text-xl flex justify-center items-center h-full' />}
                                         </div>
                                         <Field
@@ -174,7 +175,7 @@ export default function ServiceForm() {
                                             onChange={({ target }) => setFieldValue('paymentMethod', target.value)}
                                         >
                                             <option value="in cash"> In Cash</option>
-                                            <option value="stripe">Stripe</option>
+                                            <option value="card">Pay with card</option>
                                         </Field>
                                     </div>
                                     <button disabled={!isValid} type="submit" className={`w-full h-[50%] rounded-lg py-2 transition-all duration-300 ${!isValid ? 'bg-gray-200 dark:bg-stone-800 text-gray-300' : 'bg-green-panda hover:bg-emerald-700 text-white'}  font-semibold`}>

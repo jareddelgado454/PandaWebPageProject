@@ -48,6 +48,7 @@ export default function DisplayCars() {
                 src={`${baseUrl}${car.image}`}
                 width={250}
                 height={250}
+                alt='Car_customer'
                 className='w-[10rem] h-full rounded-xl object-cover object-center'
               />
               <div className='flex flex-col gap-2 justify-center'>
@@ -58,7 +59,7 @@ export default function DisplayCars() {
                   <strong>Model:</strong><p className='dark:text-zinc-300'> {car.model}</p>
                 </div>
                 <div className='flex flex-row gap-2'>
-                  <strong>Fuel:</strong><p className='dark:text-zinc-300'> {car.fuel}</p>
+                  <strong>Fuel:</strong><p className='dark:text-zinc-300'> {car.year}</p>
                 </div>
                 <div className='flex flex-row gap-2'>
                   <strong>Added:</strong><p className='dark:text-zinc-300'> {DateFormatter(car.createdAt)}</p>

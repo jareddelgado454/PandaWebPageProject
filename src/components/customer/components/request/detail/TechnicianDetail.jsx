@@ -17,7 +17,7 @@ export default function TechnicianDetail({ technician }) {
             priority
           />
           <div className='flex flex-col gap-1 h-full'>
-            <p className='text-md lg:text-base'>{technician.fullName}</p>
+            <p className='text-md lg:text-base 2xl:text-2xl'>{technician.fullName}</p>
             <p className='text-xs lg:text-sm text-zinc-500 dark:text-zinc-300'>{ThirdDateFormatter(technician.createdAt)}</p>
             <div className='flex flex-row gap-1 items-center'>
               <p className='text-xs lg:text-base'>Rate:</p> <FaStar className='text-amber-500' /><FaStar className='text-amber-500' /><FaStar className='text-amber-500' /><FaStar className='text-amber-500' />

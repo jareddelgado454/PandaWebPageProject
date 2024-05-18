@@ -57,7 +57,7 @@ export default function CarForm() {
       console.log(`Error from here : ${error}`);
     }
   };
-  const onSubmit = async (values, { resetForm, setSubmitting }) => {
+  const onSubmit = async (values, { resetForm }) => {
     let image;
     try {
       if (photograph) {
@@ -89,7 +89,7 @@ export default function CarForm() {
       initialValues={{
         brand: '',
         model: '',
-        fuel: ''
+        year: ''
       }}
       onSubmit={onSubmit}
       validateOnBlur={false}
@@ -136,12 +136,12 @@ export default function CarForm() {
             />
           </div>
           <div className='mt-4 flex flex-col gap-4 w-full'>
-            <label htmlFor="title" className='dark:text-white text-gray-700 text-sm font-bold'>
-              fuel of car *
+            <label htmlFor="year" className='dark:text-white text-gray-700 text-sm font-bold'>
+              year of car *
             </label>
             <Field
               type="text"
-              name="fuel"
+              name="year"
               className={`dark:text-white shadow appearance-none border ${!isValid && 'border-rose-600'} bg-transparent rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
             />
           </div>
