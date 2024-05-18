@@ -29,7 +29,7 @@ export const listCarsById = gql`
                 brand
                 image
                 model
-                fuel
+                year
                 createdAt
             }
         }

@@ -39,6 +39,19 @@ export const OnChangeStatusService = gql`
   }
 `;
 
+export const OnChangeStatusServiceByCustomer = gql`
+  mutation UpdateService($input: UpdateServiceInput!, $customerId: ID!) {
+    updateService(input: $input, condition: {serviceCustomerId: {eq: $customerId}}) {
+      id
+      status
+      completed
+      serviceCustomerId
+      serviceTechnicianSelectedId
+    }
+  }
+
+`;
+
 export const DeleteMyRequest = gql`
   mutation DeleteRequest($serviceId: ID!, $serviceCustomerId: ID!) {
     deleteService(input: {id: $serviceId}, condition: {serviceCustomerId: {eq: $serviceCustomerId}}){

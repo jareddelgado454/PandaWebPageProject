@@ -17,8 +17,8 @@ export const getServiceById = gql`
         car{
             id
             brand
-            fuel
             model
+            year
         }
         customer{
             id
@@ -31,7 +31,6 @@ export const getServiceById = gql`
             fullName
             contactNumber
             profilePicture
-            rate
             createdAt
         }
         destLatitude
