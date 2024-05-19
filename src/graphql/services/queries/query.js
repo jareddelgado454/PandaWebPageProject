@@ -34,9 +34,9 @@ export const getRequestServiceById = gql`
             title
             type
             updatedAt
-            customer {
-              fullName
-            }
+            # customer {
+            #   fullName
+            # }
         }
     }
 `;

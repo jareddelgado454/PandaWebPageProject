@@ -72,6 +72,23 @@
     }
   },
   "geo": {
+    "ThePandaLocationSearchIndex": {
+      "accessType": "AuthorizedUsers",
+      "dataProvider": "HERE",
+      "dataSourceIntendedUse": "SingleUse",
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "pandawebapp0a05bcd0"
+        }
+      ],
+      "isDefault": true,
+      "providerPlugin": "awscloudformation",
+      "service": "PlaceIndex"
+    },
     "pandamap": {
       "accessType": "AuthorizedAndGuestUsers",
       "dependsOn": [

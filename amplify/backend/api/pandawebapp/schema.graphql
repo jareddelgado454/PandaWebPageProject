@@ -17,6 +17,7 @@ type Report @model @auth(
     rules: [
         { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
         { allow: owner, ownerField: "createdBy", operations: [ read, update, create, delete ] }
+        { allow: private, operations: [ read, update, create, delete ] }
     ]
 ){
     id: ID!
@@ -24,6 +25,8 @@ type Report @model @auth(
     title: String!
     description: String!
     image: String
+    customer: Customer @hasOne
+    technician: Technician @hasOne
     createdAt: AWSDateTime
     status: ReportStatus!
     answers: [Answer] @hasMany(indexName: "byReport", fields: ["id"])
@@ -49,21 +52,27 @@ type User @model @auth(
 ) {
     id: ID!
     email: String
-    role: String
     fullName: String
     contactNumber: String
     status: String
-    address: String
-    city: String
-    state: String
     profilePicture: String
-    zipCode: Int
-    subscription: String
-    cognitoId: String
-    fee: Int
-    rate: Float
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
+}
+
+type Rate @model @auth(
+    rules: [
+        { allow: owner, ownerField: "customer", operations: [create, update, delete, read] }
+        { allow: private, operations: [ read ] }
+    ]
+) {
+    id: ID!
+    technicianId: ID! @index(name: "byTechnician")
+    technician: Technician @belongsTo(fields: ["technicianId"])
+    customer: Customer! @hasOne
+    rate: Float!
+    comment: String
+    createdAt: AWSDateTime
 }
 
 type Technician @model @auth(
@@ -86,12 +95,27 @@ type Technician @model @auth(
     zipCode: Int
     subscription: String
     fee: Int
-    rate: Float
+    rate: [Rate] @hasMany(indexName: "byTechnician", fields: ["id"])
     loLatitude: Float!
     loLongitude: Float!
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
     schedule: Schedule
+}
+
+type Car @model @auth(
+    rules: [
+        { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
+        { allow: owner,operations: [ read, update, create, delete ] }
+        { allow: private, operations: [ read ] }
+    ]
+) {
+    id: ID! @index
+    description: String
+    brand: String!
+    image: String!
+    model: String!
+    year: String!
 }
 
 type Customer @model @auth(
@@ -114,6 +138,7 @@ type Customer @model @auth(
     zipCode: Int
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
+    cars: [Car] @hasMany
 }
 
 type Schedule {
@@ -142,6 +167,7 @@ type Service @model @auth(
     description: String!
     type: String!
     status: String!
+    completed: String
     originLatitude: Float!
     originLongitude: Float!
     customer: Customer! @hasOne
@@ -149,6 +175,12 @@ type Service @model @auth(
     destLatitude: Float
     destLongitude: Float
     offers: [Offer] @hasMany(indexName: "byOffer", fields: ["id"])
+    car: Car! @hasOne
+    paymentMethod: String!
+    price: Float
+    repairPrice: Float
+    fee: Float
+    total: Float
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
 }

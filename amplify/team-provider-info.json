@@ -28,7 +28,9 @@
         "pandawebapp": {}
       },
       "geo": {
-        "pandamap": {}
+        "pandamap": {},
+        "ThePandaSearchIndex": {},
+        "ThePandaLocationSearchIndex": {}
       }
     }
   }

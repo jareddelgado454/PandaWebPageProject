@@ -28,6 +28,11 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "geo": {
+    "ThePandaLocationSearchIndex": {
+      "Arn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "pandamap": {
       "Arn": "string",
       "Name": "string",

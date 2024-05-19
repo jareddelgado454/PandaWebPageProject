@@ -58,6 +58,12 @@
           }
         },
         "default": "pandamap-dev"
+      },
+      "search_indices": {
+        "items": [
+          "ThePandaLocationSearchIndex-dev"
+        ],
+        "default": "ThePandaLocationSearchIndex-dev"
       }
     }
   }

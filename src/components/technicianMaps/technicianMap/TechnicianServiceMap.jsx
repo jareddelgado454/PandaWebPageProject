@@ -1,118 +1,83 @@
 'use client';
-import React, { useContext, useLayoutEffect, useRef } from 'react';
+import React, { useContext, useLayoutEffect, useRef, useEffect } from 'react';
 import { createMap } from 'maplibre-gl-js-amplify';
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css';
 import "maplibre-gl-js-amplify/dist/public/amplify-map.css";
 import { PlaceTechnicianContext } from '@/contexts/placeTechnician/PlaceTechnicianContext';
 import { MapTechnicianContext } from '@/contexts/mapTechnician/MapTechnicianContext';
-export default function TechnicianServiceMap() {
+export default function TechnicianServiceMap({ customerLocation }) {
   const mapDiv = useRef(null);
   const { technicianLocation, isLoading } = useContext(PlaceTechnicianContext);
-  const { setTechnicianMap } = useContext(MapTechnicianContext);
+  const { map: technicianMap, setTechnicianMap } = useContext(MapTechnicianContext);
 
-  const geojson = {
-    'type': 'FeatureCollection',
-    'features': [
-      {
-        'type': 'Feature',
-        'properties': {
-          'message': 'Foo',
-        },
-        'geometry': {
-          'type': 'Point',
-          'coordinates': [-77.02761691395426, -12.04260133525865]
-        }
-      },
-      {
-        'type': 'Feature',
-        'properties': {
-          'message': 'Bar',
-        },
-        'geometry': {
-          'type': 'Point',
-          'coordinates': [-77.02886488213905, -12.042742305265621]
-        }
-      },
-    ]
-  };
-  const geojson2 = {
-    'type': 'Feature',
-    'properties': {},
-    'geometry': {
-      'type': 'LineString',
-      'coordinates': [
-        [-77.02761691395426, -12.04260133525865],
-        technicianLocation
-      ]
-    }
-  };
+  console.log("coordenadas",technicianLocation);
   useLayoutEffect(() => {
     const initializeMap = async () => {
       if (!isLoading) {
+        console.log(technicianLocation);
         const map = await createMap({
           container: mapDiv.current,
           center: technicianLocation ? technicianLocation : [-123.1187, 49.2819],
           zoom: 14
         });
-        setTechnicianMap(map);
-        map.on('load', () => {
-          map.addSource('LineString', {
-            'type': 'geojson',
-            'data': geojson2
-          });
-          map.addLayer({
-            'id': 'LineString',
-            'type': 'line',
-            'source': 'LineString',
-            'layout': {
-              'line-join': 'round',
-              'line-cap': 'round'
-            },
-            'paint': {
-              'line-color': '#BF93E4',
-              'line-width': 5
-            }
-          });
-        })
+
         if (technicianLocation) {
           map.flyTo({
             center: technicianLocation,
-            zoom: 16,
+            zoom: 14,
             duration: 2000,
             easing: (t) => t,
           });
 
-          const pulsatingCircle = document.createElement('div');
-          pulsatingCircle.className = 'pulsating-circle';
+          // const markerTechnician = document.createElement('div');
+          // markerTechnician.className = 'markerTechnician';
+          // const imagen = document.createElement('img');
+          // imagen.src = './image/defaultProfilePicture.jpg'; 
+          // imagen.alt = 'Perfil'; 
+          // imagen.className = "profilePictureMap"
+          // imagen.style.width = '38px'; 
+          // imagen.style.height = '38px';
+          // markerTechnician.appendChild(imagen);
 
-          new maplibregl.Marker(pulsatingCircle)
+          // new maplibregl.Marker({element : markerTechnician})
+          //   .setLngLat(technicianLocation)
+          //   .addTo(map);
+
+          new maplibregl.Marker()
             .setLngLat(technicianLocation)
             .addTo(map);
-
-          geojson.features.forEach((marker) => {
-            const el = document.createElement('img');
-            el.src = `https://www.pngkey.com/png/full/60-601527_car-png-top.png`;
-            el.style.width = '30px'; 
-            el.style.height = '30px';
-
-            el.addEventListener('click', () => {
-              window.alert(marker.properties.message);
-            });
-
-            // add marker to map
-            new maplibregl.Marker({ element: el })
-              .setLngLat(marker.geometry.coordinates)
-              .addTo(map);
-          });
-
         }
-
+  
+        const destinationCoords = [-71.54762650927478, -16.447128594951618]; 
+        if (destinationCoords) {
+          new maplibregl.Marker()
+            .setLngLat(destinationCoords)
+            .addTo(map);
+        }
+        setTechnicianMap(map);
       }
-
     };
     initializeMap();
   }, [isLoading]);
+
+  useEffect(() => {
+    if (technicianLocation && technicianMap) {
+      technicianMap.flyTo({
+        center: technicianLocation,
+        zoom: 14,
+        duration: 2000,
+        easing: (t) => t,
+      });
+
+      const existingMarkers = document.querySelectorAll('.maplibregl-marker');
+      existingMarkers.forEach(marker => marker.remove());
+
+      new maplibregl.Marker()
+        .setLngLat(technicianLocation)
+        .addTo(technicianMap);
+    }
+  }, [technicianLocation, technicianMap]);
 
   return (
     <>

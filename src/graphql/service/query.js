@@ -11,21 +11,21 @@ export const getServiceById = gql`
         originLatitude
         originLongitude
         customer{
-        id
-        fullName
-        contactNumber
+            id
+            fullName
+            contactNumber
         }
         technicianSelected{
-        id
-        email
-        fullName
-        contactNumber
-        profilePicture
-        rate
-        createdAt
+            id
+            email
+            fullName
+            contactNumber
+            profilePicture
+            rate
+            createdAt
         }
         destLatitude
-            destLongitude
+        destLongitude
     }
     }
 `;

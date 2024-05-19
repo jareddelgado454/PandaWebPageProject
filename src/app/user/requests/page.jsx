@@ -40,7 +40,6 @@ const Requests = () => {
 
   const showDetailRequest = (id) => {
     setIdSelected(id);
-    console.log("abrite hijo de remilputa");
     onDetailRequestModalOpen();
   };
 
