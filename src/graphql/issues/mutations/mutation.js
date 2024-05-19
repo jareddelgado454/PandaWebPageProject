@@ -19,11 +19,11 @@ export const UpdateReportStatus = gql`
             title
             createdBy
             createdAt
-            user {
-            id
-            fullName
-            email
-            profilePicture
+            customer {
+                id
+                fullName
+                email
+                profilePicture
             }
             answers {
                 items {

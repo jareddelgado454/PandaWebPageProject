@@ -40,3 +40,18 @@ export const getRequestServiceById = gql`
         }
     }
 `;
+
+export const listMyServices = gql`
+  query ListServices($customerId: ID!) {
+    listServices(filter: {serviceCustomerId: {eq: $customerId}}) {
+    items {
+      id
+      status
+      price
+      type
+      title
+      createdAt
+    }
+  }
+  }
+`;

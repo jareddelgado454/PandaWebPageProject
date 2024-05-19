@@ -1,7 +1,7 @@
 import React from 'react'
 import { FaDollarSign } from 'react-icons/fa6'
 
-export default function PaymentMethod() {
+export default function PaymentMethod({ service }) {
   return (
     <div className='h-full w-full flex flex-col lg:flex-row gap-2'>
       <div className='w-[60%] h-full flex justify-center items-center'>
@@ -21,12 +21,14 @@ export default function PaymentMethod() {
         </div>
       </div>
       <div className='w-[40%] h-full flex justify-center items-center'>
-        <div className='border-2 rounded-lg border-white dark:border-zinc-800 p-4 flex flex-col gap-4 w-[80%]'>
-          <p>Payment Method: <strong>Stripe</strong></p>
-          <button className='flex gap-1 bg-indigo-500 rounded-xl p-3 justify-center text-white items-center'>
-            <FaDollarSign />
-            Pay with Stripe
-          </button>
+        <div className='border-2 rounded-lg bg-white dark:border-zinc-900 dark:bg-zinc-800 p-4 flex flex-col gap-4 w-[80%]'>
+          <p>Payment Method: <strong>{service.paymentMethod}</strong></p>
+          {service.paymentMethod === 'card' && (
+            <button className='flex gap-1 bg-indigo-500 rounded-xl p-3 justify-center text-white items-center'>
+              <FaDollarSign />
+              Pay with Stripe
+            </button>
+          )}
         </div>
       </div>
     </div>

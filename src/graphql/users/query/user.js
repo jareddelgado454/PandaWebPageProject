@@ -71,21 +71,38 @@ export const listUsers = gql`
   }
 `;
 
-export const listUsersFilter = gql`
-  query ListUsers($email: String!, $role: String!) {
-    listUsers(filter: {email: {ne: $email}, role: {eq: $role}}) {
+export const listCustomers = gql`
+  query ListCustomers {
+    listCustomers {
       items {
-        id
-        email
-        role
-        fullName
-        contactNumber
-        status
-        profilePicture
-        __typename
+          id
+          email
+          fullName
+          contactNumber
+          status
+          profilePicture
+          createdAt
       }
     }
   }
+`;
+
+
+export const listTechnicians = gql`
+  query ListTechnicians {
+    listTechnicians {
+      items{
+            id
+            email
+            fullName
+            contactNumber
+            status
+            profilePicture
+            createdAt
+      }
+    }
+  }
+
 `;
 
 export const filterUserByRate = gql`

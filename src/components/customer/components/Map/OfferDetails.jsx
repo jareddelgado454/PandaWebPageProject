@@ -63,7 +63,8 @@ export default function OfferDetails() {
         query: updateService,
         variables: {
           serviceId: offer.serviceId,
-          serviceTechnicianSelectedId: offer.technician.id
+          serviceTechnicianSelectedId: offer.technician.id,
+          price: offer.amount
         }
       });
       setServiceRequest(data.updateService);
@@ -82,7 +83,9 @@ export default function OfferDetails() {
       console.error(error);
     }
   }
-
+  const onDeleteOffer = (id) => {
+    setOffers((prevOffers) => prevOffers.filter((offer) => offer.id !== id));
+  }
   return (
     <>
       {serviceRequest && serviceRequest.status === 'pending' && (
@@ -120,7 +123,7 @@ export default function OfferDetails() {
                           <p className='text-xs 2xl:text-base'>Amount: <strong className='text-[#40C48E]'>${offer.amount}</strong></p>
                           <div className='flex gap-2'>
                             <button onClick={() => onHandleAcceptServiceFromTechnician(offer)} className='bg-green-panda py-1 px-2 rounded-lg text-sm 2xl:text-base text-white'>Accept</button>
-                            <button className='bg-rose-600 py-1 px-2 rounded-lg text-sm 2xl:text-base text-white'>Reject</button>
+                            <button onClick={() => onDeleteOffer(offer.id)} className='bg-rose-600 py-1 px-2 rounded-lg text-sm 2xl:text-base text-white'>Reject</button>
                             {/* <button className='bg-sky-600 py-1 px-2 rounded-lg '>Info</button> */}
                           </div>
                         </div>

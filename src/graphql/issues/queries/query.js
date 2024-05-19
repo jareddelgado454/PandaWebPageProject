@@ -12,7 +12,7 @@ export const getAllIssues = gql`
                 createdBy
                 updatedAt
                 status
-                user {
+                customer {
                     id
                     profilePicture
                     fullName

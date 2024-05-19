@@ -18,3 +18,11 @@ export const onCreateOffers = gql`
     }
 
 `;
+
+export const onUpdateServiceStatus = gql`
+    subscription UpdateService($serviceId: ID!) {
+        onUpdateService(filter: {id: {eq: $serviceId}}){
+            status
+        }
+    }
+`;

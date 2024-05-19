@@ -8,6 +8,7 @@ import { ListenAnswersById, onDeleteAnswersSubscription } from '@/graphql/issues
 import { FaXmark } from 'react-icons/fa6';
 import { onDeleteAnswerById } from '@/graphql/issues/mutations/mutation';
 import 'animate.css';
+import Image from 'next/image';
 export default function ShowComments({ reportId }) {
     const [answers, setAnswers] = useState([]);
     const answerRefs = useRef({});
@@ -21,7 +22,6 @@ export default function ShowComments({ reportId }) {
                 }
             });
             setAnswers(data.listAnswers.items);
-            console.log(data.listAnswers.items);
         } catch (error) {
             console.log(error);
         }
@@ -84,8 +84,10 @@ export default function ShowComments({ reportId }) {
                     <div className='flex gap-2 w-full h-[4rem] justify-between'>
                         <div className='flex gap-2 w-full h-[4rem]'>
                             <Tooltip color='default' content={`id: ${answer.user.id}`}>
-                                <img
-                                    src={`${answer.user.profilePicture}`}
+                                <Image
+                                    height={150}
+                                    width={150}
+                                    src={`${answer.user && answer.user.profilePicture ? answer.user.profilePicture : '/image/defaultProfilePicture.jpg'}`}
                                     alt='admin_profile_picture'
                                     className='w-[3rem] h-[3rem] rounded-full'
                                 />

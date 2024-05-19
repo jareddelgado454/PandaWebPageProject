@@ -4,7 +4,7 @@ import { CardData } from '@/components/admin/cards/CardData';
 import { Table } from '@/components/Table';
 import { calculateTotalPages, totalNumbers } from '@/utils/calculate';
 import { client } from '@/contexts/AmplifyContext';
-import { listUsersFilter } from '@/graphql/users/query/user';
+import { listCustomers } from '@/graphql/users/query/user';
 
 const Customers = () => {
   const [page, setPage] = useState(1);
@@ -19,13 +19,13 @@ const Customers = () => {
     setLoading(true);
     try {
       const { data } = await client.graphql({
-        query: listUsersFilter,
+        query: listCustomers,
         variables: {
           email: "test@gmail.com",
           role: "customer"
         },
       });
-      setUsers(data.listUsers.items);
+      setUsers(data.listCustomers.items);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -99,7 +99,7 @@ const Customers = () => {
             {/* Todo: Table */}
             <div className='px-4'>  
               {
-                filteredUsers && <Table item={filteredUsers} callback={retrieveData}/>
+                filteredUsers && <Table item={filteredUsers} callback={retrieveData} typeUser={'customer'} />
               }
             </div>
             <div className='flex flex-col md:flex-row items-center justify-between w-full gap-4 px-4'>

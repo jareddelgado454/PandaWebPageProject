@@ -38,18 +38,18 @@ export default function InformationModal({ isOpen, onOpenChange, issueSelected }
                       <Image
                         width={50} height={50}
                         className='w-[3rem] h-[3rem] object-cover object-center rounded-full'
-                        src={`${issueSelected.user.profilePicture}`} alt='user_profile_picture'
+                        src={`${issueSelected.customer && issueSelected.customer.profilePicture ? issueSelected.customer.profilePicture : '/image/defaultProfilePicture.jpg'}`} alt='user_profile_picture'
                       />
                       <div className='flex flex-col w-full gap-1'>
                         <div className='flex flex-row flex-nowrap items-center gap-2'>
-                          <p className='text-xs font-semibold'>{issueSelected.user.fullName}</p>
+                          <p className='text-xs font-semibold'>{issueSelected.customer.fullName}</p>
                           <p className='text-xs text-zinc-400'>{SecondDateFormatter(new Date(issueSelected.createdAt))}</p>
                         </div>
-                        <p className='text-zinc-400 font-light text-xs'>{issueSelected.user.email}</p>
+                        <p className='text-zinc-400 font-light text-xs'>{issueSelected.customer.email}</p>
                       </div>
                     </div>
                     <div className={`w-full mb-5 ${zoom && 'hidden'}`} id='user_report_description'>
-                      <p className='text-sm text-justify h-[5rem] overflow-y-scroll max-h-[5rem]'>
+                      <p className='text-sm text-justify h-[5rem] overflow-y-auto max-h-[5rem]'>
                         {issueSelected.description}
                       </p>
                     </div>
@@ -88,7 +88,7 @@ export default function InformationModal({ isOpen, onOpenChange, issueSelected }
                 </div>
                 <div
                     id='answers_admins'
-                    className=' relative flex flex-col flex-nowrap gap-5 rounded-lg 2xl:h-[32.5rem] overflow-y-scroll slide-in-right overflow-hidden'
+                    className=' relative flex flex-col flex-nowrap gap-5 rounded-lg 2xl:h-[32.5rem] overflow-y-auto slide-in-right overflow-hidden'
                 >
                   <ShowComments reportId={issueSelected.id} />
                   <div className="flex-grow"></div>

@@ -61,7 +61,7 @@ export const onUpdateReport = gql`
             title
             createdBy
             createdAt
-            user {
+            customer {
                 id
                 fullName
                 email

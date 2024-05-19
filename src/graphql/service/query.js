@@ -10,6 +10,16 @@ export const getServiceById = gql`
         status
         originLatitude
         originLongitude
+        price
+        repairPrice
+        total
+        paymentMethod
+        car{
+            id
+            brand
+            model
+            year
+        }
         customer{
             id
             fullName

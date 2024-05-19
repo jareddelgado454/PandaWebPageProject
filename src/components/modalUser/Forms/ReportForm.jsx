@@ -11,7 +11,6 @@ import { uploadData } from 'aws-amplify/storage';
 export const ReportForm = () => {
     const [percent, setPercent] = useState(0);
     const [photograph, setPhotograph] = useState(null);
-    const [imageUploaded, setImageUploaded] = useState(null);
     function handleChangePhotograph(event) {
         const file = event.target.files[0];
         if (file) {
@@ -73,7 +72,8 @@ export const ReportForm = () => {
                         ...values,
                         reportUserId: userParsed.id,
                         image: image,
-                        status: "pending"
+                        status: "pending",
+                        reportCustomerId: userParsed.id
                     }
                 }
             })

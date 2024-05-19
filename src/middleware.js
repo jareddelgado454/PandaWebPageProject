@@ -1,6 +1,5 @@
-import { signOut } from 'aws-amplify/auth';
 import { NextResponse } from 'next/server'
-export const protectedRoutes = ["/admin-dashboard", "/user"];
+export const protectedRoutes = ["/admin-dashboard", "/user", "/customer"];
 export const authRoutes = ["/auth/signup", "/auth/signin"];
 export const publicRoutes = ["/"];
 export function middleware(request) {
@@ -9,7 +8,7 @@ export function middleware(request) {
   const userRol = currentUserCookie ? JSON.parse(currentUser).role : null;
 
   if (
-    protectedRoutes.includes(request.nextUrl.pathname) &&
+    protectedRoutes.some(route => request.nextUrl.pathname.startsWith(route)) &&
     (!currentUser || Date.now() > new Date((JSON.parse(currentUser).expiredAt) * 1000))
   ) {
     request.cookies.delete("currentUser");

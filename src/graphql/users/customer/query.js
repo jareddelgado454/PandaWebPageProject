@@ -20,3 +20,18 @@ export const listOffersByServiceId = gql`
     }
 
 `;
+
+export const listCarsById = gql`
+    query retrieveMyCars($customerId: ID!) {
+        listCars(filter: {customerCarsId: {eq: $customerId}}){
+            items{
+                id
+                brand
+                image
+                model
+                year
+                createdAt
+            }
+        }
+    }
+`;
