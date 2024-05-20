@@ -7,12 +7,19 @@ export const createService = gql`
             originLatitude
             originLongitude
             status
+            type
             customer {
                 id
                 fullName
                 email
                 contactNumber
                 profilePicture
+            }
+            car {
+                id
+                brand
+                model
+                year
             }
             createdAt
             updatedAt
@@ -22,8 +29,8 @@ export const createService = gql`
 `;
 
 export const updateService = gql`
-    mutation MyMutation($serviceId: ID!, $serviceTechnicianSelectedId: ID!, $price: Float!) {
-        updateService(input: {id: $serviceId, serviceTechnicianSelectedId: $serviceTechnicianSelectedId, price: $price,destLatitude: -71.53157, destLongitude: -16.44717, type: "repair", status: "service accepted"}){
+    mutation MyMutation($serviceId: ID!, $serviceTechnicianSelectedId: ID!, $price: Float!, $destLatitude: Float!, $destLongitude: Float!) {
+        updateService(input: {id: $serviceId, serviceTechnicianSelectedId: $serviceTechnicianSelectedId, price: $price, destLatitude: $destLatitude, destLongitude: $destLongitude, type: "repair", status: "service accepted"}){
             id
             originLatitude
             originLongitude
@@ -35,7 +42,6 @@ export const updateService = gql`
                 fullName
                 contactNumber
                 profilePicture
-                rate
             }
             destLatitude
             destLongitude
@@ -57,4 +63,22 @@ export const saveMyCar = gql`
         createdAt
     }
     }
+`;
+
+export const updateMyCar = gql`
+    mutation UpdateCar($input: UpdateCarInput!) {
+        updateCar(input: $input) {
+            id
+        }
+    }
+`;
+
+export const deleteMyCar = gql`
+    mutation DeleteCar($carId: ID!) {
+        deleteCar(input: {id: $carId}){
+            id
+            customerCarsId
+        }
+    }
+
 `;

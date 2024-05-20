@@ -12,7 +12,13 @@ export const listOffersByServiceId = gql`
                     id
                     profilePicture
                     fullName
-                    rate
+                    loLatitude
+                    loLongitude
+                    rate {
+                        items{
+                            rate
+                        }
+                    }
                 }
                 serviceId
             }
