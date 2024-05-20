@@ -15,6 +15,7 @@ import { Amplify } from "aws-amplify";
 import { client } from "@/contexts/AmplifyContext";
 import config from "@/amplifyconfiguration.json";
 import { getUserByCognitoID } from "@/graphql/custom-queries";
+import Image from 'next/image';
 
 Amplify.configure(config);
 
@@ -77,7 +78,7 @@ const LandingNavBar = () => {
   return (
     <nav className='relative w-full  p-3 py-4 flex justify-between z-40'>
         <div className="flex gap-x-2 items-center order-1 lg:order-2">
-            <img src="/panda.png" className="w-[4rem] h-[3rem] drop-shadow-lg" alt="panda_logo" />
+            <Image width={150} height={150} src="/panda.png" className="w-[4rem] h-[3rem] drop-shadow-lg" alt="panda_logo" />
             <p className="font-bold drop-shadow-xl tracking-wider text-white">Panda CMS</p> 
         </div>
         <div className='flex items-center lg:hidden'>
