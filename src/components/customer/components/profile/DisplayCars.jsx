@@ -15,10 +15,10 @@ export default function DisplayCars() {
     onOpen,
     onOpenChange
   } = useDisclosure();
-  const [carSelected, setCarSelected] = useState(null)
+  const [carSelected, setCarSelected] = useState(null);
   const [cars, setCars] = useState([]);
+  const [isEditing, setIsEditing] = useState(false)
   const retrieveMyCars = async () => {
-    console.log(user.id);
     try {
       const { data } = await client.graphql({
         query: listCarsById,
@@ -32,16 +32,20 @@ export default function DisplayCars() {
     }
   }
   useEffect(() => { retrieveMyCars(); }, []);
-
+  const onCardClick = (car) => {
+    setCarSelected(car);
+    setIsEditing(true);
+    onOpen();
+  }
   return (
     <div className='w-full flex flex-col lg:flex-row gap-2 md:h-[53vh] 2xl:h-[63vh] relative'>
-      <AddNewCarModal isOpen={isOpen} onOpenChange={onOpenChange} />
+      <AddNewCarModal isOpen={isOpen} onOpenChange={onOpenChange} callback={retrieveMyCars} car={carSelected} edit={isEditing} />
       <div className={`transition-all duration-300 grid grid-cols-3 gap-4 w-full overflow-y-auto`}>
         {cars.map((car, i) => (
           <div
             key={i}
-            className={`dark:bg-zinc-900 w-full h-[12rem] rounded-lg shadow cursor-pointer p-4 overflow-hidden`}
-            onClick={() => setCarSelected(car)}
+            className={`bg-green-panda dark:bg-zinc-900 w-full h-[12rem] rounded-lg shadow cursor-pointer p-4 overflow-hidden transition ease-in-out  hover:scale-95`}
+            onClick={() => onCardClick(car)}
           >
             <div className='w-full h-full flex flex-row gap-5'>
               <Image
@@ -53,16 +57,16 @@ export default function DisplayCars() {
               />
               <div className='flex flex-col gap-2 justify-center'>
                 <div className='flex flex-row gap-2'>
-                  <strong>Brand:</strong><p className='dark:text-zinc-300'> {car.brand}</p>
+                  <strong className='text-white dark:text-zinc-300'>Brand:</strong><p className='text-white dark:text-zinc-300'> {car.brand}</p>
                 </div>
                 <div className='flex flex-row gap-2'>
-                  <strong>Model:</strong><p className='dark:text-zinc-300'> {car.model}</p>
+                  <strong className='text-white dark:text-zinc-300'>Model:</strong><p className='text-white dark:text-zinc-300'> {car.model}</p>
                 </div>
                 <div className='flex flex-row gap-2'>
-                  <strong>Fuel:</strong><p className='dark:text-zinc-300'> {car.year}</p>
+                  <strong className='text-white dark:text-zinc-300'>Fuel:</strong><p className='text-white dark:text-zinc-300'> {car.year}</p>
                 </div>
                 <div className='flex flex-row gap-2'>
-                  <strong>Added:</strong><p className='dark:text-zinc-300'> {DateFormatter(car.createdAt)}</p>
+                  <strong className='text-white dark:text-zinc-300'>Added:</strong><p className='text-white dark:text-zinc-300'> {DateFormatter(car.createdAt)}</p>
                 </div>
               </div>
             </div>
@@ -70,7 +74,7 @@ export default function DisplayCars() {
         ))}
       </div>
       <div className='absolute left-2 bottom-2'>
-        <p className='text-rose-600 cursor-pointer' onClick={() => onOpen()}>Add new car</p>
+        <p className='text-rose-600 cursor-pointer' onClick={() => {onOpen(); setIsEditing(false); setCarSelected(null)}}>Add new car</p>
       </div>
     </div>
   )

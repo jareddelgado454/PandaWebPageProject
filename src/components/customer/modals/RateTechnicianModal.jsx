@@ -4,7 +4,6 @@ import { Modal, ModalContent, ModalBody, ModalFooter, Button } from "@nextui-org
 import Image from 'next/image';
 import { FaRegStar, FaRegStarHalf, FaStar } from 'react-icons/fa6';
 export default function RateTechnicianModal({ isOpen, onOpenChange, technician }) {
-    console.log(technician);
     return (
         <Modal backdrop='blur' isOpen={isOpen} onOpenChange={onOpenChange} size='sm' placement='center'
             className='bg-zinc-200 dark:bg-zinc-900'
