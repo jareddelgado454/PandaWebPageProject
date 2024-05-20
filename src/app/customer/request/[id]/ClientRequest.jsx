@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { PaymentComponent, ServiceTrackingComponent, TechnicianDetailComponent } from '@/components/customer';
 import { client } from '@/contexts/AmplifyContext';
-import { getServiceById } from '@/graphql/service/query';
 import CancelConfirmModal from '@/components/customer/modals/CancelConfirmModal';
 import { useDisclosure } from '@nextui-org/react';
+import { getServiceById } from '@/graphql/services/queries/query';
 export default function ClientRequest() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const router = useRouter();
@@ -29,11 +29,11 @@ export default function ClientRequest() {
     }
   }
   useEffect(() => { retrieveServiceDetail() }, []);
-  useEffect(() => {
-    if(service && service.status === 'cancelled'){
-      router.replace("/customer")
-    }
-  }, [service, router]);
+  // useEffect(() => {
+  //   if(service && service.status === 'cancelled'){
+  //     router.replace("/customer")
+  //   }
+  // }, [service, router]);
   return (
     <>
       <CancelConfirmModal isOpen={isOpen} onOpenChange={onOpenChange} service={service} />
@@ -46,7 +46,9 @@ export default function ClientRequest() {
           <div className='flex flex-col gap-4 h-full'>
             <div className='flex justify-between'>
               <p>Service id: <strong className='text-[#40C48E]'>{id}</strong></p>
-              <p className='text-rose-600 cursor-pointer font-semibold' onClick={onOpen}>Cancel Service</p>
+              <p className='text-rose-600 cursor-pointer font-semibold' onClick={onOpen}>
+                {service && (service.status === 'service accepted' || service.status === 'on the way'  || service.status === 'in progress') ? 'Cancel Request' : ''}
+              </p>
             </div>
             {service && (
               <>
