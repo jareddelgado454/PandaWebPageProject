@@ -3,9 +3,9 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Formik, Form, Field } from "formik";
 import ErrorAlert from "@/components/LoginRegister/modals/ErrorAlert";
-import { signUp } from "aws-amplify/auth";
+import { fetchAuthSession, signIn, signUp } from "aws-amplify/auth";
 import validationSignUp from "./validationSignUp";
-import { handleCreateTechnicianOnDataBase, handleCreateCustomerOnDataBase } from "@/api";
+import { handleCreateCustomerOnDataBase, handleCreateTechnicianOnDataBase } from "@/api";
 import {
   RiMailLine,
   RiLockLine,
@@ -16,12 +16,12 @@ import {
 } from "react-icons/ri";
 import VerificationCodeModal from "@/components/LoginRegister/modals/VerificationCodeModal";
 import { useDisclosure } from "@nextui-org/react";
-import { handleCreateUserOnDatabase } from "@/api";
 import AmplifyContext from "@/contexts/AmplifyContext";
 const SignUp = () => {
-  const status = "inactive";
+  const status = "active";
   const [showPassword, setShowPassword] = useState(false);
   const [messageDataMissing, setMessageDataMissing] = useState(false);
+  const [dataResult, setDataResult] = useState(null);
   const [dataSignUp, setDataSignUp] = useState({
     fullName: "",
     email: "",
@@ -88,7 +88,7 @@ const SignUp = () => {
     ) {
       setMessageDataMissing(false);
       try {
-        const { userId: cognitoId, nextStep } = await signUp({
+        const { userId, nextStep } = await signUp({
           username: values.email,
           password: values.password,
           options: {
@@ -97,39 +97,27 @@ const SignUp = () => {
               "custom:role": values.role,
               "custom:fullName": values.fullName,
               "custom:status": status,
-              "custom:subscription" : values.role === "technician" ? "pending" : "",
+              "custom:subscription": values.role === "technician" ? "pending" : "",
             },
           },
         });
         isAdded = true;
-        console.log("El roooooool del usuario que vamos a crear en la base de datos es:",values.role)
-        if(values.role === "technician"){
-          try {
-            const data = await handleCreateTechnicianOnDataBase({
-              id: cognitoId,
-              email: values.email,
-              fullName: values.fullName,
-              status,
-              subscription: `${values.role === "technician" ? "pending" : ""}`
-            }); 
-            console.log("after technician created...", data);  
-          } catch (error) {
-            console.log(error)
-          } 
-        } else {
-          try {
-            const result = await handleCreateCustomerOnDataBase({
-              id: cognitoId,
-              email: values.email,
-              fullName: values.fullName,
-              status,
-            });  
-            console.log("after customer created...", data);
-          } catch (error) {
-            console.log(error);
-          }
+        let returnedData;
+        switch (values.role) {
+          case 'customer':
+            returnedData = onCreateCustomerToDB(userId, values, isAdded);
+            setRoleSelected('customer');
+            break;
+
+          case 'technician':
+            returnedData = onCreateTechnicianToDB(userId, values, isAdded);
+            setRoleSelected('technician')
+            break;
+
+          default:
+            return;
         }
-        setRoleSelected(values.role);
+        setDataResult(returnedData);
         if (nextStep?.signUpStep === "CONFIRM_SIGN_UP") {
           onVerifyCodeModalOpen();
         }
@@ -147,6 +135,32 @@ const SignUp = () => {
       setMessageDataMissing(true);
     }
   };
+  const onCreateCustomerToDB = async (userId, values, isAdded) => {
+    try {
+      const { createCustomer } = await handleCreateCustomerOnDataBase({
+        id: userId,
+        fullName: values.fullName,
+        email: values.email,
+        status,
+      }, isAdded);
+      return createCustomer;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  const onCreateTechnicianToDB = async (userId, values, isAdded) => {
+    try {
+      const { createTechnician } = await handleCreateTechnicianOnDataBase({
+        id: userId,
+        fullName: values.fullName,
+        email: values.email,
+        status,
+      }, isAdded);
+      return createTechnician;
+    } catch (error) {
+      console.error(error);
+    }
+  }
   return (
     <AmplifyContext>
       <div className="xl:h-screen bg-gradient-to-b from-zinc-900 to-zinc-800 w-full flex justify-center text-white px-8">
@@ -179,11 +193,10 @@ const SignUp = () => {
                 </label>
                 <div className="w-full relative mb-1 text-[17px]">
                   <RiUser3Line
-                    className={`absolute left-2 top-4 ${
-                      errors.fullName && dataSignUp.fullName != ""
-                        ? "text-red-400"
-                        : "text-emerald-400"
-                    } `}
+                    className={`absolute left-2 top-4 ${errors.fullName && dataSignUp.fullName != ""
+                      ? "text-red-400"
+                      : "text-emerald-400"
+                      } `}
                   />
                   <Field
                     id="fullName"
@@ -194,11 +207,10 @@ const SignUp = () => {
                       setDataSignUp({ ...dataSignUp, fullName: e.target.value });
                     }}
                     placeholder="Fullname"
-                    className={`py-3 pl-8 pr-4 bg-zinc-700 border-[1px] ${
-                      errors.fullName && dataSignUp.fullName != ""
-                        ? "border-red-400 focus:border-red-400"
-                        : "border-zinc-700"
-                    }  focus:border-emerald-500 w-full outline-none rounded-2xl `}
+                    className={`py-3 pl-8 pr-4 bg-zinc-700 border-[1px] ${errors.fullName && dataSignUp.fullName != ""
+                      ? "border-red-400 focus:border-red-400"
+                      : "border-zinc-700"
+                      }  focus:border-emerald-500 w-full outline-none rounded-2xl `}
                   />
                 </div>
                 <p className="text-red-400 mb-2 text-[14px]">
@@ -213,11 +225,10 @@ const SignUp = () => {
                 </label>
                 <div className="w-full relative mb-1 text-[17px]">
                   <RiMailLine
-                    className={`absolute left-2 top-4 ${
-                      errors.email && dataSignUp.email != ""
-                        ? "text-red-500"
-                        : "text-emerald-400"
-                    } `}
+                    className={`absolute left-2 top-4 ${errors.email && dataSignUp.email != ""
+                      ? "text-red-500"
+                      : "text-emerald-400"
+                      } `}
                   />
                   <Field
                     id="email"
@@ -228,11 +239,10 @@ const SignUp = () => {
                       setFieldValue("email", e.target.value);
                       setDataSignUp({ ...dataSignUp, email: e.target.value });
                     }}
-                    className={`py-3 pl-8 pr-4 bg-zinc-700 border-[1px] ${
-                      errors.email && dataSignUp.email != ""
-                        ? "border-red-400 focus:border-red-400"
-                        : "border-zinc-700 focus:border-emerald-500"
-                    }  w-full outline-none rounded-2xl `}
+                    className={`py-3 pl-8 pr-4 bg-zinc-700 border-[1px] ${errors.email && dataSignUp.email != ""
+                      ? "border-red-400 focus:border-red-400"
+                      : "border-zinc-700 focus:border-emerald-500"
+                      }  w-full outline-none rounded-2xl `}
                   />
                 </div>
                 <p className="text-red-400 mb-2 text-[14px]">
@@ -247,11 +257,10 @@ const SignUp = () => {
                 </label>
                 <div className="w-full relative mb-1 text-[17px]">
                   <RiLockLine
-                    className={`absolute left-2 top-4 ${
-                      errors.password && dataSignUp.password != ""
-                        ? "text-red-500"
-                        : "text-emerald-400"
-                    } `}
+                    className={`absolute left-2 top-4 ${errors.password && dataSignUp.password != ""
+                      ? "text-red-500"
+                      : "text-emerald-400"
+                      } `}
                   />
                   <Field
                     id="password"
@@ -262,11 +271,10 @@ const SignUp = () => {
                       setFieldValue("password", e.target.value);
                       setDataSignUp({ ...dataSignUp, password: e.target.value });
                     }}
-                    className={`py-3 px-8 bg-zinc-700 border-[1px] ${
-                      errors.password && dataSignUp.password != ""
-                        ? "border-red-500 focus:border-red-500"
-                        : "border-zinc-700 focus:border-emerald-500"
-                    }  w-full outline-none rounded-2xl `}
+                    className={`py-3 px-8 bg-zinc-700 border-[1px] ${errors.password && dataSignUp.password != ""
+                      ? "border-red-500 focus:border-red-500"
+                      : "border-zinc-700 focus:border-emerald-500"
+                      }  w-full outline-none rounded-2xl `}
                   />
                   {showPassword ? (
                     <RiEyeOffLine
@@ -292,11 +300,10 @@ const SignUp = () => {
                 </label>
                 <div className="w-full relative mb-1 text-[17px]">
                   <RiLockLine
-                    className={`absolute left-2 top-4 ${
-                      errors.confirmPassword && dataSignUp.confirmPassword != ""
-                        ? "text-red-500"
-                        : "text-emerald-400"
-                    }  `}
+                    className={`absolute left-2 top-4 ${errors.confirmPassword && dataSignUp.confirmPassword != ""
+                      ? "text-red-500"
+                      : "text-emerald-400"
+                      }  `}
                   />
                   <Field
                     id="confirmPassword"
@@ -310,11 +317,10 @@ const SignUp = () => {
                       });
                     }}
                     placeholder="Confirm the password"
-                    className={`py-3 px-8 bg-zinc-700 border-[1px] ${
-                      errors.confirmPassword && dataSignUp.confirmPassword != ""
-                        ? "border-red-500 focus:border-red-500 "
-                        : "border-zinc-700 focus:border-emerald-500"
-                    }  w-full outline-none rounded-2xl `}
+                    className={`py-3 px-8 bg-zinc-700 border-[1px] ${errors.confirmPassword && dataSignUp.confirmPassword != ""
+                      ? "border-red-500 focus:border-red-500 "
+                      : "border-zinc-700 focus:border-emerald-500"
+                      }  w-full outline-none rounded-2xl `}
                   />
                   {showPassword ? (
                     <RiEyeOffLine
@@ -418,7 +424,7 @@ const SignUp = () => {
                     {"Don't forget to"}<span className="text-emerald-300" > complete</span> your <span className="text-emerald-300">profile</span> when you log in.
                   </div>
                 </div>
-                
+
               </div>
             </Form>
           )}
@@ -427,6 +433,7 @@ const SignUp = () => {
           isOpen={isVerifyCodeModalOpen}
           onOpenChange={onVerifyCodeModalOpenChange}
           dataSignIn={{ email: dataSignUp.email, password: dataSignUp.password }}
+          resultData={dataResult}
           roleSelected={roleSelected}
         />
         <ErrorAlert
