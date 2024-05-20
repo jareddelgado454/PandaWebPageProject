@@ -96,8 +96,10 @@ type Technician @model @auth(
     subscription: String
     fee: Int
     rate: [Rate] @hasMany(indexName: "byTechnician", fields: ["id"])
-    loLatitude: Float!
-    loLongitude: Float!
+    loLatitude: Float
+    loLongitude: Float
+    diagnosticPrice: Float
+    repairPriceHour: Float
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
     schedule: Schedule
@@ -179,7 +181,6 @@ type Service @model @auth(
     paymentMethod: String!
     price: Float
     repairPrice: Float
-    fee: Float
     total: Float
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
