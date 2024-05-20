@@ -29,6 +29,7 @@
       },
       "geo": {
         "pandamap": {},
+        "ThePandaSearchIndex": {},
         "ThePandaLocationSearchIndex": {}
       }
     }

@@ -29,7 +29,7 @@ const Page = () => {
 
   return (
     <div className="w-full h-[calc(100vh-100px)] relative pr-[20px]">
-      <RepairRequestModal isOpen={isRequestServiceModalOpen} onOpenChange={onRequestServiceModalOpenChange}/>
+      {/* <RepairRequestModal isOpen={isRequestServiceModalOpen} onOpenChange={onRequestServiceModalOpenChange}/> */}
       {loading ? (
         <div className="w-full h-full flex flex-col justify-center pb-[200px] items-center">
           <div className="relative w-[600px] h-[200px]  flex items-center justify-center">

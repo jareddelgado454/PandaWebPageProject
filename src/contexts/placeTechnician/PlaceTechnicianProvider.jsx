@@ -9,9 +9,13 @@ const INITIAL_STATE = {
     technicianLocation: undefined
 }
 
-export const PlaceProvider = ({ children }) => {
+export const PlaceTechnicianProvider = ({ children }) => {
 
     const [state, dispatch] = useReducer(placeTechnicianReducer, INITIAL_STATE);
+
+    const updateTechnicianLocation = (newLocation) => {
+      dispatch({ type: 'setTechnicianLocation', payload: newLocation });
+    };
   
     useEffect(() => {  
       getUserLocation().then(lngLat => dispatch({ type: 'setTechnicianLocation', payload: lngLat }))
@@ -19,7 +23,8 @@ export const PlaceProvider = ({ children }) => {
   
     return (
       <PlaceTechnicianContext.Provider value={{
-        ...state
+        ...state,
+        updateTechnicianLocation
       }}>
         { children }
       </PlaceTechnicianContext.Provider>

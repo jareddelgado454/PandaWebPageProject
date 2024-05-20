@@ -8,6 +8,8 @@ import { listenUpdateService } from "@/graphql/services/subscriptions/subscripti
 import AssignedTechnicianModal from "@/components/serviceRequest/AssignedTechnicianModal";
 import { useDisclosure } from "@nextui-org/react";
 import { client } from "@/contexts/AmplifyContext";
+import '@/app/app.css';
+import { PlaceTechnicianProvider } from "@/contexts/placeTechnician/PlaceTechnicianProvider";
 
 export const Contexto = createContext();
 
@@ -16,6 +18,7 @@ const UserLayout = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [isOnline, setIsOnline] = useState(null);
   const [technicianActivityStatus, setTechnicianActivityStatus] = useState(null);
+  const [serviceAssigned, setServiceAssigned] = useState(null);
   const [serviceIdWaitingFor, setServiceIdWaitingFor] = useState(null);
   const {
     isOpen: isAssignedTechnicianModalOpen,
@@ -37,22 +40,26 @@ const UserLayout = ({ children }) => {
   };
 
   const retrieveOneUser = async () => {
-    setLoading(true);
     try {
       const userInfo = await fetchUserAttributes();
       setUser({ ...userInfo });
       console.log("Este es el coso del tecnico", userInfo.sub);
       setIsOnline(userInfo["custom:isOnline"] === "true" ? true : false);
-      setLoading(false);
     } catch (error) {
-      setLoading(false);
       setError(error);
     }
   };
+
   useEffect(() => {
+    setLoading(true);
     retrieveOneUser();
-    setTechnicianActivityStatus("assigned");
-    onAssignedTechnicianModalOpen();
+    const storedService = localStorage.getItem("serviceAssigned");
+    if (storedService) {
+      setServiceAssigned(JSON.parse(storedService));
+      setTechnicianActivityStatus("assigned");
+      onAssignedTechnicianModalOpen();
+    }
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -68,8 +75,10 @@ const UserLayout = ({ children }) => {
         })
         .subscribe({
           next: ({ data }) => {
-            console.log(data);
-            setTechnicianActivityStatus("inService");
+            console.log("esta es la data retornadaaa",data);
+            setTechnicianActivityStatus("assigned");
+            setServiceAssigned(data.onUpdateService);
+            localStorage.setItem("serviceAssigned", JSON.stringify(data.onUpdateService));
             onAssignedTechnicianModalOpen();
           },
           error: (error) => console.warn(error)
@@ -78,64 +87,67 @@ const UserLayout = ({ children }) => {
       return () => {
         subscription.unsubscribe();
       };
-    }
-    
+    }  
   }, [user, serviceIdWaitingFor]);
 
   return (
-    <div className="w-full h-screen bg-zinc-900">
-      {loading ? (
-        <div className="text-white"></div>
-      ) : (
-        user && (
-          <div
-            className={`w-full h-full flex justify-center items-center p-0 ${
-              technicianActivityStatus === "waitingResponse" ? "relative" : ""
-            }`}
-          >
-            {technicianActivityStatus === "waitingResponse" && (
-              <div className="text-white font-bold text-[17px] flex flex-col absolute bottom-3 right-3 border-[2px] border-emerald-400 bg-emerald-600 shadow-emerald-500/20 shadow-lg w-[250px] h-[80px] z-50 rounded-md p-3">
-                <div className="flex w-full gap-x-2 items-center">
-                  Client reviewing offer{" "}
-                  <img
-                    src="/loading/loading4.gif"
-                    className="w-[25px] h-[25px]"
-                  />
+      <div className="w-full h-screen bg-zinc-900">
+        <PlaceTechnicianProvider>
+        {loading ? (
+          <div className="text-white"></div>
+        ) : (
+          user && (
+            <div
+              className={`w-full h-full flex justify-center items-center p-0 ${
+                technicianActivityStatus === "waitingResponse" ? "relative" : ""
+              }`}
+            >
+              {technicianActivityStatus === "waitingResponse" && (
+                <div className="text-white font-bold text-[17px] flex flex-col absolute bottom-3 right-3 border-[2px] border-emerald-400 bg-emerald-600 shadow-emerald-500/20 shadow-lg w-[250px] h-[80px] z-50 rounded-md p-3">
+                  <div className="flex w-full gap-x-2 items-center">
+                    Client reviewing offer{" "}
+                    <img
+                      src="/loading/loading4.gif"
+                      className="w-[25px] h-[25px]"
+                    />
+                  </div>
+                  <u className="cursor-pointer text-[15px] text-zinc-100">
+                    Go to the Offer
+                  </u>
                 </div>
-                <u className="cursor-pointer text-[15px] text-zinc-100">
-                  Go to the Offer
-                </u>
+              )}
+              <UserSidebar user={user} />
+              <div className="flex-1 flex flex-col h-screen">
+                <UserNavBar
+                  user={user}
+                  isOnline={isOnline}
+                  handleChangeStatus={handleChangeStatus}
+                />
+              
+                  <Contexto.Provider
+                    value={{
+                      user,
+                      loading,
+                      isOnline,
+                      handleChangeStatus,
+                      retrieveOneUser,
+                      setTechnicianActivityStatus,
+                      setServiceIdWaitingFor
+                    }}
+                  >
+                    {children}
+                  </Contexto.Provider>
               </div>
-            )}
-            <UserSidebar user={user} />
-            <div className="flex-1 flex flex-col h-screen">
-              <UserNavBar
-                user={user}
-                isOnline={isOnline}
-                handleChangeStatus={handleChangeStatus}
+              <AssignedTechnicianModal
+                  isOpen={isAssignedTechnicianModalOpen}
+                  onOpenChange={onAssignedTechnicianModalOpenChange}
+                  serviceAssigned={serviceAssigned}
               />
-              <Contexto.Provider
-                value={{
-                  user,
-                  loading,
-                  isOnline,
-                  handleChangeStatus,
-                  retrieveOneUser,
-                  setTechnicianActivityStatus,
-                  setServiceIdWaitingFor
-                }}
-              >
-                {children}
-              </Contexto.Provider>
             </div>
-            <AssignedTechnicianModal
-                isOpen={isAssignedTechnicianModalOpen}
-                onOpenChange={onAssignedTechnicianModalOpenChange}
-            />
-          </div>
-        )
-      )}
-    </div>
+          )
+        )}
+        </PlaceTechnicianProvider>
+      </div>
   );
 };
 
