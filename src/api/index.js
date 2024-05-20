@@ -22,8 +22,6 @@ export const handleCreateUserOnDatabase = async(values, isAdded) => {
         console.log(error);
     }
 }
-
-// TECHNICIAN TECHNICIAN TECHNICIAN
 export const handleCreateTechnicianOnDataBase = async(values, isAdded) => {
     try {
         const { data } = await client.graphql({
@@ -31,7 +29,7 @@ export const handleCreateTechnicianOnDataBase = async(values, isAdded) => {
             variables: {
                 input: { ...values }
             },
-            // authMode: isAdded ? 'iam' : 'userPool'
+            authMode: isAdded ? 'iam' : 'userPool'
         });
         return data;
     } catch (error) {
@@ -53,9 +51,6 @@ export const handleRetrieveTechnician = async (id) => {
         console.log(error);
     }
 } 
-// TECHNICIAN TECHNICIAN TECHNICIAN
-
-//REQUEST SERVICEEEEEES 
 
 export const handleRetrieveRequestService = async (id) => {
     try {
@@ -84,8 +79,6 @@ export const handleCreateOffer = async(values) => {
         console.log(error);
     }
 }
-
-//REQUEST SERVICEEEEEES 
 
 export const handleCreateCustomerOnDataBase = async(values, isAdded) => {
     try {
