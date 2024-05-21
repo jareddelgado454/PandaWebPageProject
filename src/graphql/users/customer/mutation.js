@@ -42,6 +42,8 @@ export const updateService = gql`
                 fullName
                 contactNumber
                 profilePicture
+                loLatitude
+                loLongitude
             }
             destLatitude
             destLongitude
