@@ -34,7 +34,6 @@
     "maplibre-gl": "^2.4.0",
     "maplibre-gl-js-amplify": "^4.0.0",
     "next": "^14.2.3",
-    "next-auth": "^4.24.6",
     "react": "^18",
     "react-chartjs-2": "^5.2.0",
     "react-countup": "^6.5.0",
