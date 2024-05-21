@@ -69,6 +69,7 @@ export default function OfferDetails() {
           destLongitude: offer.technician.loLongitude
         }
       });
+      console.log(data);
       setServiceRequest(data.updateService);
       setActive(false);
       Cookies.set(
@@ -100,8 +101,8 @@ export default function OfferDetails() {
                 </Badge>
               </div>
             </div>
-            <div className={`w-[85%] h-full  transition-all duration-300 ease-in-out animate__animated  ${active ? 'block animate__bounceInDown' : 'animate__bounceOutUp'}`}>
-              <div className='flex flex-col gap-2 overflow-y-auto'>
+            <div className={`w-[85%] h-full  transition-all duration-300 ease-in-out animate__animated ${offers.length > 0 && 'overflow-y-scroll'} ${active ? 'block animate__bounceInDown' : 'animate__bounceOutUp'}`}>
+              <div className='flex flex-col gap-2'>
                 {offers.map((offer, i) => (
                   <div key={i} className='dark:bg-zinc-900 bg-white shadow-lg w-full h-[7rem] rounded-lg p-4 overflow-hidden animate__animated animate__fadeInLeft'>
                     <div className='flex flex-row items-center h-full gap-2 w-full'>
@@ -116,8 +117,7 @@ export default function OfferDetails() {
                         <div className='flex flex-row gap-4 justify-between items-center'>
                           <p className='text-sm 2xl:text-base line-clamp-1'>{offer.technician.fullName}</p>
                           <div className='flex gap-2 justify-center items-center'>
-                            {offer.technician.rate && (
-                              
+                            {offer.technician.rate ? (
                               <ReactStars
                                 count={5}
                                 value={calculateRate(offer.technician.rate)}
@@ -129,6 +129,8 @@ export default function OfferDetails() {
                                 fullIcon={<FaRegStar />}
                                 activeColor="#ffd700"
                               />
+                            ) : (
+                              <p>No rate</p>
                             )}
                             <p className='text-sm font-bold'>{calculateRate(offer.technician.rate)}</p>
                           </div>
