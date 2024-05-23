@@ -11,7 +11,13 @@ export const createOffer = gql`
         profilePicture
         id
         fullName
-        rate
+        loLatitude
+    		loLongitude
+        rate {
+          items{
+            rate
+          }
+        }
       }
     }
   }
@@ -34,7 +40,6 @@ export const OnChangeStatusService = gql`
       serviceCustomerId
       createdAt
       updatedAt
-      
     }
   }
 `;
@@ -59,4 +64,26 @@ export const DeleteMyRequest = gql`
     }
   }
 
+`;
+
+export const updateTechnicianLocation = gql`
+  mutation MyMutation ($input: UpdateServiceInput!, $serviceCustomerId: ID!) {
+    updateService(input: $input, condition: {serviceCustomerId: {eq: $serviceCustomerId}}) {
+      id
+      destLatitude
+      destLongitude
+      status
+      serviceCustomerId
+    }
+  }
+`;
+
+export const updateStatusService = gql`
+  mutation MyMutation($serviceId: ID!, $status: String!){
+    updateService(input: { id: $serviceId, status: $status }) {
+      id
+      status
+      serviceCustomerId
+    }
+  }
 `;

@@ -4,7 +4,7 @@ import React, { useContext, useState, useEffect } from "react";
 import Link from "next/link";
 import { FaCamera } from "react-icons/fa6";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { Select, SelectItem } from "@nextui-org/react";
+import { Select, SelectItem, Button } from "@nextui-org/react";
 import { statesUSA } from "@/assets/data/StatesUSA";
 import { updateUserAttributes } from "aws-amplify/auth";
 import {
@@ -25,6 +25,7 @@ const PersonalInformation = () => {
   const [stateUSA, setStateUSA] = useState("");
   const [userDataBase, setUserDataBase] = useState(null);
   const [errorUploadingData, setErrorUploadingData] = useState(false);
+  const [upLoadingInformation, setUploadingInformation] = useState(false);
 
   const [isEditing, setIsEditing] = useState(null);
   const [infoEditing, setInfoEditing] = useState(null);
@@ -95,6 +96,7 @@ const PersonalInformation = () => {
     ) {
       setErrorUploadingData(false);
       console.log("Todos los campos estan completos correctamente");
+      setUploadingInformation(true);
       setSubmitting(true);
       console.log("user sssuuuuuub", user.sub);
       try {
@@ -114,9 +116,17 @@ const PersonalInformation = () => {
             "custom:infoCompleted": "true",
           },
         });
+        setUploadingInformation(false);
+        setUserDataBase({
+            id: user.sub,
+            state: statesUSA[stateUSA],
+            ...values,
+        });
+        setProfileCompleted(true);
         console.log("usuario cambiado correctamente");
       } catch (error) {
         console.log(error);
+        setUploadingInformation(false);
       }
     } else {
       console.log("Completa los campos que faltan");
@@ -153,8 +163,7 @@ const PersonalInformation = () => {
   };
 
   // When Personal Information is completed
-  const handleUpdateInfo = async (fieldUpdating) => {
-    console.log("updatiiiiiiiiiiiiinggg...",fieldUpdating);
+  const handleUpdateInfo = async () => {
     console.log("valueeeeee",infoEditing);
   }
   //....
@@ -168,9 +177,11 @@ const PersonalInformation = () => {
         if (user["custom:infoCompleted"] === "false") {
           setProfileCompleted(false);
           setLoading(false);
+          console.log("La info esta incompletaaaaaaaaaaaaa");
         } else {
           setProfileCompleted(true);
           setLoading(false);
+          console.log("La info esta completaaaaaaaaaaaaa");
         }
       } catch (error) {
         console.log(error);
@@ -316,7 +327,7 @@ const PersonalInformation = () => {
                             label="Complete this field"
                             className="w-full text-white h-[40px]"
                             selectedKeys={[stateUSA]}
-                            onChange={(e) => setInfoEditing(statesUSA[e.target.value])}
+                            onChange={(e) => setInfoEditing({field:state, value:statesUSA[e.target.value]})}
                           >
                             {statesUSA.map((stateUSA, index) => (
                               <SelectItem
@@ -336,7 +347,7 @@ const PersonalInformation = () => {
                           >
                             Cancel
                           </button>
-                          <button className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
+                          <button onClick={()=>handleUpdateInfo()} className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
                             Update
                           </button>
                         </div>
@@ -366,7 +377,7 @@ const PersonalInformation = () => {
                             type="text"
                             className="w-full rounded-lg bg-transparent border-[1px] border-zinc-500 p-2"
                             placeholder="Enter your city"
-                            onChange={(e)=>setInfoEditing(e.target.value)}
+                            onChange={(e)=>setInfoEditing({field:city, value:e.target.value})}
                           />
                         </div>
                         <div className="flex gap-x-2 items-center">
@@ -376,7 +387,7 @@ const PersonalInformation = () => {
                           >
                             Cancel
                           </button>
-                          <button onClick={()=>handleUpdateInfo("city")} className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
+                          <button onClick={()=>handleUpdateInfo()} className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
                             Update
                           </button>
                         </div>
@@ -406,6 +417,7 @@ const PersonalInformation = () => {
                             type="text"
                             className="w-full rounded-lg bg-transparent border-[1px] border-zinc-500 p-2"
                             placeholder="Enter your address"
+                            onChange={(e)=>setInfoEditing({field:address, value:e.target.value})}
                           />
                         </div>
                         <div className="flex gap-x-2 items-center">
@@ -415,7 +427,7 @@ const PersonalInformation = () => {
                           >
                             Cancel
                           </button>
-                          <button className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
+                          <button onClick={()=>handleUpdateInfo()} className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
                             Update
                           </button>
                         </div>
@@ -454,6 +466,7 @@ const PersonalInformation = () => {
                             type="text"
                             className="w-full rounded-lg bg-transparent border-[1px] border-zinc-500 p-2"
                             placeholder="Enter your contact number"
+                            onChange={(e)=>setInfoEditing({field:contactNumber, value:e.target.value})}
                           />
                         </div>
                         <div className="flex gap-x-2 items-center">
@@ -463,7 +476,7 @@ const PersonalInformation = () => {
                           >
                             Cancel
                           </button>
-                          <button className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
+                          <button onClick={()=>handleUpdateInfo()} className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
                             Update
                           </button>
                         </div>
@@ -493,6 +506,7 @@ const PersonalInformation = () => {
                             type="text"
                             className="w-full rounded-lg bg-transparent border-[1px] border-zinc-500 p-2"
                             placeholder="Enter your zipCode"
+                            onChange={(e)=>setInfoEditing({field:zipCode, value:e.target.value})}
                           />
                         </div>
                         <div className="flex gap-x-2 items-center">
@@ -502,7 +516,7 @@ const PersonalInformation = () => {
                           >
                             Cancel
                           </button>
-                          <button className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
+                          <button onClick={()=>handleUpdateInfo()} className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
                             Update
                           </button>
                         </div>
@@ -633,12 +647,14 @@ const PersonalInformation = () => {
                           </div>
                         )}
                         <div>
-                          <button
+                          <Button
+                            isLoading={upLoadingInformation}
+                            isDisabled={upLoadingInformation}
                             type="submit"
                             className={`bg-emerald-500 hover:bg-emerald-600 p-3 px-5 rounded-lg text-white font-bold  transition-all`}
                           >
                             Save Information
-                          </button>
+                          </Button>
                         </div>
                       </Form>
                     );

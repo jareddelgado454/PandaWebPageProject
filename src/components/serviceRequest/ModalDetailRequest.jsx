@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import {
   Modal,
@@ -20,37 +20,64 @@ import {
   RiMapPinUserFill,
   RiCarFill,
   RiErrorWarningFill,
+  RiInformationFill,
 } from "react-icons/ri";
 import defaultProfilePicture from "../../../public/image/defaultProfilePicture.jpg";
-import { handleCreateOffer, handleRetrieveRequestService } from "@/api";
+import {
+  handleCreateOffer,
+  handleRetrieveRequestService,
+  handleUpdateLocationTechnician,
+} from "@/api";
 import { Input } from "@nextui-org/react";
-import useEmblaCarousel from 'embla-carousel-react'
-import serviceImage1 from "../../../public/serviceImages/serviceImage1.jpg"
-import serviceImage2 from "../../../public/serviceImages/serviceImage2.jpg"
-import serviceImage3 from "../../../public/serviceImages/serviceImage3.jpg"
+import useEmblaCarousel from "embla-carousel-react";
+import serviceImage1 from "../../../public/serviceImages/serviceImage1.jpg";
+import serviceImage2 from "../../../public/serviceImages/serviceImage2.jpg";
+import serviceImage3 from "../../../public/serviceImages/serviceImage3.jpg";
+import Link from "next/link";
+import { PlaceTechnicianContext } from "@/contexts/placeTechnician/PlaceTechnicianContext";
+import MiniTechnicianServiceMap from "../technicianMaps/technicianMap/MiniTechnicianServiceMap";
+import { MapProvider } from "@/contexts/mapTechnician/MapTechnicianProvider";
 
-const ModalDetailRequest = ({ isOpen, onOpenChange, id, technicianId, setTechnicianActivityStatus, setServiceIdWaitingFor }) => {
+const ModalDetailRequest = ({
+  isOpen,
+  onOpenChange,
+  id,
+  technicianId,
+  setTechnicianActivityStatus,
+  setServiceIdWaitingFor,
+  addressDistanceSelected,
+  setAddressDistanceSelected,
+  pricesTechnician,
+}) => {
   const [loading, setLoading] = useState(true);
   const [request, setRequest] = useState(null);
-  const [priceRepair, setPriceRepair] = useState(0);
   const [errorPriceMissing, setErrorPriceMissing] = useState(false);
   const [sendingOffer, setSendingOffer] = useState(false);
-  const [emblaRef] = useEmblaCarousel({ loop: true })
+  const [emblaRef] = useEmblaCarousel({ loop: true });
+  const { technicianLocation } = useContext(PlaceTechnicianContext);
 
   const handleAcceptRequest = async () => {
-    setSendingOffer(true)
-    console.log("los deli precios", priceRepair);
+    setSendingOffer(true);
     setErrorPriceMissing(false);
-    if (priceRepair && priceRepair > 0) {
+    if (
+      pricesTechnician.repairPriceHour != null &&
+      pricesTechnician.diagnosticPrice != null
+    ) {
       try {
+        const response = await handleUpdateLocationTechnician({
+          id: technicianId,
+          loLatitude: technicianLocation[1],
+          loLongitude: technicianLocation[0],
+        });
+        console.log("Se actualizaron la location del tecnico en db");
         const data = await handleCreateOffer({
           offerTechnicianId: technicianId,
-          amount: priceRepair,
+          amount: pricesTechnician.repairPriceHour,
           serviceId: id,
           status: "accepted",
           text: "Queres ser tu propio jefe?",
         });
-        console.log("Succesfull accepted offer", data);
+        console.log("Succesfull sended offer", data);
         setSendingOffer(false);
         onOpenChange(false);
         setTechnicianActivityStatus("waitingResponse");
@@ -82,12 +109,18 @@ const ModalDetailRequest = ({ isOpen, onOpenChange, id, technicianId, setTechnic
       retrieveData();
     }
     return () => {
-      setPriceRepair("");
       setErrorPriceMissing(false);
       setRequest(null);
       setSendingOffer(false);
     };
   }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setAddressDistanceSelected(null);
+    }
+  }, [isOpen]);
+
   return (
     <Modal
       backdrop="blur"
@@ -101,35 +134,48 @@ const ModalDetailRequest = ({ isOpen, onOpenChange, id, technicianId, setTechnic
           <>
             <ModalHeader className="flex">
               {loading ? (
-                <div>Loading</div>
+                <div className="w-full flex gap-x-2">
+                  <div className="w-[100px] h-[25px] bg-zinc-700 rounded-lg animate-pulse"></div>
+                  <span className="text-zinc-300">-</span>
+                  <div className="w-[150px] h-[25px] bg-zinc-700 rounded-lg animate-pulse"></div>
+                </div>
               ) : (
                 <h4 className="text-[22px]">
-                  Repair Car <span className="text-emerald-400">-</span>{" "}
+                  {request?.type && request?.type}{" "}
+                  <span className="text-emerald-400">-</span>{" "}
                   <span className="text-[17px] text-zinc-300">
-                    298 TX-69 Spur
+                    {addressDistanceSelected?.address}
                   </span>
                 </h4>
               )}
             </ModalHeader>
             <ModalBody className="flex flex-col justify-center overflow-y-auto">
               {loading ? (
-                <div>Loading</div>
+                <div className="w-full flex flex-col gap-y-2">
+                  <div className="w-full h-[250px] flex items-center justify-center bg-zinc-700 rounded-lg p-3 mb-3 animate-pulse"></div>
+                  <div className="h-[25px] w-1/2 mb-2 bg-zinc-700 rounded-md animate-pulse"></div>
+                  <div className="h-[25px] w-1/2 mb-2 bg-zinc-600 rounded-md animate-pulse"></div>
+                  <div className="h-[25px] w-[150px] mb-2 bg-zinc-700 rounded-md animate-pulse"></div>
+                  <div className="w-full h-[100px] flex items-center justify-center bg-zinc-700 rounded-lg p-3 mb-3 animate-pulse"></div>
+                </div>
               ) : (
                 <>
                   <div className="w-full h-[250px] flex items-center justify-center bg-zinc-800 rounded-lg p-3 ">
-                    Map Here :)
+                    <MapProvider>
+                      <MiniTechnicianServiceMap customerLocation={{lon:request?.originLongitude, lat:request?.originLatitude}}/>
+                    </MapProvider>
                   </div>
                   <span className="text-zinc-300 flex gap-x-1 items-center">
                     <RiMapPinUserFill className="text-emerald-400" />
                     You are{" "}
                     <span className="text-emerald-300 font-bold">
-                      9 miles
+                      {addressDistanceSelected?.distance} miles
                     </span>{" "}
                     from the location
                   </span>
                   <span className="text-zinc-300 flex gap-x-1 items-center">
                     <RiCarFill className="text-emerald-400" />
-                    Mercedes A-class Sedan 2018
+                    {`${request?.car?.model} ${request?.car?.year}`}
                   </span>
                   <div className="w-full flex flex-col ">
                     <span className="text-white font-bold text-[16px]">
@@ -189,21 +235,21 @@ const ModalDetailRequest = ({ isOpen, onOpenChange, id, technicianId, setTechnic
                       >
                         <div className="embla bg-red-500 w-full" ref={emblaRef}>
                           <div className="embla__container w-full">
-                            <Image 
+                            <Image
                               src={serviceImage1}
                               width={600}
                               height={200}
                               quality={100}
                               className="object-cover embla__slide"
                             />
-                            <Image 
+                            <Image
                               src={serviceImage2}
                               width={600}
                               height={200}
                               quality={100}
                               className="object-cover embla__slide"
                             />
-                            <Image 
+                            <Image
                               src={serviceImage3}
                               width={600}
                               height={200}
@@ -214,13 +260,13 @@ const ModalDetailRequest = ({ isOpen, onOpenChange, id, technicianId, setTechnic
                         </div>
                       </AccordionItem>
                     </Accordion>
-                    <span className="text-white font-bold text-[17px]">
-                      Set the price to send your offer
+                    <span className="text-white font-bold text-[17px] mb-2">
+                      Your prices to offer repair services:
                     </span>
                     <div className="w-full flex flex-col gap-x-1  border-b-[1px] border-b-zinc-700 pb-4">
                       <div className="w-full flex  gap-x-1 items-center justify-between mb-3">
-                        <span className="text-zinc-300 font-semibold text-[16px] w-[100px]">
-                          Repair price
+                        <span className="text-zinc-300 font-semibold text-[16px] w-[200px]">
+                          Diagnosis price
                         </span>
                         <Input
                           type="number"
@@ -228,8 +274,8 @@ const ModalDetailRequest = ({ isOpen, onOpenChange, id, technicianId, setTechnic
                           placeholder="0.00"
                           labelPlacement="outside"
                           className="w-1/2"
-                          value={priceRepair}
-                          onValueChange={setPriceRepair}
+                          value={pricesTechnician?.diagnosticPrice}
+                          readOnly
                           startContent={
                             <div className="pointer-events-none flex items-center">
                               <span className="text-default-400 text-small">
@@ -239,15 +285,51 @@ const ModalDetailRequest = ({ isOpen, onOpenChange, id, technicianId, setTechnic
                           }
                         />
                       </div>
-                      <div className="md:w-[130px] w-full p-2 flex items-center gap-x-2 border-[1px] rounded-md border-zinc-500 text-zinc-400 cursor-pointer">
-                        <RiAddCircleFill />
-                        Add price
+                      {request?.type == "repair" && (
+                        <div className="w-full flex  gap-x-1 items-center justify-between mb-3">
+                          <span className="text-zinc-300 font-semibold text-[16px] w-[200px]">
+                            Repair price
+                          </span>
+                          <Input
+                            type="number"
+                            label=""
+                            placeholder="0.00"
+                            labelPlacement="outside"
+                            className="w-1/2"
+                            value={pricesTechnician?.repairPriceHour}
+                            readOnly
+                            startContent={
+                              <div className="pointer-events-none flex items-center">
+                                <span className="text-default-400 text-small">
+                                  $
+                                </span>
+                              </div>
+                            }
+                          />
+                        </div>
+                      )}
+
+                      <div className="w-full p-2 flex items-center gap-x-1 text-zinc-400  text-[14px]">
+                        <RiInformationFill />
+                        You can change this prices in{" "}
+                        <Link
+                          href={"/user/specialization-area"}
+                          className="cursor-pointer text-emerald-400 font-bold text-[15px]"
+                        >
+                          My specializations
+                        </Link>
                       </div>
                     </div>
                     {errorPriceMissing && (
-                      <div className="p-2 flex items-center gap-x-2 bg-red-500">
+                      <div className="p-2 flex items-center gap-x-1 bg-red-500">
                         <RiErrorWarningFill className="text-red-300 text-[25px]" />
-                        You need to set a price to be able to submit your offer
+                        You need to set a price to be able to submit your offer{" "}
+                        <Link
+                          href={"/user/specialization-area"}
+                          className="cursor-pointer text-white font-bold text-[17px]"
+                        >
+                          <u>Here.</u>
+                        </Link>
                       </div>
                     )}
                   </div>
@@ -255,18 +337,17 @@ const ModalDetailRequest = ({ isOpen, onOpenChange, id, technicianId, setTechnic
               )}
             </ModalBody>
             <ModalFooter className="w-full h-[80px] flex gap-x-2">
-              {/* <button className="w-1/2 bg-zinc-600 text-white rounded-lg p-3 text-[17px] font-semibold">
-                Cancel
-              </button> */}
-              <Button
-                isDisabled={sendingOffer}
-                isLoading={sendingOffer}
-                onClick={() => handleAcceptRequest()}
-                className="w-full bg-emerald-600 text-white rounded-lg p-3 text-[17px] font-semibold flex items-center justify-center"
-              >
-                Offer service
-                <RiArrowRightSLine className="text-emerald-200 text-[20px]" />
-              </Button>
+              {!loading && (
+                <Button
+                  isDisabled={sendingOffer}
+                  isLoading={sendingOffer}
+                  onClick={() => handleAcceptRequest()}
+                  className="w-full bg-emerald-600 text-white rounded-lg p-3 text-[17px] font-semibold flex items-center justify-center"
+                >
+                  Offer service
+                  <RiArrowRightSLine className="text-emerald-200 text-[20px]" />
+                </Button>
+              )}
             </ModalFooter>
           </>
         )}

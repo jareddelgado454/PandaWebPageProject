@@ -20,3 +20,23 @@ export const updatePersonalInformationTechnician = gql`
     }
   }
 `;
+
+export const updatePricesTechnician = gql`
+  mutation MyMutation($input: UpdateTechnicianInput!) {
+    updateTechnician(input: $input) {
+      id
+      diagnosticPrice
+      repairPriceHour
+    }
+}
+`;
+
+export const updateLocationTechnician = gql`
+  mutation MyMutation($input: UpdateTechnicianInput!) {
+    updateTechnician(input: $input) {
+      id
+      loLatitude
+      loLongitude
+    }
+}
+`;

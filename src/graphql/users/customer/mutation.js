@@ -34,7 +34,6 @@ export const createService = gql`
             updatedAt
         }
     }
-
 `;
 
 export const updateService = gql`
