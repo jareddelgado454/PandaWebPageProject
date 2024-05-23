@@ -1,7 +1,8 @@
 import { ThirdDateFormatter } from '@/utils/parseDate'
+import ReactStars from "react-rating-stars-component";
 import Image from 'next/image'
 import React from 'react'
-import { FaCommentSms, FaPhoneVolume, FaStar } from 'react-icons/fa6'
+import { FaCommentSms, FaPhoneVolume, FaRegStar, FaRegStarHalf, FaStar } from 'react-icons/fa6'
 
 export default function TechnicianDetail({ technician }) {
   return (
@@ -17,10 +18,25 @@ export default function TechnicianDetail({ technician }) {
             priority
           />
           <div className='flex flex-col gap-1 h-full'>
-            <p className='text-md lg:text-base 2xl:text-2xl'>{technician.fullName}</p>
+            <p className='text-md lg:text-base 2xl:text-2xl font-semibold text-[#40C48E]'>{technician.fullName}</p>
             <p className='text-xs lg:text-sm text-zinc-500 dark:text-zinc-300'>{ThirdDateFormatter(technician.createdAt)}</p>
             <div className='flex flex-row gap-1 items-center'>
-              <p className='text-xs lg:text-base'>Rate:</p> <FaStar className='text-amber-500' /><FaStar className='text-amber-500' /><FaStar className='text-amber-500' /><FaStar className='text-amber-500' />
+              <p className='text-xs lg:text-base'>Rate:</p>
+              {technician?.rate.items.length > 0 ? (
+                <ReactStars
+                  count={5}
+                  value={calculateRate(offer.technician.rate)}
+                  size={22}
+                  edit={false}
+                  isHalf={true}
+                  emptyIcon={<FaStar />}
+                  halfIcon={<FaRegStarHalf />}
+                  fullIcon={<FaRegStar />}
+                  activeColor="#ffd700"
+                />
+              ) : (
+                <div>No stars</div>
+              )}
             </div>
           </div>
         </div>

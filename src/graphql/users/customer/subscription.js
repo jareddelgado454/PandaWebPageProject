@@ -26,10 +26,25 @@ export const onCreateOffers = gql`
 
 `;
 
-export const onUpdateServiceStatus = gql`
-    subscription UpdateService($serviceId: ID!) {
-        onUpdateService(filter: {id: {eq: $serviceId}}){
+export const onUpdateService = gql`
+    subscription MySubscription($serviceId: ID!, $customerId: ID!) {
+        onUpdateService(filter: {id: {eq: $serviceId}, serviceCustomerId: {eq: $customerId}}){
+            id
             status
+            destLatitude
+            destLongitude
         }
     }
+
+`;
+
+export const onUpdateServiceCoordinates = gql`
+    subscription OnUpdateServiceCoordinates($serviceId: ID!, $customerId: ID!) {
+        onUpdateService(filter: {id: {eq: $serviceId}, serviceCustomerId: {eq: $customerId}}){
+            id
+            destLatitude
+            destLongitude
+        }
+    }
+
 `;

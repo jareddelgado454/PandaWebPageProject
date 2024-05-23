@@ -1,5 +1,14 @@
 import gql from "graphql-tag";
 
+export const updateMyInformation = gql`
+    mutation UpdateCustomer($input: UpdateCustomerInput!) {
+        updateCustomer(input: $input){
+            id
+            email
+        }
+    }
+`;
+
 export const createService = gql`
     mutation CreateService($input: CreateServiceInput!) {
         createService(input: $input) {
@@ -30,12 +39,13 @@ export const createService = gql`
 
 export const updateService = gql`
     mutation MyMutation($serviceId: ID!, $serviceTechnicianSelectedId: ID!, $price: Float!, $destLatitude: Float!, $destLongitude: Float!) {
-        updateService(input: {id: $serviceId, serviceTechnicianSelectedId: $serviceTechnicianSelectedId, price: $price, destLatitude: $destLatitude, destLongitude: $destLongitude, type: "repair", status: "service accepted"}){
+        updateService(input: {id: $serviceId, serviceTechnicianSelectedId: $serviceTechnicianSelectedId, price: $price, destLatitude: $destLatitude, destLongitude: $destLongitude, status: "service accepted"}){
             id
             originLatitude
             originLongitude
             status
             serviceTechnicianSelectedId
+            serviceCustomerId
             technicianSelected{
                 id
                 email
@@ -44,6 +54,18 @@ export const updateService = gql`
                 profilePicture
                 loLatitude
                 loLongitude
+            }
+            car {
+                id
+                brand
+                image
+                model
+                year
+            }
+            customer {
+                id
+                profilePicture
+                fullName
             }
             destLatitude
             destLongitude

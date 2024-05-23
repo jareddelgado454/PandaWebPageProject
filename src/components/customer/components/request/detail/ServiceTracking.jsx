@@ -2,7 +2,7 @@
 import React, { useContext, useEffect } from 'react'
 import { Steppers } from '@/components/customer/components/Steppers';
 import { ServiceContext } from '@/contexts/service/ServiceContext';
-import { onUpdateServiceStatus } from '@/graphql/users/customer/subscription';
+import { onUpdateService } from '@/graphql/users/customer/subscription';
 import { client } from '@/contexts/AmplifyContext';
 import { useDisclosure } from '@nextui-org/react';
 import RateTechnicianModal from '@/components/customer/modals/RateTechnicianModal';
@@ -15,10 +15,11 @@ export default function ServiceTracking({ service, setService }) {
   } = useDisclosure();
   useEffect(() => {
     const subscription = client
-      .graphql({ query: onUpdateServiceStatus, variables: { serviceId: serviceRequest && serviceRequest.id } })
+      .graphql({ query: onUpdateService, variables: { serviceId: serviceRequest && serviceRequest.id, customerId: serviceRequest && serviceRequest.serviceCustomerId } })
       .subscribe({
         next: ({ data }) => {
           // Update previous state
+          console.log(data);
           setService((prevState) => ({
             ...prevState,
             ...data.onUpdateService
@@ -32,27 +33,23 @@ export default function ServiceTracking({ service, setService }) {
       subscription.unsubscribe();
     };
   }, []);
-  const meterToKilometer = (meter) => {
-    var km = meter / 1000;
-    return km.toFixed(1);
-  }
-  function calculateDistance(coord1, coord2) {
+
+  const calculateDistance = (coord1, coord2) => {
     const [lat1, lon1] = coord1;
     const [lat2, lon2] = coord2;
-
+  
+    const R = 6371; // Radio de la Tierra en km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
     const lat1Rad = lat1 * Math.PI / 180;
-    const lon1Rad = lon1 * Math.PI / 180;
     const lat2Rad = lat2 * Math.PI / 180;
-    const lon2Rad = lon2 * Math.PI / 180;
-
-    const dLat = lat2Rad - lat1Rad;
-    const dLon = lon2Rad - lon1Rad;
-
-    const distancia = Math.sqrt(dLat * dLat + dLon * dLon) * 6371;
-
-    const km = meterToKilometer(distancia);
-
-    return km;
+  
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1Rad) * Math.cos(lat2Rad); 
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); 
+    const distance = R * c;
+  
+    return distance.toFixed(1); // Redondear a 1 decimal
   }
   const steps = {
     "service accepted": 1,
@@ -76,7 +73,7 @@ export default function ServiceTracking({ service, setService }) {
           <p>Type of service: <strong>{service.type}</strong></p>
           <p>Customer Name: <strong>{service.customer.fullName}</strong></p>
           <p>Car: <strong>{service.car.model}</strong></p>
-          <p className='text-xs'><strong>{calculateDistance([service.destLongitude, service.destLatitude], [service.originLongitude, service.originLatitude])} km</strong> from your location</p>
+          <p className='text-xs'><strong>{calculateDistance([service.destLatitude, service.destLongitude], [service.originLatitude, service.originLongitude])} km</strong> from your location</p>
         </div>
       </div>
     </>

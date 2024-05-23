@@ -14,7 +14,7 @@ export default function Notification() {
       </div>
       {numbers.map((item, i) => (
         <div key={i} className='dark:bg-zinc-800 bg-white h-[5rem] rounded-lg p-4'>
-          hello
+          
         </div>
       ))}
     </div>

@@ -87,6 +87,11 @@ export const getServiceById = gql`
             fullName
             contactNumber
             profilePicture
+            rate {
+              items{
+                rate
+              }
+            }
             createdAt
         }
         destLatitude

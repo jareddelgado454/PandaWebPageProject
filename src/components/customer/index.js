@@ -6,6 +6,7 @@ export { default as InformationHeader } from './components/profile/InformationHe
 // Modals
 export { default as TechnicianInformationModal } from './modals/TechnicianModal';
 export { default as AddNewCarModal } from './modals/AddNewCarModal';
+export { default as UpdateInformationModal } from './modals/UpdateInfoModal';
 // Request Detail
 export { default as PaymentComponent } from './components/request/detail/PaymentMethod';
 export { default as ServiceTrackingComponent } from './components/request/detail/ServiceTracking';

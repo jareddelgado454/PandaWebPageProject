@@ -23,7 +23,7 @@ export default function ServiceForm() {
         isOpen,
         onOpen,
         onOpenChange
-      } = useDisclosure();
+    } = useDisclosure();
     const retrieveMyCars = async () => {
         try {
             const { data } = await client.graphql({
@@ -97,7 +97,7 @@ export default function ServiceForm() {
 
     return (
         <div className='relative h-full '>
-            <AddNewCarModal isOpen={isOpen} onOpenChange={onOpenChange} callback={retrieveMyCars} />
+            <AddNewCarModal isOpen={isOpen} onOpenChange={onOpenChange} callback={retrieveMyCars} setMyCars={setMyCars} />
             <div className={`container mx-auto px-4 w-[90%] h-full ${service && (service.status === 'service accepted' || service.status === 'in progress') && 'hidden'}`}>
                 <Formik
                     initialValues={{
@@ -139,10 +139,10 @@ export default function ServiceForm() {
                                 <div className='flex flex-col gap-3 justify-center'>
                                     <label htmlFor="car">Select car *</label>
                                     {myCars.length === 0 ? (
-                                        <div className=' h-10'>
+                                        <div className='h-10'>
                                             <p className='text-rose-600 cursor-pointer font-semibold' onClick={onOpen}>Click to add your car</p>
                                         </div>
-                                    ) : (    
+                                    ) : (
                                         <Field
                                             as='select'
                                             name='car'
@@ -150,13 +150,9 @@ export default function ServiceForm() {
                                             placeholder="My cars"
                                         >
                                             <option value="default">Choose a car</option>
-                                            {myCars.length > 0 ? (
-                                                myCars.map((car, i) => (
-                                                    <option key={i} value={car.id}>{car.brand}</option>
-                                                ))
-                                            ) : (
-                                                <option disabled value="">You need to add a car</option>
-                                            )}
+                                            {myCars.map((car, i) => (
+                                                <option key={i} value={car.id}>{car.brand}</option>
+                                            ))}
                                         </Field>
                                     )}
                                     <label htmlFor="car">Select type of service *</label>
@@ -165,10 +161,10 @@ export default function ServiceForm() {
                                         name='type'
                                         className='block appearance-none border border-gray-200 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-gray-500 w-full'
                                         placeholder="My cars"
-                                        onChange={({ target }) => setFieldValue('type', target.value)}
                                     >
                                         <option value="repair">Repair</option>
                                         <option value="towing">Towing</option>
+                                        <option value="diagnostic">Diagnostic</option>
                                     </Field>
                                 </div>
                             </div>
