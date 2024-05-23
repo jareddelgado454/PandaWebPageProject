@@ -122,7 +122,7 @@
 .slide-in-left{-webkit-animation:slide-in-left .5s cubic-bezier(.25,.46,.45,.94) both;animation:slide-in-left .5s cubic-bezier(.25,.46,.45,.94) both}
 @-webkit-keyframes slide-in-left{0%{-webkit-transform:translateX(-1000px);transform:translateX(-1000px);opacity:0}100%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}}@keyframes slide-in-left{0%{-webkit-transform:translateX(-1000px);transform:translateX(-1000px);opacity:0}100%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}}
 
-@keyframes pulse {
+@keyframes pulseLocation {
   0% {
     transform: scale(1);
     opacity: 1;
@@ -158,7 +158,7 @@
   border-radius: 50%;
   background-color: rgba(89, 175, 149, 0.5);
   transform: scale(1);
-  animation: pulse 1.5s infinite ease-in-out;
+  animation: pulseLocation 1.5s infinite ease-in-out;
   z-index: -1;
 }
 

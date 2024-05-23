@@ -1,16 +1,23 @@
-import { gql } from 'graphql-tag';
+import { gql } from "graphql-tag";
 
-export const ListenService = gql`  
-subscription ListenToService {
+export const ListenService = gql`
+  subscription ListenToService {
     onCreateService {
       id
       originLongitude
       originLatitude
       status
+      type
       customer {
         email
         fullName
         id
+      }
+      car {
+        id
+        brand
+        model
+        year
       }
       createdAt
       updatedAt
@@ -19,25 +26,43 @@ subscription ListenToService {
 `;
 
 export const listenUpdateService = gql`
-subscription ListenSubscription ($serviceId:ID, $technicianId:ID) {
-  onUpdateService(filter: {id: {eq: $serviceId}, serviceTechnicianSelectedId: {eq: $technicianId}}) {
-    id
-    originLatitude
-    originLongitude
-    status
-    technicianSelected {
+  subscription ListenSubscription($serviceId: ID, $technicianId: ID) {
+    onUpdateService(
+      filter: {
+        id: { eq: $serviceId }
+        serviceTechnicianSelectedId: { eq: $technicianId }
+      }
+    ) {
       id
-      email
-      fullName
-      contactNumber
-      profilePicture
+      originLatitude
+      originLongitude
+      status
+      technicianSelected {
+        id
+        email
+        fullName
+        contactNumber
+        profilePicture
+      }
+      customer {
+        id
+        profilePicture
+        fullName
+      }
+      destLatitude
+      destLongitude
+      type
+      createdAt
+      updatedAt
     }
-    destLatitude
-    destLongitude
-    type
-    createdAt
-    updatedAt
   }
-}
+`;
+
+export const listenDeleteService = gql`
+  subscription MySubscription {
+    onDeleteService {
+      id
+    }
+  }
 `;
 

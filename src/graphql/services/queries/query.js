@@ -15,6 +15,12 @@ export const getAllRequestServices = gql`
         id
         description
         createdAt
+        car{
+          id
+          brand
+          model
+          year
+        }
       }
     }
   }
@@ -34,9 +40,15 @@ export const getRequestServiceById = gql`
             title
             type
             updatedAt
-            # customer {
-            #   fullName
-            # }
+            customer {
+              fullName
+            }
+            car{
+              id
+              brand
+              model
+              year
+            }
         }
     }
 `;

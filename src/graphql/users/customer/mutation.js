@@ -14,11 +14,16 @@ export const createService = gql`
                 contactNumber
                 profilePicture
             }
+            car {
+                id
+                brand
+                model
+                year
+            }
             createdAt
             updatedAt
         }
     }
-
 `;
 
 export const updateService = gql`

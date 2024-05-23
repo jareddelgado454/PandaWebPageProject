@@ -14,8 +14,9 @@ export const getTechnician = gql`
       profilePicture
       zipCode
       subscription
+      repairPriceHour
+      diagnosticPrice
       fee
-      rate
       schedule {
         monday {
             opening
@@ -46,6 +47,15 @@ export const getTechnician = gql`
             closing
         }
       }
+    }
+  }
+`;
+
+export const getPricesTechnician = gql`
+  query MyQuery($id: ID!) {
+    getTechnician(id: $id) {
+      repairPriceHour
+      diagnosticPrice
     }
   }
 `;
