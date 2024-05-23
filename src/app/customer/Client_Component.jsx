@@ -8,7 +8,6 @@ export default function Client_Component() {
         <div
           className="transition-all ease-in-out duration-200 shadow row-span-1 col-span-2 bg-[#E4E6EB] dark:bg-zinc-900 rounded-lg"
           >
-            01
         </div>
         <div
           className={`transition-all ease-in-out duration-200  shadow ${notiActive ? 'row-span-2 h-full' : 'row-span-1 h-full'} bg-[#E4E6EB] dark:bg-zinc-900 rounded-lg overflow-y-scroll p-4 cursor-pointer`}
@@ -18,8 +17,7 @@ export default function Client_Component() {
         </div>
         <div
           className={`transition-all ease-in-out duration-200 shadow row-span-1 ${notiActive ? 'col-span-2' : 'col-span-3'}  bg-[#E4E6EB] dark:bg-zinc-900 rounded-lg`}
-        >
-            03
+        >  
           </div>
       </div>
   )
