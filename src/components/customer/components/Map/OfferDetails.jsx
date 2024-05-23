@@ -1,8 +1,9 @@
 'use client';
 import React, { useContext, useEffect, useState } from 'react';
-import { FaCarOn, FaStar } from 'react-icons/fa6';
+import { FaCarOn, FaRegStar, FaRegStarHalf, FaStar } from 'react-icons/fa6';
 import Image from 'next/image';
 import Cookies from 'js-cookie';
+import ReactStars from "react-rating-stars-component";
 import { Badge } from '@nextui-org/react';
 import { onCreateOffers } from '@/graphql/users/customer/subscription';
 import { client } from '@/contexts/AmplifyContext';
@@ -11,6 +12,7 @@ import { ServiceContext } from '@/contexts/service/ServiceContext';
 import { updateService } from '@/graphql/users/customer/mutation';
 import { MapContext } from '@/contexts/map/MapContext';
 import { PlaceContext } from '@/contexts/place/PlaceContext';
+import { calculateRate } from '@/utils/service/AVGRate';
 
 export default function OfferDetails() {
   const [active, setActive] = useState(false);
@@ -19,6 +21,7 @@ export default function OfferDetails() {
   const { map } = useContext(MapContext);
   const { userLocation } = useContext(PlaceContext);
   const retrieveOffersFromApi = async () => {
+    setOffers([]);
     try {
       if (!serviceRequest) return;
       const { data } = await client.graphql({
@@ -28,9 +31,8 @@ export default function OfferDetails() {
         }
       });
       setOffers(data.listOffers.items);
-      console.log(data.listOffers.items);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
   useEffect(() => { retrieveOffersFromApi() }, [serviceRequest]);
@@ -43,7 +45,6 @@ export default function OfferDetails() {
       .subscribe({
         next: ({ data }) => {
           // Update previous state
-          console.log(data);
           setOffers(prevOffers => [...prevOffers, data.onCreateOffer]);
         },
         error: (error) => console.warn(error)
@@ -57,16 +58,18 @@ export default function OfferDetails() {
   }, [serviceRequest, setServiceRequest]);
 
   const onHandleAcceptServiceFromTechnician = async (offer) => {
-    console.log(offer);
     try {
       const { data } = await client.graphql({
         query: updateService,
         variables: {
           serviceId: offer.serviceId,
           serviceTechnicianSelectedId: offer.technician.id,
-          price: offer.amount
+          price: offer.amount,
+          destLatitude: offer.technician.loLatitude,
+          destLongitude: offer.technician.loLongitude
         }
       });
+      console.log(data);
       setServiceRequest(data.updateService);
       setActive(false);
       Cookies.set(
@@ -98,8 +101,8 @@ export default function OfferDetails() {
                 </Badge>
               </div>
             </div>
-            <div className={`w-[85%] h-full  transition-all duration-300 ease-in-out animate__animated  ${active ? 'block animate__bounceInDown' : 'animate__bounceOutUp'}`}>
-              <div className='flex flex-col gap-2 overflow-y-auto'>
+            <div className={`w-[85%] h-full  transition-all duration-300 ease-in-out animate__animated ${offers.length > 0 && 'overflow-y-scroll'} ${active ? 'block animate__bounceInDown' : 'animate__bounceOutUp'}`}>
+              <div className='flex flex-col gap-2'>
                 {offers.map((offer, i) => (
                   <div key={i} className='dark:bg-zinc-900 bg-white shadow-lg w-full h-[7rem] rounded-lg p-4 overflow-hidden animate__animated animate__fadeInLeft'>
                     <div className='flex flex-row items-center h-full gap-2 w-full'>
@@ -111,11 +114,25 @@ export default function OfferDetails() {
                         alt="profile_picture_technician_offer"
                       />
                       <div className='flex flex-col gap-1 w-full'>
-                        <div className='flex flex-row gap-4 justify-between'>
+                        <div className='flex flex-row gap-4 justify-between items-center'>
                           <p className='text-sm 2xl:text-base line-clamp-1'>{offer.technician.fullName}</p>
                           <div className='flex gap-2 justify-center items-center'>
-                            <FaStar className='text-amber-500' /><FaStar className='text-amber-500' /><FaStar className='text-amber-500' /><FaStar className='text-amber-500' />
-                            <p className='text-sm font-bold'>{offer.technician.rate}</p>
+                            {offer.technician.rate ? (
+                              <ReactStars
+                                count={5}
+                                value={calculateRate(offer.technician.rate)}
+                                size={22}
+                                edit={false}
+                                isHalf={true}
+                                emptyIcon={<FaStar />}
+                                halfIcon={<FaRegStarHalf />}
+                                fullIcon={<FaRegStar />}
+                                activeColor="#ffd700"
+                              />
+                            ) : (
+                              <p>No rate</p>
+                            )}
+                            <p className='text-sm font-bold'>{calculateRate(offer.technician.rate)}</p>
                           </div>
                         </div>
                         <p className='text-xs 2xl:text-sm text-zinc-400'>Technician</p>

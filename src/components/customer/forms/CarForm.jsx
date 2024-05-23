@@ -1,14 +1,14 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Field, Form, Formik } from 'formik';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
+import { uploadData } from 'aws-amplify/storage';
 import Cookies from 'js-cookie';
 import { client } from '@/contexts/AmplifyContext';
 import { Progress } from '@nextui-org/react';
-import { uploadData } from 'aws-amplify/storage';
-import { saveMyCar } from '@/graphql/users/customer/mutation';
-export default function CarForm() {
+import { saveMyCar, updateMyCar } from '@/graphql/users/customer/mutation';
+export default function CarForm({ callback, car, edit, onClose }) {
   const [percent, setPercent] = useState(0);
   const [photograph, setPhotograph] = useState(null);
   function handleChangePhotograph(event) {
@@ -57,6 +57,40 @@ export default function CarForm() {
       console.log(`Error from here : ${error}`);
     }
   };
+  const handleUpdateCar = async (values, customerId) => {
+    console.log(values);
+    try {
+      await client.graphql({
+        query: updateMyCar,
+        variables: {
+          input: {
+            ...values,
+            customerCarsId: customerId,
+          }
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const handleCreateCar = async (values, image, customerId) => {
+    try {
+      await client.graphql({
+        query: saveMyCar,
+        variables: {
+          input: {
+            brand: values.brand,
+            model:values.model,
+            year: values.year,
+            customerCarsId: customerId,
+            image: image
+          }
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const onSubmit = async (values, { resetForm }) => {
     let image;
     try {
@@ -65,31 +99,32 @@ export default function CarForm() {
       }
 
       const userParsed = JSON.parse(Cookies.get("currentUser"));
-      await client.graphql({
-        query: saveMyCar,
-        variables: {
-          input: {
-            ...values,
-            customerCarsId: userParsed.id,
-            image: image
-          }
-        }
-      })
-      toast.success('Report sended.');
+      const {
+        id: customerId,
+      } = userParsed;
+      if (edit) {
+        handleUpdateCar({...values}, customerId);
+      } else {
+        handleCreateCar({...values,}, image, customerId);
+      }
+      toast.success('Car Uploaded successfully.');
       resetForm();
       setPercent(0);
       setPhotograph(null);
-
+      onClose();
+      callback();
     } catch (error) {
       console.error(error);
     }
   }
   return (
     <Formik
+      enableReinitialize
       initialValues={{
-        brand: '',
-        model: '',
-        year: ''
+        id: car?.id || '',
+        brand: car?.brand || '',
+        model: car?.model || '',
+        year: car?.year || ''
       }}
       onSubmit={onSubmit}
       validateOnBlur={false}

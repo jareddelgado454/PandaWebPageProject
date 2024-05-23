@@ -20,7 +20,7 @@ export default function ClientProfile() {
                 <Tabs aria-label="Options">
                     <Tab key="My Profile" title="My Profile">
                         <div className='h-full flex flex-col gap-4'>
-                            <p>Full Name: <strong>{user && user.name}</strong></p>
+                            <p>Full Name: <strong>{user && user['custom:fullName']  ? user['custom:fullName'] : (user && user.name)}</strong></p>
                             <p>Contact Number: <strong>(+1) 923538579</strong></p>
                             <p>Role: <strong>{user && user['custom:role']}</strong></p>
                             <p>State: <strong></strong></p>

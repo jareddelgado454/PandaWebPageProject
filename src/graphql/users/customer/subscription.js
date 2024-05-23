@@ -11,8 +11,15 @@ export const onCreateOffers = gql`
                 profilePicture
                 id
                 fullName
-                rate
+                loLatitude
+      	        loLongitude
+                  rate {
+                    items{
+                        rate
+                    }
+                }
             }
+            
             serviceId
         }
     }

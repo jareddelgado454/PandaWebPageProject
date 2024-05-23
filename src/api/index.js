@@ -22,8 +22,6 @@ export const handleCreateUserOnDatabase = async(values, isAdded) => {
         console.log(error);
     }
 }
-
-// TECHNICIAN TECHNICIAN TECHNICIAN
 export const handleCreateTechnicianOnDataBase = async(values, isAdded) => {
     try {
         const { data } = await client.graphql({
@@ -67,9 +65,6 @@ export const handleRetrieveTechnician = async (id) => {
         console.log(error);
     }
 } 
-// TECHNICIAN TECHNICIAN TECHNICIAN
-
-//REQUEST SERVICEEEEEES 
 
 export const handleRetrieveRequestService = async (id) => {
     try {

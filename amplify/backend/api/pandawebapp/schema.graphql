@@ -96,10 +96,10 @@ type Technician @model @auth(
     subscription: String
     fee: Int
     rate: [Rate] @hasMany(indexName: "byTechnician", fields: ["id"])
-    loLatitude: Float!
-    loLongitude: Float!
-    diagnosticPrice: Float!
-    repairPriceHour: Float!
+    loLatitude: Float
+    loLongitude: Float
+    diagnosticPrice: Float
+    repairPriceHour: Float
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
     schedule: Schedule

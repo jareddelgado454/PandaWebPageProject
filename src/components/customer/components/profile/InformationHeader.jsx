@@ -15,10 +15,11 @@ export default function InformationHeader({ user }) {
             height={400}
             className='rounded-full h-[9rem] w-[9rem] border-emerald-600 border-3'
             alt='profile_customer_picture'
+            priority
           />
           <div className='flex flex-col gap-2'>
             <div className='flex gap-2 items-center'>
-              <p>Welcome back, <strong className='text-[#40C48E]'>{user && user.name}</strong></p>
+              <p>Welcome back, <strong className='text-[#40C48E]'>{user && user['custom:fullName']  ? user['custom:fullName'] : (user && user.name)}</strong></p>
               <FaStar className='text-amber-500' /><FaStar className='text-amber-500' /><FaStar className='text-amber-500' /><FaStar className='text-amber-500' />
               <FaRegStar className='text-amber-500' />
               <p>4 stars</p>

@@ -11,13 +11,19 @@ import { PlaceContext } from '@/contexts/place/PlaceContext';
 import { createService } from '@/graphql/users/customer/mutation';
 import { ServiceContext } from '@/contexts/service/ServiceContext';
 import { listCarsById } from '@/graphql/users/customer/query';
-
+import { useDisclosure } from '@nextui-org/react';
+import { AddNewCarModal } from '../..';
 export default function ServiceForm() {
     const user = Cookies.get("currentUser") && JSON.parse(Cookies.get("currentUser"));
     const { userLocation } = useContext(PlaceContext);
     const { serviceRequest, setServiceRequest } = useContext(ServiceContext);
     const [service, setService] = useState({});
     const [myCars, setMyCars] = useState([]);
+    const {
+        isOpen,
+        onOpen,
+        onOpenChange
+      } = useDisclosure();
     const retrieveMyCars = async () => {
         try {
             const { data } = await client.graphql({
@@ -91,7 +97,8 @@ export default function ServiceForm() {
 
     return (
         <div className='relative h-full '>
-            <div className={`container mx-auto px-4 w-[90%] h-full ${service && service.status === 'in progress' && 'hidden'}`}>
+            <AddNewCarModal isOpen={isOpen} onOpenChange={onOpenChange} callback={retrieveMyCars} />
+            <div className={`container mx-auto px-4 w-[90%] h-full ${service && (service.status === 'service accepted' || service.status === 'in progress') && 'hidden'}`}>
                 <Formik
                     initialValues={{
                         title: '',
@@ -105,7 +112,7 @@ export default function ServiceForm() {
                     validateOnChange={false}
                 >
                     {({ handleSubmit, errors, isValid, setFieldValue, values }) => (
-                        <Form className={`grid grid-cols-1 2xl:grid-cols-3 gap-6 h-full ${(service && service.status === 'pending') && 'opacity-25'}`} onSubmit={handleSubmit}>
+                        <Form className={`grid grid-cols-1 2xl:grid-cols-3 gap-6 h-full ${(service && (service.status === 'service accepted' || service.status === 'pending')) && 'opacity-25'}`} onSubmit={handleSubmit}>
                             <div className='flex flex-col gap-4 justify-center'>
                                 <div className='flex flex-col gap-2 w-full justify-center'>
                                     <label htmlFor="title">Title of service *</label>
@@ -131,21 +138,27 @@ export default function ServiceForm() {
                             <div className='flex flex-col gap-6 justify-center'>
                                 <div className='flex flex-col gap-3 justify-center'>
                                     <label htmlFor="car">Select car *</label>
-                                    <Field
-                                        as='select'
-                                        name='car'
-                                        className='block appearance-none border border-gray-200 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-gray-500 w-full'
-                                        placeholder="My cars"
-                                    >
-                                        <option value="default">Choose a car</option>
-                                        {myCars.length > 0 ? (
-                                            myCars.map((car, i) => (
-                                                <option key={i} value={car.id}>{car.brand}</option>
-                                            ))
-                                        ) : (
-                                            <option disabled value="">You need to add a car</option>
-                                        )}
-                                    </Field>
+                                    {myCars.length === 0 ? (
+                                        <div className=' h-10'>
+                                            <p className='text-rose-600 cursor-pointer font-semibold' onClick={onOpen}>Click to add your car</p>
+                                        </div>
+                                    ) : (    
+                                        <Field
+                                            as='select'
+                                            name='car'
+                                            className='block appearance-none border border-gray-200 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-gray-500 w-full'
+                                            placeholder="My cars"
+                                        >
+                                            <option value="default">Choose a car</option>
+                                            {myCars.length > 0 ? (
+                                                myCars.map((car, i) => (
+                                                    <option key={i} value={car.id}>{car.brand}</option>
+                                                ))
+                                            ) : (
+                                                <option disabled value="">You need to add a car</option>
+                                            )}
+                                        </Field>
+                                    )}
                                     <label htmlFor="car">Select type of service *</label>
                                     <Field
                                         as='select'
@@ -195,7 +208,7 @@ export default function ServiceForm() {
                 )
             }
             {
-                (service && service.status === 'in progress' && (
+                (service && (service.status === 'service accepted') && (
                     <div className='w-full h-full flex flex-col gap-4 justify-center items-center'>
                         <p className='font-semibold'>You already have a service petition. Click here to see full detail:</p>
                         <Link href={`/customer/request/${serviceRequest.id}`} className='bg-green-panda rounded px-2 py-2 shadow-lg text-white'>Service Detail</Link>
@@ -209,4 +222,5 @@ export default function ServiceForm() {
 const formSchema = Yup.object().shape({
     title: Yup.string().required('Required').max(50),
     description: Yup.string().required('Required').max(1000),
+    car: Yup.string().required()
 });

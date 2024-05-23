@@ -1,18 +1,43 @@
+'use client';
 import React from 'react';
-import { Modal, ModalContent, ModalBody } from "@nextui-org/react";
+import { Modal, ModalContent, ModalBody, ModalFooter, Button } from "@nextui-org/react";
 import CarForm from '../forms/CarForm';
-export default function AddNewCarModal({ isOpen, onOpenChange }) {
+import { client } from '@/contexts/AmplifyContext';
+import { deleteMyCar } from '@/graphql/users/customer/mutation';
+export default function AddNewCarModal({ isOpen, onOpenChange, callback, car = {}, edit = false }) {
+    const onHandleDeleteCard = async() => {
+        try {
+            if(!car){
+                alert('There is no car');
+                return;
+            }
+            await client.graphql({
+                query: deleteMyCar,
+                variables: {
+                    carId: car.id
+                }
+            });
+            callback();
+        } catch (error) {
+            console.error(error);
+        }
+    }
     return (
         <Modal backdrop='blur' isOpen={isOpen} onOpenChange={onOpenChange} size='3xl' placement='center'
-            className='bg-zinc-200 dark:bg-zinc-900'
+            className='bg-white dark:bg-zinc-900 py-6'
         >
             <ModalContent>
-                {() => (
+                {(onclose) => (
                     <>
                         <ModalBody className='flex flex-col items-center'>
-                            <p>Add new car</p>
-                            <CarForm />
+                            <p className='text-2xl font-semibold'>{edit ? 'Edit my car' : 'Add new car'}</p>
+                            <CarForm callback={callback} car={car} edit={edit} onClose={onclose} />
                         </ModalBody>
+                        <ModalFooter>
+                            <Button type='button' color='danger' onClick={onHandleDeleteCard}>
+                                Delete car
+                            </Button>
+                        </ModalFooter>
                     </>
                 )}
             </ModalContent>

@@ -132,7 +132,7 @@ export default function Map() {
       });
 
       new maplibregl.Marker({ element: technicianMarker })
-        .setLngLat([destLatitude, destLongitude])
+        .setLngLat([destLongitude, destLatitude])
         .addTo(map);
 
     }
