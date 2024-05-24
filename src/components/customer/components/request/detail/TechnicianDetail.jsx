@@ -3,7 +3,7 @@ import ReactStars from "react-rating-stars-component";
 import Image from 'next/image'
 import React from 'react'
 import { FaCommentSms, FaPhoneVolume, FaRegStar, FaRegStarHalf, FaStar } from 'react-icons/fa6'
-
+import { calculateRate } from '@/utils/service/AVGRate';
 export default function TechnicianDetail({ technician }) {
   return (
     <div className='w-full h-full p-4'>
@@ -25,7 +25,7 @@ export default function TechnicianDetail({ technician }) {
               {technician?.rate.items.length > 0 ? (
                 <ReactStars
                   count={5}
-                  value={calculateRate(offer.technician.rate)}
+                  value={calculateRate(technician.rate)}
                   size={22}
                   edit={false}
                   isHalf={true}
