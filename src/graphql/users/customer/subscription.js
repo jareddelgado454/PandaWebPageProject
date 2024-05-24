@@ -38,6 +38,16 @@ export const onUpdateService = gql`
 
 `;
 
+export const onUpdateServiceStatus = gql`
+    subscription MySubscription($serviceId: ID!, $customerId: ID!) {
+        onUpdateService(filter: {id: {eq: $serviceId}, serviceCustomerId: {eq: $customerId}}){
+            id
+            status
+        }
+    }
+
+`;
+
 export const onUpdateServiceCoordinates = gql`
     subscription OnUpdateServiceCoordinates($serviceId: ID!, $customerId: ID!) {
         onUpdateService(filter: {id: {eq: $serviceId}, serviceCustomerId: {eq: $customerId}}){
