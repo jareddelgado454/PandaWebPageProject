@@ -87,3 +87,12 @@ export const updateStatusService = gql`
     }
   }
 `;
+
+export const createTechnicianRate = gql`
+  mutation CreateTechnicianRate($rate: Float!, $comment: String!, $technicianId: ID!, $customerId: ID!) {
+    createRate(input: {rate: $rate, comment: $comment, rateCustomerId: $customerId, technicianId: $technicianId}){
+      id
+      comment
+    }
+  }
+`;
