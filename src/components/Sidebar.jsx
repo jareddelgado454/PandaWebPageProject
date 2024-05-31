@@ -107,7 +107,7 @@ export const Sidebar = () => {
               Technicians
             </p>
           </Link>
-          <Link
+          {/* <Link
             href={`/admin-dashboard/users`}
             className="flex gap-3 items-center mt-5"
           >
@@ -115,7 +115,7 @@ export const Sidebar = () => {
             <p className={`text-xl font-medium ${!active && "hidden"}`}>
               Users
             </p>
-          </Link>
+          </Link> */}
         </ul>
         <div className="w-full px-4 absolute bottom-4 transition-all">
           <div className="bg-zinc-600 dark:bg-green-panda shadow-xl p-3 rounded-md mb-4">
