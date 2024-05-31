@@ -45,7 +45,6 @@ export const onUpdateServiceStatus = gql`
             status
         }
     }
-
 `;
 
 export const onUpdateServiceCoordinates = gql`

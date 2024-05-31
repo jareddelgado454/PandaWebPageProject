@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
-import { FaCircleExclamation, FaComments, FaHandPointUp, FaHouse, FaKey, FaListCheck, FaUserXmark } from "react-icons/fa6";
+import { FaCircleExclamation, FaComments, FaHandPointUp, FaHouse, FaKey, FaListCheck, FaRegMoon, FaUserXmark } from "react-icons/fa6";
 import { RiUserFill, RiLogoutCircleLine } from "react-icons/ri";
 import { Badge, useDisclosure } from "@nextui-org/react";
 import { DeleteUserModal, PassWordModal, SendReportModal } from '@/components/modalUser';
@@ -13,6 +13,22 @@ export default function CustomerSidebar() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [theme, setTheme] = useState("light");
+  useEffect(() => {
+
+    if (theme === "dark") {
+      document.querySelector('html').classList.add('dark');
+    } else {
+      document.querySelector('html').classList.remove('dark')
+    }
+
+  }, [theme]);
+
+  const handleChangeTheme = () => {
+
+    setTheme(prevTheme => prevTheme === "light" ? "dark" : 'light');
+
+  };
   const { isOpen: isDeleteUserModalOpen, onOpen: onDeleteUserModalOpen, onOpenChange: onDeleteUserModalChange } = useDisclosure();
   const { isOpen: isChangePasswordModalOpen, onOpen: onChangePasswordModalOpen, onOpenChange: onChangePasswordModalChange } = useDisclosure();
   const { isOpen: isSendReportModalOpen, onOpen: onSendReportModalOpen, onOpenChange: onSendReportModalChange } = useDisclosure();
@@ -103,6 +119,12 @@ export default function CustomerSidebar() {
               <div onClick={onSendReportModalOpen} className={`text-amber-400 w-full rounded-md transition-all hover:bg-emerald-500 hover:text-white flex gap-x-2 text-sm md:text-[16px] items-center p-2 px-3 cursor-pointer`}>
                 <FaCircleExclamation />
                 Report
+              </div>
+            </div>
+            <div className='w-full flex flex-col gap-y-2'>
+              <div onClick={handleChangeTheme} className={`text-zinc-950 dark:text-white w-full rounded-md transition-all hover:bg-emerald-500 hover:text-white flex gap-x-2 text-sm md:text-[16px] items-center p-2 px-3 cursor-pointer`}>
+                <FaRegMoon />
+                {theme === 'light' ? 'Dark' : 'Light'} Mode
               </div>
             </div>
             <div className="w-full flex items-center p-4 ">

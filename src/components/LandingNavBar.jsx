@@ -5,7 +5,6 @@ import { FaBars } from 'react-icons/fa6';
 import { useWindowSize } from 'react-use';
 import { useDisclosure } from '@nextui-org/react';
 import AuthOption from './modalLanding/AuthOption';
-import useMedia from 'use-media';
 import Cookies from 'js-cookie';
 import { signOut } from "aws-amplify/auth";
 import { RiCloseFill } from "react-icons/ri";
@@ -32,7 +31,6 @@ const LandingNavBar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const { width } = useWindowSize();
-    const isLGScreen = useMedia({ minWidth: '1024px' }); 
     const [showMenu, setShowMenu] = useState(false);
     const toggleMenu = (action) => {
         setShowMenu(action);
@@ -146,7 +144,6 @@ const LandingNavBar = () => {
                                         <DropdownItem key="logout" className='text-emerald-400' onClick={()=>{
                                             signOut();
                                             setIsLoggedIn(false);
-                                            Cookies.remove("currentUser");
                                         }}>
                                             Log Out
                                         </DropdownItem>

@@ -12,7 +12,6 @@ export const Steppers = ({ currentStep, service, setService }) => {
       .subscribe({
         next: ({ data }) => {
           // Update previous state
-          console.log(data);
           setService((prevState) => ({
             ...prevState,
             ...data.onUpdateService

@@ -36,13 +36,17 @@ export default function ClientListRequests() {
           {loading ? (
             <div>Retrieving services...</div>
           ) : (services.map((service, i) => (
-            <Link href={`/customer/request/${service.id}`} key={i} className='group bg-green-panda text-white dark:bg-zinc-900 h-[18rem] rounded-lg p-4 shadow-lg transition-all ease-in-out hover:-translate-y-1 hover:scale-105 duration-300 cursor-pointer dark:hover:bg-green-panda'>
+            <Link
+              href={`/customer/request/${service.id}`}
+              key={i}
+              className={`group text-white  dark:bg-zinc-900 h-[18rem] rounded-lg p-4 shadow-lg transition-all ease-in-out hover:-translate-y-1 hover:scale-105 duration-300 cursor-pointer ${service.status === 'completed' && 'hover:bg-green-panda'} ${(service.status === 'service accepted' || service.status === 'in progress') && 'border-t-8 border-t-blue-600 hover:bg-blue-600'} ${service.status === 'cancelled' && 'hover:bg-rose-600'}`}>
               <div className='flex flex-col gap-4 justify-center h-full'>
-                <p>id: <strong>{service.id}</strong></p>
-                <p>title: <strong>{service.title}</strong></p>
-                <p>cost: <strong>{service.price}</strong></p>
-                <p>Type of service: <strong>{service.type}</strong></p>
-                <p>Created at: <strong>{DateFormatter(service.createdAt)}</strong></p>
+                <p className='text-[#4d4e62] dark:text-[#BCB4B4] group-hover:text-white'>id: <strong>{service.id}</strong></p>
+                <p className='text-[#4d4e62] dark:text-[#BCB4B4] group-hover:text-white'>title: <strong>{service.title}</strong></p>
+                <p className='text-[#4d4e62] dark:text-[#BCB4B4] group-hover:text-white'>cost: <strong>{service.price}</strong></p>
+                <p className='text-[#4d4e62] dark:text-[#BCB4B4] group-hover:text-white'>status: <strong>{service.status}</strong></p>
+                <p className='text-[#4d4e62] dark:text-[#BCB4B4] group-hover:text-white'>Type of service: <strong>{service.type}</strong></p>
+                <p className='text-[#4d4e62] dark:text-[#BCB4B4] group-hover:text-white'>Created at: <strong>{DateFormatter(service.createdAt)}</strong></p>
               </div>
             </Link>
           )))}

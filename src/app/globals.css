@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import '~react-toastify/dist/ReactToastify.min.css';
 
 #input::-webkit-scrollbar{
   display: none;
@@ -166,4 +167,12 @@
   border-radius: 50%;
   width: 38px;
   height: 38px;
+}
+
+.technician-marker {
+  width: 35px;
+  height: 30px;
+  background-image: url('https://www.pngkey.com/png/full/60-601527_car-png-top.png');
+  background-size: contain;
+  background-repeat: no-repeat;
 }

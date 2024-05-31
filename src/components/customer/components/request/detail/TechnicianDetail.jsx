@@ -1,54 +1,87 @@
-import { ThirdDateFormatter } from '@/utils/parseDate'
+'use client';
+import React, { useContext } from 'react'
 import ReactStars from "react-rating-stars-component";
 import Image from 'next/image'
-import React from 'react'
 import { FaCommentSms, FaPhoneVolume, FaRegStar, FaRegStarHalf, FaStar } from 'react-icons/fa6'
+import { ThirdDateFormatter } from '@/utils/parseDate'
 import { calculateRate } from '@/utils/service/AVGRate';
+import { client } from '@/contexts/AmplifyContext';
+import { createChat } from '@/graphql/chat/mutation';
+import { useRouter } from 'next/navigation';
+import { UserContext } from '@/contexts/user/UserContext';
+import { Button } from '@nextui-org/react';
+import { existChatWithTechnicianSelected } from '@/api/service';
 export default function TechnicianDetail({ technician }) {
+  const { user } = useContext(UserContext);
+  const router = useRouter();
+  const onCreateChat = async () => {
+    console.log('clicked');
+    try {
+      const id = await existChatWithTechnicianSelected(user.id, technician.id);
+
+      if (id) {
+        router.replace(`/customer/messages/${id}`);
+      } else {
+        const { data } = await client.graphql({
+          query: createChat,
+          variables: {
+            customerId: user.id,
+            technicianId: technician.id
+          }
+        });
+        router.replace(`/customer/messages/${data.createChat.id}`);
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <div className='w-full h-full p-4'>
-      <div className='flex flex-col lg:flex-row gap-2 gap-y-4 items-center h-full'>
-        <div className='w-full lg:w-[90%] flex flex-row gap-4 items-center'>
-          <Image
-            src={`/image/defaultProfilePicture.jpg`}
-            alt='image_technician_profile_picture'
-            width={100}
-            height={100}
-            className='rounded-full w-[4.5rem] h-[4.5rem] lg:w-[6.5rem] lg:h-[6.5rem] border-2 border-[#40C48E]'
-            priority
-          />
-          <div className='flex flex-col gap-1 h-full'>
-            <p className='text-md lg:text-base 2xl:text-2xl font-semibold text-[#40C48E]'>{technician.fullName}</p>
-            <p className='text-xs lg:text-sm text-zinc-500 dark:text-zinc-300'>{ThirdDateFormatter(technician.createdAt)}</p>
-            <div className='flex flex-row gap-1 items-center'>
-              <p className='text-xs lg:text-base'>Rate:</p>
-              {technician?.rate.items.length > 0 ? (
-                <ReactStars
-                  count={5}
-                  value={calculateRate(technician.rate)}
-                  size={22}
-                  edit={false}
-                  isHalf={true}
-                  emptyIcon={<FaStar />}
-                  halfIcon={<FaRegStarHalf />}
-                  fullIcon={<FaRegStar />}
-                  activeColor="#ffd700"
-                />
-              ) : (
-                <div>No stars</div>
-              )}
+      {technician ? (
+        <div className='flex flex-col lg:flex-row gap-2 gap-y-4 items-center h-full'>
+          <div className='w-full lg:w-[90%] flex flex-row gap-4 items-center'>
+            <Image
+              src={`/image/defaultProfilePicture.jpg`}
+              alt='image_technician_profile_picture'
+              width={100}
+              height={100}
+              className='rounded-full w-[4.5rem] h-[4.5rem] lg:w-[6.5rem] lg:h-[6.5rem] border-2 border-[#40C48E]'
+              priority
+            />
+            <div className='flex flex-col gap-1 h-full'>
+              <p className='text-md lg:text-base 2xl:text-2xl font-semibold text-[#40C48E]'>{technician.fullName}</p>
+              <p className='text-xs lg:text-sm text-zinc-500 dark:text-zinc-300'>{ThirdDateFormatter(technician.createdAt)}</p>
+              <div className='flex flex-row gap-1 items-center'>
+                <p className='text-xs lg:text-base'>Rate:</p>
+                {technician?.rate.items.length > 0 ? (
+                  <ReactStars
+                    count={5}
+                    value={calculateRate(technician.rate)}
+                    size={22}
+                    edit={false}
+                    isHalf={true}
+                    emptyIcon={<FaStar />}
+                    halfIcon={<FaRegStarHalf />}
+                    fullIcon={<FaRegStar />}
+                    activeColor="#ffd700"
+                  />
+                ) : (
+                  <div>No stars</div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-        <div className='w-full lg:w-[10%] flex flex-row h-full gap-4 justify-center'>
-          <div className='bg-white dark:bg-zinc-800 p-4 w-[3rem] h-[3rem] rounded-full shadow-lg cursor-pointer'>
-            <FaPhoneVolume className='text-lg' />
+          <div className='w-full lg:w-[10%] flex flex-row h-full gap-4 justify-center'>
+            <div className='bg-white dark:bg-zinc-800 dark:hover:bg-green-panda transition-all duration-300 p-4 w-[3rem] h-[3rem] rounded-full shadow-lg cursor-pointer'>
+              <FaPhoneVolume className='text-lg' />
+            </div>
+            <Button onClick={onCreateChat} className='bg-white dark:bg-zinc-800 dark:hover:bg-green-panda transition-all duration-300 p-4  h-[3rem] rounded-full shadow-lg cursor-pointer'>
+              <FaCommentSms className='text-lg' />
+            </Button>
           </div>
-          <div className='bg-white dark:bg-zinc-800 p-4 w-[3rem] h-[3rem] rounded-full shadow-lg cursor-pointer'>
-            <FaCommentSms className='text-lg' />
-          </div>
         </div>
-      </div>
+      ) : (<div className='font-semibold text-2xl dark:text-zinc-400'>No technician assigned yet</div>)}
     </div>
   )
 }

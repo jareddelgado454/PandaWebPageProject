@@ -11,3 +11,5 @@ export { default as UpdateInformationModal } from './modals/UpdateInfoModal';
 export { default as PaymentComponent } from './components/request/detail/PaymentMethod';
 export { default as ServiceTrackingComponent } from './components/request/detail/ServiceTracking';
 export { default as TechnicianDetailComponent } from './components/request/detail/TechnicianDetail';
+//Messages
+export { default as ContactsComponent } from './components/message/ListContacts';

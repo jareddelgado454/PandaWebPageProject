@@ -94,6 +94,8 @@ type Technician @model @auth(
     profilePicture: String
     zipCode: Int
     subscription: String
+    stripeId: String
+    stripeAccountStatus: String
     fee: Int
     rate: [Rate] @hasMany(indexName: "byTechnician", fields: ["id"])
     loLatitude: Float
@@ -181,6 +183,7 @@ type Service @model @auth(
     paymentMethod: String!
     price: Float
     repairPrice: Float
+    tax: Float
     total: Float
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
@@ -201,31 +204,28 @@ type Offer @model @auth(
     text: String!
 }
 
+
 type Chat @model @auth(
     rules: [
         { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
-        { allow: owner, ownerField: "customer", operations: [ read, update, create, delete ] }
-        { allow: owner, ownerField: "technician", operations: [ read, update, create, delete ] }
-        { allow: private, operations: [ read ] }
+        { allow: private, operations: [ read, create, update, delete ] }
     ]
 ) {
     id: ID!
-    messages: [Message] @hasMany(indexName: "byMessage", fields: ["id"])
-    customer: Customer @hasOne
-    technician: Technician @hasOne
+    customer: Customer! @hasOne
+    technicianSelected: Technician @hasOne
+    messages: [Message] @hasMany(indexName: "byChat", fields: ["id"])
 }
 
 type Message @model @auth(
     rules: [
         { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
         { allow: owner, ownerField: "sender", operations: [ read, update, create, delete ] }
-        { allow: owner, ownerField: "customer", operations: [ read, update, create, delete ] }
-        { allow: owner, ownerField: "technician", operations: [ read, update, create, delete ] }
         { allow: private, operations: [ read ] }
     ]
 ){
     id: ID!
     content: String!
     sender: ID!
-    chatId: ID! @index(name: "byMessage")
+    chatId: ID! @index(name: "byChat")
 }

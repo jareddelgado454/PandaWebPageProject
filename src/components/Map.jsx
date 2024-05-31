@@ -12,6 +12,7 @@ import { TechnicianInformationModal } from './customer';
 import { onUpdateServiceCoordinates } from '@/graphql/users/customer/subscription';
 import { client } from '@/contexts/AmplifyContext';
 import { CalculateAngleFromLocation } from '@/utils/service/CalculateAngle';
+import { getServiceById } from '@/graphql/services/queries/query';
 export default function Map() {
   const mapDiv = useRef(null);
   const technicianMarkerRef = useRef(null);
@@ -20,13 +21,11 @@ export default function Map() {
   const [technicianSelected, setTechnicianSelected] = useState(null);
   const { serviceRequest, setServiceRequest, setServiceCoordinates } = useContext(ServiceContext);
   const interpolate = (start, end, t) => start + (end - start) * t;
-
   const animateMarker = (marker, startCoords, endCoords, duration) => {
     const startTime = performance.now();
-
     const animate = (currentTime) => {
       const elapsed = currentTime - startTime;
-      const t = Math.min(elapsed / duration, 1); // Normalized time value between 0 and 1
+      const t = Math.min(elapsed / duration, 1);
 
       const newLng = interpolate(startCoords[0], endCoords[0], t);
       const newLat = interpolate(startCoords[1], endCoords[1], t);
@@ -37,7 +36,6 @@ export default function Map() {
         requestAnimationFrame(animate);
       }
     };
-
     requestAnimationFrame(animate);
   };
   const {
@@ -45,17 +43,32 @@ export default function Map() {
     onOpen: onTechnicianModalOpen,
     onOpenChange: onTechnicianModalChange,
   } = useDisclosure();
+  const retrieveService = async () => {
+    try {
+      if (!serviceRequest) return;
+      const { data } = await client.graphql({
+        query: getServiceById,
+        variables: {
+          serviceId: serviceRequest.id
+        }
+      });
+      console.log(data);
+      setServiceRequest(data.getService);
+    } catch (error) {
+      console.error(error);
+    }
+  }
   useLayoutEffect(() => {
     const initializeMap = async () => {
       if (!isLoading) {
-        const map = await createMap({
+        const mapC = await createMap({
           container: mapDiv.current,
           center: userLocation ? userLocation : [-123.1187, 49.2819],
           zoom: 14
         });
-        setMap(map);
+        setMap(mapC);
         if (userLocation) {
-          map.flyTo({
+          mapC.flyTo({
             center: userLocation,
             zoom: 16,
             duration: 2000,
@@ -67,54 +80,61 @@ export default function Map() {
 
           new maplibregl.Marker(pulsatingCircle)
             .setLngLat(userLocation)
-            .addTo(map);
-        }
+            .addTo(mapC);
 
+        }
+        retrieveService();
       }
 
     };
+    
     initializeMap();
   }, [isLoading]);
   const handleModalInformation = (technician) => {
     setTechnicianSelected(technician);
     onTechnicianModalOpen();
   }
-  useEffect(() => {
-    if (isMapReady && serviceRequest && serviceRequest.destLatitude && serviceRequest.destLongitude) {
+  const displayTechnicianMarker = (mapP) => {
+    if (!technicianMarkerRef.current && isMapReady && serviceRequest && serviceRequest.destLatitude && serviceRequest.destLongitude) {
       const { destLatitude, destLongitude } = serviceRequest;
-      if (!technicianMarkerRef.current) {
-        const technicianMarker = document.createElement('img');
-        technicianMarker.src = `https://www.pngkey.com/png/full/60-601527_car-png-top.png`;
-        technicianMarker.style.width = '30px';
-        technicianMarker.style.height = '20px';
-        technicianMarker.addEventListener('click', () => {
-          console.log('Marcador de técnico clicado');
-          console.log(serviceRequest.technicianSelected);
-          handleModalInformation(serviceRequest.technicianSelected);
-        });
 
-        technicianMarkerRef.current = new maplibregl.Marker({ element: technicianMarker })
-          .setLngLat([destLongitude, destLatitude])
-          .addTo(map);
-      } else {
-        const startCoords = technicianMarkerRef.current.getLngLat().toArray();
-        const endCoords = [destLongitude, destLatitude];
-        animateMarker(technicianMarkerRef.current, startCoords, endCoords, 2000);
+      const technicianMarker = document.createElement('div');
+      technicianMarker.className = 'technician-marker';
+      technicianMarker.addEventListener('click', () => {
+        handleModalInformation(serviceRequest.technicianSelected);
+      });
 
-        const angleDegrees = CalculateAngleFromLocation(startCoords, endCoords);
-
-        technicianMarkerRef.current.setLngLat([destLongitude, destLatitude]);
-        technicianMarkerRef.current.setRotation(angleDegrees);
-      }
+      technicianMarkerRef.current = new maplibregl.Marker({ element: technicianMarker })
+        .setLngLat([destLongitude, destLatitude])
+        .addTo(mapP);
 
     }
-  }, [setServiceRequest, serviceRequest, isMapReady, setServiceCoordinates]);
+  }
+
   useEffect(() => {
+    displayTechnicianMarker(map);
+  }, [map, setServiceRequest]);
+  useEffect(() => {
+    if (isMapReady && technicianMarkerRef.current && serviceRequest) {
+      const { destLatitude, destLongitude } = serviceRequest;
+      const startCoords = technicianMarkerRef.current.getLngLat().toArray();
+      const endCoords = [destLongitude, destLatitude];
+
+      animateMarker(technicianMarkerRef.current, startCoords, endCoords, 1500);
+      technicianMarkerRef.current.setLngLat(endCoords); // Update position directly
+
+      const angleDegrees = CalculateAngleFromLocation(startCoords, endCoords);
+      technicianMarkerRef.current.setRotation(angleDegrees);
+      technicianMarkerRef.current.setLngLat([destLatitude, destLongitude]);
+    }
+  }, [setServiceCoordinates, setServiceRequest]);
+
+  useEffect(() => {
+    if(!serviceRequest) return;
     const subscription = client
-      .graphql({ query: onUpdateServiceCoordinates, variables: { serviceId: serviceRequest && serviceRequest.id, customerId: serviceRequest && serviceRequest.serviceCustomerId } })
+      .graphql({ query: onUpdateServiceCoordinates, variables: { serviceId: serviceRequest && serviceRequest.id, customerId: serviceRequest && serviceRequest.customer.id } })
       .subscribe({
         next: ({ data }) => {
-
           setServiceCoordinates({
             destLatitude: data.onUpdateService.destLatitude,
             destLongitude: data.onUpdateService.destLongitude,
