@@ -16,7 +16,8 @@ export default function ServiceTracking({ service, setService }) {
     "service accepted": 1,
     "on the way": 2,
     "in progress": 3,
-    "completed": 4
+    "payment": 4,
+    "completed": 5
   };
   useEffect(() => {
     const subscription = client
@@ -36,7 +37,7 @@ export default function ServiceTracking({ service, setService }) {
       // Cancel the subscription when this component's life cycle ends
       subscription.unsubscribe();
     };
-  }, [service]);
+  }, []);
   useEffect(() => {
     if (service.status === "completed") {
       onRateTechnicianModalOpen();
@@ -98,7 +99,7 @@ const CustomerInformation = ({ service, setService }) => {
       <p>Type of service: <strong>{service.type}</strong></p>
       <p>Customer Name: <strong>{service.customer.fullName}</strong></p>
       <p>Car: <strong>{service.car.model}</strong></p>
-      <p className='text-xs'><strong>{calculateDistance([service.destLatitude, service.destLongitude], [service.originLatitude, service.originLongitude])} km</strong> from your location</p>
+      {(service.status === 'service accepted' && service.status === 'on the way') ? <p className='text-xs'><strong>{calculateDistance([service.destLatitude, service.destLongitude], [service.originLatitude, service.originLongitude])} km</strong> from your location</p> : 'In your location'}
     </div>
   );
 }

@@ -40,7 +40,7 @@ export default function TechnicianDetail({ technician }) {
     <div className='w-full h-full p-4'>
       {technician ? (
         <div className='flex flex-col lg:flex-row gap-2 gap-y-4 items-center h-full'>
-          <div className='w-full lg:w-[90%] flex flex-row gap-4 items-center'>
+          <div className='w-full lg:w-[80%] flex flex-row gap-4 items-center'>
             <Image
               src={`/image/defaultProfilePicture.jpg`}
               alt='image_technician_profile_picture'
@@ -72,12 +72,12 @@ export default function TechnicianDetail({ technician }) {
               </div>
             </div>
           </div>
-          <div className='w-full lg:w-[10%] flex flex-row h-full gap-4 justify-center'>
-            <div className='bg-white dark:bg-zinc-800 dark:hover:bg-green-panda transition-all duration-300 p-4 w-[3rem] h-[3rem] rounded-full shadow-lg cursor-pointer'>
+          <div className='w-full lg:w-[20%] flex flex-row h-full gap-4 justify-end'>
+            <Button isIconOnly className='bg-white dark:bg-zinc-800 dark:hover:bg-green-panda transition-all duration-300 p-4 w-[3rem] h-[3rem] rounded-full shadow-lg cursor-pointer'>
               <FaPhoneVolume className='text-lg' />
-            </div>
-            <Button onClick={onCreateChat} className='bg-white dark:bg-zinc-800 dark:hover:bg-green-panda transition-all duration-300 p-4  h-[3rem] rounded-full shadow-lg cursor-pointer'>
-              <FaCommentSms className='text-lg' />
+            </Button>
+            <Button isIconOnly onClick={onCreateChat} className='bg-white dark:bg-zinc-800 dark:hover:bg-green-panda transition-all duration-300 p-4 w-[3rem] h-[3rem] rounded-full shadow-lg cursor-pointer'>
+                <FaCommentSms className='text-2xl' /> 
             </Button>
           </div>
         </div>
