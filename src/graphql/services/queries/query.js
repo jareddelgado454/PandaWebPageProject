@@ -78,10 +78,12 @@ export const getServiceById = gql`
         status
         originLatitude
         originLongitude
+        tax
         price
-        repairPrice
         total
         paymentMethod
+        paymentLink
+        completed
         car{
             id
             brand
@@ -99,6 +101,7 @@ export const getServiceById = gql`
             fullName
             contactNumber
             profilePicture
+            stripeId
             rate {
               items{
                 rate
