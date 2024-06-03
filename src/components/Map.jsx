@@ -66,6 +66,9 @@ export default function Map() {
           zoom: 14
         });
         setMap(mapC);
+        if(serviceRequest){
+          displayTechnicianMarker(mapC, serviceRequest.destLatitude, serviceRequest.destLongitude);
+        }
         if (userLocation) {
           mapC.flyTo({
             center: userLocation,
@@ -81,10 +84,9 @@ export default function Map() {
             .setLngLat(userLocation)
             .addTo(mapC);
 
-          displayTechnicianMarker(mapC);
+
         }
         retrieveService();
-        displayTechnicianMarker(mapC);
       }
 
     };
@@ -94,40 +96,37 @@ export default function Map() {
     setTechnicianSelected(technician);
     onTechnicianModalOpen();
   }
-  const displayTechnicianMarker = (mapC) => {
+  const displayTechnicianMarker = (mapC, destLatitude = 0, destLongitude = 0) => {
+    const technicianMarker = document.createElement('div');
+    technicianMarker.className = 'technician-marker';
+    technicianMarker.addEventListener('click', () => {
+      handleModalInformation(serviceRequest.technicianSelected);
+    });
 
-    if((isMapReady && mapC) && serviceRequest ) {
-      const { destLatitude, destLongitude } = serviceRequest;
-      const technicianMarker = document.createElement('div');
-      technicianMarker.className = 'technician-marker';
-      technicianMarker.addEventListener('click', () => {
-        handleModalInformation(serviceRequest.technicianSelected);
-      });
-      
-      technicianMarkerRef.current = new maplibregl.Marker({ element: technicianMarker })
-        .setLngLat([destLongitude, destLatitude])
-        .addTo(mapC);
-    }
-
-  }
+    technicianMarkerRef.current = new maplibregl.Marker({ element: technicianMarker })
+      .setLngLat([destLongitude, destLatitude])
+      .addTo(mapC);
+  };
 
   useEffect(() => {
-    displayTechnicianMarker(map);
-  }, [isMapReady, map]);
-  useEffect(() => {
-    if (isMapReady && technicianMarkerRef.current && serviceRequest) {
+    if ((isMapReady && map) && serviceRequest) {
       const { destLatitude, destLongitude } = serviceRequest;
-      const startCoords = technicianMarkerRef.current.getLngLat().toArray();
-      const endCoords = [destLongitude, destLatitude];
 
-      animateMarker(technicianMarkerRef.current, startCoords, endCoords, 1500);
-      technicianMarkerRef.current.setLngLat(endCoords); // Update position directly
+      if (!technicianMarkerRef.current) {
+        displayTechnicianMarker(map, destLatitude || 0, destLongitude || 0);
+      } else {
+        const startCoords = technicianMarkerRef.current.getLngLat().toArray();
+        const endCoords = [destLongitude, destLatitude];
 
-      const angleDegrees = CalculateAngleFromLocation(startCoords, endCoords);
-      technicianMarkerRef.current.setRotation(angleDegrees);
-      technicianMarkerRef.current.setLngLat([destLatitude, destLongitude]);
+        animateMarker(technicianMarkerRef.current, startCoords, endCoords, 1500);
+        technicianMarkerRef.current.setLngLat(endCoords); // Update position directly
+
+        const angleDegrees = CalculateAngleFromLocation(startCoords, endCoords);
+        technicianMarkerRef.current.setRotation(angleDegrees);
+        technicianMarkerRef.current.setLngLat(endCoords);
+      }
     }
-  }, [setServiceCoordinates, setServiceRequest]);
+  }, [setServiceCoordinates]);
   useEffect(() => {
     if (!serviceRequest) return;
     const subscription = client
