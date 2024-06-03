@@ -182,7 +182,7 @@ type Service @model @auth(
     car: Car! @hasOne
     paymentMethod: String!
     price: Float
-    repairPrice: Float
+    paymentLink: String
     tax: Float
     total: Float
     createdAt: AWSDateTime
