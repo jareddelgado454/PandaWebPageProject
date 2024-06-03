@@ -7,11 +7,12 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { client } from '@/contexts/AmplifyContext';
 import { updateStatusService } from '@/graphql/services/mutations/mutation';
 import { onUpdatePaymentService } from '@/graphql/users/customer/subscription';
+import Cookies from 'js-cookie';
 export default function PaymentMethod({ service, setService }) {
   const router = useRouter();
   const param = useSearchParams().get('isSuccess');
   async function createCheckoutSession() {
-    router.push(service.paymentLink);
+    service && service.paymentLink && router.push(service.paymentLink);
   }
   const onChangeToComplete = async() => {
     try {
@@ -27,8 +28,10 @@ export default function PaymentMethod({ service, setService }) {
     }
   }
   useEffect(() => {
-    if(!param) return;
-    onChangeToComplete();
+    if (param) {
+      onChangeToComplete();
+      Cookies.remove('ServiceRequest');
+    }
   }, [param]);
   
   useEffect(() => {
@@ -65,17 +68,17 @@ export default function PaymentMethod({ service, setService }) {
             <p>Total: </p>
           </div>
           <div className='flex flex-col gap-2'>
-            <strong>$ {service.price ? service.price : 0}</strong>
-            <strong>$ {service.tax ? service.tax : 0}</strong>
-            <strong>$ {service.total ? service.total : 0}</strong>
+            <strong className='text-[#40C48E]'>$ {service.price ? service.price : 0}</strong>
+            <strong className='text-[#40C48E]'>$ {service.tax ? service.tax : 0}</strong>
+            <strong className='text-[#40C48E]'>$ {service.total ? service.total : 0}</strong>
           </div>
         </div>
       </div>
       <div className='w-[40%] h-full flex justify-center items-center'>
-        <div className='border-2 rounded-lg bg-white dark:border-zinc-900 dark:bg-zinc-800 p-4 flex flex-col gap-4 w-[80%]'>
-          {service.status === "completed" ? <strong>Satisfactorily paid service</strong> : <p>Payment Method: <strong>{service.paymentMethod}</strong></p>}
+        <div className='border-2 border-white rounded-lg bg-green-700/15 dark:border-zinc-900 dark:bg-zinc-800 p-4 flex flex-col gap-4 w-[80%]'>
+          {service.status === "completed" ? <strong>Satisfactorily paid service</strong> : <p>Payment Method: <strong className='text-[#40C48E]'>{service.paymentMethod}</strong></p>}
           {(service.paymentMethod === 'card' && service.status === 'payment') && (
-            <button onClick={createCheckoutSession} className='flex gap-1 bg-indigo-500 rounded-xl p-3 justify-center text-white items-center'>
+            <button onClick={createCheckoutSession} className='flex gap-1 bg-green-panda dark:bg-indigo-500 rounded-xl p-3 justify-center text-white items-center'>
               <FaDollarSign />
               Pay with Stripe
             </button>

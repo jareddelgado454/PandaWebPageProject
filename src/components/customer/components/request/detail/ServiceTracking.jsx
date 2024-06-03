@@ -96,10 +96,10 @@ const CustomerInformation = ({ service, setService }) => {
   }
   return (
     <div className='w-[50%] flex flex-col justify-center gap-2 py-2'>
-      <p>Type of service: <strong>{service.type}</strong></p>
-      <p>Customer Name: <strong>{service.customer.fullName}</strong></p>
-      <p>Car: <strong>{service.car.model}</strong></p>
-      {(service.status === 'service accepted' && service.status === 'on the way') ? <p className='text-xs'><strong>{calculateDistance([service.destLatitude, service.destLongitude], [service.originLatitude, service.originLongitude])} km</strong> from your location</p> : 'In your location'}
+      <p>Type of service: <strong className='text-[#40C48E]'>{service.type}</strong></p>
+      <p>Customer Name: <strong className='text-[#40C48E]'>{service.customer.fullName}</strong></p>
+      <p>Car: <strong className='text-[#40C48E]'>{service.car.model}</strong></p>
+      {(service.status === 'service accepted' || service.status === 'on the way') ? <p className='text-xs'><strong>{calculateDistance([service.destLatitude, service.destLongitude], [service.originLatitude, service.originLongitude])} km</strong> from your location</p> : <strong>In your location</strong>}
     </div>
   );
 }
