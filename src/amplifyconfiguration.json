@@ -51,6 +51,12 @@
   "geo": {
     "amazon_location_service": {
       "region": "us-east-1",
+      "search_indices": {
+        "items": [
+          "ThePandaLocationSearchIndex-dev"
+        ],
+        "default": "ThePandaLocationSearchIndex-dev"
+      },
       "maps": {
         "items": {
           "pandamap-dev": {
@@ -58,12 +64,6 @@
           }
         },
         "default": "pandamap-dev"
-      },
-      "search_indices": {
-        "items": [
-          "ThePandaLocationSearchIndex-dev"
-        ],
-        "default": "ThePandaLocationSearchIndex-dev"
       }
     }
   }

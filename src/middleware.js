@@ -1,8 +1,12 @@
+import { signOut } from 'aws-amplify/auth';
+import { Amplify } from "aws-amplify";
+import config from "@/amplifyconfiguration.json";
+Amplify.configure(config);
 import { NextResponse } from 'next/server'
 export const protectedRoutes = ["/admin-dashboard", "/user", "/customer"];
 export const authRoutes = ["/auth/signup", "/auth/signin"];
 export const publicRoutes = ["/"];
-export function middleware(request) {
+export async function middleware(request) {
   const currentUserCookie = request.cookies.get("currentUser");
   const currentUser = currentUserCookie ? currentUserCookie.value : null;
   const userRol = currentUserCookie ? JSON.parse(currentUser).role : null;
@@ -14,6 +18,7 @@ export function middleware(request) {
     request.cookies.delete("currentUser");
     const response = NextResponse.redirect(new URL("/", request.url));
     response.cookies.delete("currentUser");
+    await signOut();
     return response;
   }
 

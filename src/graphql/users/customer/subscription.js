@@ -43,6 +43,7 @@ export const onUpdateServiceStatus = gql`
         onUpdateService(filter: {id: {eq: $serviceId}, serviceCustomerId: {eq: $customerId}}){
             id
             status
+            paymentLink
         }
     }
 `;
@@ -56,4 +57,16 @@ export const onUpdateServiceCoordinates = gql`
         }
     }
 
+`;
+
+export const onUpdatePaymentService = gql`
+subscription OnUpdateServicePayment($serviceId: ID!, $customerId: ID!) {
+    onUpdateService(filter: {id: {eq: $serviceId}, serviceCustomerId: {eq: $customerId}}){
+        id
+        paymentLink
+        price
+        tax
+        total
+    }
+}
 `;

@@ -13,8 +13,9 @@ import { ServiceContext } from '@/contexts/service/ServiceContext';
 import { listCarsById } from '@/graphql/users/customer/query';
 import { useDisclosure } from '@nextui-org/react';
 import { AddNewCarModal } from '../..';
+import { UserContext } from '@/contexts/user/UserContext';
 export default function ServiceForm() {
-    const user = Cookies.get("currentUser") && JSON.parse(Cookies.get("currentUser"));
+    const { user } = useContext(UserContext);
     const { userLocation } = useContext(PlaceContext);
     const { serviceRequest, setServiceRequest } = useContext(ServiceContext);
     const [service, setService] = useState({});
@@ -98,7 +99,7 @@ export default function ServiceForm() {
     return (
         <div className='relative h-full '>
             <AddNewCarModal isOpen={isOpen} onOpenChange={onOpenChange} callback={retrieveMyCars} setMyCars={setMyCars} />
-            <div className={`container mx-auto px-4 w-[90%] h-full ${service && (service.status === 'service accepted' || service.status === 'in progress') && 'hidden'}`}>
+            <div className={`container mx-auto px-4 w-[90%] h-full ${service && (service.status === 'service accepted' || service.status === 'in progress' || service.status === 'payment') && 'hidden'}`}>
                 <Formik
                     initialValues={{
                         title: '',
@@ -204,10 +205,10 @@ export default function ServiceForm() {
                 )
             }
             {
-                (service && (service.status === 'service accepted') && (
+                (service && (service.status !== 'completed') && (
                     <div className='w-full h-full flex flex-col gap-4 justify-center items-center'>
                         <p className='font-semibold'>You already have a service petition. Click here to see full detail:</p>
-                        <Link href={`/customer/request/${serviceRequest.id}`} className='bg-green-panda rounded px-2 py-2 shadow-lg text-white'>Service Detail</Link>
+                        <Link href={`/customer/request/${service.id}`} className='bg-green-panda rounded px-2 py-2 shadow-lg text-white'>Service Detail</Link>
                     </div>
                 ))
             }

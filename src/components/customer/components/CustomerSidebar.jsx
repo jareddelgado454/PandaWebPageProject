@@ -46,7 +46,7 @@ export default function CustomerSidebar() {
   useEffect(() => { retrieveOneUser(); }, []);
   return (
     <div
-      className="w-full md:w-[21%] 2xl:w-2/12 md:h-[calc(100vh-50px)] 2xl:h-[calc(100vh-100px)] rounded-2xl bg-white shadow-lg dark:bg-zinc-800 flex flex-row lg:flex-col items-center justify-between gap-2 overflow-x-auto overflow-y-hidden"
+      className="w-full md:w-[21%] 2xl:w-2/12 md:h-[calc(100vh-50px)] 2xl:h-[calc(100vh-100px)] rounded-2xl bg-white shadow-lg dark:bg-zinc-800 flex flex-row lg:flex-col items-center justify-between gap-2 overflow-x-auto md:overflow-x-hidden overflow-y-hidden"
       style={{
         scrollbarWidth: 'none',
         msOverflowStyle: 'none'
@@ -62,7 +62,7 @@ export default function CustomerSidebar() {
           <PassWordModal isOpen={isChangePasswordModalOpen} onOpenChange={onChangePasswordModalChange} />
           <SendReportModal isOpen={isSendReportModalOpen} onOpenChange={onSendReportModalChange} />
 
-          <div className="w-full flex flex-row lg:flex-col items-center p-4 gap-2">
+          <div className="w-full flex flex-row lg:flex-col items-center p-4 gap-2 font-medium">
             <h4 className='font-bold text-[#40C48E] w-full text-left mb-2 hidden md:block'>Main Menu</h4>
             <div className='w-full flex flex-col gap-y-2'>
               <Link href={'/customer'} className={`w-full  rounded-md transition-all hover:bg-emerald-500 flex gap-x-2 hover:text-white text-sm md:text-[16px] items-center p-2 px-3 cursor-pointer`}>
@@ -134,7 +134,7 @@ export default function CustomerSidebar() {
                   signOut();
                   router.replace("/");
                 }}
-                className={`w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 pt-4 cursor-pointer border-t-[2px] border-zinc-700 `}
+                className={`w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 pt-4 cursor-pointer border-t-[2px] border-[#40C48E] dark:border-zinc-700 `}
               >
                 <RiLogoutCircleLine />
                 Logout

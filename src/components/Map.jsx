@@ -52,7 +52,6 @@ export default function Map() {
           serviceId: serviceRequest.id
         }
       });
-      console.log(data);
       setServiceRequest(data.getService);
     } catch (error) {
       console.error(error);
@@ -67,6 +66,9 @@ export default function Map() {
           zoom: 14
         });
         setMap(mapC);
+        if(serviceRequest){
+          displayTechnicianMarker(mapC, serviceRequest.destLatitude, serviceRequest.destLongitude);
+        }
         if (userLocation) {
           mapC.flyTo({
             center: userLocation,
@@ -82,55 +84,51 @@ export default function Map() {
             .setLngLat(userLocation)
             .addTo(mapC);
 
+
         }
         retrieveService();
       }
 
     };
-    
     initializeMap();
   }, [isLoading]);
   const handleModalInformation = (technician) => {
     setTechnicianSelected(technician);
     onTechnicianModalOpen();
   }
-  const displayTechnicianMarker = (mapP) => {
-    if (!technicianMarkerRef.current && isMapReady && serviceRequest && serviceRequest.destLatitude && serviceRequest.destLongitude) {
+  const displayTechnicianMarker = (mapC, destLatitude = 0, destLongitude = 0) => {
+    const technicianMarker = document.createElement('div');
+    technicianMarker.className = 'technician-marker';
+    technicianMarker.addEventListener('click', () => {
+      handleModalInformation(serviceRequest.technicianSelected);
+    });
+
+    technicianMarkerRef.current = new maplibregl.Marker({ element: technicianMarker })
+      .setLngLat([destLongitude, destLatitude])
+      .addTo(mapC);
+  };
+
+  useEffect(() => {
+    if ((isMapReady && map) && serviceRequest) {
       const { destLatitude, destLongitude } = serviceRequest;
 
-      const technicianMarker = document.createElement('div');
-      technicianMarker.className = 'technician-marker';
-      technicianMarker.addEventListener('click', () => {
-        handleModalInformation(serviceRequest.technicianSelected);
-      });
+      if (!technicianMarkerRef.current) {
+        displayTechnicianMarker(map, destLatitude || 0, destLongitude || 0);
+      } else {
+        const startCoords = technicianMarkerRef.current.getLngLat().toArray();
+        const endCoords = [destLongitude, destLatitude];
 
-      technicianMarkerRef.current = new maplibregl.Marker({ element: technicianMarker })
-        .setLngLat([destLongitude, destLatitude])
-        .addTo(mapP);
+        animateMarker(technicianMarkerRef.current, startCoords, endCoords, 1500);
+        technicianMarkerRef.current.setLngLat(endCoords); // Update position directly
 
+        const angleDegrees = CalculateAngleFromLocation(startCoords, endCoords);
+        technicianMarkerRef.current.setRotation(angleDegrees);
+        technicianMarkerRef.current.setLngLat(endCoords);
+      }
     }
-  }
-
+  }, [setServiceCoordinates]);
   useEffect(() => {
-    displayTechnicianMarker(map);
-  }, [map, setServiceRequest]);
-  useEffect(() => {
-    if (isMapReady && technicianMarkerRef.current && serviceRequest) {
-      const { destLatitude, destLongitude } = serviceRequest;
-      const startCoords = technicianMarkerRef.current.getLngLat().toArray();
-      const endCoords = [destLongitude, destLatitude];
-
-      animateMarker(technicianMarkerRef.current, startCoords, endCoords, 1500);
-      technicianMarkerRef.current.setLngLat(endCoords); // Update position directly
-
-      const angleDegrees = CalculateAngleFromLocation(startCoords, endCoords);
-      technicianMarkerRef.current.setRotation(angleDegrees);
-      technicianMarkerRef.current.setLngLat([destLatitude, destLongitude]);
-    }
-  }, [setServiceCoordinates, setServiceRequest]);
-
-  useEffect(() => {
-    if(!serviceRequest) return;
+    if (!serviceRequest) return;
     const subscription = client
       .graphql({ query: onUpdateServiceCoordinates, variables: { serviceId: serviceRequest && serviceRequest.id, customerId: serviceRequest && serviceRequest.customer.id } })
       .subscribe({

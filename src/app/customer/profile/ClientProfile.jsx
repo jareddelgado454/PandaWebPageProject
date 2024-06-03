@@ -26,7 +26,6 @@ export default function ClientProfile() {
                 }
             });
             setUser(data.getCustomer);
-            console.log(data.getCustomer);
             setLoading(false);
         } catch (error) {
             setLoading(false);
