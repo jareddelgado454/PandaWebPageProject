@@ -52,7 +52,6 @@ export default function Map() {
           serviceId: serviceRequest.id
         }
       });
-      console.log(data);
       setServiceRequest(data.getService);
     } catch (error) {
       console.error(error);
@@ -82,38 +81,39 @@ export default function Map() {
             .setLngLat(userLocation)
             .addTo(mapC);
 
+          displayTechnicianMarker(mapC);
         }
         retrieveService();
+        displayTechnicianMarker(mapC);
       }
 
     };
-    
     initializeMap();
   }, [isLoading]);
   const handleModalInformation = (technician) => {
     setTechnicianSelected(technician);
     onTechnicianModalOpen();
   }
-  const displayTechnicianMarker = (mapP) => {
-    if (!technicianMarkerRef.current && isMapReady && serviceRequest && serviceRequest.destLatitude && serviceRequest.destLongitude) {
-      const { destLatitude, destLongitude } = serviceRequest;
+  const displayTechnicianMarker = (mapC) => {
 
+    if((isMapReady && mapC) && serviceRequest ) {
+      const { destLatitude, destLongitude } = serviceRequest;
       const technicianMarker = document.createElement('div');
       technicianMarker.className = 'technician-marker';
       technicianMarker.addEventListener('click', () => {
         handleModalInformation(serviceRequest.technicianSelected);
       });
-
+      
       technicianMarkerRef.current = new maplibregl.Marker({ element: technicianMarker })
         .setLngLat([destLongitude, destLatitude])
-        .addTo(mapP);
-
+        .addTo(mapC);
     }
+
   }
 
   useEffect(() => {
     displayTechnicianMarker(map);
-  }, [map, setServiceRequest]);
+  }, [isMapReady, map]);
   useEffect(() => {
     if (isMapReady && technicianMarkerRef.current && serviceRequest) {
       const { destLatitude, destLongitude } = serviceRequest;
@@ -128,9 +128,8 @@ export default function Map() {
       technicianMarkerRef.current.setLngLat([destLatitude, destLongitude]);
     }
   }, [setServiceCoordinates, setServiceRequest]);
-
   useEffect(() => {
-    if(!serviceRequest) return;
+    if (!serviceRequest) return;
     const subscription = client
       .graphql({ query: onUpdateServiceCoordinates, variables: { serviceId: serviceRequest && serviceRequest.id, customerId: serviceRequest && serviceRequest.customer.id } })
       .subscribe({
