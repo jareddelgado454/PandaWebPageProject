@@ -7,19 +7,19 @@ export default function Client_Component() {
     <div className='h-full flex flex-col animate__animated animate__fadeInLeft p-4'>
       <div className='flex flex-col 2xl:flex-row gap-2 h-[50%] w-full '>
         <div
-          className="transition-all ease-in-out duration-200 shado w-[70%] h-full col-span-3 2xl:col-span-2 bg-[#E4E6EB] dark:bg-zinc-900 rounded-lg"
+          className="transition-all ease-in-out duration-200 shado w-[70%] h-full col-span-3 2xl:col-span-2 bg-green-700/15 dark:bg-zinc-900 rounded-lg"
         >
           <BlockOneComponent />
         </div>
         <div
-          className={`transition-all ease-in-out duration-200 h- col-span-3 2xl:col-span-0 shadow w-[30%] h-[50%] 2xl:h-full bg-[#E4E6EB] dark:bg-zinc-900 rounded-lg overflow-y-scroll p-4 cursor-pointer`}
+          className={`transition-all ease-in-out duration-200 h- col-span-3 2xl:col-span-0 shadow w-[30%] h-[50%] 2xl:h-full bg-green-700/15 dark:bg-zinc-900 rounded-lg overflow-y-scroll p-4 cursor-pointer`}
         >
           <NotificationComponent />
         </div>
       </div>
       <div className='w-full h-full'>
         <div
-          className={`transition-all ease-in-out duration-200 shadow col-span-3 bg-[#E4E6EB] dark:bg-zinc-900 rounded-lg h-full`}
+          className={`transition-all ease-in-out duration-200 shadow col-span-3 bg-green-700/15 dark:bg-zinc-900 rounded-lg h-full`}
         >
           <BlockTwoComponent />
         </div>

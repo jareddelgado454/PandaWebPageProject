@@ -52,13 +52,13 @@ export default function ClientRequest() {
             </div>
             {service && (
               <>
-                <div className='bg-zinc-100 dark:bg-zinc-700 h-full rounded-lg shadow-md'>
+                <div className='bg-green-700/15 dark:bg-zinc-700 h-full rounded-lg shadow-md'>
                   <TechnicianDetailComponent technician={service.technicianSelected} />
                 </div>
-                <div className='bg-zinc-100 dark:bg-zinc-700 h-full rounded-lg shadow-md'>
+                <div className='bg-green-700/15 dark:bg-zinc-700 h-full rounded-lg shadow-md'>
                   {service && <ServiceTrackingComponent service={service} setService={setService} />}
                 </div>
-                <div className='bg-zinc-100 dark:bg-zinc-700 h-full rounded-lg shadow-md'>
+                <div className='bg-green-700/15 dark:bg-zinc-700 h-full rounded-lg shadow-md'>
                   {service && <PaymentComponent service={service} setService={setService} />}
                 </div>
               </>
