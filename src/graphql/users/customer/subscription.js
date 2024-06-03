@@ -43,6 +43,7 @@ export const onUpdateServiceStatus = gql`
         onUpdateService(filter: {id: {eq: $serviceId}, serviceCustomerId: {eq: $customerId}}){
             id
             status
+            paymentLink
         }
     }
 `;
