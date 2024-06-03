@@ -2,7 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 @import '~react-toastify/dist/ReactToastify.min.css';
- 
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('../assets//fonts/Roboto/Montserrat-Regular.ttf');
+  font-weight: 500;
+  font-style: normal;
+}
+body {
+  font-family: 'Poppins';
+}
 #input::-webkit-scrollbar{
   display: none;
 }
