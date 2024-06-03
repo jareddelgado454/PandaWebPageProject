@@ -1,4 +1,7 @@
 import { signOut } from 'aws-amplify/auth';
+import { Amplify } from "aws-amplify";
+import config from "@/amplifyconfiguration.json";
+Amplify.configure(config);
 import { NextResponse } from 'next/server'
 export const protectedRoutes = ["/admin-dashboard", "/user", "/customer"];
 export const authRoutes = ["/auth/signup", "/auth/signin"];
@@ -16,7 +19,6 @@ export async function middleware(request) {
     const response = NextResponse.redirect(new URL("/", request.url));
     response.cookies.delete("currentUser");
     await signOut();
-    localStorage.clear();
     return response;
   }
 
