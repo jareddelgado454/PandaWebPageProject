@@ -1,6 +1,6 @@
 import { client } from '@/contexts/AmplifyContext';
 import { getUserByCognitoID, getUserByEmail } from '@/graphql/custom-queries';
-import { createOffer, updateStatusService, updateTechnicianLocation } from '@/graphql/services/mutations/mutation';
+import { createOffer, updatePaymentLinkService, updateStatusService, updateTechnicianLocation, updateTotalAmountService } from '@/graphql/services/mutations/mutation';
 import { getRequestServiceById } from '@/graphql/services/queries/query';
 import { createCustomer } from '@/graphql/users/mutation/customer';
 import { createTechnician, updateLocationTechnician } from '@/graphql/users/mutation/technicians';
@@ -101,6 +101,36 @@ export const handleUpdateStatusService = async (values) => {
             variables: {
                 serviceId : values.serviceId,
                 status: values.status
+            }
+        })
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const handleUpdateTotalService = async (values) => {
+    try {
+        const { data } = await client.graphql({
+            query: updateTotalAmountService,
+            variables: {
+                serviceId : values.serviceId,
+                total: values.total
+            }
+        })
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const handleUpdatePaymentLinkService = async (values) => {
+    try {
+        const { data } = await client.graphql({
+            query: updatePaymentLinkService,
+            variables: {
+                serviceId : values.serviceId,
+                paymentLink: values.paymentLink
             }
         })
         return data;

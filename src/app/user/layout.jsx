@@ -8,7 +8,7 @@ import { listenUpdateService } from "@/graphql/services/subscriptions/subscripti
 import AssignedTechnicianModal from "@/components/serviceRequest/AssignedTechnicianModal";
 import { useDisclosure } from "@nextui-org/react";
 import { client } from "@/contexts/AmplifyContext";
-import '@/app/app.css';
+import "@/app/app.css";
 import { PlaceTechnicianProvider } from "@/contexts/placeTechnician/PlaceTechnicianProvider";
 
 export const Contexto = createContext();
@@ -17,7 +17,8 @@ const UserLayout = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isOnline, setIsOnline] = useState(null);
-  const [technicianActivityStatus, setTechnicianActivityStatus] = useState(null);
+  const [technicianActivityStatus, setTechnicianActivityStatus] =
+    useState(null);
   const [serviceAssigned, setServiceAssigned] = useState(null);
   const [serviceIdWaitingFor, setServiceIdWaitingFor] = useState(null);
   const {
@@ -63,15 +64,15 @@ const UserLayout = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (!user ) {
+    if (!user) {
       return;
     }
-    if(serviceIdWaitingFor){
+    if (serviceIdWaitingFor) {
       console.log("este es el id del tecnico", user.sub);
       const subscription = client
         .graphql({
           query: listenUpdateService,
-          variables: { serviceId: serviceIdWaitingFor ,technicianId: user.sub },
+          variables: { serviceId: serviceIdWaitingFor, technicianId: user.sub },
         })
         .subscribe({
           next: ({ data }) => {
@@ -81,73 +82,74 @@ const UserLayout = ({ children }) => {
             localStorage.setItem("serviceAssigned", JSON.stringify(data.onUpdateService));
             onAssignedTechnicianModalOpen();
           },
-          error: (error) => console.warn(error)
+          error: (error) => console.warn(error),
         });
-  
+
       return () => {
         subscription.unsubscribe();
       };
-    }  
+    }
   }, [user, serviceIdWaitingFor]);
 
   return (
-      <div className="w-full h-screen bg-zinc-900">
+    <div className="w-full h-screen bg-zinc-900">
+      <Contexto.Provider
+        value={{
+          user,
+          loading,
+          isOnline,
+          handleChangeStatus,
+          retrieveOneUser,
+          setTechnicianActivityStatus,
+          setServiceIdWaitingFor,
+        }}
+      >
         <PlaceTechnicianProvider>
-        {loading ? (
-          <div className="text-white"></div>
-        ) : (
-          user && (
-            <div
-              className={`w-full h-full flex justify-center items-center p-0 ${
-                technicianActivityStatus === "waitingResponse" ? "relative" : ""
-              }`}
-            >
-              {technicianActivityStatus === "waitingResponse" && (
-                <div className="text-white font-bold text-[17px] flex flex-col absolute bottom-3 right-3 border-[2px] border-emerald-400 bg-emerald-600 shadow-emerald-500/20 shadow-lg w-[250px] h-[80px] z-50 rounded-md p-3">
-                  <div className="flex w-full gap-x-2 items-center">
-                    Client reviewing offer{" "}
-                    <img
-                      src="/loading/loading4.gif"
-                      className="w-[25px] h-[25px]"
-                    />
+          {loading ? (
+            <div className="text-white"></div>
+          ) : (
+            user && (
+              <div
+                className={`w-full h-full flex justify-center items-center p-0 ${
+                  technicianActivityStatus === "waitingResponse"
+                    ? "relative"
+                    : ""
+                }`}
+              >
+                {technicianActivityStatus === "waitingResponse" && (
+                  <div className="text-white font-bold text-[17px] flex flex-col absolute bottom-3 right-3 border-[2px] border-emerald-400 bg-emerald-600 shadow-emerald-500/20 shadow-lg w-[250px] h-[80px] z-50 rounded-md p-3">
+                    <div className="flex w-full gap-x-2 items-center">
+                      Client reviewing offer{" "}
+                      <img
+                        src="/loading/loading4.gif"
+                        className="w-[25px] h-[25px]"
+                      />
+                    </div>
+                    <u className="cursor-pointer text-[15px] text-zinc-100">
+                      Go to the Offer
+                    </u>
                   </div>
-                  <u className="cursor-pointer text-[15px] text-zinc-100">
-                    Go to the Offer
-                  </u>
+                )}
+                <UserSidebar user={user} />
+                <div className="flex-1 flex flex-col h-screen">
+                  <UserNavBar
+                    user={user}
+                    isOnline={isOnline}
+                    handleChangeStatus={handleChangeStatus}
+                  />
+                  {children}
                 </div>
-              )}
-              <UserSidebar user={user} />
-              <div className="flex-1 flex flex-col h-screen">
-                <UserNavBar
-                  user={user}
-                  isOnline={isOnline}
-                  handleChangeStatus={handleChangeStatus}
-                />
-              
-                  <Contexto.Provider
-                    value={{
-                      user,
-                      loading,
-                      isOnline,
-                      handleChangeStatus,
-                      retrieveOneUser,
-                      setTechnicianActivityStatus,
-                      setServiceIdWaitingFor
-                    }}
-                  >
-                    {children}
-                  </Contexto.Provider>
-              </div>
-              <AssignedTechnicianModal
+                <AssignedTechnicianModal
                   isOpen={isAssignedTechnicianModalOpen}
                   onOpenChange={onAssignedTechnicianModalOpenChange}
                   serviceAssigned={serviceAssigned}
-              />
-            </div>
-          )
-        )}
+                />
+              </div>
+            )
+          )}
         </PlaceTechnicianProvider>
-      </div>
+      </Contexto.Provider>
+    </div>
   );
 };
 

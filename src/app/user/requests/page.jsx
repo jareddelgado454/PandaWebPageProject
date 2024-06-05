@@ -63,7 +63,6 @@ const Requests = () => {
       const { data } = await client.graphql({
         query: getAllRequestServices,
       });
-      console.log(data);
       setRequests(data.listServices.items);
       const response = await client.graphql({
         query: getPricesTechnician,
@@ -92,7 +91,6 @@ const Requests = () => {
           if (filter === "all" || newRequest.type === filter) {
             setRequests((prevRequests) => [...prevRequests, newRequest]);
           }
-          console.log("Nueva request", data);
         },
         error: (error) => {
           console.error("Error in the subscription:", error);
@@ -155,10 +153,10 @@ const Requests = () => {
             requests of clients who are looking for technicians immediately.
           </span>
         </div>
-        <div className="text-white w-full flex-1 ">
+        <div className="text-white w-full flex-1 max-h-[75%]">
           {isOnline ? (
             <div className="w-full h-[100%] flex gap-x-4">
-              <div className="w-[70%] flex flex-col  gap-y-3">
+              <div className="w-[70%] h-full flex flex-col gap-y-3 ">
                 <div className="w-full bg-zinc-900/60 flex-1 flex-col flex rounded-xl p-4 h-full">
                   <div className="w-full flex justify-between text-white mb-3">
                     <div className="flex flex-col gap-y-3">
@@ -214,7 +212,7 @@ const Requests = () => {
                       />
                     </div>
                   </div>
-                  <div className="w-full flex-1 flex flex-col gap-y-3 overflow-y-auto">
+                  <div className="w-full flex flex-col flex-1 gap-y-3 overflow-y-auto h-[500px] ">
                     {loading ? (
                       <>
                         <div className="w-full rounded-lg h-[80px] bg-zinc-600 animate-pulse"></div>
@@ -223,7 +221,7 @@ const Requests = () => {
                         <div className="w-full rounded-lg h-[80px] bg-zinc-700 animate-pulse"></div>
                       </>
                     ) : (
-                      filteredRequests().map((request) => {
+                      filteredRequests()?.map((request) => {
                         return (
                           <ServiceRequest
                             key={request.id}

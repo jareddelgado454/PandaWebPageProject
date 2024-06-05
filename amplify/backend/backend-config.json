@@ -69,6 +69,11 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "createStripeTechnicianAccount": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "geo": {
@@ -120,6 +125,22 @@
         {
           "category": "function",
           "resourceName": "S3Triggerdf93383d"
+        }
+      ]
+    },
+    "AMPLIFY_function_createStripeTechnicianAccount_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createStripeTechnicianAccount"
+        }
+      ]
+    },
+    "AMPLIFY_function_createStripeTechnicianAccount_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createStripeTechnicianAccount"
         }
       ]
     }
