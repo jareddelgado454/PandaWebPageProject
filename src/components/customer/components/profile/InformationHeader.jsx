@@ -95,15 +95,15 @@ export default function InformationHeader({ user }) {
               }}
             />
           </div>
-          <div className='flex flex-col gap-2'>
-            <div className='flex flex-row gap-2 items-center flex-wrap'>
+          <div className='flex flex-col gap-2 text-center md:text-left'>
+            <div className='flex flex-row gap-2 items-center justify-center md:justify-start flex-wrap'>
               <p className='w-full'>Welcome back, <strong className='text-[#40C48E]'>{user && user.fullName}</strong></p>
               <FaStar className='text-amber-500' /><FaStar className='text-amber-500' /><FaStar className='text-amber-500' /><FaStar className='text-amber-500' />
               <FaRegStar className='text-amber-500' />
               <p>4 stars</p>
             </div>
             <p className=''>{user && user.email}</p>
-            {user && user.email_verified && <div className='flex items-center gap-1'><p className='text-[#40C48E]'>Verified </p><FaCircleCheck className='text-[#40C48E]' /></div>}
+            {user && user.email_verified && <div className='flex items-center justify-center md:justify-start gap-1'><p className='text-[#40C48E]'>Verified </p><FaCircleCheck className='text-[#40C48E]' /></div>}
           </div>
         </div>
       </div>

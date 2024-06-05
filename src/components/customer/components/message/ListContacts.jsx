@@ -14,6 +14,7 @@ export default function ListContacts() {
     const [chats, setChats] = useState([]);
     const retrieveMyChats = async () => {
         setLoading(true);
+        console.log(user);
         try {
             const { data } = await client.graphql({
                 query: listMyChats,
@@ -23,13 +24,14 @@ export default function ListContacts() {
             });
             setChats(data.listChats.items);
             setLoading(false);
+            console.log(data);
         } catch (error) {
             console.log(error);
             setLoading(false);
             setError(error);
         }
     }
-    useEffect(() => { retrieveMyChats() }, [user]);
+    useEffect(() => { retrieveMyChats() }, []);
 
     return (
         <>

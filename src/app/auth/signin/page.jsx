@@ -113,6 +113,28 @@ const SignIn = () => {
       console.log(error);
     }
   };
+  useEffect(() => {
+    const hubListenerCancel = Hub.listen("auth", async ({ payload }) => {
+      switch (payload.event) {
+        case "signedIn":
+          onOpenLoadingModal(true);
+          const { role, expiredAt, userSub } = await currentAuthenticatedUser();
+          // const cognitoId = payload.data.userId;
+          console.log(role, expiredAt);
+          login({ role, expiredAt, userSub })
+          if (role === "admin") {
+            router.replace("/admin-dashboard/");
+          } else if(role === "technician") {
+            router.replace("/user");
+          } else if(role === "customer"){
+            router.replace("/customer");
+          }
+
+          break;
+      }
+    });
+    return () => hubListenerCancel();
+  }, [onOpenLoadingModal, router]);
   return (
     <>
       <CheckoutModal
