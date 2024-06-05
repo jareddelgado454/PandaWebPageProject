@@ -1,63 +1,12 @@
 'use client';
-import React, { useEffect } from 'react';
-import Stripe from 'stripe';
-const stripe = new Stripe('sk_test_51MHZf4JbGPo8jsLC7uInizJy0DjyqYbFZrSYMN0USaP1L3w6r4D1tbTWuF5pwWMOq6UoVlhdeBfsFa68sGIE7tY600NlVl5zAf');
+import React from 'react';
 import { FaDollarSign } from 'react-icons/fa6';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { client } from '@/contexts/AmplifyContext';
-import { updateStatusService } from '@/graphql/services/mutations/mutation';
-import { onUpdatePaymentService } from '@/graphql/users/customer/subscription';
-import Cookies from 'js-cookie';
-export default function PaymentMethod({ service, setService }) {
+import { useRouter } from 'next/navigation';
+export default function PaymentMethod({ service }) {
   const router = useRouter();
-  const param = useSearchParams().get('isSuccess');
-  async function createCheckoutSession() {
-    service && service.paymentLink && router.push(service.paymentLink);
+  function createCheckoutSession() {
+    router.push(service.paymentLink);
   }
-  const onChangeToComplete = async() => {
-    try {
-      await client.graphql({
-        query: updateStatusService,
-        variables: {
-          serviceId: service.id,
-          status: 'completed'
-        }
-      })
-    } catch (error) {
-      console.warn(error);
-    }
-  }
-  useEffect(() => {
-    if (param) {
-      onChangeToComplete();
-      Cookies.remove('ServiceRequest');
-    }
-  }, [param]);
-  
-  useEffect(() => {
-    const subscription = client
-      .graphql({
-        query: onUpdatePaymentService,
-        variables: { serviceId: service.id, customerId: service.customer.id }
-      })
-      .subscribe({
-        next: ({ data }) => {
-          console.log(data);
-          setService((prevState) => ({
-            ...prevState,
-            paymentLink: data.onUpdateService.paymentLink !== null ? data.onUpdateService.paymentLink : prevState.paymentLink,
-            price: data.onUpdateService.price !== null ? data.onUpdateService.price : prevState.price,
-            tax: data.onUpdateService.tax !== null ? data.onUpdateService.tax : prevState.tax,
-            total: data.onUpdateService.total !== null ? data.onUpdateService.total : prevState.total,
-          }));
-        },
-        error: (error) => console.warn(error)
-      });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
   return (
     <div className='h-full w-full flex flex-col lg:flex-row gap-2'>
       <div className='w-[60%] h-full flex justify-center items-center'>
