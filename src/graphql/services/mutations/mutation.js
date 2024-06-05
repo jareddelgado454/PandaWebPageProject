@@ -84,6 +84,7 @@ export const updateStatusService = gql`
       id
       status
       serviceCustomerId
+      paymentLink
       serviceTechnicianSelectedId
     }
   }
