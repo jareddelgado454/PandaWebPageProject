@@ -13,7 +13,6 @@ const SubscriptionPlan = ({isOpen, onOpenChange, idsPassed}) => {
     const stripe = new Stripe("sk_test_51MHZf4JbGPo8jsLC7uInizJy0DjyqYbFZrSYMN0USaP1L3w6r4D1tbTWuF5pwWMOq6UoVlhdeBfsFa68sGIE7tY600NlVl5zAf");
     const plans = await stripe.prices.list();
     setPrices(plans.data);
-    console.log(plans.data)
   } 
 
   useEffect(()=>{

@@ -8,9 +8,11 @@ import { FaCamera } from "react-icons/fa6";
 import { toast } from "react-toastify";
 import {uploadData} from "aws-amplify/storage";
 import { client } from "@/contexts/AmplifyContext";
-import { getUserIdByCognitoID } from "@/graphql/custom-queries";
+import { getUser } from "@/graphql/custom-queries";
 import { statesUSA } from "@/assets/data/StatesUSA";
 import { updateInformation } from "@/graphql/users/mutation/users";
+import Image from "next/image";
+import { dataURLtoBlob } from "@/utils/photo/BlobImage";
 const Settings = () => {
   const [photograph, setPhotograph] = useState(null);
   const [user, setUser] = useState({});
@@ -21,13 +23,13 @@ const Settings = () => {
     try {
       const info = await fetchUserAttributes();
       const { data } = await client.graphql({
-        query: getUserIdByCognitoID,
+        query: getUser,
         variables: {
-          cognitoId: info.sub,
+          userId: info.sub,
         },
       });
-      const user = data.listUsers.items[0];
-      await setUser({ ...info, ...user });
+      const user = data.getUser;
+      setUser({ ...info, ...user });
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -68,20 +70,6 @@ const Settings = () => {
       toast.error(`Error during the process.`);
     }
   };
-  function dataURLtoBlob(dataURL) {
-    if (!dataURL) {
-      return null;
-    }
-    var parts = dataURL.split(";base64,");
-    var contentType = parts[0].split(":")[1];
-    var raw = window.atob(parts[1]);
-    var rawLength = raw.length;
-    var uInt8Array = new Uint8Array(rawLength);
-    for (var i = 0; i < rawLength; ++i) {
-      uInt8Array[i] = raw.charCodeAt(i);
-    }
-    return new Blob([uInt8Array], { type: contentType });
-  }
   function handleChangePhotograph(event) {
     const file = event.target.files[0];
     if (file) {
@@ -119,13 +107,13 @@ const Settings = () => {
         variables: {
           email: user.email,
           input: {
-            id: user.id,
+            id: user.sub,
             profilePicture: `https://d3nqi6yd86hstw.cloudfront.net/public/${filename}`,
           },
         },
       });
     } catch (error) {
-      console.log(`Error from here : ${error}`);
+      console.log(error);
     }
   };
   return (
@@ -151,11 +139,13 @@ const Settings = () => {
                       <FaCamera className="text-white text-xl md:text-4xl" />
                     </div>
                   </div>
-                  <img src={
+                  <Image src={
                       photograph ? photograph : (user.profilePicture ? user.profilePicture : "/image/defaultProfilePicture.jpg")
                     }
-                    className="rounded-full w-[6rem] h-[6rem] md:w-[12rem] md:h-[12rem] cursor-pointer "
+                    className="rounded-full w-[6rem] h-[6rem] md:w-[12rem] md:h-[12rem] cursor-pointer object-cover object-center"
                     alt="Fotografía de perfil"
+                    width={250}
+                    height={250}
                   />
                   <input
                     id="file-upload"

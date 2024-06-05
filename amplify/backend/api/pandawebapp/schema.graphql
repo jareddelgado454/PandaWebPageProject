@@ -7,10 +7,17 @@ enum ReportStatus {
   processed
 }
 
+enum ServiceOfferStatus {
+    pending
+    accepted
+    rejected
+}
+
 type Report @model @auth(
     rules: [
         { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
         { allow: owner, ownerField: "createdBy", operations: [ read, update, create, delete ] }
+        { allow: private, operations: [ read, update, create, delete ] }
     ]
 ){
     id: ID!
@@ -18,8 +25,22 @@ type Report @model @auth(
     title: String!
     description: String!
     image: String
+    customer: Customer @hasOne
+    technician: Technician @hasOne
     createdAt: AWSDateTime
     status: ReportStatus!
+    answers: [Answer] @hasMany(indexName: "byReport", fields: ["id"])
+}
+
+type Answer @model @auth(
+    rules: [{ allow: private, operations: [ read, update, create, delete ] }]
+) {
+    id: ID!
+    user: User! @hasOne
+    text: String!
+    reportId: ID! @index(name: "byReport")
+    report: Report! @belongsTo(fields: ["reportId"])
+    createdAt: AWSDateTime
 }
 
 type User @model @auth(
@@ -31,20 +52,177 @@ type User @model @auth(
 ) {
     id: ID!
     email: String
-    role: String
+    fullName: String
+    contactNumber: String
+    status: String
+    profilePicture: String
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type Rate @model @auth(
+    rules: [
+        { allow: owner, ownerField: "customer", operations: [create, update, delete, read] }
+        { allow: private, operations: [ read ] }
+    ]
+) {
+    id: ID!
+    technicianId: ID! @index(name: "byTechnician")
+    technician: Technician @belongsTo(fields: ["technicianId"])
+    customer: Customer! @hasOne
+    rate: Float!
+    comment: String
+    createdAt: AWSDateTime
+}
+
+type Technician @model @auth(
+    rules: [
+        { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
+        { allow: owner, ownerField: "id", operations: [ read, update, create, delete ] }
+        { allow: public, provider: iam, operations: [ create ] }
+        { allow: private, operations: [ read ] }
+    ]
+) {
+    id: ID!  
+    email: String
     fullName: String
     contactNumber: String
     status: String
     address: String
-    password: String
     city: String
     state: String
     profilePicture: String
     zipCode: Int
     subscription: String
-    cognitoId: String
+    stripeId: String
+    stripeAccountStatus: String
     fee: Int
-    rate: Float
+    rate: [Rate] @hasMany(indexName: "byTechnician", fields: ["id"])
+    loLatitude: Float
+    loLongitude: Float
+    diagnosticPrice: Float
+    repairPriceHour: Float
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
+    schedule: Schedule
+}
+
+type Car @model @auth(
+    rules: [
+        { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
+        { allow: owner,operations: [ read, update, create, delete ] }
+        { allow: private, operations: [ read ] }
+    ]
+) {
+    id: ID! @index
+    description: String
+    brand: String!
+    image: String!
+    model: String!
+    year: String!
+}
+
+type Customer @model @auth(
+    rules: [
+        { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }, { allow: public, provider: iam, operations: [ create ] }, { allow: owner, ownerField: "id" }, { allow: private, operations: [ read ]}
+    ]
+) {
+    id: ID!
+    email: String
+    fullName: String
+    contactNumber: String
+    status: String
+    address: String
+    city: String
+    state: String
+    profilePicture: String
+    zipCode: Int
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+    cars: [Car] @hasMany
+}
+
+type Schedule {
+    monday: DailySchedule
+    tuesday: DailySchedule
+    wednesday: DailySchedule
+    thursday: DailySchedule
+    friday: DailySchedule
+    saturday: DailySchedule
+    sunday: DailySchedule
+}
+
+type DailySchedule {
+    opening: String
+    closing: String
+}
+
+type Service @model @auth(
+    rules: [
+        { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
+        { allow: private, operations: [ read, update, create, delete ] }
+    ]
+) {
+    id: ID!
+    title: String!
+    description: String!
+    type: String!
+    status: String!
+    completed: String
+    originLatitude: Float!
+    originLongitude: Float!
+    customer: Customer! @hasOne
+    technicianSelected: Technician @hasOne
+    destLatitude: Float
+    destLongitude: Float
+    offers: [Offer] @hasMany(indexName: "byOffer", fields: ["id"])
+    car: Car! @hasOne
+    paymentMethod: String!
+    price: Float
+    paymentLink: String
+    tax: Float
+    total: Float
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type Offer @model @auth(
+    rules: [
+        { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
+        { allow: private, operations: [ read, update, create, delete ] }
+    ]
+) {
+    id: ID!
+    serviceId: ID! @index(name: "byOffer")
+    service: Service! @belongsTo(fields: ["serviceId"])
+    technician: Technician @hasOne
+    amount: Float!
+    status: ServiceOfferStatus!
+    text: String!
+}
+
+
+type Chat @model @auth(
+    rules: [
+        { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
+        { allow: private, operations: [ read, create, update, delete ] }
+    ]
+) {
+    id: ID!
+    customer: Customer! @hasOne
+    technicianSelected: Technician @hasOne
+    messages: [Message] @hasMany(indexName: "byChat", fields: ["id"])
+}
+
+type Message @model @auth(
+    rules: [
+        { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
+        { allow: owner, ownerField: "sender", operations: [ read, update, create, delete ] }
+        { allow: private, operations: [ read ] }
+    ]
+){
+    id: ID!
+    content: String!
+    sender: ID!
+    chatId: ID! @index(name: "byChat")
 }

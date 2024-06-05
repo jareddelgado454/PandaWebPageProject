@@ -1,12 +1,9 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  RiGoogleFill,
-  RiAppleFill,
-  RiFacebookCircleFill,
   RiMailLine,
   RiLockLine,
   RiEyeLine,
@@ -19,11 +16,10 @@ import {
 import { Hub } from "aws-amplify/utils";
 import { Formik, Form, Field } from "formik";
 import {
-  signInWithRedirect,
   signIn,
   signOut,
   fetchUserAttributes,
-  updateUserAttributes, fetchAuthSession,
+  fetchAuthSession,
 } from "aws-amplify/auth";
 import VerificationCodeModal from "@/components/LoginRegister/modals/VerificationCodeModal";
 import {
@@ -32,8 +28,9 @@ import {
   ModalBody,
   useDisclosure,
 } from "@nextui-org/react";
-import { handleCreateUserOnDatabase, handleRetrieveMyUser } from "@/api";
+import { UserContext } from "@/contexts/user/UserContext";
 const SignIn = () => {
+  const { login } = useContext(UserContext);
   const status = "inactive";
   const router = useRouter();
   const {
@@ -72,7 +69,7 @@ const SignIn = () => {
         });
         setDataPassed({ email: values.email, password: values.password });
         if (isSignedIn) {
-          console.log("Login successfully");
+          console.log("Login succesfull");
         } else {
           if (nextStep?.signInStep === "CONFIRM_SIGN_UP") {
             onVerifyCodeModalOpen();
@@ -106,122 +103,29 @@ const SignIn = () => {
       });
     }
   };
-  async function currentAuthenticatedUser() {
+  const currentAuthenticatedUser = async () => {
     try {
-      const { email, family_name, given_name } = await fetchUserAttributes();
-      const { tokens } = await fetchAuthSession({ forceRefresh: true });
+      const data = await fetchUserAttributes();
+      const { tokens, userSub } = await fetchAuthSession({ forceRefresh: true });
       const expiredAt = tokens.accessToken.payload.exp;
-      const fullName = given_name + family_name;
-      console.log({ email, fullName, expiredAt });
-      return { email, fullName, expiredAt };
+      return { role:data['custom:role'], expiredAt, userSub };
     } catch (error) {
       console.log(error);
     }
-  }
-  useEffect(() => {
-    const hubListenerCancel = Hub.listen("auth", async ({ payload }) => {
-      switch (payload.event) {
-        case "signedIn":
-          onOpenLoadingModal(true);
-          const { fullName, email, expiredAt } = await currentAuthenticatedUser();
-          const cognitoId = payload.data.userId;
-          const userExist = await handleRetrieveMyUser(cognitoId);
-          if (userExist !== null && userExist !== undefined) {
-            console.log("user already in DB. Going to /user");
-            Cookies.set(
-              "currentUser",
-              JSON.stringify({ ...userExist, expiredAt })
-            );
-            if (userExist.role === "admin") {
-              router.replace("/admin-dashboard/");
-            } else {
-              router.replace("/user/");
-            }
-          }else {
-            if (fullName) {
-              await updateUserAttributes({
-                userAttributes: {
-                  "custom:fullName": fullName,
-                  "custom:status": status,
-                },
-              });
-            } else {
-              await updateUserAttributes({
-                userAttributes: {
-                  "custom:status": status,
-                },
-              });
-            }
-            const { data } = await handleCreateUserOnDatabase({
-              fullName,
-              email,
-              cognitoId,
-              status,
-            });
-            const userInfo = data && data.createdUser;
-            Cookies.set(
-              "currentUser",
-              JSON.stringify({ ...userInfo, expiredAt })
-            );
-            router.replace("/user");
-          }
-          break;
-      }
-    });
-    return () => hubListenerCancel();
-  }, [onOpenLoadingModal, router]);
+  };
   return (
     <>
       <CheckoutModal
         isOpen={isLoadingModalOpen}
         onOpenChange={onOpenLoadingModal}
       />
-      <div className="h-screen w-full text-white">
+      <div className="h-screen bg-gradient-to-b from-zinc-900 to-zinc-800 w-full text-white">
         <div className="grid grid-cols-1 lg:grid-cols-2 h-[calc(100%-100px)]">
           <div className="flex flex-col gap-4 justify-center px-4 lg:px-12">
             <div className="my-4">
               <h2 className="text-[30px] font-bold">SIGN-IN</h2>
               <p>enter with your account</p>
             </div>
-            <div className="w-full flex items-center justify-between">
-              <button
-                onClick={() =>
-                  signInWithRedirect({
-                    provider: "Google",
-                    customState: "shopping-cart",
-                  })
-                }
-                className="w-[30%]  bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 px-5"
-              >
-                <RiGoogleFill className="text-[20px] text-red-400" /> Google
-              </button>
-              <button
-                onClick={() =>
-                  signInWithRedirect({
-                    provider: "Facebook",
-                    customState: "shopping-cart",
-                  })
-                }
-                className="w-[30%] bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50 text-[15px]  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 "
-              >
-                <RiFacebookCircleFill className="text-[20px] text-blue-400" />{" "}
-                Facebook
-              </button>
-              <button
-                onClick={() =>
-                  signInWithRedirect({
-                    provider: "Apple",
-                    customState: "shopping-cart",
-                  })
-                }
-                className="w-[30%] bg-zinc-900 hover:bg-zinc-700 hover:shadow-xl transition-colors delay-50  mb-2  hover:text-white text-white rounded-2xl flex gap-x-1 items-center justify-center py-3 px-5"
-              >
-                <RiAppleFill className="text-[20px]" /> Apple
-              </button>
-            </div>
-            <p className="w-full text-center text-[18px] font-semibold mb-3">
-              or
-            </p>
 
             <div className=" border-transparent flex flex-col border-t-[2px] border-zinc-600 pt-8 pb-4">
               <p className="text-white mb-3">
@@ -315,11 +219,13 @@ const SignIn = () => {
               </div>
               <div className="flex items-center text-[18px] gap-x-3 font-semibold mb-3">
                 <RiListCheck3 className="text-emerald-400 text-[35px]" />
-                {"We focus on customer acquisition and retention so you don't have"}
+                {
+                  "We focus on customer acquisition and retention so you don't have"
+                }
                 to.
               </div>
             </div>
-            <div className="absolute top-0 w-full h-full bg-zinc-800 opacity-60"></div>
+            <div className="absolute top-0 w-full h-full bg-gradient-to-b from-zinc-900 to-zinc-800 opacity-70"></div>
             <img
               src="https://cdna.artstation.com/p/assets/images/images/040/174/900/large/fabian-geyer-wideshotright.jpg?1628083532"
               className="object-cover h-[calc(100%-100px)] md:h-[44rem] xl:h-full"

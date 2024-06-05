@@ -4,28 +4,21 @@ export const getUserByCognitoID = gql`
     query MyQuery($cognitoId: String!) {
         listUsers(filter: {cognitoId: {eq: $cognitoId}}) {
             items {
-                role
                 fullName
                 id
                 email
-                address
-                zipCode
                 contactNumber
                 profilePicture
-                city
-                state
                 status
             }
         }
     }
 `;
-export const getUserIdByCognitoID = gql`
-    query MyQuery($cognitoId: String!) {
-        listUsers(filter: {cognitoId: {eq: $cognitoId}}) {
-            items {
-                id
-                profilePicture
-            }
+export const getUser = gql`
+    query GetUser($userId: ID!){
+        getUser(id: $userId){
+            id
+            profilePicture
         }
     }
 `;
@@ -37,7 +30,6 @@ export const getUserByEmail = gql`
                 id
                 email
                 fullName
-                role
                 profilePicture
             }
         }

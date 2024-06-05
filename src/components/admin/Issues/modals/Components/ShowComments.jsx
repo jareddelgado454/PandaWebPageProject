@@ -1,50 +1,117 @@
+'use client';
+import { SecondDateFormatter } from '@/utils/parseDate';
 import { Tooltip } from '@nextui-org/react';
-import React from 'react';
-import { FaPaperPlane } from 'react-icons/fa6';
-export default function ShowComments() {
-    const answers = ['1', '2', '3'];
+import React, { useEffect, useRef, useState } from 'react';
+import { client } from '@/contexts/AmplifyContext';
+import { getAnswersByReport } from '@/graphql/issues/queries/query';
+import { ListenAnswersById, onDeleteAnswersSubscription } from '@/graphql/issues/subscriptions/subscription';
+import { FaXmark } from 'react-icons/fa6';
+import { onDeleteAnswerById } from '@/graphql/issues/mutations/mutation';
+import 'animate.css';
+import Image from 'next/image';
+export default function ShowComments({ reportId }) {
+    const [answers, setAnswers] = useState([]);
+    const answerRefs = useRef({});
+    const retrieveAnswers = async () => {
+
+        try {
+            const { data } = await client.graphql({
+                query: getAnswersByReport,
+                variables: {
+                    reportId
+                }
+            });
+            setAnswers(data.listAnswers.items);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const onHandleDeleteAnswer = async(userId, answerId, reportId) => {
+        try {
+            await client.graphql({
+                query: onDeleteAnswerById,
+                variables: {
+                    input: {
+                        id: answerId
+                    },
+                    reportId,
+                    userId
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    useEffect(() => {
+        retrieveAnswers();
+        const subscriptionToAnswers = client
+            .graphql({ query: ListenAnswersById, variables: { reportId } })
+            .subscribe({
+                next: ({ data }) => {
+                    // Update previous state with new answers
+                    setAnswers(prevAnswers => [...prevAnswers, data.onCreateAnswer]);
+                },
+                error: (error) => console.warn(error)
+            });
+            
+        const subscriptionToDeleteAnswer = client
+            .graphql({ query: onDeleteAnswersSubscription })
+            .subscribe({
+                next: ({ data }) => {
+                    // Update previous state with new answers
+                    const answerId = data.onDeleteAnswer.id;
+                    answerRefs.current[answerId].classList.remove('animate__bounceInRight');
+                    answerRefs.current[answerId].classList.add('animate__backOutRight');
+                    setTimeout(() => {
+                        setAnswers(prevAnswers => {
+                            return prevAnswers.filter((item) => item.id !== answerId);
+                        });
+                    }, 1000);
+                },
+                error: (error) => console.warn(error)
+            });
+
+        return () => {
+            // Cancel the subscription when this component's life cycle ends
+            subscriptionToAnswers.unsubscribe();
+            subscriptionToDeleteAnswer.unsubscribe();
+        };
+    }, []);
     return (
-        <div
-            id='answers_admins'
-            className=' relative flex flex-col gap-6 flex-nowrap px-4 bg-white rounded-lg 2xl:h-[32.5rem] overflow-y-scroll slide-in-right dark:bg-zinc-800'
-        >
-            {answers.map((_, i) => (
-                <div key={i} className='flex flex-col my-4' id='responses_admin'>
-                    <div className='flex gap-2 w-full h-[4rem]'>
-                        <Tooltip color='default' content="id: 123456789">
-                            <img
-                                src='https://f.rpp-noticias.io/2022/05/27/1264852c7zccg4wwaamvbxjpg.jpg'
-                                alt='admin_profile_picture'
-                                className='w-[3rem] h-[3rem] rounded-full'
-                            />
-                        </Tooltip>
-                        <div>
-                            <div className='flex items-center flex-row flex-nowrap gap-2'>
-                                <p className='text-sm font-semibold'>Cristiano Ronaldo Dos Santos Aveiro</p>
-                                <p className='text-xs text-zinc-400'>4d</p>
+        <>
+            {answers.length ? answers.map((answer, i) => (
+                <div key={i} ref={el => (answerRefs.current[answer.id] = el)} className='flex flex-col px-4 dark:bg-zinc-800 bg-white py-4 rounded-lg animate__animated animate__bounceInRight' id='responses_admin'>
+                    <div className='flex gap-2 w-full h-[4rem] justify-between'>
+                        <div className='flex gap-2 w-full h-[4rem]'>
+                            <Tooltip color='default' content={`id: ${answer.user.id}`}>
+                                <Image
+                                    height={150}
+                                    width={150}
+                                    src={`${answer.user && answer.user.profilePicture ? answer.user.profilePicture : '/image/defaultProfilePicture.jpg'}`}
+                                    alt='admin_profile_picture'
+                                    className='w-[3rem] h-[3rem] rounded-full'
+                                />
+                            </Tooltip>
+                            <div>
+                                <div className='flex items-center flex-row flex-nowrap gap-2'>
+                                    <p className='text-sm font-semibold'>{answer.user.fullName}</p>
+
+                                </div>
+                                <p className='text-zinc-400 font-light text-sm'>{answer.user.email}</p>
                             </div>
-                            <p className='text-zinc-400 font-light text-sm'>CrisRonaldo@gmail.com</p>
+                        </div>
+                        <div className='relative'>
+                            <FaXmark className='text-center hover:text-rose-600 cursor-pointer' onClick={() => onHandleDeleteAnswer(answer.user.id, answer.id, answer.reportId)} />
                         </div>
                     </div>
-                    <div className='bg-zinc-100 dark:bg-zinc-700 rounded-md'>
-                        <p className='text-sm p-4 text-justify'>
-                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facere ipsa voluptatibus voluptas nihil saepe dolorum hic odit vero animi incidunt nisi quas repellendus aliquid, ab esse possimus consequuntur adipisci molestiae.
+                    <div className='bg-zinc-100 dark:bg-zinc-700 rounded-md p-4'>
+                        <p className='text-sm text-justify line-clamp-3'>
+                            {answer.text}
                         </p>
                     </div>
+                    <p className='text-xs text-zinc-400 my-2'>{SecondDateFormatter(new Date(answer.createdAt))}</p>
                 </div>
-            ))}
-            <div className='sticky bottom-0 w-full'>
-                <div className='bg-white dark:bg-zinc-800 h-[3.5rem]'>
-                    <div className='flex justify-center gap-4 items-center w-full h-full'>
-                        <input
-                            type="text"
-                            className='shadow appearance-none border rounded w-10/12 py-2 px-3 dark:text-white text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-                            name="message"
-                        />
-                        <FaPaperPlane className='dark:text-white text-3xl cursor-pointer' />
-                    </div>
-                </div>
-            </div>
-        </div>
+            )) : (<div className='w-full h-full flex justify-center items-center'>No Answers Yet</div>)}
+        </>
     )
 }

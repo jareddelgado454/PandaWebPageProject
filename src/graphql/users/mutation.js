@@ -9,6 +9,33 @@ export const updateStatus = gql`
   }
 `;
 
+export const updateCustomerStatus = gql`
+  mutation UpdateCustomerStatus($input: UpdateCustomerInput!) {
+    updateCustomer(input: $input){
+      id
+      email
+      fullName
+      status
+      contactNumber
+      profilePicture
+    }
+  }
+`;
+
+export const updateTechnicianStatus = gql`
+  mutation UpdateTechnicianStatus($input: UpdateTechnicianInput!) {
+    updateTechnician(input: $input){
+      id
+      email
+      fullName
+      status
+      contactNumber
+      profilePicture
+    }
+  }
+`;
+
+
 export const deleteUserById = gql`
   mutation MyMutation($id: ID!, $email: String!) {
     deleteUser(input: {id: $id}, condition: {email: {eq: $email}})

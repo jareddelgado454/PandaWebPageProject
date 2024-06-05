@@ -75,7 +75,7 @@ const RecoveryPassword = () => {
     }
 
   return (
-    <div className='w-full text-white flex justify-center items-center'>
+    <div className='w-full bg-gradient-to-b from-zinc-900 to-zinc-800 text-white flex justify-center items-center'>
             <div className='w-full flex h-full'>
                 <div className='w-1/2 flex justify-center items-center'>
                   <div className='w-[500px]'>
@@ -140,7 +140,7 @@ const RecoveryPassword = () => {
                                   {"We focus on customer acquisition and retention so you don't have to."}
                               </div>
                         </div>
-                        <div className='absolute top-0 w-full h-full bg-zinc-800 opacity-60'></div> 
+                        <div className='absolute top-0 w-full h-full bg-gradient-to-b from-zinc-900 to-zinc-800 opacity-70'></div> 
                         <img src='https://cdna.artstation.com/p/assets/images/images/040/174/900/large/fabian-geyer-wideshotright.jpg?1628083532' className='object-cover' style={{ height: 'calc(100vh - 80px)' }} />              
                     </div>
                 </div>

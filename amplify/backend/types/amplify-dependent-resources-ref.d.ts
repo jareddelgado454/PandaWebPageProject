@@ -25,6 +25,26 @@ export type AmplifyDependentResourcesAttributes = {
       "LambdaExecutionRoleArn": "string",
       "Name": "string",
       "Region": "string"
+    },
+    "createStripeTechnicianAccount": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    }
+  },
+  "geo": {
+    "ThePandaLocationSearchIndex": {
+      "Arn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "pandamap": {
+      "Arn": "string",
+      "Name": "string",
+      "Region": "string",
+      "Style": "string"
     }
   },
   "storage": {

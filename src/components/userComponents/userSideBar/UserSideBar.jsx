@@ -3,20 +3,22 @@ import React, { useState } from 'react';
 import { useRouter } from "next/navigation";
 import { uploadData } from 'aws-amplify/storage';
 import { v4 as uuidv4 } from 'uuid';
-import { RiUserFill, RiCalendarTodoFill, RiDashboardFill, RiLogoutCircleLine, RiSettings4Fill  } from "react-icons/ri";
+import { RiUserFill, RiCalendarTodoFill, RiDashboardFill, RiLogoutCircleLine, RiSettings4Fill , RiArrowDownSFill , RiArrowRightCircleLine  } from "react-icons/ri";
 import { TbDiamondFilled } from "react-icons/tb";
 import Link from 'next/link';
 import { signOut } from "aws-amplify/auth";
 import Cookies from "js-cookie";
-import { FaCamera } from "react-icons/fa6";
+import { FaCamera, FaCircleExclamation, FaKey, FaUserXmark } from "react-icons/fa6";
 import { useDisclosure } from "@nextui-org/react";
-import { SubscriptionPlanModal } from '@/components/modalUser';
+import { DeleteUserModal, PassWordModal, SendReportModal, SubscriptionPlanModal } from '@/components/modalUser';
 import { getCurrentUser } from "aws-amplify/auth";
 function UserSidebar({ user }) {
-    console.log("user",user)
     const router = useRouter();
     const [photograph, setPhotograph] = useState(null);
     const { isOpen: isSubscriptionModalOpen, onOpen: onSubscriptionModalOpen, onOpenChange: onSubscriptionModalChange } = useDisclosure();
+    const { isOpen: isDeleteUserModalOpen, onOpen: onDeleteUserModalOpen, onOpenChange: onDeleteUserModalChange } = useDisclosure();
+    const { isOpen: isChangePasswordModalOpen, onOpen: onChangePasswordModalOpen, onOpenChange: onChangePasswordModalChange } = useDisclosure();
+    const { isOpen: isSendReportModalOpen, onOpen: onSendReportModalOpen, onOpenChange: onSendReportModalChange } = useDisclosure();
     const [idsPassed, setIdsPassed] = useState({
         idDatabase: "",
         cognitoUsername: ""
@@ -93,33 +95,11 @@ function UserSidebar({ user }) {
     return (
         <>
             <SubscriptionPlanModal isOpen={isSubscriptionModalOpen} onOpenChange={onSubscriptionModalChange} idsPassed={idsPassed} />
+            <DeleteUserModal isOpen={isDeleteUserModalOpen} onOpenChange={onDeleteUserModalChange} user={user} />
+            <PassWordModal isOpen={isChangePasswordModalOpen} onOpenChange={onChangePasswordModalChange} />
+            <SendReportModal isOpen={isSendReportModalOpen} onOpenChange={onSendReportModalChange} />
             <div className=" text-white rounded-lg shadow-lg h-screen  w-[300px] relative">
                 <div className="flex flex-row md:flex-col items-center justify-center px-[20px] py-0">
-                    {/* <div className="relative w-[6rem] h-[6rem] md:w-[10rem] md:h-[10rem] overflow-hidden rounded-full shadow-md group">
-                        <div className="absolute bg-black group-hover:opacity-60 opacity-0 w-full h-full transition-all">
-                            <div className="flex justify-center items-center h-full">
-                                <FaCamera className="text-white text-xl md:text-4xl" />
-                            </div>
-                        </div>
-                        <img
-                            src={
-                                photograph ? photograph : (user.profilePicture ? user.profilePicture : "/image/defaultProfilePicture.jpg")
-                            }
-                            className="rounded-full w-[6rem] h-[6rem] md:w-[10rem] md:h-[10rem] cursor-pointer "
-                            alt="Fotografía de perfil"
-                        />
-                        <input
-                            id="file-upload"
-                            type="file"
-                            name=""
-                            accept="image/gif, image/jpeg, image/png"
-                            className="absolute top-0 right-0 min-w-full min-h-full opacity-0 cursor-pointer bg-center object-cover object-center"
-                            onChange={(event) => {
-                                handleChangePhotograph(event);
-                            }}
-                        />
-                    </div> */}
-
                     <div className="h-[80px] flex gap-x-1 items-center justify-start w-full">
                         <img src="/panda.png" className="w-[65px] h-[50px] drop-shadow-lg" alt="panda_logo" />
                         <p className="font-bold drop-shadow-xl tracking-wider text-white">PANDA <span className='text-emerald-300'>TECHS</span></p> 
@@ -138,11 +118,19 @@ function UserSidebar({ user }) {
                                     <TbDiamondFilled />
                                     Subscription
                                 </Link>
+                                
+                            </div> 
+                            <h4 className='font-bold text-gray-200 w-full text-left mb-2'>My Work</h4> 
+                            <div className='w-full flex flex-col gap-y-2  border-b-[2px] border-zinc-700 pb-4 mb-4'>
                                 <Link href={'/user/schedule'} className={`w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
                                     <RiCalendarTodoFill  />
                                     Schedule
                                 </Link>
-                            </div>    
+                                <Link href={'/user/requests'} className={`w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
+                                    <RiArrowRightCircleLine />
+                                    Repair Requests
+                                </Link>
+                            </div>   
                             <h4 className='font-bold text-gray-200 w-full text-left mb-2'>Finances</h4> 
                             <div className='w-full flex flex-col gap-y-2  border-b-[2px] border-zinc-700 pb-4 mb-4'>
                                 <Link href={'/user/finances'} className={`w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
@@ -150,15 +138,35 @@ function UserSidebar({ user }) {
                                     Overview
                                 </Link>
                             </div>
-                            <h4 className='font-bold text-gray-200 w-full text-left mb-2'>Account</h4> 
+                            
+                            
+                            {/* <h4 className='font-bold text-gray-200 w-full text-left mb-2'>Additional</h4> 
                             <div className='w-full flex flex-col gap-y-2  mb-4'>
-                                <Link href={'/user/settings'} className={`w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
-                                    <RiSettings4Fill  />
+                                <div onClick={onDeleteUserModalOpen} className={`text-rose-600 w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
+                                    <FaUserXmark />
+                                    Delete Account
+                                </div>
+                            </div>
+                            <div className='w-full flex flex-col gap-y-2  mb-4'>
+                                <div onClick={onChangePasswordModalOpen} className={`text-cyan-600 w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
+                                    <FaKey/>
+                                    Change Password
+                                </div>
+                            </div>
+                            <div className='w-full flex flex-col gap-y-2  mb-4'>
+                                <div onClick={onSendReportModalOpen} className={`text-amber-400 w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
+                                    <FaCircleExclamation />
+                                    Report an issue
+                                </div>
+                            </div> */}
+                        </div>
+                        <div className="w-full flex flex-col items-center p-4 ">
+                            <div className='w-full flex flex-col gap-y-2  mb-4'>
+                                <Link href={'/user/settings'} className={`w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2  cursor-pointer`}>
+                                    <RiSettings4Fill  className='text-[17px]'/>
                                     Settings
                                 </Link>
-                            </div>               
-                        </div>
-                        <div className="w-full flex items-center p-4 ">
+                            </div>
                             <div 
                                 onClick={() => {
                                     Cookies.remove("currentUser");

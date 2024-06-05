@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button} from "@nextui-org/react";
+import React, { useState, useEffect, useContext } from 'react'
 import { confirmSignUp, signIn, resendSignUpCode, fetchAuthSession } from 'aws-amplify/auth';
 import { RiErrorWarningFill,RiRestartLine } from "react-icons/ri";
 import { useRouter } from 'next/navigation';
-import Cookies from 'js-cookie';
-
-const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn, userDB}) => {
-
+import { UserContext } from '@/contexts/user/UserContext';
+import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button} from "@nextui-org/react";
+const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn, roleSelected, resultData}) => {
+  const { login } = useContext(UserContext);
   const [code, setCode] = useState("");
   const [errorCode, setErrorCode] = useState({
     status : false,
@@ -62,7 +61,7 @@ const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn, userDB}) => {
     console.log(dataSignIn)
     if(code != ""){
         try {
-          const { isSignUpComplete, nextStep } = await confirmSignUp({
+          await confirmSignUp({
             username: dataSignIn.email,
             confirmationCode : code
           });
@@ -78,14 +77,15 @@ const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn, userDB}) => {
           setCode("");
           const { tokens } = await fetchAuthSession();
           const expiredAt = tokens.accessToken.payload.exp;
-          Cookies.set(
-            "currentUser",
-            JSON.stringify({ userDB, expiredAt })
-          );
-          router.replace("/user/");
+          login({ ...resultData, expiredAt });
+          if(roleSelected === "technician"){
+            router.replace("/user/");
+          }else{
+            router.replace("/customer/");
+          }
+          
 
           console.log(response);
-          // router.replace("/admin-dashboard");
           onClose();
 
         } catch (error) {

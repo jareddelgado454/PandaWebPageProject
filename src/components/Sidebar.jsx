@@ -15,6 +15,7 @@ import {
   FaFlag,
 } from "react-icons/fa6";
 import { getUserByMail } from "@/api";
+import Image from "next/image";
 export const Sidebar = () => {
   const router = useRouter();
   const [active, setActive] = useState(false);
@@ -69,11 +70,13 @@ export const Sidebar = () => {
           >
             Panda CMS
           </p>
-          <img
+          <Image
             src="/panda.png"
             className={`w-[5rem] h-[4rem] drop-shadow-lg  ${
               active ? "block" : "hidden"
             }`}
+            width={100}
+            height={100}
             alt="panda_logo"
           />
         </div>
@@ -104,7 +107,7 @@ export const Sidebar = () => {
               Technicians
             </p>
           </Link>
-          <Link
+          {/* <Link
             href={`/admin-dashboard/users`}
             className="flex gap-3 items-center mt-5"
           >
@@ -112,7 +115,7 @@ export const Sidebar = () => {
             <p className={`text-xl font-medium ${!active && "hidden"}`}>
               Users
             </p>
-          </Link>
+          </Link> */}
         </ul>
         <div className="w-full px-4 absolute bottom-4 transition-all">
           <div className="bg-zinc-600 dark:bg-green-panda shadow-xl p-3 rounded-md mb-4">
@@ -154,11 +157,13 @@ export const Sidebar = () => {
             }`}
           >
             <div className="flex items-center w-full h-full gap-2">
-              <img
+              <Image
                 src={user && user.profilePicture ? user.profilePicture : "/image/defaultProfilePicture.jpg"}
                 alt="user_logo"
+                width={150}
+                height={150}
                 className={`rounded-full ${
-                  active ? "w-[4rem] h-[3rem]" : "w-[2rem] h-[1.8rem]"
+                  active ? "w-[3rem] h-[3rem]" : "w-[2rem] h-[1.8rem]"
                 }`}
               />
               <div className="overflow-hidden flex flex-col gap-1 w-full">
@@ -176,8 +181,8 @@ export const Sidebar = () => {
                   }`}
                   onClick={() => {
                     signOut();
-                    Cookies.remove("currentUser");
                     router.replace("/");
+                    Cookies.remove("currentUser");
                   }}
                 >
                   logout
