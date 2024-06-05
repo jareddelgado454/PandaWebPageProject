@@ -66,3 +66,12 @@ export const listenDeleteService = gql`
   }
 `;
 
+export const onUpdateStatusServiceSubscription = gql`
+  subscription OnUpdateService($serviceId: ID!, $technicianId: ID!) {
+    onUpdateService(filter: {id: { eq: $serviceId } serviceTechnicianSelectedId: { eq: $technicianId }}){
+      id
+      status
+    }
+  }
+`;
+

@@ -90,6 +90,29 @@ export const updateStatusService = gql`
   }
 `;
 
+export const updateTotalAmountService = gql`
+  mutation MyMutation($serviceId: ID!, $total: Float!){
+    updateService(input: { id: $serviceId, total: $total }) {
+      id
+      total
+      price
+      tax
+      status
+      serviceCustomerId
+      paymentLink
+    }
+  }
+`;
+
+export const updatePaymentLinkService = gql`
+  mutation MyMutation($serviceId: ID!, $paymentLink: String!){
+    updateService(input: { id: $serviceId, paymentLink: $paymentLink }) {
+      id
+      paymentLink
+    }
+  }
+`;
+
 export const createTechnicianRate = gql`
   mutation CreateTechnicianRate($rate: Float!, $comment: String!, $technicianId: ID!, $customerId: ID!) {
     createRate(input: {rate: $rate, comment: $comment, rateCustomerId: $customerId, technicianId: $technicianId}){
