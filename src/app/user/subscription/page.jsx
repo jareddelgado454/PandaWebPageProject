@@ -35,8 +35,8 @@ const Subscription = () => {
             console.log("El proceso fue correcto paso1",account);
             const accountLink = await stripe.accountLinks.create({
                 account: account.id,
-                refresh_url: 'http://localhost:3000/user', 
-                return_url: 'http://localhost:3000/user/subscription', 
+                refresh_url: 'https://master.d3dtglewderhtg.amplifyapp.com//user', 
+                return_url: 'https://master.d3dtglewderhtg.amplifyapp.com//user/subscription', 
                 type: 'account_onboarding', 
             });
             console.log("El proceso fue correcto paso2",accountLink);
