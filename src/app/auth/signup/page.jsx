@@ -98,6 +98,7 @@ const SignUp = () => {
               "custom:fullName": values.fullName,
               "custom:status": status,
               "custom:subscription": values.role === "technician" ? "pending" : "",
+              "custom:infoCompleted" : "false",
             },
           },
         });
