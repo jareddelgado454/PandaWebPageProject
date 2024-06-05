@@ -90,7 +90,7 @@ export default function CustomerSidebar() {
             </Link>
           </div> */}
             <div className='w-full flex flex-col gap-y-2'>
-              <Link href={'/customer/request'} className={`w-full rounded-md transition-all hover:bg-emerald-500 hover:text-white flex gap-x-2 text-sm md:text-[16px] items-center p-2 px-3 cursor-pointer`}>
+              <Link href={'/customer/request'} className={`text-center md:text-left w-full rounded-md transition-all hover:bg-emerald-500 hover:text-white flex gap-x-2 text-sm md:text-[16px] items-center p-2 px-3 cursor-pointer`}>
                 <FaListCheck />
                 My Requests
               </Link>

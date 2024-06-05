@@ -105,12 +105,12 @@ const SignUp = () => {
         let returnedData;
         switch (values.role) {
           case 'customer':
-            returnedData = onCreateCustomerToDB(userId, values, isAdded);
+            returnedData = await onCreateCustomerToDB(userId, values, isAdded);
             setRoleSelected('customer');
             break;
 
           case 'technician':
-            returnedData = onCreateTechnicianToDB(userId, values, isAdded);
+            returnedData = await onCreateTechnicianToDB(userId, values, isAdded);
             setRoleSelected('technician')
             break;
 

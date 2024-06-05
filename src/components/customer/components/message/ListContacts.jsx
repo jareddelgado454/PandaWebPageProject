@@ -49,7 +49,7 @@ export default function ListContacts() {
                             <Link href={`/customer/messages/${chat.id}`} key={i} id="chat_technician" className='flex flex-row justify-between gap-2 dark:hover:bg-zinc-700 hover:rounded-lg transition-all duration-300 ease-in cursor-pointer p-3 border-b-1 border-zinc-300 dark:border-zinc-500'>
                                 <div className='flex flex-row gap-2'>
                                     <Image
-                                        src={`${ chat.technicianSelected.profilePicture ? chat.technicianSelected.profilePicture : '/image/defaultProfilePicture.jpg' }`}
+                                        src={`${ chat.technicianSelected ? chat.technicianSelected.profilePicture : '/image/defaultProfilePicture.jpg' }`}
                                         width={100}
                                         height={100}
                                         alt='technician_profile_picture'
