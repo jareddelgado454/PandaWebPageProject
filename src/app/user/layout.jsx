@@ -76,11 +76,17 @@ const UserLayout = ({ children }) => {
         })
         .subscribe({
           next: ({ data }) => {
-            console.log("esta es la data retornadaaa",data);
-            setTechnicianActivityStatus("assigned");
-            setServiceAssigned(data.onUpdateService);
-            localStorage.setItem("serviceAssigned", JSON.stringify(data.onUpdateService));
-            onAssignedTechnicianModalOpen();
+            console.log("dataaaaaaaaaaa", data);
+            if(data.onUpdateService.status === "completed"){
+              console.log("Completeeeeeeeeeeeeed payment");
+            }
+            else{
+              console.log("esta es la data retornadaaa",data);
+              setTechnicianActivityStatus("assigned");
+              setServiceAssigned(data.onUpdateService);
+              localStorage.setItem("serviceAssigned", JSON.stringify(data.onUpdateService));
+              onAssignedTechnicianModalOpen();
+            }
           },
           error: (error) => console.warn(error),
         });
