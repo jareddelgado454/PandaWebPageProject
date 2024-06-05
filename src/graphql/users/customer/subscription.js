@@ -38,14 +38,19 @@ export const onUpdateService = gql`
 
 `;
 
-export const onUpdateServiceStatus = gql`
-    subscription MySubscription($serviceId: ID!, $customerId: ID!) {
-        onUpdateService(filter: {id: {eq: $serviceId}, serviceCustomerId: {eq: $customerId}}){
-            id
-            status
-            paymentLink
-        }
+export const onUpdateServiceGlobal = gql`
+  subscription OnUpdateService($serviceId: ID!, $customerId: ID!) {
+    onUpdateService(filter: {id: {eq: $serviceId}, serviceCustomerId: {eq: $customerId}}){
+      id
+      status
+      destLatitude
+      destLongitude
+      paymentLink
+      price
+      tax
+      total
     }
+  }
 `;
 
 export const onUpdateServiceCoordinates = gql`
@@ -57,16 +62,4 @@ export const onUpdateServiceCoordinates = gql`
         }
     }
 
-`;
-
-export const onUpdatePaymentService = gql`
-subscription OnUpdateServicePayment($serviceId: ID!, $customerId: ID!) {
-    onUpdateService(filter: {id: {eq: $serviceId}, serviceCustomerId: {eq: $customerId}}){
-        id
-        paymentLink
-        price
-        tax
-        total
-    }
-}
 `;
