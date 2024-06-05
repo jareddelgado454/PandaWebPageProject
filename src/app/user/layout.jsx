@@ -98,7 +98,7 @@ const UserLayout = ({ children }) => {
   }, [user, serviceIdWaitingFor]);
 
   return (
-    <div className="w-full h-screen bg-zinc-900">
+    <div className="w-full h-screen bg-zinc-900 dark">
       <Contexto.Provider
         value={{
           user,

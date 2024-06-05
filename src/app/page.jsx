@@ -5,21 +5,21 @@ import LandingNavBar from "../components/LandingNavBar";
 import Link from "next/link";
 import { useScroll, motion, useTransform } from "framer-motion";
 import {
-  RiArrowRightDoubleFill,
-  RiVideoFill,
-  RiCarFill,
-  RiToolsFill,
-  RiGraduationCapFill,
-  RiCheckDoubleFill,
-  RiStarFill,
-  RiUserStarFill,
-  RiLightbulbFill ,
-  RiAuctionFill,
-  RiYoutubeFill,
-  RiTwitterXFill,
-  RiFacebookBoxFill,
-  RiLinkedinBoxFill ,
-  RiDownloadFill,
+    RiArrowRightDoubleFill,
+    RiVideoFill,
+    RiCarFill,
+    RiToolsFill,
+    RiGraduationCapFill,
+    RiCheckDoubleFill,
+    RiStarFill,
+    RiUserStarFill,
+    RiLightbulbFill,
+    RiAuctionFill,
+    RiYoutubeFill,
+    RiTwitterXFill,
+    RiFacebookBoxFill,
+    RiLinkedinBoxFill,
+    RiDownloadFill,
 } from "react-icons/ri";
 import { PiCarProfileFill } from "react-icons/pi";
 import DownloadApp from "@/components/modalLanding/DownloadApp";
@@ -36,112 +36,117 @@ import technician4 from "../../public/image/technician4.png"
 
 const Home = () => {
 
-  const {
-    isOpen: isVideoModalOpen,
-    onOpen: onVideoModalOpen,
-    onOpenChange: onVideoModalOpenChange,
-  } = useDisclosure();
+    const {
+        isOpen: isVideoModalOpen,
+        onOpen: onVideoModalOpen,
+        onOpenChange: onVideoModalOpenChange,
+    } = useDisclosure();
 
-  const {
-    isOpen: isDownloadAppModalOpen,
-    onOpen: onDownloadAppModalOpen,
-    onOpenChange: onDownloadAppModalOpenChange,
-  } = useDisclosure();
+    const {
+        isOpen: isDownloadAppModalOpen,
+        onOpen: onDownloadAppModalOpen,
+        onOpenChange: onDownloadAppModalOpenChange,
+    } = useDisclosure();
 
 
-  const [modeApp, setModeApp] = useState("");
+    const [modeApp, setModeApp] = useState("");
 
-  const handleDownloadClick = (mode) => {
-    setModeApp(mode);
-    onDownloadAppModalOpen();
-  }
+    const handleDownloadClick = (mode) => {
+        setModeApp(mode);
+        onDownloadAppModalOpen();
+    }
 
-  const ref = useRef(null);
-  const refSecond = useRef(null);
-  const refThird = useRef(null);
-  const ref2 = useRef(null);
-  const ref3 = useRef(null);
-  const ref4 = useRef(null);
-  const ref5 = useRef(null);
-  const ref6 = useRef(null);
-  const ref7 = useRef(null);
+    const ref = useRef(null);
+    const refSecond = useRef(null);
+    const refThird = useRef(null);
+    const ref2 = useRef(null);
+    const ref3 = useRef(null);
+    const ref4 = useRef(null);
+    const ref5 = useRef(null);
+    const ref6 = useRef(null);
+    const ref7 = useRef(null);
 
-  const { scrollYProgress:progress1 } = useScroll({
-    target : ref,
-    offset : ["0 1", "1.10 1"]
-  });
-  const { scrollYProgress:progressSecond } = useScroll({
-    target : refSecond,
-    offset : ["0 1", "1.01 1"]
-  })
-  const { scrollYProgress:progressThird } = useScroll({
-    target : refThird,
-    offset : ["0 1", "1.01 1"]
-  })
-  const { scrollYProgress:progress2 } = useScroll({
-    target : ref2,
-    offset : ["0 1", "1.10 1.3"]
-  });
-  const { scrollYProgress:progress3 } = useScroll({
-    target : ref3,
-    offset : ["0 1", "1.10 1"]
-  });
-  const { scrollYProgress:progress4 } = useScroll({
-    target : ref4,
-    offset : ["0 1", "1.10 1"]
-  });
-  const { scrollYProgress:progress5 } = useScroll({
-    target : ref5,
-    offset : ["0 1", "1.10 1.5"]
-  });
-  const { scrollYProgress:progress6 } = useScroll({
-    target : ref6,
-    offset : ["0 1", "1.10 1.6"]
-  });
-  const { scrollYProgress:progress7 } = useScroll({
-    target : ref7,
-    offset : ["0 1", "1.10 1.8"]
-  });
+    const { scrollYProgress: progress1 } = useScroll({
+        target: ref,
+        offset: ["0 1", "1.10 1"]
+    });
+    const { scrollYProgress: progressSecond } = useScroll({
+        target: refSecond,
+        offset: ["0 1", "1.01 1"]
+    })
+    const { scrollYProgress: progressThird } = useScroll({
+        target: refThird,
+        offset: ["0 1", "1.01 1"]
+    })
+    const { scrollYProgress: progress2 } = useScroll({
+        target: ref2,
+        offset: ["0 1", "1.10 1.3"]
+    });
+    const { scrollYProgress: progress3 } = useScroll({
+        target: ref3,
+        offset: ["0 1", "1.10 1"]
+    });
+    const { scrollYProgress: progress4 } = useScroll({
+        target: ref4,
+        offset: ["0 1", "1.10 1"]
+    });
+    const { scrollYProgress: progress5 } = useScroll({
+        target: ref5,
+        offset: ["0 1", "1.10 1.5"]
+    });
+    const { scrollYProgress: progress6 } = useScroll({
+        target: ref6,
+        offset: ["0 1", "1.10 1.6"]
+    });
+    const { scrollYProgress: progress7 } = useScroll({
+        target: ref7,
+        offset: ["0 1", "1.10 1.8"]
+    });
 
-  const scaleProgress1 = useTransform(progress1,[0, 1],[0.5, 1]);
-  const scaleProgressSecond = useTransform(progressSecond, [0,1], [0.5, 1]);
-  const scaleProgressThird = useTransform(progressThird, [0,1], [0.5, 1]);
-  const scaleProgress2 = useTransform(progress2,[0, 1],[0.7, 1]);
-  const scaleProgress3 = useTransform(progress3,[0, 1],[0.5, 1]);
-  const scaleProgress4 = useTransform(progress4, [0, 1],[0.5, 1]);
-  const scaleProgress5 = useTransform(progress5,[0,1], [0.5, 1]);
-  const scaleProgress6 = useTransform(progress6,[0,1], [0.5, 1]);
-  const scaleProgress7 = useTransform(progress7,[0,1], [0.5, 1]);
+    const scaleProgress1 = useTransform(progress1, [0, 1], [0.5, 1]);
+    const scaleProgressSecond = useTransform(progressSecond, [0, 1], [0.5, 1]);
+    const scaleProgressThird = useTransform(progressThird, [0, 1], [0.5, 1]);
+    const scaleProgress2 = useTransform(progress2, [0, 1], [0.7, 1]);
+    const scaleProgress3 = useTransform(progress3, [0, 1], [0.5, 1]);
+    const scaleProgress4 = useTransform(progress4, [0, 1], [0.5, 1]);
+    const scaleProgress5 = useTransform(progress5, [0, 1], [0.5, 1]);
+    const scaleProgress6 = useTransform(progress6, [0, 1], [0.5, 1]);
+    const scaleProgress7 = useTransform(progress7, [0, 1], [0.5, 1]);
 
-  return (
-    <div className="flex flex-col w-full p-0 bgLandingPage">
+    return (
+    <div className="flex flex-col w-full p-0 bg-zinc-800">
       <div className="w-full h-full">
-        <div className="w-full h-[500px] mb-16">
+        <div className="w-full h-[750px] relative mb-10">
           <LandingNavBar />
-          <div className="w-full h-full flex flex-col justify-center items-center text-left z-30 px-4 lg:px-0">
-            <div className="xl:w-[1000px] w-full text-center flex flex-col items-center justify-center px-2">
-                <h1 className=" md:text-[70px] text-[50px] text-center mb-1 text-white/90 font-extrabold ">
-                  Getting Your Car Repaired <span className="text-emerald-300">Easier</span>
-                </h1>
-                <p className="text-gray-100 md:text-xl lg:text-[22px] font-bold">Changing the auto repair industry by</p>
-                <p className="text-gray-100 md:text-xl lg:text-[22px] font-bold mb-8">placing power in the small business owner`s hands.</p>
-                <div className="md:w-[500px] w-full flex flex-col lg:flex-row items-center gap-4">
-                  <Link href="/auth/signin" className='md:w-1/2 w-full px-9 py-3 font-semibold border-[2px] rounded-xl text-white border-emerald-500 bg-emerald-500 text-[20px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
-                      Start here
-                  </Link>
-
+          <div className="absolute top-[30%] lg:left-[20%] flex flex-col text-left z-30 px-4 lg:px-0">
+              <h1 className=" text-[40px] text-left mb-1 text-white/90 font-extrabold ">
+                <span className="text-emerald-400/90 md:text-3xl lg:text-[80px]">Getting</span>{" "}
+                your car repaired
+              </h1>
+              <p className=" mb-7 text-left  text-[30px] text-white/90">
+                Has never been{" "}
+                <span className="text-emerald-400/90 font-extrabold md:text-3xl text-[40px]">
+                  EASIER
+                </span>
+              </p>
+              <p className="text-gray-100 md:text-xl lg:text-[22px] font-bold">Changing the auto repair industry by</p>
+              <p className="text-gray-100 md:text-xl lg:text-[22px] font-bold mb-8">placing power in the small business owner`s hands.</p>
+              <div className="flex flex-col lg:flex-row items-center gap-4">
+                <Link href="/auth" className='w-full md:w-2/6 px-9 py-3 font-semibold border-[2px] rounded-lg text-white border-emerald-500 bg-emerald-500 text-[20px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
+                    Start here
+                </Link>
+    
                   <button onClick={onVideoModalOpen} className='md:w-1/2 w-full flex justify-center items-center gap-x-2 px-5 py-3 font-semibold border-[2px] rounded-xl text-zinc-900 border-gray-100 bg-gray-100  text-[20px] hover:bg-gray-300 hover:border-gray-300 hover:text-zinc-950 transition delay-50'>
                     <RiVideoFill className="text-[20px]"/>
                     Watch Video
                   </button>
-                </div>
             </div> 
           </div>
-          {/* <div className="absolute w-full h-[750px] bg-zinc-800 opacity-70"></div> */}
-          {/* <img
+          <div className="absolute w-full h-[750px] bg-gray-800 opacity-70"></div>
+          <img
             className="w-full h-full object-cover"
             src="https://cdna.artstation.com/p/assets/images/images/040/174/900/large/fabian-geyer-wideshotright.jpg?1628083532"
-          /> */}
+          />
         </div>
 
         <div className="w-full h-full py-8 sm:px-12 px-5 flex flex-col justify-center items-center shadow-xl">  
@@ -496,10 +501,11 @@ const Home = () => {
                 </div>
             </footer>
         </div>
+
       </div>
       <DownloadApp isOpen={isDownloadAppModalOpen} onOpenChange={onDownloadAppModalOpenChange} mode={modeApp}/>
       <VideoModal isOpen={isVideoModalOpen} onOpenChange={onVideoModalOpenChange} mode={modeApp}/>
-    </div>
+    </div >
   );
 }
 export default Home;

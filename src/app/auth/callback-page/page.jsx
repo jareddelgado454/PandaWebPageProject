@@ -82,7 +82,7 @@ const CallbackPage = () => {
       });
       const { tokens, userSub } = await fetchAuthSession({ forceRefresh: true });
       const expiredAt = tokens.accessToken.payload.exp;
-      login({ role: userRole, expiredAt, id: userSub });
+      login({ role: "technician", expiredAt, id: userSub });
       router.replace("/user");
       setSelectingTechnician(false);
     } catch (error) {
