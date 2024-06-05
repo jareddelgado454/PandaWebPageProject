@@ -255,14 +255,14 @@ const Requests = () => {
             </div>
           ) : (
             <div className="w-1/2 rounded-md border-[2px] gap-y-3 bg-zinc-900/40 border-zinc-600 p-4 flex flex-col justify-center items-center">
-              <span className="flex gap-x-1">
-                <RiErrorWarningFill className="w-[35px] text-[35px] text-zinc-600" />{" "}
+              <span className="flex gap-x-1 text-[15px]">
+                <RiErrorWarningFill className="w-[35px] text-[45px] text-zinc-500" />{" "}
                 In order to access the list of requests and start interacting
                 with them, you need to be in Online mode, you can change here
               </span>
               <button
                 onClick={() => handleChangeStatus()}
-                className="py-2 px-5 rounded-md bg-emerald-500"
+                className="py-2 px-5 rounded-md bg-emerald-500 text-[15px]"
               >
                 Online Mode
               </button>
