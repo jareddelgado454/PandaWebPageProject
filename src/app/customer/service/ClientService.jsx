@@ -8,11 +8,11 @@ import CancelService from '@/components/customer/components/Map/CancelService';
 export default function ClientService() {
   return (
     <div className='w-full h-full p-4'>
-      <div className='w-full h-full rounded-lg bg-stone-200 dark:bg-zinc-900 relative overflow-hidden'>
+      <div className='w-full h-[100vh] md:h-full rounded-lg bg-stone-200 dark:bg-zinc-900 relative overflow-hidden'>
         <div className='flex justify-center items-center h-full'>
           <Map />
         </div>
-        <div className='absolute bottom-5 left-5 z-20'>
+        <div className='absolute top-[50%] left-2 md:bottom-5 md:left-5 z-20'>
           <LocationButton />
         </div>
         <RequestInput />
