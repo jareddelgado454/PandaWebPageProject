@@ -45,12 +45,12 @@ const Page = () => {
         user && (
           <div className="w-full h-[calc(100vh-100px)] flex flex-col px-4 bg-zinc-800 rounded-xl pt-4">
             <div className="w-full mb-6">
-              <div className="w-[220px] bg-zinc-700 rounded-2xl flex items-center justify-center p-2 ">
-                <Link href={"/user"} className="text-zinc-400">
+              <div className="w-[250px] bg-zinc-700 rounded-2xl flex items-center justify-center p-2 ">
+                <Link href={"/user"} className="text-zinc-400 text-[15px]">
                   Technician panel
                 </Link>
                 <RiArrowDropRightLine className="text-zinc-400 text-[25px] " />
-                <Link href={"/user"} className="text-white">
+                <Link href={"/user"} className="text-white text-[15px]">
                   Profile
                 </Link>
               </div>
@@ -86,7 +86,7 @@ const Page = () => {
                           Profile:
                         </span>
                         <span
-                          className={`w-full text-left text-[15px] text-red-400`}
+                          className={`w-full text-left text-[13px] text-red-400`}
                         >
                           Incomplete
                         </span>
@@ -101,7 +101,7 @@ const Page = () => {
                           Subscription:
                         </span>
                         <span
-                          className={`w-full text-left text-[15px] text-red-400`}
+                          className={`w-full text-left text-[13px] text-red-400`}
                         >
                           None
                         </span>
@@ -116,7 +116,7 @@ const Page = () => {
                           Schedule:
                         </span>
                         <span
-                          className={`w-full text-left text-[15px] text-red-400`}
+                          className={`w-full text-left text-[13px] text-red-400`}
                         >
                           Incomplete
                         </span>
@@ -144,7 +144,7 @@ const Page = () => {
                   <h4 className="flex gap-x-1 items-center text-white text-[20px] font-bold">
                     PERSONAL INFORMATION
                   </h4>
-                  <p className="text-gray-300">
+                  <p className="text-gray-300 text-[14px]">
                     Here you can access and complete your personal information,
                     such as name, city, phone number, etc. You can also edit.
                   </p>
@@ -161,7 +161,7 @@ const Page = () => {
                   <h4 className="flex gap-x-1 items-center text-white  text-[20px] font-bold">
                     SPECIALIZATION AREA
                   </h4>
-                  <p className="text-gray-300">
+                  <p className="text-gray-300 text-[14px]">
                     Here you can complete the information about the cars you
                     specialize in repairing, so we can recommend you.
                   </p>
@@ -178,7 +178,7 @@ const Page = () => {
                   <h4 className="flex gap-x-1 items-center text-white  text-[20px] font-bold">
                     CERTIFICATIONS
                   </h4>
-                  <p className="text-gray-300">
+                  <p className="text-gray-300 text-[14px]">
                     Here you can upload the certifications you have, if you have
                     them, certifications in the field of mechanics.
                   </p>
@@ -195,7 +195,7 @@ const Page = () => {
                   <h4 className="flex gap-x-1 items-center text-white  text-[20px] font-bold">
                     PROFILE CARD
                   </h4>
-                  <p className="text-gray-300">
+                  <p className="text-gray-300 text-[14px]">
                     Here you can see your profile card, it is how potential
                     clients see you and can interact with your information.
                   </p>
