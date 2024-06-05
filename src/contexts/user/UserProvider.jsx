@@ -28,7 +28,24 @@ export const UserProvider = ({ children }) => {
         return null;
     };
 
+    const login = (userData) => {
+        console.log(userData);
+        Cookies.set(
+            "currentUser",
+            JSON.stringify(userData)
+        );
+        dispatch({ type: 'setUser', payload: userData });
+    }
+
+    const logout = () => {
+        Cookies.remove('currentUser');
+        dispatch({
+            type: 'setUser',
+        })
+    }
+
     useEffect(() => {
+        console.log('launch')
         const userFromCookies = getUserFromCookies();
         if(userFromCookies) {
             dispatch({ type: 'setUser', payload: userFromCookies })
@@ -38,7 +55,9 @@ export const UserProvider = ({ children }) => {
     return(
         <UserContext.Provider
             value={{
-                ...state
+                ...state,
+                login,
+                logout
             }}
         >
             {children}
