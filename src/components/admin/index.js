@@ -1,8 +1,5 @@
 // Admin Component
-<<<<<<< HEAD
-=======
 // export { default as UpdateStatusModal } from './modals/updateStatus';
->>>>>>> develop
 export { default as EditModal } from './modals/EditModal';
 export { default as DeleteModal } from './modals/DeletModal';
 export { default as ShowInfoModal } from './modals/ShowInformation';
