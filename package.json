@@ -23,6 +23,7 @@
     "animate.css": "^4.1.1",
     "aws-amplify": "^6.2.0",
     "chart.js": "^4.4.2",
+    "date-fns": "^3.6.0",
     "dayjs": "^1.11.10",
     "embla-carousel-react": "^8.0.4",
     "formik": "^2.4.5",

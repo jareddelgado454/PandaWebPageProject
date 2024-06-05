@@ -12,6 +12,7 @@ import { getUser } from "@/graphql/custom-queries";
 import { statesUSA } from "@/assets/data/StatesUSA";
 import { updateInformation } from "@/graphql/users/mutation/users";
 import Image from "next/image";
+import { dataURLtoBlob } from "@/utils/photo/BlobImage";
 const Settings = () => {
   const [photograph, setPhotograph] = useState(null);
   const [user, setUser] = useState({});
@@ -69,20 +70,6 @@ const Settings = () => {
       toast.error(`Error during the process.`);
     }
   };
-  function dataURLtoBlob(dataURL) {
-    if (!dataURL) {
-      return null;
-    }
-    var parts = dataURL.split(";base64,");
-    var contentType = parts[0].split(":")[1];
-    var raw = window.atob(parts[1]);
-    var rawLength = raw.length;
-    var uInt8Array = new Uint8Array(rawLength);
-    for (var i = 0; i < rawLength; ++i) {
-      uInt8Array[i] = raw.charCodeAt(i);
-    }
-    return new Blob([uInt8Array], { type: contentType });
-  }
   function handleChangePhotograph(event) {
     const file = event.target.files[0];
     if (file) {

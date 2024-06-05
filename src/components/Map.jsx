@@ -9,73 +9,68 @@ import { ServiceContext } from '@/contexts/service/ServiceContext';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import "maplibre-gl-js-amplify/dist/public/amplify-map.css";
 import { TechnicianInformationModal } from './customer';
+import { onUpdateServiceCoordinates } from '@/graphql/users/customer/subscription';
+import { client } from '@/contexts/AmplifyContext';
+import { CalculateAngleFromLocation } from '@/utils/service/CalculateAngle';
+import { getServiceById } from '@/graphql/services/queries/query';
 export default function Map() {
   const mapDiv = useRef(null);
+  const technicianMarkerRef = useRef(null);
   const { userLocation, isLoading } = useContext(PlaceContext);
   const { map, setMap, isMapReady } = useContext(MapContext);
   const [technicianSelected, setTechnicianSelected] = useState(null);
-  const { serviceRequest, setServiceRequest } = useContext(ServiceContext);
+  const { serviceRequest, setServiceRequest, setServiceCoordinates } = useContext(ServiceContext);
+  const interpolate = (start, end, t) => start + (end - start) * t;
+  const animateMarker = (marker, startCoords, endCoords, duration) => {
+    const startTime = performance.now();
+    const animate = (currentTime) => {
+      const elapsed = currentTime - startTime;
+      const t = Math.min(elapsed / duration, 1);
+
+      const newLng = interpolate(startCoords[0], endCoords[0], t);
+      const newLat = interpolate(startCoords[1], endCoords[1], t);
+
+      marker.setLngLat([newLng, newLat]);
+
+      if (t < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+    requestAnimationFrame(animate);
+  };
   const {
     isOpen: isTechnicianModalOpen,
     onOpen: onTechnicianModalOpen,
     onOpenChange: onTechnicianModalChange,
   } = useDisclosure();
-  // const geojson = {
-  //   'type': 'FeatureCollection',
-  //   'features': [
-  //     {
-  //       'type': 'Feature',
-  //       'properties': {
-  //         'message': 'Foo',
-  //       },
-  //       'geometry': {
-  //         'type': 'Point',
-  //         'coordinates': [-77.02761691395426, -12.04260133525865]
-  //       }
-  //     },
-  //   ]
-  // };
-  // const geojson2 = {
-  //   'type': 'Feature',
-  //   'properties': {},
-  //   'geometry': {
-  //     'type': 'LineString',
-  //     'coordinates': [
-  //       [-77.02761691395426, -12.04260133525865],
-  //       userLocation
-  //     ]
-  //   }
-  // };
+  const retrieveService = async () => {
+    try {
+      if (!serviceRequest) return;
+      const { data } = await client.graphql({
+        query: getServiceById,
+        variables: {
+          serviceId: serviceRequest.id
+        }
+      });
+      setServiceRequest(data.getService);
+    } catch (error) {
+      console.error(error);
+    }
+  }
   useLayoutEffect(() => {
     const initializeMap = async () => {
       if (!isLoading) {
-        const map = await createMap({
+        const mapC = await createMap({
           container: mapDiv.current,
           center: userLocation ? userLocation : [-123.1187, 49.2819],
           zoom: 14
         });
-        setMap(map);
-        // map.on('load', () => {
-        //   map.addSource('LineString', {
-        //     'type': 'geojson',
-        //     'data': geojson2
-        //   });
-        //   map.addLayer({
-        //     'id': 'LineString',
-        //     'type': 'line',
-        //     'source': 'LineString',
-        //     'layout': {
-        //       'line-join': 'round',
-        //       'line-cap': 'round'
-        //     },
-        //     'paint': {
-        //       'line-color': '#BF93E4',
-        //       'line-width': 5
-        //     }
-        //   });
-        // })
+        setMap(mapC);
+        if(serviceRequest){
+          displayTechnicianMarker(mapC, serviceRequest.destLatitude, serviceRequest.destLongitude);
+        }
         if (userLocation) {
-          map.flyTo({
+          mapC.flyTo({
             center: userLocation,
             zoom: 16,
             duration: 2000,
@@ -87,27 +82,11 @@ export default function Map() {
 
           new maplibregl.Marker(pulsatingCircle)
             .setLngLat(userLocation)
-            .addTo(map);
+            .addTo(mapC);
 
-          // geojson.features.forEach((marker) => {
-          //   // create a DOM element for the marker
-          //   const el = document.createElement('img');
-          //   el.src = `https://www.pngkey.com/png/full/60-601527_car-png-top.png`;
-          //   el.style.width = '30px'; // Set fixed width
-          //   el.style.height = '30px';
-
-          //   el.addEventListener('click', () => {
-          //     window.alert(marker.properties.message);
-          //   });
-
-          //   // add marker to map
-          //   new maplibregl.Marker({ element: el })
-          //     .setLngLat(marker.geometry.coordinates)
-          //     .addTo(map);
-          // });
 
         }
-
+        retrieveService();
       }
 
     };
@@ -117,26 +96,56 @@ export default function Map() {
     setTechnicianSelected(technician);
     onTechnicianModalOpen();
   }
-  useEffect(() => {
-    if (isMapReady && serviceRequest && serviceRequest.destLatitude && serviceRequest.destLongitude) {
-      const { destLatitude, destLongitude } = serviceRequest;
-      const technicianMarker = document.createElement('img');
-      technicianMarker.src = `https://www.pngkey.com/png/full/60-601527_car-png-top.png`;
-      technicianMarker.style.width = '30px';
-      technicianMarker.style.height = '20px';
+  const displayTechnicianMarker = (mapC, destLatitude = 0, destLongitude = 0) => {
+    const technicianMarker = document.createElement('div');
+    technicianMarker.className = 'technician-marker';
+    technicianMarker.addEventListener('click', () => {
+      handleModalInformation(serviceRequest.technicianSelected);
+    });
 
-      technicianMarker.addEventListener('click', () => {
-        console.log('Marcador de técnico clicado');
-        console.log(serviceRequest.technicianSelected);
-        handleModalInformation(serviceRequest.technicianSelected);
+    technicianMarkerRef.current = new maplibregl.Marker({ element: technicianMarker })
+      .setLngLat([destLongitude, destLatitude])
+      .addTo(mapC);
+  };
+
+  useEffect(() => {
+    if ((isMapReady && map) && serviceRequest) {
+      const { destLatitude, destLongitude } = serviceRequest;
+
+      if (!technicianMarkerRef.current) {
+        displayTechnicianMarker(map, destLatitude || 0, destLongitude || 0);
+      } else {
+        const startCoords = technicianMarkerRef.current.getLngLat().toArray();
+        const endCoords = [destLongitude || 0, destLatitude || 0];
+
+        animateMarker(technicianMarkerRef.current, startCoords, endCoords, 1500);
+        technicianMarkerRef.current.setLngLat(endCoords); // Update position directly
+
+        const angleDegrees = CalculateAngleFromLocation(startCoords, endCoords);
+        technicianMarkerRef.current.setRotation(angleDegrees);
+        technicianMarkerRef.current.setLngLat(endCoords);
+      }
+    }
+  }, [setServiceCoordinates]);
+  useEffect(() => {
+    if (!serviceRequest) return;
+    const subscription = client
+      .graphql({ query: onUpdateServiceCoordinates, variables: { serviceId: serviceRequest && serviceRequest.id, customerId: serviceRequest && serviceRequest.customer.id } })
+      .subscribe({
+        next: ({ data }) => {
+          setServiceCoordinates({
+            destLatitude: data.onUpdateService.destLatitude,
+            destLongitude: data.onUpdateService.destLongitude,
+          });
+        },
+        error: (error) => console.warn(error)
       });
 
-      new maplibregl.Marker({ element: technicianMarker })
-        .setLngLat([destLongitude, destLatitude])
-        .addTo(map);
-
-    }
-  }, [setServiceRequest, isMapReady, serviceRequest, map]);
+    return () => {
+      // Cancel the subscription when this component's life cycle ends
+      subscription.unsubscribe();
+    };
+  }, [serviceRequest, setServiceCoordinates]);
   return (
     <>
       <TechnicianInformationModal isOpen={isTechnicianModalOpen} onOpenChange={onTechnicianModalChange} technician={technicianSelected} />

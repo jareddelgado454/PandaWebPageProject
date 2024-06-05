@@ -158,8 +158,6 @@ export const handleUpdateTechnicianLocationInService = async (values) => {
     }
 }
 
-//REQUEST SERVICEEEEEES 
-
 export const handleCreateCustomerOnDataBase = async(values, isAdded) => {
     try {
         const { data } = await client.graphql({

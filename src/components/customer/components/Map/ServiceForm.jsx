@@ -13,8 +13,9 @@ import { ServiceContext } from '@/contexts/service/ServiceContext';
 import { listCarsById } from '@/graphql/users/customer/query';
 import { useDisclosure } from '@nextui-org/react';
 import { AddNewCarModal } from '../..';
+import { UserContext } from '@/contexts/user/UserContext';
 export default function ServiceForm() {
-    const user = Cookies.get("currentUser") && JSON.parse(Cookies.get("currentUser"));
+    const { user } = useContext(UserContext);
     const { userLocation } = useContext(PlaceContext);
     const { serviceRequest, setServiceRequest } = useContext(ServiceContext);
     const [service, setService] = useState({});
@@ -23,7 +24,7 @@ export default function ServiceForm() {
         isOpen,
         onOpen,
         onOpenChange
-      } = useDisclosure();
+    } = useDisclosure();
     const retrieveMyCars = async () => {
         try {
             const { data } = await client.graphql({
@@ -33,6 +34,7 @@ export default function ServiceForm() {
                 }
             });
             setMyCars(data.listCars.items);
+            console.log(data);
         } catch (error) {
             console.error(error);
         }
@@ -97,8 +99,8 @@ export default function ServiceForm() {
 
     return (
         <div className='relative h-full '>
-            <AddNewCarModal isOpen={isOpen} onOpenChange={onOpenChange} callback={retrieveMyCars} />
-            <div className={`container mx-auto px-4 w-[90%] h-full ${service && (service.status === 'service accepted' || service.status === 'in progress') && 'hidden'}`}>
+            <AddNewCarModal isOpen={isOpen} onOpenChange={onOpenChange} callback={retrieveMyCars} setMyCars={setMyCars} />
+            <div className={`container mx-auto px-4 w-[90%] h-full ${service && (service.status === 'service accepted' || service.status === 'in progress' || service.status === 'payment') && 'hidden'}`}>
                 <Formik
                     initialValues={{
                         title: '',
@@ -138,11 +140,7 @@ export default function ServiceForm() {
                             <div className='flex flex-col gap-6 justify-center'>
                                 <div className='flex flex-col gap-3 justify-center'>
                                     <label htmlFor="car">Select car *</label>
-                                    {myCars.length === 0 ? (
-                                        <div className=' h-10'>
-                                            <p className='text-rose-600 cursor-pointer font-semibold' onClick={onOpen}>Click to add your car</p>
-                                        </div>
-                                    ) : (    
+                                    {myCars.length > 0 ? (
                                         <Field
                                             as='select'
                                             name='car'
@@ -150,14 +148,14 @@ export default function ServiceForm() {
                                             placeholder="My cars"
                                         >
                                             <option value="default">Choose a car</option>
-                                            {myCars.length > 0 ? (
-                                                myCars.map((car, i) => (
-                                                    <option key={i} value={car.id}>{car.brand}</option>
-                                                ))
-                                            ) : (
-                                                <option disabled value="">You need to add a car</option>
-                                            )}
+                                            {myCars.map((car, i) => (
+                                                <option key={i} value={car.id}>{car.brand}</option>
+                                            ))}
                                         </Field>
+                                    ) : (
+                                        <div className='h-10'>
+                                            <p className='text-rose-600 cursor-pointer font-semibold' onClick={onOpen}>Click to add your car</p>
+                                        </div>
                                     )}
                                     <label htmlFor="car">Select type of service *</label>
                                     <Field
@@ -165,10 +163,10 @@ export default function ServiceForm() {
                                         name='type'
                                         className='block appearance-none border border-gray-200 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-gray-500 w-full'
                                         placeholder="My cars"
-                                        onChange={({ target }) => setFieldValue('type', target.value)}
                                     >
                                         <option value="repair">Repair</option>
                                         <option value="towing">Towing</option>
+                                        <option value="diagnostic">Diagnostic</option>
                                     </Field>
                                 </div>
                             </div>
@@ -208,10 +206,10 @@ export default function ServiceForm() {
                 )
             }
             {
-                (service && (service.status === 'service accepted') && (
+                (service && (service.status !== 'completed') && (
                     <div className='w-full h-full flex flex-col gap-4 justify-center items-center'>
                         <p className='font-semibold'>You already have a service petition. Click here to see full detail:</p>
-                        <Link href={`/customer/request/${serviceRequest.id}`} className='bg-green-panda rounded px-2 py-2 shadow-lg text-white'>Service Detail</Link>
+                        <Link href={`/customer/request/${service.id}`} className='bg-green-panda rounded px-2 py-2 shadow-lg text-white'>Service Detail</Link>
                     </div>
                 ))
             }

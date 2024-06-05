@@ -162,7 +162,7 @@ const ModalDetailRequest = ({
                 <>
                   <div className="w-full h-[250px] flex items-center justify-center bg-zinc-800 rounded-lg p-3 ">
                     <MapProvider>
-                      <MiniTechnicianServiceMap customerLocation={{lon:request?.originLongitude, lat:request?.originLatitude}}/>
+                      <MiniTechnicianServiceMap customerLocation={{ lon: request?.originLongitude, lat: request?.originLatitude }} />
                     </MapProvider>
                   </div>
                   <span className="text-zinc-300 flex gap-x-1 items-center">
@@ -182,11 +182,11 @@ const ModalDetailRequest = ({
                       Description:
                     </span>
                     <div className="bg-zinc-800 rounded-lg p-3 mb-4">
-                      Lorem Ipsum is simply dummy text of the printing and
+                      {`Lorem Ipsum is simply dummy text of the printing and
                       typesetting industry. Lorem Ipsum has been the industry's
                       standard dummy text ever since the 1500s, when an unknown
                       printer took a galley of type and scrambled it to make a
-                      type specimen book. It has survived not only five.
+                      type specimen book. It has survived not only five.`}
                     </div>
                     <Accordion
                       motionProps={{

@@ -1,5 +1,22 @@
 import { gql } from 'graphql-tag';
 
+export const retrieveMyInformation = gql`
+    query GetCustomer($id: ID!) {
+        getCustomer(id: $id){
+            id
+            email
+            fullName
+            contactNumber
+            state
+                city
+            address
+            zipCode
+            profilePicture
+            createdAt
+        }
+    }
+`;
+
 export const listOffersByServiceId = gql`
     query ListOffersById($serviceId: ID) {
         listOffers(filter: {serviceId: {eq: $serviceId}}) {

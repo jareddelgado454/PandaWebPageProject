@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -13,13 +13,12 @@ import {
   RiListCheck3,
   RiErrorWarningFill,
 } from "react-icons/ri";
-import { ConsoleLogger, Hub } from "aws-amplify/utils";
+import { Hub } from "aws-amplify/utils";
 import { Formik, Form, Field } from "formik";
 import {
   signIn,
   signOut,
   fetchUserAttributes,
-  updateUserAttributes,
   fetchAuthSession,
 } from "aws-amplify/auth";
 import VerificationCodeModal from "@/components/LoginRegister/modals/VerificationCodeModal";
@@ -29,8 +28,9 @@ import {
   ModalBody,
   useDisclosure,
 } from "@nextui-org/react";
-import { handleCreateUserOnDatabase, handleRetrieveMyUser } from "@/api";
+import { UserContext } from "@/contexts/user/UserContext";
 const SignIn = () => {
+  const { login } = useContext(UserContext);
   const status = "inactive";
   const router = useRouter();
   const {
@@ -113,29 +113,6 @@ const SignIn = () => {
       console.log(error);
     }
   };
-  useEffect(() => {
-    const hubListenerCancel = Hub.listen("auth", async ({ payload }) => {
-      switch (payload.event) {
-        case "signedIn":
-          onOpenLoadingModal(true);
-          const { role, expiredAt, userSub } = await currentAuthenticatedUser();
-          Cookies.set(
-            "currentUser",
-            JSON.stringify({ role,expiredAt, id: userSub })
-          );
-          if (role === "admin") {
-            router.replace("/admin-dashboard/");
-          } else if(role === "technician") {
-            router.replace("/user");
-          } else if(role === "customer"){
-            router.replace("/customer");
-          }
-
-          break;
-      }
-    });
-    return () => hubListenerCancel();
-  }, [onOpenLoadingModal, router]);
   return (
     <>
       <CheckoutModal

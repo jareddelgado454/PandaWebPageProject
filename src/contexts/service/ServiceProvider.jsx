@@ -28,10 +28,15 @@ export const ServiceProvider = ({ children }) => {
         dispatch({type: 'setServiceRequest', payload: serviceRequest});
     }
 
+    const setServiceCoordinates = (coordinates) => {
+        dispatch({type: 'updateServiceCoordinates', payload: coordinates});
+    }
+
     return(
         <ServiceContext.Provider value={{
             ...state,
-            setServiceRequest
+            setServiceRequest,
+            setServiceCoordinates,
         }}>
             {children}
         </ServiceContext.Provider>

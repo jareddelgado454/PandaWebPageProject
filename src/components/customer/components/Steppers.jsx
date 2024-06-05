@@ -1,11 +1,12 @@
 import React from 'react';
+import { client } from '@/contexts/AmplifyContext';
 import { FaCheck } from 'react-icons/fa6';
 
 export const Steppers = ({ currentStep }) => {
   return (
     <div className='w-full h-[4rem] md:h-[5.8rem]'>
       <div className='w-full h-full flex flex-row justify-center items-center'>
-        {['Service accepted', 'On the way', 'In progress', 'Completed'].map((step, index) => {
+        {['Service accepted', 'On the way', 'In progress', 'payment', 'Completed'].map((step, index) => {
           const stepNumber = index + 1;
           return (
             <React.Fragment key={index}>
@@ -22,7 +23,7 @@ export const Steppers = ({ currentStep }) => {
                     </div>
                   </div>
                 </div>
-                {stepNumber < 4 && (
+                {stepNumber < 5 && (
                   <div className={`${currentStep > stepNumber ? 'bg-green-panda' : 'bg-zinc-400'} h-[0.2rem] w-[3rem] md:h-[0.2rem] md:w-12 transition-all ease-linear duration-250`}></div>
                 )}
               </div>

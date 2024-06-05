@@ -124,10 +124,7 @@ type Car @model @auth(
 
 type Customer @model @auth(
     rules: [
-        { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
-        { allow: owner, ownerField: "cognitoId", operations: [ read, update, create, delete ] }
-        { allow: public, provider: iam, operations: [ create ] }
-        { allow: private, operations: [ read ] }
+        { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }, { allow: public, provider: iam, operations: [ create ] }, { allow: owner, ownerField: "id" }, { allow: private, operations: [ read ]}
     ]
 ) {
     id: ID!

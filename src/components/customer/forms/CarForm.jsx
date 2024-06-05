@@ -8,7 +8,7 @@ import Cookies from 'js-cookie';
 import { client } from '@/contexts/AmplifyContext';
 import { Progress } from '@nextui-org/react';
 import { saveMyCar, updateMyCar } from '@/graphql/users/customer/mutation';
-export default function CarForm({ callback, car, edit, onClose }) {
+export default function CarForm({ callback, car, edit, onClose, setMyCars }) {
   const [percent, setPercent] = useState(0);
   const [photograph, setPhotograph] = useState(null);
   function handleChangePhotograph(event) {
@@ -75,7 +75,7 @@ export default function CarForm({ callback, car, edit, onClose }) {
   }
   const handleCreateCar = async (values, image, customerId) => {
     try {
-      await client.graphql({
+      const { data } = await client.graphql({
         query: saveMyCar,
         variables: {
           input: {
@@ -87,6 +87,7 @@ export default function CarForm({ callback, car, edit, onClose }) {
           }
         }
       });
+      setMyCars(prevCars => [...prevCars, data.createCar]);
     } catch (error) {
       console.log(error);
     }

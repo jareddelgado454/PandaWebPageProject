@@ -101,7 +101,11 @@ export default function OfferDetails() {
                 </Badge>
               </div>
             </div>
-            <div className={`w-[85%] h-full  transition-all duration-300 ease-in-out animate__animated ${offers.length > 0 && 'overflow-y-scroll'} ${active ? 'block animate__bounceInDown' : 'animate__bounceOutUp'}`}>
+            <div className={`w-[85%] h-full  transition-all duration-300 ease-in-out animate__animated ${active ? 'block animate__bounceInDown' : 'animate__bounceOutUp'}`} style={{
+              msOverflowStyle: 'none',
+              scrollbarWidth: 'none',
+              overflowY: 'scroll'
+            }}>
               <div className='flex flex-col gap-2'>
                 {offers.map((offer, i) => (
                   <div key={i} className='dark:bg-zinc-900 bg-white shadow-lg w-full h-[7rem] rounded-lg p-4 overflow-hidden animate__animated animate__fadeInLeft'>
