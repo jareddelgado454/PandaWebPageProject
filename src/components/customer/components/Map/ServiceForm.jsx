@@ -34,6 +34,7 @@ export default function ServiceForm() {
                 }
             });
             setMyCars(data.listCars.items);
+            console.log(data);
         } catch (error) {
             console.error(error);
         }
@@ -139,11 +140,7 @@ export default function ServiceForm() {
                             <div className='flex flex-col gap-6 justify-center'>
                                 <div className='flex flex-col gap-3 justify-center'>
                                     <label htmlFor="car">Select car *</label>
-                                    {myCars.length === 0 ? (
-                                        <div className='h-10'>
-                                            <p className='text-rose-600 cursor-pointer font-semibold' onClick={onOpen}>Click to add your car</p>
-                                        </div>
-                                    ) : (
+                                    {myCars.length > 0 ? (
                                         <Field
                                             as='select'
                                             name='car'
@@ -155,6 +152,10 @@ export default function ServiceForm() {
                                                 <option key={i} value={car.id}>{car.brand}</option>
                                             ))}
                                         </Field>
+                                    ) : (
+                                        <div className='h-10'>
+                                            <p className='text-rose-600 cursor-pointer font-semibold' onClick={onOpen}>Click to add your car</p>
+                                        </div>
                                     )}
                                     <label htmlFor="car">Select type of service *</label>
                                     <Field

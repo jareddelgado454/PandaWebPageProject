@@ -1,15 +1,13 @@
 "use client";
 
 import "aws-amplify/auth/enable-oauth-listener";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   RiTeamFill,
   RiToolsFill,
   RiCheckboxCircleFill,
-  RiVipCrownFill,
 } from "react-icons/ri";
 import {
-  getCurrentUser,
   fetchUserAttributes,
   fetchAuthSession,
   updateUserAttributes,
@@ -23,9 +21,11 @@ import { Amplify } from "aws-amplify";
 import config from "@/amplifyconfiguration.json";
 import { handleCreateCustomerOnDataBase, handleCreateTechnicianOnDataBase } from "@/api";
 import Image from "next/image";
+import { UserContext } from "@/contexts/user/UserContext";
 Amplify.configure(config);
 
 const CallbackPage = () => {
+  const { login } = useContext(UserContext);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectingCustomer, setSelectingCustomer] = useState(false);
@@ -35,20 +35,13 @@ const CallbackPage = () => {
   useEffect(() => {
     const retrieveDataUser = async () => {
       try {
-        console.log("before query");
         const fetchedUser = await fetchUserAttributes();
-        console.log(fetchedUser.name);
         const userRole = fetchedUser["custom:role"];
-        console.log(fetchedUser);
         setUser(fetchedUser);
         if (userRole) {
-          console.log("Is stored in database");
           const { tokens, userSub } = await fetchAuthSession({ forceRefresh: true });
           const expiredAt = tokens.accessToken.payload.exp;
-          Cookies.set(
-            "currentUser",
-            JSON.stringify({ role: userRole, expiredAt, id: userSub })
-          );
+          login({ role: userRole, expiredAt, id: userSub })
           switch (userRole) {
             case "technician":
               router.push("/user");
@@ -81,20 +74,15 @@ const CallbackPage = () => {
         email: user?.email,
         fullName: user?.name,
       });
-      console.log("Stored in database")
-
       await updateUserAttributes({
         userAttributes: {
           "custom:role": "technician",
           "custom:infoCompleted" : "false"
         },
       });
-      console.log("Stored role in cognito")
-
       const { tokens, userSub } = await fetchAuthSession({ forceRefresh: true });
       const expiredAt = tokens.accessToken.payload.exp;
-
-      Cookies.set("currentUser", JSON.stringify({ role : "technician" , expiredAt, id: userSub }));
+      login({ role: userRole, expiredAt, id: userSub });
       router.replace("/user");
       setSelectingTechnician(false);
     } catch (error) {
@@ -118,12 +106,9 @@ const CallbackPage = () => {
           "custom:role": "customer",
         },
       });
-      console.log("Stored customer in cognito");
-
       const { tokens } = await fetchAuthSession({ forceRefresh: true });
       const expiredAt = tokens.accessToken.payload.exp;
-
-      Cookies.set("currentUser", JSON.stringify({ role : "customer" , expiredAt, id: result.createCustomer.id }));
+      login({ role : "customer" , expiredAt, id: result.createCustomer.id })
       router.replace("/customer");
       setSelectingCustomer(false);
     } catch (error) {

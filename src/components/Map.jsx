@@ -116,7 +116,7 @@ export default function Map() {
         displayTechnicianMarker(map, destLatitude || 0, destLongitude || 0);
       } else {
         const startCoords = technicianMarkerRef.current.getLngLat().toArray();
-        const endCoords = [destLongitude, destLatitude];
+        const endCoords = [destLongitude || 0, destLatitude || 0];
 
         animateMarker(technicianMarkerRef.current, startCoords, endCoords, 1500);
         technicianMarkerRef.current.setLngLat(endCoords); // Update position directly

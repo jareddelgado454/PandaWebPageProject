@@ -1,30 +1,8 @@
-'use client';
+import React from 'react';
 import { client } from '@/contexts/AmplifyContext';
-import { onUpdateServiceStatus } from '@/graphql/users/customer/subscription';
-import React, { useEffect } from 'react';
 import { FaCheck } from 'react-icons/fa6';
 
-export const Steppers = ({ currentStep, service, setService }) => {
-  useEffect(() => {
-    if (!service) return;
-    const subscription = client
-      .graphql({ query: onUpdateServiceStatus, variables: { serviceId: service.id, customerId: service.customer.id } })
-      .subscribe({
-        next: ({ data }) => {
-          // Update previous state
-          setService((prevState) => ({
-            ...prevState,
-            ...data.onUpdateService
-          }))
-        },
-        error: (error) => console.warn(error)
-      });
-
-    return () => {
-      // Cancel the subscription when this component's life cycle ends
-      subscription.unsubscribe();
-    };
-  }, []);
+export const Steppers = ({ currentStep }) => {
   return (
     <div className='w-full h-[4rem] md:h-[5.8rem]'>
       <div className='w-full h-full flex flex-row justify-center items-center'>

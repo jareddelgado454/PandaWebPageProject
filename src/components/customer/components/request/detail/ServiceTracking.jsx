@@ -1,8 +1,6 @@
 'use client';
 import React, { useEffect } from 'react'
 import { Steppers } from '@/components/customer/components/Steppers';
-import { onUpdateServiceCoordinates, onUpdateServiceStatus } from '@/graphql/users/customer/subscription';
-import { client } from '@/contexts/AmplifyContext';
 import { useDisclosure } from '@nextui-org/react';
 import RateTechnicianModal from '@/components/customer/modals/RateTechnicianModal';
 export default function ServiceTracking({ service, setService }) {
@@ -19,25 +17,6 @@ export default function ServiceTracking({ service, setService }) {
     "payment": 4,
     "completed": 5
   };
-  useEffect(() => {
-    const subscription = client
-      .graphql({ query: onUpdateServiceStatus, variables: { serviceId: service.id, customerId: service.customer.id } })
-      .subscribe({
-        next: ({ data }) => {
-          // Update previous state
-          setService((prevState) => ({
-            ...prevState,
-            ...data.onUpdateService
-          }))
-        },
-        error: (error) => console.warn(error)
-      });
-
-    return () => {
-      // Cancel the subscription when this component's life cycle ends
-      subscription.unsubscribe();
-    };
-  }, []);
   useEffect(() => {
     if (service.status === "completed") {
       onRateTechnicianModalOpen();
@@ -57,26 +36,7 @@ export default function ServiceTracking({ service, setService }) {
   )
 }
 
-const CustomerInformation = ({ service, setService }) => {
-  useEffect(() => {
-    const subscription = client
-      .graphql({ query: onUpdateServiceCoordinates, variables: { serviceId: service.id, customerId: service.customer.id } })
-      .subscribe({
-        next: ({ data }) => {
-          // Update previous state
-          setService((prevState) => ({
-            ...prevState,
-            ...data.onUpdateService
-          }))
-        },
-        error: (error) => console.warn(error)
-      });
-
-    return () => {
-      // Cancel the subscription when this component's life cycle ends
-      subscription.unsubscribe();
-    };
-  }, []);
+const CustomerInformation = ({ service }) => {
   const calculateDistance = (coord1, coord2) => {
     const [lat1, lon1] = coord1;
     const [lat2, lon2] = coord2;

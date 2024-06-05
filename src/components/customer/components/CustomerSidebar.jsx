@@ -1,14 +1,15 @@
 'use client';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Link from 'next/link';
 import { FaCircleExclamation, FaComments, FaHandPointUp, FaHouse, FaKey, FaListCheck, FaRegMoon, FaUserXmark } from "react-icons/fa6";
 import { RiUserFill, RiLogoutCircleLine } from "react-icons/ri";
 import { Badge, useDisclosure } from "@nextui-org/react";
 import { DeleteUserModal, PassWordModal, SendReportModal } from '@/components/modalUser';
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { fetchUserAttributes, signOut } from 'aws-amplify/auth';
+import { UserContext } from '@/contexts/user/UserContext';
 export default function CustomerSidebar() {
+  const { logout } = useContext(UserContext);
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -130,7 +131,7 @@ export default function CustomerSidebar() {
             <div className="w-full flex items-center p-4 ">
               <div
                 onClick={() => {
-                  Cookies.remove("currentUser");
+                  logout();
                   signOut();
                   router.replace("/");
                 }}

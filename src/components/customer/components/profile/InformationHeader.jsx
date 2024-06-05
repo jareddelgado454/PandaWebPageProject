@@ -66,11 +66,11 @@ export default function InformationHeader({ user }) {
   }
   return (
     <div
-      className="bg-cover h-[10.5rem] w-full md:w-full bg-fixed bg-bottom rounded-t-lg bg-[#E4E6EB] dark:bg-zinc-900 relative"
+      className="bg-cover h-[19rem] md:h-[10.5rem] w-full md:w-full bg-fixed bg-bottom rounded-t-lg bg-[#E4E6EB] dark:bg-zinc-900 relative"
     >
       <div className='absolute top-3'>
-        <div className='flex items-center gap-5 h-full px-8'>
-          <div className="relative w-[9rem] h-[9rem] overflow-hidden rounded-full shadow-md group">
+        <div className='flex flex-col md:flex-row items-center gap-5 h-full px-8'>
+          <div className="relative w-[7rem] h-[7rem] md:w-[9rem] md:h-[9rem] overflow-hidden rounded-full shadow-md group">
             <div className="absolute bg-black group-hover:opacity-60 opacity-0 w-full h-full transition-all">
               <div className="flex justify-center items-center h-full">
                 <FaCamera className="text-white text-xl md:text-4xl" />
@@ -80,7 +80,7 @@ export default function InformationHeader({ user }) {
               src={photograph ? photograph : (user.profilePicture ? user.profilePicture : "/image/defaultProfilePicture.jpg")}
               width={400}
               height={400}
-              className='rounded-full h-[9rem] w-[9rem] border-emerald-600 border-3'
+              className='rounded-full w-[7rem] h-[7rem] md:h-[9rem] md:w-[9rem] border-emerald-600 border-3'
               alt='profile_customer_picture'
               priority
             />
@@ -96,8 +96,8 @@ export default function InformationHeader({ user }) {
             />
           </div>
           <div className='flex flex-col gap-2'>
-            <div className='flex gap-2 items-center'>
-              <p>Welcome back, <strong className='text-[#40C48E]'>{user && user.fullName}</strong></p>
+            <div className='flex flex-row gap-2 items-center flex-wrap'>
+              <p className='w-full'>Welcome back, <strong className='text-[#40C48E]'>{user && user.fullName}</strong></p>
               <FaStar className='text-amber-500' /><FaStar className='text-amber-500' /><FaStar className='text-amber-500' /><FaStar className='text-amber-500' />
               <FaRegStar className='text-amber-500' />
               <p>4 stars</p>

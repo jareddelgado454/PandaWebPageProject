@@ -13,7 +13,7 @@ import { UserContext } from '@/contexts/user/UserContext';
 import AmplifyContext from '@/contexts/AmplifyContext';
 
 const LandingNavBar = () => {
-    const { user } = useContext(UserContext);
+    const { user, logout } = useContext(UserContext);
     const {
         isOpen: isAuthOptionsModalOpen,
         onOpen: onAuthOptionsModalOpen,
@@ -37,7 +37,6 @@ const LandingNavBar = () => {
             document.body.style.overflow = 'auto';
         }
     }, [width]);
-
     return (
         <AmplifyContext>
 
@@ -71,7 +70,7 @@ const LandingNavBar = () => {
                             About us
                         </Link>
                         <div className='lg:w-auto w-full'>
-                            {user ? (
+                            {user.id ? (
                                 <Dropdown placement="bottom-start" className='bg-zinc-800'>
                                     <DropdownTrigger>
                                         <Avatar
@@ -87,7 +86,7 @@ const LandingNavBar = () => {
                                             <p className="font-extralight text-sm">{user?.email}</p>
                                         </DropdownItem> */}
                                         <DropdownItem key="settings" textValue='My Profile'>
-                                            <Link href={(user?.role === "admin" && "/admin-dashboard") (user?.role === "customer" && "/customer" (user?.role === "technician" && "/user"))}>
+                                            <Link href={``}>
                                                 My Profile
                                             </Link>
                                         </DropdownItem>
@@ -99,7 +98,7 @@ const LandingNavBar = () => {
                                         </DropdownItem>
                                         <DropdownItem key="logout" className='text-emerald-400' onClick={() => {
                                             signOut();
-                                            setIsLoggedIn(false);
+                                            logout();
                                         }}>
                                             Log Out
                                         </DropdownItem>

@@ -18,14 +18,14 @@ export default function ClientProfile() {
     const retrieveInfo = async () => {
         setLoading(true);
         try {
-            const { sub: uid } = await fetchUserAttributes();
+            const { sub: uid, email_verified } = await fetchUserAttributes();
             const { data } = await client.graphql({
                 query: retrieveMyInformation,
                 variables: {
                     id: uid
                 }
             });
-            setUser(data.getCustomer);
+            setUser({...data.getCustomer, email_verified});
             setLoading(false);
         } catch (error) {
             setLoading(false);
@@ -39,7 +39,7 @@ export default function ClientProfile() {
         <>
             {loading ? (
                 <div className='transition-all absolute w-full h-full flex justify-center items-center top-0'>
-                    <div className='loader bg-green-pan' />
+                    <div className='loader bg-green-panda' />
                 </div>
             ) : error ? (<div>{error}</div>) : user && (
                 <div className='max-h-full animate__animated animate__fadeInLeft'>
