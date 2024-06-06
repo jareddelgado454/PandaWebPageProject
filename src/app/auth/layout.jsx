@@ -1,9 +1,8 @@
 "use client"
-
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
+import Image from "next/image";
 const AuthLayout = ({ children }) => {
   const pathname = usePathname();
   const isCallbackPage = pathname === "/auth/callback-page";
@@ -13,9 +12,11 @@ const AuthLayout = ({ children }) => {
         <div className="md:flex hidden flex-1"></div>
         <div className="md:flex hidden items-center">
           <div className="flex gap-x-2 items-center">
-            <img
+            <Image
               src="/panda.png"
               className="w-[4rem] h-[3rem] drop-shadow-lg"
+              width={50}
+              height={50}
               alt="panda_logo"
             />
             <p className="font-bold drop-shadow-xl tracking-wider text-[22px] text-white">

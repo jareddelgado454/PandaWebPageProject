@@ -72,11 +72,11 @@ export const Sidebar = () => {
           </p>
           <Image
             src="/panda.png"
-            className={`w-[5rem] h-[4rem] drop-shadow-lg  ${
+            className={`w-[4rem] h-[4rem] drop-shadow-lg  ${
               active ? "block" : "hidden"
             }`}
-            width={100}
-            height={100}
+            width={150}
+            height={150}
             alt="panda_logo"
           />
         </div>
@@ -162,8 +162,8 @@ export const Sidebar = () => {
                 alt="user_logo"
                 width={150}
                 height={150}
-                className={`rounded-full ${
-                  active ? "w-[3rem] h-[3rem]" : "w-[2rem] h-[1.8rem]"
+                className={`rounded-full object-cover object-center ${
+                  active ? "w-[3rem] h-[3rem]" : "w-[1.8rem] h-[1.5rem]"
                 }`}
               />
               <div className="overflow-hidden flex flex-col gap-1 w-full">

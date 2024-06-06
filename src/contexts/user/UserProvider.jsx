@@ -1,8 +1,9 @@
 'use client';
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { UserContext } from './UserContext';
 import { userReducer } from './UserReducer';
 import Cookies from 'js-cookie';
+import GearSpinner from '@/components/GearSpinner';
 
 const INITIAL_USER_STATE = {
     user: {
@@ -14,6 +15,7 @@ const INITIAL_USER_STATE = {
 
 export const UserProvider = ({ children }) => {
     const [state, dispatch] = useReducer(userReducer, INITIAL_USER_STATE);
+    const [loading, setLoading] = useState(true);
 
     const getUserFromCookies = () => {
         const userCookie = Cookies.get('currentUser');
@@ -49,7 +51,17 @@ export const UserProvider = ({ children }) => {
         if(userFromCookies) {
             dispatch({ type: 'setUser', payload: userFromCookies })
         }
+        setLoading(false);
     }, []);
+
+
+    if (loading) {
+        return (
+            <div className='h-screen flex flex-col relative p-4 overflow-hidden justify-center items-center'>
+                <GearSpinner />
+            </div>
+        )
+    }
 
     return(
         <UserContext.Provider

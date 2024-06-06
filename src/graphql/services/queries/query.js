@@ -68,6 +68,25 @@ export const listMyServices = gql`
   }
 `;
 
+export const listMyServicesHome = gql`
+  query ListMyServices($customerId: ID!) {
+    listServices(filter: {serviceCustomerId: {eq: $customerId}}, limit: 5) {
+      items {
+        car {
+          id
+          image
+        }
+        createdAt
+        total
+        title
+        type
+        status
+      }
+    }
+  }
+`;
+
+
 export const getServiceById = gql`
     query getService($serviceId: ID!) {
     getService(id: $serviceId){

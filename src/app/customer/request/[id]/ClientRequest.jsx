@@ -10,7 +10,6 @@ import { updateStatusService } from '@/graphql/services/mutations/mutation';
 import { ServiceContext } from '@/contexts/service/ServiceContext';
 import { onUpdateServiceGlobal } from '@/graphql/users/customer/subscription';
 import Cookies from 'js-cookie';
-import { UserContext } from '@/contexts/user/UserContext';
 export default function ClientRequest() {
   const { setServiceRequest, serviceRequest } = useContext(ServiceContext);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();

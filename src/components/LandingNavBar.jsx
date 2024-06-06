@@ -37,6 +37,21 @@ const LandingNavBar = () => {
             document.body.style.overflow = 'auto';
         }
     }, [width]);
+    const retrieveUrlRedirect = (role) => {
+        switch (role) {
+            case 'technician':
+                return "/user";
+
+            case 'admin':
+                return '/admin-dashboard';
+
+            case 'customer':
+                return '/customer';
+
+            default:
+                break;
+        }
+    }
     return (
         <AmplifyContext>
 
@@ -70,7 +85,7 @@ const LandingNavBar = () => {
                             About us
                         </Link>
                         <div className='lg:w-auto w-full'>
-                            {user.id ? (
+                            {user.id !== "" ? (
                                 <Dropdown placement="bottom-start" className='bg-zinc-800'>
                                     <DropdownTrigger>
                                         <Avatar
@@ -86,7 +101,7 @@ const LandingNavBar = () => {
                                             <p className="font-extralight text-sm">{user?.email}</p>
                                         </DropdownItem> */}
                                         <DropdownItem key="settings" textValue='My Profile'>
-                                            <Link href={``}>
+                                            <Link href={`${retrieveUrlRedirect(user.role)}`}>
                                                 My Profile
                                             </Link>
                                         </DropdownItem>
@@ -106,7 +121,7 @@ const LandingNavBar = () => {
                                 </Dropdown>
                             ) : (
                                 <div className=' lg:w-auto w-full flex flex-col lg:flex-row gap-4 items-center justify-around pr-4'>
-                                    <button onClick={() => {onAuthOptionsModalOpen(); localStorage.clear()}} className='lg:w-auto w-full px-5 lg:py-1 py-3 font-semibold border-[2px] rounded-lg text-white border-emerald-500 bg-emerald-500 text-center text-[18px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
+                                    <button onClick={() => { onAuthOptionsModalOpen(); localStorage.clear() }} className='lg:w-auto w-full px-5 lg:py-1 py-3 font-semibold border-[2px] rounded-lg text-white border-emerald-500 bg-emerald-500 text-center text-[18px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
                                         Get into
                                     </button>
                                 </div>

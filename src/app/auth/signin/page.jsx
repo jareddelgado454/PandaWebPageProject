@@ -1,6 +1,5 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
-import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -129,7 +128,9 @@ const SignIn = () => {
           } else if(role === "customer"){
             router.replace("/customer");
           }
+          break;
 
+        default:
           break;
       }
     });

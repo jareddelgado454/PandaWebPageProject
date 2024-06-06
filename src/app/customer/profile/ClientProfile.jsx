@@ -1,12 +1,14 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Tabs, Tab, useDisclosure } from "@nextui-org/react";
-import { fetchUserAttributes } from 'aws-amplify/auth';
 import { CarsComponent, InformationHeader, UpdateInformationModal } from '@/components/customer';
 import { client } from '@/contexts/AmplifyContext';
 import { retrieveMyInformation } from '@/graphql/users/customer/query';
 import { SecondDateFormatter } from '@/utils/parseDate';
+import { UserContext } from '@/contexts/user/UserContext';
+import GearSpinner from '@/components/GearSpinner';
 export default function ClientProfile() {
+    const { user: userSaved } = useContext(UserContext);
     const {
         isOpen: isUpdateInformationnModalOpen,
         onOpen: onUpdateInformationnModalOpen,
@@ -18,14 +20,13 @@ export default function ClientProfile() {
     const retrieveInfo = async () => {
         setLoading(true);
         try {
-            const { sub: uid, email_verified } = await fetchUserAttributes();
             const { data } = await client.graphql({
                 query: retrieveMyInformation,
                 variables: {
-                    id: uid
+                    id: userSaved.id
                 }
             });
-            setUser({...data.getCustomer, email_verified});
+            setUser(data.getCustomer);
             setLoading(false);
         } catch (error) {
             setLoading(false);
@@ -33,13 +34,21 @@ export default function ClientProfile() {
             console.error(error);
         }
     }
-    useEffect(() => { retrieveInfo(); }, []);
+    useEffect(() => {
+        if (userSaved && userSaved.id) { // Solo intenta cargar información si userSaved.id está disponible
+            retrieveInfo();
+        }
+    }, [userSaved]);
+
+    if (!userSaved || !userSaved.id) {
+        return <GearSpinner />;
+    }
 
     return (
         <>
             {loading ? (
                 <div className='transition-all absolute w-full h-full flex justify-center items-center top-0'>
-                    <div className='loader bg-green-panda' />
+                    <div className='loader' />
                 </div>
             ) : error ? (<div>{error}</div>) : user && (
                 <div className='max-h-full animate__animated animate__fadeInLeft'>

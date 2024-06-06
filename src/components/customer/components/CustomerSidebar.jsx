@@ -54,7 +54,7 @@ export default function CustomerSidebar() {
       }}
     >
       {loading ? (
-        <div className='transition-all absolute w-full h-full flex justify-center items-center bg-white/35 top-0'>
+        <div className='transition-all absolute w-full h-full flex justify-center items-center bg-white/35 top-0 overflow-hidden'>
           <div className='loader bg-green-pan' />
         </div>
       ) : (
