@@ -12,7 +12,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="max-h-full">
-      <body className={`antialiased dark:bg-zinc-800 dark`}>
+      <body className={`antialiased dark:bg-zinc-800`}>
         <UserProvider>
           <PlaceProvider>
             <MapProvider>
