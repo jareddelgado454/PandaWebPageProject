@@ -72,8 +72,8 @@ const Chat = ({ setChatActive, chatSelected, setChatSelected }) => {
       <div id='header' className='w-full bg-zinc-200 dark:bg-zinc-700 p-2 rounded-lg flex flex-row justify-between gap-2'>
         {loading ? (<div>Loading</div>) : error ? (<div>{error}</div>) : chat && (
           <div className='flex flex-row gap-2'>
-            <div onClick={() => {setChatActive(false); setChatSelected(null)}} className='flex justify-center items-center lg:hidden'>
-              <FaChevronLeft />
+            <div onClick={() => {setChatActive(false); setChatSelected(null)}} className='flex justify-center items-center'>
+              <FaChevronLeft className='cursor-pointer' />
             </div>
             <Image
               src={`${chat && chat.technicianSelected.profilePicture ? chat.technicianSelected.profilePicture : `/image/defaultProfilePicture.jpg`}`}
