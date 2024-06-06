@@ -34,7 +34,7 @@ export default function ChatAnswerInput({ chatId, senderId }) {
     };
     return (
         <div className='w-full'>
-            <div className='bg-white dark:bg-zinc-700 rounded-lg min-h-full p-4'>
+            <div className='bg-zinc-200/50 dark:bg-zinc-700 rounded-lg min-h-full p-4'>
                 <form onSubmit={handleSubmit} className='flex justify-center gap-4 items-center w-full h-full'>
                     <textarea
                         type="text"
