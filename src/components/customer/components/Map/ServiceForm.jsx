@@ -48,7 +48,7 @@ export default function ServiceForm() {
             console.error(error);
         }
     }
-    useEffect(() => { retrieveSubFromCognito(); retrieveMyCars(); }, []);
+    useEffect(() => { retrieveSubFromCognito(); retrieveMyCars(); }, [user]);
 
     useLayoutEffect(() => {
         const savedService = Cookies.get("ServiceRequest");
@@ -100,7 +100,11 @@ export default function ServiceForm() {
     return (
         <div className='relative h-full '>
             <AddNewCarModal isOpen={isOpen} onOpenChange={onOpenChange} callback={retrieveMyCars} setMyCars={setMyCars} />
-            <div className={`container mx-auto px-4 w-[90%] h-full ${service && (service.status === 'service accepted' || service.status === 'in progress' || service.status === 'payment') && 'hidden'}`}>
+            <div className={`container mx-auto px-4 py-4 w-full lg:w-[90%] h-full overflow-y-scroll ${service && (service.status === 'service accepted' || service.status === 'in progress' || service.status === 'payment') && 'hidden'}`} style={{
+              msOverflowStyle: 'none',
+              scrollbarWidth: 'none',
+              overflowY: 'scroll'
+            }}>
                 <Formik
                     initialValues={{
                         title: '',

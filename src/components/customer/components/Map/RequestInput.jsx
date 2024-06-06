@@ -14,8 +14,8 @@ export default function RequestInput() {
                 </div>
 
             </div>
-            <div className='flex items-center justify-center h-[220px]'>
-                <div className={`dark:bg-zinc-900 rounded-t-lg bg-white absolute shadow transition-all ${isInputActive ? '-bottom-0 h-[220px] duration-500' : '-bottom-6 h-0 delay-[73ms] duration-700'} w-[80%] overflow-hidden`}>
+            <div className='flex items-center justify-center h-[230px]'>
+                <div className={`dark:bg-zinc-900 rounded-t-lg bg-white absolute shadow transition-all ${isInputActive ? '-bottom-0 h-[220px] duration-500' : '-bottom-6 h-0 delay-[73ms] duration-700'} w-full lg:w-[80%] overflow-hidden`}>
                     <ServiceForm />
                 </div>
             </div>
