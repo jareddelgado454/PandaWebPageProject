@@ -45,7 +45,6 @@ export const UserProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        console.log('launch')
         const userFromCookies = getUserFromCookies();
         if(userFromCookies) {
             dispatch({ type: 'setUser', payload: userFromCookies })
