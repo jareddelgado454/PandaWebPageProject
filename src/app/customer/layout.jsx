@@ -4,7 +4,6 @@ import 'animate.css';
 import '@/app/app.css';
 export default function layout({ children }) {
   return (
-
     <div className=' bg-stone-300 dark:bg-zinc-700 h-full'>
       <div className='flex flex-col lg:flex-row items-center h-full xl:h-screen px-4 py-4 lg:py-0 gap-2'>
         <CustomerBar />
@@ -13,6 +12,5 @@ export default function layout({ children }) {
         </div>
       </div>
     </div>
-
   )
 }
