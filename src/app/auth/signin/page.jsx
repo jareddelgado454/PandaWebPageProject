@@ -118,8 +118,6 @@ const SignIn = () => {
         case "signedIn":
           onOpenLoadingModal(true);
           const { role, expiredAt, userSub } = await currentAuthenticatedUser();
-          // const cognitoId = payload.data.userId;
-          console.log(role, expiredAt);
           login({ role, expiredAt, userSub })
           if (role === "admin") {
             router.replace("/admin-dashboard/");
