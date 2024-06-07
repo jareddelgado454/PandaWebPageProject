@@ -16,7 +16,7 @@
       "profile",
       "aws.cognito.signin.user.admin"
     ],
-    "redirectSignIn": "https://master.d3dtglewderhtg.amplifyapp.com/auth/signin",
+    "redirectSignIn": "https://master.d3dtglewderhtg.amplifyapp.com/auth/callback-page",
     "redirectSignOut": "https://master.d3dtglewderhtg.amplifyapp.com/",
     "responseType": "code"
   },
