@@ -15,18 +15,25 @@ export const ServiceProvider = ({ children }) => {
     const [state, dispatch] = useReducer(ServiceReducer, INITIAL_STATE);
     const [loading, setLoading] = useState(true);
 
+    const getServiceFromCookies = () => {
+        const serviceCookie = Cookies.get("ServiceRequest");
+        if(serviceCookie) {
+            try {
+                return JSON.parse(serviceCookie);
+            } catch (error) {
+                console.log('Error parsing service cookie', error);
+                return null;
+            }
+        }
+    }
+
     useEffect(() => {
-        const serviceRequestFromCookies = Cookies.get("ServiceRequest");
-        if (serviceRequestFromCookies) {
-          try {
-            const parsedServiceRequest = JSON.parse(serviceRequestFromCookies);
-            dispatch({ type: 'setServiceRequest', payload: parsedServiceRequest });
-          } catch (error) {
-            console.error('Error parsing service request from cookies', error);
-          }
+        const serviceFromCookies = getServiceFromCookies();
+        if(serviceFromCookies) {
+            dispatch({ type: 'setServiceRequest', payload: serviceFromCookies });
         }
         setLoading(false);
-      }, [dispatch]);
+      }, []);
     
     const setServiceRequest = (serviceRequest) => {
         dispatch({type: 'setServiceRequest', payload: serviceRequest});
