@@ -201,12 +201,12 @@ const Requests = () => {
                     <div>
                       <Slider   
                         size="md"
-                        step={1}
+                        step={10}
                         color="success"
                         label="Search ratio (miles)"
                         showSteps={true} 
-                        maxValue={5} 
-                        minValue={0} 
+                        maxValue={50} 
+                        minValue={10} 
                         defaultValue={3}
                         className="w-[200px]" 
                       />

@@ -211,6 +211,7 @@ type Chat @model @auth(
     id: ID!
     customer: Customer! @hasOne
     technicianSelected: Technician @hasOne
+    admin: User @hasOne
     messages: [Message] @hasMany(indexName: "byChat", fields: ["id"])
 }
 

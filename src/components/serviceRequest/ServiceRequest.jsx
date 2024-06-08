@@ -88,7 +88,7 @@ const ServiceRequest = ({
           <div className="flex gap-x-4 items-center">
             <div className="h-[50px] px-3 rounded-xl bg-zinc-700 flex items-center justify-center relative">
               <RiMapPin2Fill className="text-emerald-500 text-[16px] absolute -top-2 -right-2" />
-              <span className="text-[25px] flex gap-x-1 items-center font-bold mr-1">5</span>miles
+              <span className="text-[23px] flex gap-x-1 items-center font-bold mr-1">{distance}</span>miles
             </div>
             <div className="flex flex-1 flex-col">
               <div className="w-full flex items-center justify-between gap-x-3 mb-2">

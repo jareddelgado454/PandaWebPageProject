@@ -67,34 +67,35 @@ const UserLayout = ({ children }) => {
     if (!user) {
       return;
     }
-    if (serviceIdWaitingFor) {
-      console.log("este es el id del tecnico", user.sub);
+
+    console.log("este es el id del tecnico", user.sub);
       const subscription = client
         .graphql({
           query: listenUpdateService,
-          variables: { serviceId: serviceIdWaitingFor, technicianId: user.sub },
+          // variables: { serviceId: serviceIdWaitingFor, technicianId: user.sub },
+          // variables: { serviceId: "49e19b34-44b2-4377-b298-7b057ca99350", technicianId: "d731f20e-a471-4220-9237-b26b130ae87f" },
         })
         .subscribe({
           next: ({ data }) => {
-            console.log("dataaaaaaaaaaa", data);
-            if(data.onUpdateService.status === "completed"){
-              console.log("Completeeeeeeeeeeeeed payment");
-            }
-            else{
+              console.log("este es el id del tecnico", user.sub, serviceIdWaitingFor);
+              console.log("dataaaaaaaaaaa", data);
               console.log("esta es la data retornadaaa",data);
+              console.log(data.onUpdateService);
               setTechnicianActivityStatus("assigned");
               setServiceAssigned(data.onUpdateService);
               localStorage.setItem("serviceAssigned", JSON.stringify(data.onUpdateService));
               onAssignedTechnicianModalOpen();
-            }
           },
-          error: (error) => console.warn(error),
+          error: (error) => console.log("error en la suscripcion",error),
         });
 
       return () => {
         subscription.unsubscribe();
       };
-    }
+
+    // if (serviceIdWaitingFor) {
+      
+    // }
   }, [user, serviceIdWaitingFor]);
 
   return (
