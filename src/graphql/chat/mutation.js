@@ -22,6 +22,28 @@ mutation CreateChat($customerId: ID!, $technicianId: ID!) {
 }
 `;
 
+export const createChatAsAdmin = gql`
+  mutation CreateChat($customerId: ID!, $adminId: ID!) {
+    createChat(input: {chatCustomerId: $customerId, chatAdminId: $adminId}) {
+      id
+      chatCustomerId
+      technicianSelected{
+        id
+        fullName
+        profilePicture
+      }
+      messages{
+        items{
+          id
+          content
+          createdAt
+        }
+      }
+      createdAt
+    }
+  }
+`;
+
 export const createMessage = gql`
   mutation CreateMessage($chatId: ID!, $content: String!, $senderId: ID!) {
     createMessage(input: {chatId: $chatId, content: $content, sender: $senderId}){
