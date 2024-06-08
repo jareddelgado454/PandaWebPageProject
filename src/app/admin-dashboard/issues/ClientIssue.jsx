@@ -36,17 +36,17 @@ export default function ClientIssue() {
                     console.log(data);
                     // Update previous state with new answers
                     setIssues(prevIssues => {
-                        // Crea una copia del estado anterior
+                        // Create a copy from previous state
                         const updatedIssues = prevIssues.map(issue => {
-                            // Si el ID del issue coincide con el ID del issue actualizado
+                            // if issue's id equals to issue updated then:
                             if (issue.id === data.onUpdateReport.id) {
-                                // Devuelve un nuevo objeto con el status actualizado
+                                // returns a new object that contains the status updated
                                 return { ...issue, status: data.onUpdateReport.status };
                             }
-                            // Devuelve el issue sin cambios
+                            // return the initial issue
                             return issue;
                         });
-                        // Devuelve la nueva lista de issues actualizada
+                        // returns a new list of issues updated
                         return updatedIssues;
                     });
                 },
