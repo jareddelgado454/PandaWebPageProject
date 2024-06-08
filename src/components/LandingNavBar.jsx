@@ -85,7 +85,7 @@ const LandingNavBar = () => {
                             About us
                         </Link>
                         <div className='lg:w-auto w-full'>
-                            {user.id !== "" ? (
+                            {user && user.id !== "" ? (
                                 <Dropdown placement="bottom-start" className='bg-zinc-800'>
                                     <DropdownTrigger>
                                         <Avatar
