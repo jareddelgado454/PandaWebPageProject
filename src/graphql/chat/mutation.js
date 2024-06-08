@@ -55,3 +55,15 @@ export const createMessage = gql`
     }
   }
 `;
+
+export const createImageMessage = gql`
+  mutation CreateImageMessage($chatId: ID!, $image: String!, $senderId: ID!, $content: String!) {
+    createMessage(input: {chatId: $chatId, image: $image, sender: $senderId, content: $content}){
+      id
+      chatId
+      content
+      sender
+      createdAt
+    }
+  }
+`;

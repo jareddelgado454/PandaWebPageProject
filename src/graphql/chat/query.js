@@ -23,6 +23,7 @@ query ListAllMyChats($customerId: ID!) {
 	        messages {
 	            items {
 	                id
+                    sender
 	                chatId
 	                content
 	                createdAt
@@ -50,6 +51,7 @@ query ListAllMyChats($customerId: ID!) {
 	        messages {
 	            items {
 	                id
+                    sender
 	                chatId
 	                content
 	                createdAt
@@ -130,6 +132,7 @@ export const getChatById = gql`
                     id
                     content
                     sender
+                    image
                     chatId
                     createdAt
                 }
