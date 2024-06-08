@@ -20,7 +20,12 @@ export default function ListContacts({ setChatActive, setChatSelected }) {
                     customerId: user.id
                 }
             });
-            setChats(data.listChats.items);
+            const combinedChats = [
+                ...data.listChatsWithTechnicians.items,
+                ...data.listChatsWithAdmins.items
+            ];
+            setChats(combinedChats);
+            console.log(data);
             setLoading(false);
         } catch (error) {
             console.log(error);
@@ -48,7 +53,7 @@ export default function ListContacts({ setChatActive, setChatSelected }) {
                             <div onClick={() => {setChatActive(true); setChatSelected(chat)}} key={i} id="chat_technician" className='flex flex-row justify-between gap-2 dark:hover:bg-zinc-700 hover:rounded-lg transition-all duration-300 ease-in cursor-pointer p-3 border-b-1 border-zinc-300 dark:border-zinc-500'>
                                 <div className='flex flex-row gap-2'>
                                     <Image
-                                        src={`${ chat.technicianSelected.profilePicture ? chat.technicianSelected.profilePicture : '/image/defaultProfilePicture.jpg' }`}
+                                        src={`${ chat.technicianSelected ? chat.technicianSelected.profilePicture : chat.admin.profilePicture ? chat.admin.profilePicture : '/image/defaultProfilePicture.jpg' }`}
                                         width={100}
                                         height={100}
                                         alt='technician_profile_picture'
@@ -56,7 +61,7 @@ export default function ListContacts({ setChatActive, setChatSelected }) {
                                         priority
                                     />
                                     <div className='flex flex-col justify-center gap-1'>
-                                        <p className='font-semibold'>{chat.technicianSelected.fullName}</p>
+                                        <p className='font-semibold'>{chat.technicianSelected ? chat.technicianSelected.fullName : chat.admin.fullName}</p>
                                         <p className='text-sm text-zinc-500 dark:text-zinc-400 tracking-wide line-clamp-1'>{chat.messages.items.length > 0 ? chat.messages.items[chat.messages.items.length - 1].content : 'No messages'}</p>
                                     </div>
                                 </div>

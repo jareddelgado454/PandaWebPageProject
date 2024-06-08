@@ -16,3 +16,4 @@ export { default as ServiceTrackingComponent } from './components/request/detail
 export { default as TechnicianDetailComponent } from './components/request/detail/TechnicianDetail';
 //Messages
 export { default as ContactsComponent } from './components/message/ListContacts';
+export { default as ChatCustomerComponent } from './components/message/ChatComponent';

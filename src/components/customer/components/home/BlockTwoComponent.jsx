@@ -25,7 +25,7 @@ export default function BlockTwoComponent() {
       setLoading(false);
     } catch (e) {
       console.warn(e);
-      setError(e.errors[0].message);
+      setError(e);
       setLoading(false);
     }
   };
@@ -54,7 +54,7 @@ export default function BlockTwoComponent() {
               </div>
             ))}
           </>
-        ) : error ? (<div>{error}</div>) : (
+        ) : error ? (<div>{JSON.stringify(error, null, 2)}</div>) : (
           <>
             {services.map((service, key) => (
               <div key={key} className='dark:bg-zinc-950/65 bg-white h-[6rem] rounded-lg px-4 py-2 shadow-md'>
@@ -74,7 +74,7 @@ export default function BlockTwoComponent() {
                       <p className='tracking-wider text-xs 2xl:text-base'>{formatDistance(new Date(service.createdAt), new Date(), { addSuffix: true })}</p>
                     </div>
                     <p className='tracking-wider text-xs 2xl:text-base'>status: {service.status}</p>
-                    <p className='tracking-wider text-xs 2xl:text-base'>total: ${service.total}</p>
+                    <p className='tracking-wider text-xs 2xl:text-base'>total: ${service.total ? service.total : 0}</p>
                   </div>
                 </div>
               </div>

@@ -131,9 +131,9 @@ export default function CustomerSidebar() {
             <div className="w-full flex items-center p-4 ">
               <div
                 onClick={() => {
-                  logout();
-                  signOut();
                   router.replace("/");
+                  signOut();
+                  logout();
                 }}
                 className={`w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 pt-4 cursor-pointer border-t-[2px] border-[#40C48E] dark:border-zinc-700 `}
               >
