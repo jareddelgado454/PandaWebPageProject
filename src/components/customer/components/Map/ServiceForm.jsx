@@ -50,7 +50,7 @@ export default function ServiceForm() {
     }
     useEffect(() => { retrieveSubFromCognito(); retrieveMyCars(); }, [user]);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         const savedService = Cookies.get("ServiceRequest");
 
         if (savedService) {

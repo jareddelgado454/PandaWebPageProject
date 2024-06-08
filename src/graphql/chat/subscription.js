@@ -6,6 +6,7 @@ export const listenToMessages = gql`
             id
             chatId
             content
+            image
             sender
             createdAt
         }

@@ -8,4 +8,6 @@ export { default as AddUserModal } from './modals/AddUserModal';
 export { default as IssueTable } from './Issues/TableComponent';
 export { default as IssueInformationModal } from './Issues/modals/InformationModal';
 export { default as IssuePagination } from './Issues/PaginationComponent';
-// Admin-Issues Inputs
+
+export { default as ContactsAdminComponent } from './messages/ContactsComponent';
+export { default as ChatAdminComponent } from './messages/ChatComponent';

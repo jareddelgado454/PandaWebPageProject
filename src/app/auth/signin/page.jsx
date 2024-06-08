@@ -1,6 +1,5 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
-import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -106,7 +105,7 @@ const SignIn = () => {
   const currentAuthenticatedUser = async () => {
     try {
       const data = await fetchUserAttributes();
-      const { tokens, userSub } = await fetchAuthSession({ forceRefresh: true });
+      const { tokens, userSub } = await fetchAuthSession();
       const expiredAt = tokens.accessToken.payload.exp;
       return { role:data['custom:role'], expiredAt, userSub };
     } catch (error) {
@@ -119,9 +118,7 @@ const SignIn = () => {
         case "signedIn":
           onOpenLoadingModal(true);
           const { role, expiredAt, userSub } = await currentAuthenticatedUser();
-          // const cognitoId = payload.data.userId;
-          console.log(role, expiredAt);
-          login({ role, expiredAt, userSub })
+          login({ role, expiredAt, id: userSub })
           if (role === "admin") {
             router.replace("/admin-dashboard/");
           } else if(role === "technician") {
@@ -129,7 +126,9 @@ const SignIn = () => {
           } else if(role === "customer"){
             router.replace("/customer");
           }
+          break;
 
+        default:
           break;
       }
     });

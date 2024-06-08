@@ -10,14 +10,12 @@ import { updateStatusService } from '@/graphql/services/mutations/mutation';
 import { ServiceContext } from '@/contexts/service/ServiceContext';
 import { onUpdateServiceGlobal } from '@/graphql/users/customer/subscription';
 import Cookies from 'js-cookie';
-import { UserContext } from '@/contexts/user/UserContext';
 export default function ClientRequest() {
   const { setServiceRequest, serviceRequest } = useContext(ServiceContext);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const param = useSearchParams().get('paymentStatus');
   const [loading, setLoading] = useState(true);
   const [service, setService] = useState(null);
-  const [isCompleted, setIsCompleted] = useState(false);
   const { id } = useParams();
   useEffect(() => {
     const retrieveServiceDetail = async () => {
@@ -48,16 +46,19 @@ export default function ClientRequest() {
           status: 'completed'
         }
       });
-      setIsCompleted(true);
       if(data && data.updateService ){
-        Cookies.remove("ServiceRequest");
+        setInterval(() => {
+          Cookies.remove("ServiceRequest");
+          setServiceRequest(null);
+        }, 7000);
       }
     } catch (error) {
       console.warn(error);
     }
   }
   useEffect(() => {
-
+    console.log('listening');
+    if(!serviceRequest) return;
     const subscription = client
       .graphql({
         query: onUpdateServiceGlobal,
@@ -65,18 +66,17 @@ export default function ClientRequest() {
       })
       .subscribe({
         next: ({ data }) => {
-          console.log(data);
           const updatedService = data.onUpdateService;
           if (updatedService) {
             setService((prevState) => ({
               ...prevState,
               status: updatedService?.status || prevState.status,
-              destLatitude: updatedService?.destLatitude || prevState.destLatitude,
-              destLongitude: updatedService?.destLongitude || prevState.destLongitude,
-              paymentLink: updatedService?.paymentLink || prevState.paymentLink,
-              price: updatedService?.price || prevState.price,
-              tax: updatedService?.tax || prevState.tax,
-              total: updatedService?.total || prevState.total,
+              destLatitude: updatedService?.destLatitude || prevState.destLatitude || 0,
+              destLongitude: updatedService?.destLongitude || prevState.destLongitude || 0,
+              paymentLink: updatedService?.paymentLink || prevState.paymentLink || '',
+              price: updatedService?.price || prevState.price || 0,
+              tax: updatedService?.tax || prevState.tax || 0,
+              total: updatedService?.total || prevState.total || 0,
             }));
           }
         },
@@ -95,11 +95,6 @@ export default function ClientRequest() {
       alert("The payment could not be made satisfactorily");
     }
   }, [param, serviceRequest]);
-  useEffect(() => {
-    if (isCompleted) {
-      setServiceRequest(null);
-    }
-  }, [isCompleted, setIsCompleted]);
 
   // useEffect(() => {
   //   if(service && service.status === 'cancelled'){

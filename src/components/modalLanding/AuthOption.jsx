@@ -49,6 +49,7 @@ const AuthOption = ({ isOpen, onOpenChange, mode }) => {
                       placeholder="blur"
                       sizes="100vw"
                       quality={100}
+                      alt="google_icon"
                     />
                   </div>{" "}
                   Continue with Google

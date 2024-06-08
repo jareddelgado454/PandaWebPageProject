@@ -46,7 +46,8 @@ type Answer @model @auth(
 type User @model @auth(
     rules: [
         { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
-        { allow: owner, ownerField: "cognitoId", operations: [ read, update, create, delete ] }
+        { allow: owner, operations: [ read, update, create, delete ] }
+        { allow: private, operations: [ read ] }
         { allow: public, provider: iam, operations: [ create ] }
     ]
 ) {
@@ -224,6 +225,7 @@ type Message @model @auth(
 ){
     id: ID!
     content: String!
+    image: String
     sender: ID!
     chatId: ID! @index(name: "byChat")
 }

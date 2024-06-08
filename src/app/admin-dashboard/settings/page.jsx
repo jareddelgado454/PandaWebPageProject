@@ -6,7 +6,7 @@ import { Field, Form, Formik } from "formik";
 import { fetchUserAttributes, updateUserAttributes } from "aws-amplify/auth";
 import { FaCamera } from "react-icons/fa6";
 import { toast } from "react-toastify";
-import {uploadData} from "aws-amplify/storage";
+import { uploadData } from "aws-amplify/storage";
 import { client } from "@/contexts/AmplifyContext";
 import { getUser } from "@/graphql/custom-queries";
 import { statesUSA } from "@/assets/data/StatesUSA";
@@ -74,7 +74,7 @@ const Settings = () => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = async() => {
+      reader.onloadend = async () => {
         setPhotograph(reader.result);
         await handleUpdatePicture(dataURLtoBlob(reader.result));
       };
@@ -140,8 +140,8 @@ const Settings = () => {
                     </div>
                   </div>
                   <Image src={
-                      photograph ? photograph : (user.profilePicture ? user.profilePicture : "/image/defaultProfilePicture.jpg")
-                    }
+                    photograph ? photograph : (user.profilePicture ? user.profilePicture : "/image/defaultProfilePicture.jpg")
+                  }
                     className="rounded-full w-[6rem] h-[6rem] md:w-[12rem] md:h-[12rem] cursor-pointer object-cover object-center"
                     alt="Fotografía de perfil"
                     width={250}
@@ -176,111 +176,40 @@ const Settings = () => {
                 {({ errors, isValid }) => {
                   return (
                     <Form className="w-full h-full flex flex-col gap-7">
-                      <div className="flex flex-col md:flex-row w-full gap-7 md:gap-12">
-                        <div className="w-full md:w-2/4">
-                          <label
-                            htmlFor="grid-name"
-                            className="block text-gray-700 text-sm font-bold mb-2"
-                          >
-                            FullName
-                          </label>
-                          <Field
-                            type="text"
-                            name="fullName"
-                            className="w-full py-3 px-4 outline-none rounded-lg bg-zinc-600 dark:bg-zinc-800 cursor-default lg:w-full"
-                          />
-                        </div>
-                        <div className="w-full md:w-2/4" >
-                          <label
-                            htmlFor="grid-number"
-                            className="block text-gray-700 text-sm font-bold mb-2"
-                          >
-                            ContactNumber
-                          </label>
-                          <Field
-                            id="grid-number"
-                            type="text"
-                            placeholder="90210"
-                            name="contactNumber"
-                            className="w-full py-3 px-4 outline-none rounded-lg bg-zinc-600 dark:bg-zinc-800 cursor-default lg:w-full"
-                          />
-                        </div>
+                      <div className="w-full">
+                        <label
+                          htmlFor="grid-name"
+                          className="block text-gray-700 text-sm font-bold mb-2"
+                        >
+                          FullName
+                        </label>
+                        <Field
+                          type="text"
+                          name="fullName"
+                          className="w-full py-3 px-4 outline-none rounded-lg bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white cursor-default lg:w-full shadow"
+                        />
                       </div>
-                      <div className="flex flex-col md:flex-row w-full gap-7 md:gap-12">
-                        <div className="w-full md:w-2/4">
-                          <label
-                            htmlFor="grid-number"
-                            className="bg-zinc text-black dark:text-white lg:text-xl"
-                          >
-                            State
-                          </label>
-                          <Field
-                            as="select"
-                            name="state"
-                            className={`block rounded-lg appearance-none w-full bg-zinc-600 dark:bg-zinc-800 text-white dark:text-black border ${
-                              errors.state
-                                ? "border-red-600"
-                                : "border-gray-200"
-                            } text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-zinc-600 focus:border-gray-500`}
-                          >
-                            {statesUSA.map((estado, index) => (
-                              <option
-                                className="bg-zinc-600 dark:bg-zinc-800 text-white dark:text-black"
-                                key={index}
-                                value={estado}
-                              >
-                                {estado}
-                              </option>
-                            ))}
-                          </Field>
-                        </div>
-                        <div className="w-full md:w-2/4">
-                          <label
-                            htmlFor="grid-number"
-                            className="bg-zinc text-black dark:text-white lg:text-xl"
-                          >
-                            City
-                          </label>
-                          <Field
-                            type="text"
-                            name="city"
-                            className="w-full py-3 px-4 outline-none rounded-lg bg-zinc-600 dark:bg-zinc-800 cursor-default lg:w-full"
-                          />
-                        </div>
+                      <div className="w-full" >
+                        <label
+                          htmlFor="grid-number"
+                          className="block text-gray-700 text-sm font-bold mb-2"
+                        >
+                          ContactNumber
+                        </label>
+                        <Field
+                          id="grid-number"
+                          type="text"
+                          placeholder="90210"
+                          name="contactNumber"
+                          className="w-full py-3 px-4 outline-none rounded-lg bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white cursor-default lg:w-full shadow"
+                        />
                       </div>
-                      <div className="flex flex-col md:flex-row w-full gap-7 md:gap-12">
-                        <div className="w-full md:w-2/4">
-                          <label
-                            htmlFor="grid-number"
-                            className="bg-zinc text-black dark:text-white lg:text-xl"
-                          >
-                            Address
-                          </label>
-                          <Field
-                            type="text"
-                            name="address"
-                            className="w-full py-3 px-4 outline-none rounded-lg bg-zinc-600 dark:bg-zinc-800 cursor-default lg:w-full"
-                          />
-                        </div>
-                        <div className="w-full md:w-2/4">
-                          <label
-                            htmlFor="grid-number"
-                            className="bg-zinc text-black dark:text-white lg:text-xl"
-                          >
-                            ZipCode
-                          </label>
-                          <Field
-                            type="text"
-                            name="zipCode"
-                            className="w-full py-3 px-4 outline-none rounded-lg bg-zinc-600 dark:bg-zinc-800 cursor-default lg:w-full"
-                          />
-                        </div>
-                      </div>
+
+
                       <button
                         type="submit"
-                        className={`${
-                          !isValid ? "bg-gray-200" : "bg-green-panda"
-                        } bg-green-panda rounded py-3 w-full`}
+                        className={`${!isValid ? "bg-gray-200" : "bg-green-panda"
+                          } bg-green-panda dark:bg-zinc-800 rounded py-3 w-full`}
                         disabled={!isValid}
                       >
                         Update Information

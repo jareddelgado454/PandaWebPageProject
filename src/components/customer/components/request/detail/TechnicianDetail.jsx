@@ -15,7 +15,6 @@ export default function TechnicianDetail({ technician }) {
   const { user } = useContext(UserContext);
   const router = useRouter();
   const onCreateChat = async () => {
-    console.log('clicked');
     try {
       const id = await existChatWithTechnicianSelected(user.id, technician.id);
 

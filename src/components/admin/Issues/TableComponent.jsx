@@ -154,7 +154,7 @@ export default function TableComponent({ data, callback }) {
                   className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
                   {
-                    issue.createdBy
+                    issue.customer.fullName
                   }
                 </td>
                 <td className="px-6 py-4">
