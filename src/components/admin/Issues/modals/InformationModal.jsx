@@ -1,17 +1,24 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { FaReply } from 'react-icons/fa6';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { Modal, ModalContent, ModalHeader, ModalBody } from "@nextui-org/react";
 import { SecondDateFormatter } from '@/utils/parseDate';
 import { client } from '@/contexts/AmplifyContext';
 import { UpdateReportStatus } from '@/graphql/issues/mutations/mutation';
-import ShowComments from './Components/ShowComments';
 import { baseUrl } from '@/utils/CloudFront';
+import { existChatWithCustomerSelected } from '@/api/service';
+import { UserContext } from '@/contexts/user/UserContext';
+import { createChatAsAdmin } from '@/graphql/chat/mutation';
 import AnswerInput from './Components/AnswerInput';
+import ShowComments from './Components/ShowComments';
 import 'animate.css';
 export default function InformationModal({ isOpen, onOpenChange, issueSelected }) {
+  const { user } = useContext(UserContext);
+  const router = useRouter();
   const [zoom, setZoom] = useState(false);
-  const handleUpdateStatus = async(id, status) => {
+  const handleUpdateStatus = async (id, status) => {
     await client.graphql({
       query: UpdateReportStatus,
       variables: {
@@ -20,6 +27,28 @@ export default function InformationModal({ isOpen, onOpenChange, issueSelected }
       }
     });
   }
+  const handleOnCreateChat = async () => {
+    try {
+
+        const id = await existChatWithCustomerSelected(issueSelected.customer.id, user.id);
+
+        if (id) {
+            router.replace(`/admin-dashboard/messages?chatId=${id}`);
+        } else {
+            const { data } = await client.graphql({
+                query: createChatAsAdmin,
+                variables: {
+                    customerId: issueSelected.customer.id,
+                    adminId: user.id
+                }
+            });
+            router.replace(`/admin-dashboard/messages?chatId=${data.createChat.id}`);
+            console.log("Created successfully");
+        }
+    } catch (error) {
+      console.error(error);
+    }
+}
   return (
     <Modal backdrop='opaque' isOpen={isOpen} onOpenChange={onOpenChange} size='5xl' placement='center'
       className='bg-zinc-200 dark:bg-zinc-900 h-[36rem] overflow-hidden max-h-full 2xl:h-[43rem]'
@@ -38,12 +67,17 @@ export default function InformationModal({ isOpen, onOpenChange, issueSelected }
                       <Image
                         width={50} height={50}
                         className='w-[3rem] h-[3rem] object-cover object-center rounded-full'
-                        src={`${issueSelected.customer && issueSelected.customer.profilePicture ? issueSelected.customer.profilePicture : '/image/defaultProfilePicture.jpg'}`} alt='user_profile_picture'
+                        alt="Profile_picture_createdBy_User"
+                        priority
+                        src={`${issueSelected.customer && issueSelected.customer.profilePicture ? issueSelected.customer.profilePicture : '/image/defaultProfilePicture.jpg'}`}
                       />
                       <div className='flex flex-col w-full gap-1'>
-                        <div className='flex flex-row flex-nowrap items-center gap-2'>
-                          <p className='text-xs font-semibold'>{issueSelected.customer.fullName}</p>
-                          <p className='text-xs text-zinc-400'>{SecondDateFormatter(new Date(issueSelected.createdAt))}</p>
+                        <div className='flex flex-row justify-between flex-nowrap items-center gap-2'>
+                          <div className='flex flex-row gap-2'>
+                            <p className='text-xs font-semibold'>{issueSelected.customer.fullName}</p>
+                            <p className='text-xs text-zinc-400'>{SecondDateFormatter(new Date(issueSelected.createdAt))}</p>
+                          </div>
+                          <FaReply onClick={handleOnCreateChat} className='cursor-pointer' />
                         </div>
                         <p className='text-zinc-400 font-light text-xs'>{issueSelected.customer.email}</p>
                       </div>
@@ -71,28 +105,28 @@ export default function InformationModal({ isOpen, onOpenChange, issueSelected }
                           onClick={() => handleUpdateStatus(issueSelected.id, "solved")}
                         >Solved</p>
                         <p
-                          className={`p-2 text-xs transition-all ${issueSelected.status === 'pending' ? 'bg-amber-600 text-amber-300 rounded-lg cursor-not-allowed' : 'bg-transparent cursor-pointer hover:bg-amber-600 hover:text-amber-300 hover:rounded-lg' }`}
-                          onClick={() => handleUpdateStatus(issueSelected.id, "pending")}  
+                          className={`p-2 text-xs transition-all ${issueSelected.status === 'pending' ? 'bg-amber-600 text-amber-300 rounded-lg cursor-not-allowed' : 'bg-transparent cursor-pointer hover:bg-amber-600 hover:text-amber-300 hover:rounded-lg'}`}
+                          onClick={() => handleUpdateStatus(issueSelected.id, "pending")}
                         >
-                            Pending
-                          </p>
+                          Pending
+                        </p>
                         <p
                           className={`p-2 text-xs transition-all ease-in ${issueSelected.status === 'processed' ? 'bg-indigo-600 text-indigo-300 rounded-lg cursor-not-allowed' : 'bg-transparent cursor-pointer hover:bg-indigo-600 hover:text-indigo-300 hover:rounded-lg'}`}
                           onClick={() => handleUpdateStatus(issueSelected.id, "processed")}
                         >
-                            Processed
-                          </p>
+                          Processed
+                        </p>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div
-                    id='answers_admins'
-                    className=' relative flex flex-col flex-nowrap gap-5 rounded-lg 2xl:h-[32.5rem] overflow-y-auto slide-in-right overflow-hidden'
+                  id='answers_admins'
+                  className=' relative flex flex-col flex-nowrap gap-5 rounded-lg 2xl:h-[32.5rem] overflow-y-auto slide-in-right overflow-hidden'
                 >
                   <ShowComments reportId={issueSelected.id} />
                   <div className="flex-grow"></div>
-                  <AnswerInput reportId={issueSelected.id} />
+                  <AnswerInput customerId={issueSelected.customer.id} reportId={issueSelected.id} />
                 </div>
               </div>
             </ModalBody>
