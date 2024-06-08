@@ -42,7 +42,7 @@ export const UserProvider = ({ children }) => {
     const logout = () => {
         Cookies.remove('currentUser');
         dispatch({
-            type: 'setUser',
+            type: 'Logout'
         })
     }
 
