@@ -3,7 +3,6 @@ import React, { useEffect } from 'react'
 import { Steppers } from '@/components/customer/components/Steppers';
 import { useDisclosure } from '@nextui-org/react';
 import RateTechnicianModal from '@/components/customer/modals/RateTechnicianModal';
-import CountUp from 'react-countup';
 export default function ServiceTracking({ service, setService }) {
   const {
     isOpen: isRateTechnicianModalOpen,
@@ -62,7 +61,9 @@ const CustomerInformation = ({ service }) => {
       <p>Car: <strong className='text-[#40C48E]'>{service.car.model}</strong></p>
       {(service.status === 'service accepted' || service.status === 'on the way') ? (
         <div className='flex flex-row gap-2'>
-          <CountUp duration={2.5} start={calculateDistance([service.destLatitude, service.destLongitude], [service.originLatitude, service.originLongitude])} end={0} className='text-xs font-bold'></CountUp>
+          <p className='text-xs font-bold'>
+            {calculateDistance([service.destLatitude, service.destLongitude], [service.originLatitude, service.originLongitude])} km
+          </p>
           <strong>km</strong> from your location
         </div>
       ) : <strong>In your location</strong>}
