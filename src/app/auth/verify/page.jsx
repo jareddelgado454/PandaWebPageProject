@@ -1,9 +1,13 @@
+import Image from 'next/image';
 import React from 'react'
 
 function page() {
   return (
     <div className="w-full h-screen relative">
-        <img
+        <Image
+            width={0}
+            height={0}
+            sizes="100vw"
             src="https://autenticos4x4.com/wp-content/uploads/2019/03/taller-mecanico-reparacion-vehiculos.jpg"
             alt="background_user"
             className="absolute w-full h-full object-cover bg-center"
@@ -14,7 +18,9 @@ function page() {
             <div className='flex justify-center items-center'>
                 <div className='bg-white h-[35rem] w-[35rem] rounded-lg shadow-lg slide-in-left'>
                     <div className='flex flex-col items-center justify-center gap-8'>
-                        <img
+                        <Image
+                            width={200}
+                            height={200}
                             src="/panda.png"
                             alt="panga_logo"
                             className='w-[12rem] h-[12rem] drop-shadow-lg'

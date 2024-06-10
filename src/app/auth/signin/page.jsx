@@ -28,6 +28,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { UserContext } from "@/contexts/user/UserContext";
+import Image from "next/image";
 const SignIn = () => {
   const { login } = useContext(UserContext);
   const status = "inactive";
@@ -133,7 +134,7 @@ const SignIn = () => {
       }
     });
     return () => hubListenerCancel();
-  }, [onOpenLoadingModal, router]);
+  }, [onOpenLoadingModal, router, login]);
   return (
     <>
       <CheckoutModal
@@ -247,7 +248,10 @@ const SignIn = () => {
               </div>
             </div>
             <div className="absolute top-0 w-full h-full bg-gradient-to-b from-zinc-900 to-zinc-800 opacity-70"></div>
-            <img
+            <Image
+              width={120}
+              height={120}
+              alt="background"
               src="https://cdna.artstation.com/p/assets/images/images/040/174/900/large/fabian-geyer-wideshotright.jpg?1628083532"
               className="object-cover h-[calc(100%-100px)] md:h-[44rem] xl:h-full"
             />
@@ -294,9 +298,11 @@ const CheckoutModal = ({ isOpen, onOpenChange }) => {
         <ModalBody>
           <div className="flex flex-col justify-center items-center w-full h-full py-4 gap-4">
             <div className="flex items-center justify-center">
-              <img
+              <Image
                 src="/panda.png"
                 className="w-[6rem] h-[5.5rem]"
+                width={100}
+                height={100}
                 alt="panda_logo"
               />
               <p className="text-2xl font-black tracking-wider text-zinc-800">
