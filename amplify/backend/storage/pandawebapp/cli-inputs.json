@@ -1,0 +1,16 @@
+{
+  "resourceName": "pandawebapp",
+  "policyUUID": "3ba1e336",
+  "bucketName": "pandawebappbucket",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "READ",
+    "CREATE_AND_UPDATE",
+    "DELETE"
+  ],
+  "triggerFunction": "S3Triggerdf93383d",
+  "groupAccess": {}
+}
