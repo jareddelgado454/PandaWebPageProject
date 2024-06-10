@@ -17,6 +17,7 @@ const AuthLayout = ({ children }) => {
               className="w-[4rem] h-[3rem] drop-shadow-lg"
               width={50}
               height={50}
+              priority
               alt="panda_logo"
             />
             <p className="font-bold drop-shadow-xl tracking-wider text-[22px] text-white">
