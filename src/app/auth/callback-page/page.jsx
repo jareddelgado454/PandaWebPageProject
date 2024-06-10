@@ -64,7 +64,7 @@ const CallbackPage = () => {
       }
     };
     retrieveDataUser();
-  }, []);
+  }, [login, router]);
 
   const selectTechnicianHandle = async () => {
     setSelectingTechnician(true);
@@ -127,6 +127,7 @@ const CallbackPage = () => {
             <Image 
               src={loading3}
               quality={100}
+              alt="loading_image"
               className="w-[100px] h-[100px]"
             />
             <h3 className="text-[40px] text-center font-bold text-gray-100 absolute bottom-2 left-0 w-full">Almost done! wait please.</h3>

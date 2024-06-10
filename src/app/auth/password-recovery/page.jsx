@@ -12,6 +12,7 @@ import {
 import { resetPassword } from 'aws-amplify/auth';
 import ChangingPassword from '@/components/LoginRegister/modals/ChangingPassword';
 import { useDisclosure } from '@nextui-org/react';
+import Image from 'next/image';
 const RecoveryPassword = () => {
 
     const [emailPassed, setEmailPassed] = useState("");
@@ -141,7 +142,14 @@ const RecoveryPassword = () => {
                               </div>
                         </div>
                         <div className='absolute top-0 w-full h-full bg-gradient-to-b from-zinc-900 to-zinc-800 opacity-70'></div> 
-                        <img src='https://cdna.artstation.com/p/assets/images/images/040/174/900/large/fabian-geyer-wideshotright.jpg?1628083532' className='object-cover' style={{ height: 'calc(100vh - 80px)' }} />              
+                        <Image
+                          src='https://cdna.artstation.com/p/assets/images/images/040/174/900/large/fabian-geyer-wideshotright.jpg?1628083532'
+                          width={150}
+                          height={150}
+                          alt='car_wallpaper'
+                          className='object-cover'
+                          style={{ height: 'calc(100vh - 80px)' }}
+                        />              
                     </div>
                 </div>
             </div>
