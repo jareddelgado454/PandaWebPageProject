@@ -8,6 +8,7 @@ import { listenToMessages } from '@/graphql/chat/subscription';
 import ChatAnswerInput from '@/components/customer/components/Chat/ChatAnswerInput';
 import { client } from '@/contexts/AmplifyContext';
 import { getCustomerChatById } from '@/graphql/chat/query';
+import { baseUrl } from '@/utils/CloudFront';
 export default function ChatComponent({ setChatActive, chatSelected, setChatSelected }) {
     const { user } = useContext(UserContext);
     const [loading, setLoading] = useState(false);
@@ -26,6 +27,7 @@ export default function ChatComponent({ setChatActive, chatSelected, setChatSele
             setLoading(false);
             setChat(data.getChat);
             setMessages(data.getChat.messages.items);
+            console.log(data);
         } catch (error) {
             setError(error);
             setLoading(false);
@@ -54,7 +56,7 @@ export default function ChatComponent({ setChatActive, chatSelected, setChatSele
         const url = new URL(window.location);
         url.searchParams.delete('chatId');
         window.history.replaceState({}, '', url);
-      };
+    };
     return (
         <div className='flex flex-col gap-2 w-full h-full relative'>
             <div id='header' className='w-full bg-zinc-700 dark:bg-zinc-700 p-2 rounded-lg flex flex-row justify-between gap-2'>
@@ -89,9 +91,18 @@ export default function ChatComponent({ setChatActive, chatSelected, setChatSele
                         key={i}
                         className={`flex ${message.sender === user.id ? 'justify-end' : 'justify-start'}`}
                     >
-                        <div className={`${message.sender === user.id ? 'bg-zinc-700' : 'bg-zinc-900'} max-w-[25rem] rounded-lg p-2`}>
+                        <div className={`${message.sender === user.id ? 'bg-green-600/50 dark:bg-green-800' : 'bg-zinc-900'} max-w-[25rem] rounded-lg p-2`}>
                             <div className='flex flex-row gap-3'>
-                                <p className='text-left text-white dark:'>{message.content}</p>
+                                <p className='text-left text-white'>{message.content && message.content}</p>
+                                {message.image && (
+                                    <Image
+                                        src={`${baseUrl}${message.image}`}
+                                        width={250}
+                                        height={250}
+                                        alt={`image_message_${message.id}`}
+                                        className='rounded-lg md:w-[14rem] md:h-[14rem]'
+                                    />
+                                )}
                                 <div className='relative flex flex-col justify-end'>
                                     <p className='text-xs text-zinc-200'>{format(new Date(message.createdAt), 'h:mm')}</p>
                                 </div>
