@@ -108,7 +108,7 @@ const SignIn = () => {
       const data = await fetchUserAttributes();
       const { tokens, userSub } = await fetchAuthSession();
       const expiredAt = tokens.accessToken.payload.exp;
-      return { role:data['custom:role'], expiredAt, userSub };
+      return { role: data['custom:role'], expiredAt, userSub };
     } catch (error) {
       console.log(error);
     }
@@ -122,9 +122,9 @@ const SignIn = () => {
           login({ role, expiredAt, id: userSub })
           if (role === "admin") {
             router.replace("/admin-dashboard/");
-          } else if(role === "technician") {
+          } else if (role === "technician") {
             router.replace("/user");
-          } else if(role === "customer"){
+          } else if (role === "customer") {
             router.replace("/customer");
           }
           break;
@@ -249,10 +249,9 @@ const SignIn = () => {
             </div>
             <div className="absolute top-0 w-full h-full bg-gradient-to-b from-zinc-900 to-zinc-800 opacity-70"></div>
             <Image
-              width={120}
-              height={120}
+              fill
               alt="background"
-              src="https://cdna.artstation.com/p/assets/images/images/040/174/900/large/fabian-geyer-wideshotright.jpg?1628083532"
+              src="/image/wallpaper.jpg"
               className="object-cover h-[calc(100%-100px)] md:h-[44rem] xl:h-full"
             />
           </div>
