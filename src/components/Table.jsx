@@ -5,13 +5,11 @@ import { client } from "@/contexts/AmplifyContext";
 import {
   FaTrashCan,
   FaPencil,
-  FaPersonCircleCheck,
-  FaPersonCircleMinus,
   FaSort,
   FaAddressCard,
 } from "react-icons/fa6";
 import { useDisclosure } from "@nextui-org/react";
-import { updateStatus, deleteUserById } from "@/graphql/users/mutation/users";
+import { deleteUserById } from "@/graphql/users/mutation/users";
 import Image from "next/image";
 export const Table = ({ item, callback, typeUser }) => {
   const [sortedColumn, setSortedColumn] = useState(null);
