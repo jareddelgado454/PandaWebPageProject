@@ -1,5 +1,4 @@
 "use client";
-
 import "aws-amplify/auth/enable-oauth-listener";
 import React, { useContext, useEffect, useState } from "react";
 import {
@@ -13,10 +12,8 @@ import {
   updateUserAttributes,
 } from "aws-amplify/auth";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
 import loading3 from "../../../../public/loading/loading3.gif"
 import { Button } from "@nextui-org/react";
-
 import { Amplify } from "aws-amplify";
 import config from "@/amplifyconfiguration.json";
 import { handleCreateCustomerOnDataBase, handleCreateTechnicianOnDataBase } from "@/api";
