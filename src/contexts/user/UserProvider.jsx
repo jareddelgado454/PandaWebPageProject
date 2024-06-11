@@ -18,7 +18,7 @@ export const UserProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     const getUserFromCookies = () => {
-        const userCookie = Cookies.get('currentUser');
+        const userCookie = Cookies.get('currentUser') ? Cookies.get('currentUser') : null;
         if (userCookie) {
           try {
             return JSON.parse(userCookie);
