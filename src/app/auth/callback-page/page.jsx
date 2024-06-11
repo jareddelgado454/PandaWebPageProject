@@ -13,17 +13,14 @@ import {
   updateUserAttributes,
 } from "aws-amplify/auth";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
 import loading3 from "../../../../public/loading/loading3.gif"
 import { Button } from "@nextui-org/react";
-
 import { Amplify } from "aws-amplify";
 import config from "@/amplifyconfiguration.json";
 import { handleCreateCustomerOnDataBase, handleCreateTechnicianOnDataBase } from "@/api";
 import Image from "next/image";
 import { UserContext } from "@/contexts/user/UserContext";
 Amplify.configure(config);
-
 const CallbackPage = () => {
   const { login } = useContext(UserContext);
   const [user, setUser] = useState(null);
@@ -77,7 +74,8 @@ const CallbackPage = () => {
       await updateUserAttributes({
         userAttributes: {
           "custom:role": "technician",
-          "custom:infoCompleted" : "false"
+          "custom:infoCompleted" : "false",
+          "custom:termsAccepted": "false"
         },
       });
       const { tokens, userSub } = await fetchAuthSession({ forceRefresh: true });
@@ -104,6 +102,7 @@ const CallbackPage = () => {
       await updateUserAttributes({
         userAttributes: {
           "custom:role": "customer",
+          "custom:termsAccepted": "false"
         },
       });
       const { tokens } = await fetchAuthSession({ forceRefresh: true });
@@ -128,6 +127,7 @@ const CallbackPage = () => {
               src={loading3}
               quality={100}
               alt="loading_image"
+              unoptimized
               className="w-[100px] h-[100px]"
             />
             <h3 className="text-[40px] text-center font-bold text-gray-100 absolute bottom-2 left-0 w-full">Almost done! wait please.</h3>

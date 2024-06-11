@@ -39,7 +39,7 @@ export default function Client_Component() {
       setIsAgreed(true);
       toast.success(`Accepted Succesfully`);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
