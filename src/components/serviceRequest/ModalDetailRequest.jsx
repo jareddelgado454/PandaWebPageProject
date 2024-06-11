@@ -241,6 +241,7 @@ const ModalDetailRequest = ({
                               height={200}
                               quality={100}
                               className="object-cover embla__slide"
+                              alt="service_image_1"
                             />
                             <Image
                               src={serviceImage2}
@@ -248,6 +249,7 @@ const ModalDetailRequest = ({
                               height={200}
                               quality={100}
                               className="object-cover embla__slide"
+                              alt="service_image_2"
                             />
                             <Image
                               src={serviceImage3}
@@ -255,6 +257,7 @@ const ModalDetailRequest = ({
                               height={200}
                               quality={100}
                               className="object-cover embla__slide"
+                              alt="service_image_3"
                             />
                           </div>
                         </div>

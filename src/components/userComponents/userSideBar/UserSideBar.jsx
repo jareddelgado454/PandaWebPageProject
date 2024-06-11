@@ -12,6 +12,7 @@ import { FaCamera, FaCircleExclamation, FaKey, FaUserXmark } from "react-icons/f
 import { useDisclosure } from "@nextui-org/react";
 import { DeleteUserModal, PassWordModal, SendReportModal, SubscriptionPlanModal } from '@/components/modalUser';
 import { getCurrentUser } from "aws-amplify/auth";
+import Image from 'next/image';
 function UserSidebar({ user }) {
     const router = useRouter();
     const [photograph, setPhotograph] = useState(null);
@@ -101,7 +102,7 @@ function UserSidebar({ user }) {
             <div className=" text-white rounded-lg shadow-lg h-screen  w-[300px] relative">
                 <div className="flex flex-row md:flex-col items-center justify-center px-[20px] py-0">
                     <div className="h-[80px] flex gap-x-1 items-center justify-start w-full">
-                        <img src="/panda.png" className="w-[65px] h-[50px] drop-shadow-lg" alt="panda_logo" />
+                        <Image width={70} height={55} src="/panda.png" className="w-[65px] h-[50px] drop-shadow-lg" alt="panda_logo" />
                         <p className="font-bold drop-shadow-xl tracking-wider text-white">PANDA <span className='text-emerald-300'>TECHS</span></p> 
                     </div>
 

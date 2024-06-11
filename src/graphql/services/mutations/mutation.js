@@ -48,10 +48,25 @@ export const OnChangeStatusServiceByCustomer = gql`
   mutation UpdateService($input: UpdateServiceInput!, $customerId: ID!) {
     updateService(input: $input, condition: {serviceCustomerId: {eq: $customerId}}) {
       id
-      status
       completed
-      serviceCustomerId
       serviceTechnicianSelectedId
+      originLatitude
+      originLongitude
+      destLatitude
+      destLongitude
+      status
+      type
+      customer {
+        id
+        profilePicture
+        fullName
+      }
+      car {
+        id
+        image
+        brand
+        model
+      }
     }
   }
 

@@ -57,8 +57,7 @@ export default function ClientRequest() {
     }
   }
   useEffect(() => {
-    console.log('listening');
-    if(!serviceRequest) return;
+    console.log('ready');
     const subscription = client
       .graphql({
         query: onUpdateServiceGlobal,
@@ -67,6 +66,7 @@ export default function ClientRequest() {
       .subscribe({
         next: ({ data }) => {
           const updatedService = data.onUpdateService;
+          console.log(data);
           if (updatedService) {
             setService((prevState) => ({
               ...prevState,
@@ -90,6 +90,7 @@ export default function ClientRequest() {
   }, [serviceRequest, param]);
   useEffect(() => {
     if (param == "completed" && serviceRequest) {
+      console.log('executing =>');
       onChangeToComplete();
     } else if (param == "failed") {
       alert("The payment could not be made satisfactorily");
