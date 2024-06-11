@@ -75,7 +75,8 @@ const CallbackPage = () => {
         userAttributes: {
           "custom:role": "technician",
           "custom:infoCompleted" : "false",
-          "custom:termsAccepted": "false"
+          "custom:termsAccepted": "false",
+          "custom:profileCompleted": "false"
         },
       });
       const { tokens, userSub } = await fetchAuthSession({ forceRefresh: true });

@@ -97,7 +97,8 @@ const SignUp = () => {
               "custom:status": status,
               "custom:subscription": values.role === "technician" ? "pending" : "",
               "custom:infoCompleted": "false",
-              "custom:termsAccepted": "false"
+              "custom:termsAccepted": "false",
+              "custom:profileCompleted": "false"
             },
           },
         });
@@ -164,7 +165,14 @@ const SignUp = () => {
   return (
     <AmplifyContext>
 
-      <div className="xl:h-screen bg-gradient-to-b from-zinc-900 to-zinc-800 w-full flex justify-center text-white px-8">
+      <div
+        className="xl:h-screen bg-gradient-to-b from-zinc-900 to-zinc-800 w-full flex justify-center text-white px-8 overflow-y-scroll"
+        style={{
+          msOverflowStyle: 'none',
+          scrollbarWidth: 'none',
+          overflowY: 'scroll'
+        }}
+      >
         <Formik initialValues={{
           fullName: "",
           email: "",
