@@ -17,11 +17,25 @@ export default function UpdateInformationForm({ callback, customer, closeModal }
                 }
             });
             callback();
+            await handleUpdateCustomAttribute();
             closeModal();
             toast.success(`Your information has been updated.`);
         } catch (error) {
             console.error(error);
         }
+    }
+    const handleUpdateCustomAttribute = async() => {
+        try {
+            await updateUserAttributes({
+              userAttributes: {
+                ['custom:profileCompleted']: "true"
+              },
+            });
+            setIsAgreed(true);
+            toast.success(`Accepted Succesfully`);
+          } catch (error) {
+            console.error(error);
+          }
     }
     return (
         <Formik
