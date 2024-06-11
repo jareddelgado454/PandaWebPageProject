@@ -79,7 +79,7 @@ export default function ChatAnswerInput({ chatId, senderId }) {
                         onChange={({ target }) => setMessage(target.value)}
                         onKeyDown={handleKeyDown}
                     />
-                    <IoSend className='dark:text-[#40C48E] text-2xl cursor-pointer' onClick={onSendMessage} />
+                    <IoSend className='text-zinc-800 dark:text-[#40C48E] text-2xl cursor-pointer' onClick={onSendMessage} />
                 </form>
             </div>
             <ConfirmImageMessage isOpen={isOpen} onOpenChange={onOpenChange} photograph={photograph} chatId={chatId} senderId={senderId} />

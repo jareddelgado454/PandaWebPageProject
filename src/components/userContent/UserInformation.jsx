@@ -12,6 +12,7 @@ import { Progress, useDisclosure } from "@nextui-org/react";
 import { client } from '@/contexts/AmplifyContext';
 import { SubscriptionPlanModal } from '../modalUser';
 import { updateInformation } from '@/graphql/users/mutation/users';
+import Image from 'next/image';
 function UserInformation({ user }) {
     const router = useRouter();
     const [photograph, setPhotograph] = useState(null);
@@ -98,7 +99,9 @@ function UserInformation({ user }) {
                                 <FaCamera className="text-white text-xl md:text-4xl" />
                             </div>
                         </div>
-                        <img
+                        <Image
+                            width={170}
+                            height={170}
                             src={
                                 photograph ? photograph : (user.profilePicture ? user.profilePicture : "/image/defaultProfilePicture.jpg")
                             }

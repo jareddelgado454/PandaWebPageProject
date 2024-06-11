@@ -22,23 +22,22 @@ import {
   RiMessage2Fill,
   RiPhoneFill,
 } from "react-icons/ri";
+import { Contexto } from "@/app/user/layout";
 
 const OnTheWay = ({ isOpen, serviceAssigned, setServiceStatus }) => {
   const { technicianLocation, isLoading, updateTechnicianLocation } =
     useContext(PlaceTechnicianContext);
-  console.log("Este es la location del tecnico", technicianLocation);
   const [address, setAddress] = useState(null);
   const [distance, setDistance] = useState(0);
   const [inTheLocation, setInTheLocation] = useState(false);
+  const {user} = useContext(Contexto);
 
   const getAddressFromCoordinates = async (lat, lon) => {
     try {
       const response = await Geo.searchByCoordinates([lon, lat]);
-      console.log("Esta es la direccion", response);
 
       if (response.label) {
         const addressObtained = response.label.split(",")[0];
-        console.log(addressObtained);
         setAddress(addressObtained);
         return address;
       } else {
@@ -53,14 +52,10 @@ const OnTheWay = ({ isOpen, serviceAssigned, setServiceStatus }) => {
   };
 
   const handleStartService = async () => {
-    console.log(
-      "Haciendo cliiiiiiiiiiiiiiiiiiiiiiiiiiiiiiick",
-      serviceAssigned.id
-    );
     try {
       const response = await handleUpdateStatusService({
         serviceId: serviceAssigned.id,
-        status: "in progress",
+        status: "in progress"
       });
       setServiceStatus("in progress");
       console.log("Cambiaste el status del servicio correctamente", response);
@@ -80,7 +75,6 @@ const OnTheWay = ({ isOpen, serviceAssigned, setServiceStatus }) => {
         customerLocation,
         0.1
       );
-      console.log("Este es el servicio asignado perri", serviceAssigned.id);
       try {
         const response = await handleUpdateTechnicianLocationInService({
           id: serviceAssigned.id,
@@ -88,8 +82,6 @@ const OnTheWay = ({ isOpen, serviceAssigned, setServiceStatus }) => {
           destLongitude: newLocation[0],
           serviceCustomerId: serviceAssigned.customer.id,
         });
-        console.log("Se actualizo la ubicacion con exito", response);
-        console.log("This is the new location", newLocation);
         updateTechnicianLocation(newLocation);
       } catch (error) {
         console.log(error);

@@ -20,7 +20,6 @@ import { handleCreateCustomerOnDataBase, handleCreateTechnicianOnDataBase } from
 import Image from "next/image";
 import { UserContext } from "@/contexts/user/UserContext";
 Amplify.configure(config);
-
 const CallbackPage = () => {
   const { login } = useContext(UserContext);
   const [user, setUser] = useState(null);
@@ -74,7 +73,8 @@ const CallbackPage = () => {
       await updateUserAttributes({
         userAttributes: {
           "custom:role": "technician",
-          "custom:infoCompleted" : "false"
+          "custom:infoCompleted" : "false",
+          "custom:termsAccepted": "false"
         },
       });
       const { tokens, userSub } = await fetchAuthSession({ forceRefresh: true });
@@ -101,6 +101,7 @@ const CallbackPage = () => {
       await updateUserAttributes({
         userAttributes: {
           "custom:role": "customer",
+          "custom:termsAccepted": "false"
         },
       });
       const { tokens } = await fetchAuthSession({ forceRefresh: true });

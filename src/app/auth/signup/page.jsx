@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Formik, Form, Field } from "formik";
 import ErrorAlert from "@/components/LoginRegister/modals/ErrorAlert";
-import { fetchAuthSession, signIn, signUp } from "aws-amplify/auth";
+import { signUp } from "aws-amplify/auth";
 import validationSignUp from "./validationSignUp";
 import { handleCreateCustomerOnDataBase, handleCreateTechnicianOnDataBase } from "@/api";
 import {
@@ -17,11 +17,13 @@ import {
 import VerificationCodeModal from "@/components/LoginRegister/modals/VerificationCodeModal";
 import { useDisclosure } from "@nextui-org/react";
 import AmplifyContext from "@/contexts/AmplifyContext";
+import { TermsAndConditionsModal } from "@/components/home";
 const SignUp = () => {
   const status = "active";
   const [showPassword, setShowPassword] = useState(false);
   const [messageDataMissing, setMessageDataMissing] = useState(false);
   const [dataResult, setDataResult] = useState(null);
+  const [isAccepted, setIsAccepted] = useState(false);
   const [dataSignUp, setDataSignUp] = useState({
     fullName: "",
     email: "",
@@ -45,15 +47,6 @@ const SignUp = () => {
     }
   }, [dataSignUp]);
 
-  let initialValue = {
-    fullName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    role: "",
-    agreed: false,
-  };
-
   const {
     isOpen: isVerifyCodeModalOpen,
     onOpen: onVerifyCodeModalOpen,
@@ -64,6 +57,11 @@ const SignUp = () => {
     isOpen: isErrorAlertModalOpen,
     onOpen: onErrorAlertModalOpen,
     onOpenChange: onErrorAlertModalOpenChange,
+  } = useDisclosure();
+  const {
+    isOpen: isTermsConditionsModalOpen,
+    onOpen: onTermsConditionsModalOpen,
+    onOpenChange: onTermsConditionsModalOpenChange,
   } = useDisclosure();
 
   const evaluateErrors = () => {
@@ -98,7 +96,8 @@ const SignUp = () => {
               "custom:fullName": values.fullName,
               "custom:status": status,
               "custom:subscription": values.role === "technician" ? "pending" : "",
-              "custom:infoCompleted" : "false",
+              "custom:infoCompleted": "false",
+              "custom:termsAccepted": "false"
             },
           },
         });
@@ -164,8 +163,16 @@ const SignUp = () => {
   }
   return (
     <AmplifyContext>
+
       <div className="xl:h-screen bg-gradient-to-b from-zinc-900 to-zinc-800 w-full flex justify-center text-white px-8">
-        <Formik initialValues={initialValue} onSubmit={onHandleCreate}>
+        <Formik initialValues={{
+          fullName: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+          role: "",
+          agreed: false,
+        }} onSubmit={onHandleCreate}>
           {({ handleSubmit, setFieldValue }) => (
             <Form
               onSubmit={handleSubmit}
@@ -360,8 +367,9 @@ const SignUp = () => {
                         setDataSignUp({ ...dataSignUp, role: e.target.value });
                       }}
                       className="block w-full bg-zinc-800 text-white py-3 px-4 rounded-lg mb-2"
+                      value="Select an option"
                     >
-                      <option className="text-white" value="" disabled selected>
+                      <option className="text-white" value="">
                         Select an option
                       </option>
                       <option className="text-white" value="customer">
@@ -387,29 +395,21 @@ const SignUp = () => {
                     </p>
 
                     <div className="flex items-center gap-x-2 mb-2">
-                      <Field
-                        type="radio"
-                        name="agreed"
-                        value="agreed"
-                        checked={dataSignUp.agreed}
-                        onChange={(e) =>
-                          setDataSignUp({ ...dataSignUp, agreed: e.target.checked })
-                        }
-                        className="rounded border-emerald-400 focus:ring-emerald-400 focus:border-emerald-400"
-                      />
                       <p className="text-white">
-                        Check here to accept the{" "}
-                        <span className="text-emerald-300 cursor-pointer font-semibold">
+                        Click here to accept the{" "}
+                        <span className="text-emerald-300 hover:text-emerald-600 transition-all duration-300 cursor-pointer font-semibold" onClick={() => onTermsConditionsModalOpen()}>
                           Terms and conditions
                         </span>
                       </p>
                     </div>
                     <button
                       type="submit"
-                      className="w-full py-3 text-[19px] bg-emerald-500  hover:bg-emerald-500/90 transition-colors rounded-lg text-white"
+                      disabled={!isAccepted}
+                      className={`w-full py-3 text-[19px] ${isAccepted ? 'bg-emerald-500  hover:bg-emerald-500/90' : 'bg-emerald-100/90 text-zinc-950'} transition-colors rounded-lg text-white`}
                     >
                       Create account
                     </button>
+                    {!isAccepted && <p className="mt-4 text-rose-600">You need to accept our terms and conditions.</p>}
                     {messageDataMissing && (
                       <div className="bg-red-500 text-white flex w-full justify-center gap-x-2 p-4 mt-5">
                         <RiErrorWarningFill className="w-[30%] text-[35px]" />
@@ -430,6 +430,7 @@ const SignUp = () => {
             </Form>
           )}
         </Formik>
+        <TermsAndConditionsModal isOpen={isTermsConditionsModalOpen} onOpenChange={onTermsConditionsModalOpenChange} setIsAccepted={setIsAccepted} isAccepted={isAccepted} />
         <VerificationCodeModal
           isOpen={isVerifyCodeModalOpen}
           onOpenChange={onVerifyCodeModalOpenChange}

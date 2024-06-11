@@ -49,6 +49,12 @@ export const listenUpdateService = gql`
         profilePicture
         fullName
       }
+      car {
+        id
+        image
+        brand
+        model
+      }
       destLatitude
       destLongitude
       type

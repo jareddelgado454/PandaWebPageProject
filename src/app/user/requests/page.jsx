@@ -24,6 +24,8 @@ import ModalDetailRequest from "@/components/serviceRequest/ModalDetailRequest";
 import { getPricesTechnician } from "@/graphql/users/query/technician";
 import { listenDeleteService } from "@/graphql/services/subscriptions/subscription";
 import {Slider} from "@nextui-org/react";
+import { PlaceTechnicianContext } from "@/contexts/placeTechnician/PlaceTechnicianContext";
+import { haversineDistance } from "./utils/distance";
 
 const Requests = () => {
   const {
@@ -37,7 +39,9 @@ const Requests = () => {
   const [loading, setLoading] = useState(true);
   const [idSelected, setIdSelected] = useState(null);
   const [addressDistanceSelected, setAddressDistanceSelected] = useState(null);
+  const [maxDistanceFilterSelected, setMaxFilterSelected] = useState(20);
   const [pricesTechnician, setPricesTechnician] = useState(null);
+  const {technicianLocation} = useContext(PlaceTechnicianContext);
   const [filter, setFilter] = useState("all");
   const {
     isOpen: isDetailRequestModalOpen,
@@ -51,10 +55,23 @@ const Requests = () => {
   };
 
   const filteredRequests = () => {
-    if (filter === "all") {
-      return requests;
-    }
-    return requests.filter((request) => request.type === filter);
+    if (!requests) return [];
+
+    return requests.filter((request) => {
+      const distance = haversineDistance(
+        technicianLocation, 
+        [
+          request.originLongitude,
+          request.originLatitude
+        ] 
+      );
+      const isWithinDistance = distance <= maxDistanceFilterSelected;
+
+      if (filter === "all") {
+        return isWithinDistance;
+      }
+      return request.type === filter && isWithinDistance;
+    });
   };
 
   const retrieveData = async () => {
@@ -88,15 +105,20 @@ const Requests = () => {
       .subscribe({
         next: (data) => {
           const newRequest = data.data.onCreateService;
-          if (filter === "all" || newRequest.type === filter) {
-            setRequests((prevRequests) => [...prevRequests, newRequest]);
+          const distance = haversineDistance(technicianLocation, [
+            newRequest.originLongitude,
+            newRequest.originLatitude,
+          ]);
+          if (
+            (filter === "all" || newRequest.type === filter) &&
+            distance <= maxDistanceFilterSelected) {
+              setRequests((prevRequests) => [...prevRequests, newRequest]);
           }
         },
         error: (error) => {
           console.error("Error in the subscription:", error);
         },
       });
-    console.log("createSubscription ", createSubscription);
 
     const deleteSubscription = client
       .graphql({ query: listenDeleteService })
@@ -111,7 +133,6 @@ const Requests = () => {
           console.error("Error in the subscription:", error);
         },
       });
-    console.log("deleteSubscription ", deleteSubscription);
 
     return () => {
       createSubscription.unsubscribe();
@@ -173,7 +194,7 @@ const Requests = () => {
                           onClick={() => setFilter("repair")}
                           className={`w-[74px] py-1 cursor-pointer ${
                             filter === "repair" ? "bg-emerald-500" : ""
-                          } text-white font-semibold rounded-lg flex items-center justify-center text-[15px]`}
+                          } text-white font-semibold rounded-lg flex items-center justify-center text-[14px]`}
                         >
                           Repair
                         </div>
@@ -181,7 +202,7 @@ const Requests = () => {
                           onClick={() => setFilter("diagnostic")}
                           className={`w-[80px] py-1 cursor-pointer ${
                             filter === "diagnostic" ? "bg-emerald-500" : ""
-                          } text-white font-semibold rounded-lg flex items-center justify-center text-[15px]`}
+                          } text-white font-semibold rounded-lg flex items-center justify-center text-[13px]`}
                         >
                           Diagnostic
                         </div>
@@ -189,7 +210,7 @@ const Requests = () => {
                           onClick={() => setFilter("towing")}
                           className={`w-[74px] py-1 cursor-pointer ${
                             filter === "towing" ? "bg-emerald-500" : ""
-                          } text-white font-semibold rounded-lg flex items-center justify-center text-[15px]`}
+                          } text-white font-semibold rounded-lg flex items-center justify-center text-[14px]`}
                         >
                           Towing
                         </div>
@@ -201,13 +222,15 @@ const Requests = () => {
                     <div>
                       <Slider   
                         size="md"
-                        step={1}
+                        step={10}
                         color="success"
                         label="Search ratio (miles)"
                         showSteps={true} 
-                        maxValue={5} 
-                        minValue={0} 
-                        defaultValue={3}
+                        maxValue={50} 
+                        minValue={10} 
+                        defaultValue={20}
+                        value={maxDistanceFilterSelected}
+                        onChange={setMaxFilterSelected}
                         className="w-[200px]" 
                       />
                     </div>

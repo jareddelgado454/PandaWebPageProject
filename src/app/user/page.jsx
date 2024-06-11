@@ -7,6 +7,7 @@ import {
   RiMailOpenFill,
   RiAlertFill,
   RiArrowDownSLine,
+  RiCheckboxCircleFill 
 } from "react-icons/ri";
 import { client } from "@/contexts/AmplifyContext";
 import profileDefaultPicture from "../../../public/image/defaultProfilePicture.jpg";
@@ -17,6 +18,7 @@ import RepairRequestModal from "@/components/modalServices/modalServicesTechnici
 import { useDisclosure } from "@nextui-org/react";
 const Page = () => {
   const { user, loading } = useContext(Contexto);
+  console.log("useeeeeer",user);
   const {
     isOpen: isRequestServiceModalOpen,
     onOpen: onRequestServiceModalOpen,
@@ -78,17 +80,22 @@ const Page = () => {
                   </div>
                   <div className="w-full flex gap-x-2">
                     <div
-                      className={`w-[95px] p-2 relative border-[1px] rounded-md border-red-400 bg-zinc-800`}
+                      className={`w-[95px] p-2 relative border-[1px] rounded-md ${user["custom:infoCompleted"] === "true" ? 'border-green-400' : 'border-red-400'}  bg-zinc-800`}
                     >
-                      <RiAlertFill className="absolute -top-2 -right-2 w-[22px] h-[22px] flex justify-center items-center text-red-500" />
+                      {
+                        user["custom:infoCompleted"] === "true" ? <RiCheckboxCircleFill className="absolute -top-2 -right-2 w-[22px] h-[22px] flex justify-center items-center text-green-500"/>
+                        :<RiAlertFill className="absolute -top-2 -right-2 w-[22px] h-[22px] flex justify-center items-center text-red-500" />
+                      }
                       <div className="w-full flex flex-col">
                         <span className="w-full text-left text-[11px] text-zinc-300">
                           Profile:
                         </span>
                         <span
-                          className={`w-full text-left text-[13px] text-red-400`}
-                        >
-                          Incomplete
+                          className={`w-full text-left text-[13px] ${user["custom:infoCompleted"] === "true" ? 'text-green-400' : 'text-red-400'} `}
+                        > 
+                          {
+                            user["custom:infoCompleted"] === "true" ? 'Complete' : 'Incomplete'
+                          }
                         </span>
                       </div>
                     </div>
@@ -98,7 +105,7 @@ const Page = () => {
                       <RiAlertFill className="absolute -top-2 -right-2 w-[22px] h-[22px] flex justify-center items-center text-red-500" />
                       <div className="w-full flex flex-col">
                         <span className="w-full text-left text-[11px] text-zinc-300">
-                          Subscription:
+                          Stripe acct:
                         </span>
                         <span
                           className={`w-full text-left text-[13px] text-red-400`}

@@ -59,3 +59,13 @@ export const getPricesTechnician = gql`
     }
   }
 `;
+
+export const getStripeInformationTechnician = gql`
+  query MyQuery($id: ID!) {
+    getTechnician(id: $id) {
+      stripeAccountStatus
+      stripeId
+    }
+  }
+`;
+

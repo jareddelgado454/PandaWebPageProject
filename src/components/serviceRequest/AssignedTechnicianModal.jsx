@@ -7,11 +7,23 @@ import {
 import OnTheWay from "./assignedTechnicianModalSteps/OnTheWay";
 import InProgress from "./assignedTechnicianModalSteps/InProgress";
 import Payment from "./assignedTechnicianModalSteps/Payment";
+import { ServiceAssignedContext } from "@/contexts/serviceAssigned/ServiceAssignedContext";
+import Completed from "./assignedTechnicianModalSteps/Completed";
 
-const AssignedTechnicianModal = ({ isOpen, onOpenChange, serviceAssigned }) => {
-  const [serviceStatus, setServiceStatus] = useState("on the way");
+const AssignedTechnicianModal = ({ isOpen, onOpenChange }) => {
+  const [serviceStatus, setServiceStatus] = useState(null);
+  const { serviceAssigned } = useContext(ServiceAssignedContext);
+
+  useEffect(() => {
+    if (serviceAssigned) {
+      setServiceStatus(serviceAssigned.status);
+    }
+  }, [serviceAssigned]);
 
   const renderStep = () => {
+    if (!serviceStatus) {
+      return <div className="text-white">Loading...</div>;
+    }
     switch (serviceStatus) {
       case "on the way":
         return <OnTheWay isOpen={isOpen} serviceAssigned={serviceAssigned} setServiceStatus={setServiceStatus}/>;
@@ -19,6 +31,8 @@ const AssignedTechnicianModal = ({ isOpen, onOpenChange, serviceAssigned }) => {
         return <InProgress isOpen={isOpen} serviceAssigned={serviceAssigned} setServiceStatus={setServiceStatus}/>;
       case "payment":
         return <Payment isOpen={isOpen} serviceAssigned={serviceAssigned} onOpenChange={onOpenChange}/>;
+      case "completed" : 
+        return <Completed isOpoen={isOpen} onOpenChange={onOpenChange}/>
       default:
         return <OnTheWay isOpen={isOpen} serviceAssigned={serviceAssigned} />;
     }

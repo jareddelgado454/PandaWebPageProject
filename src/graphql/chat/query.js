@@ -157,6 +157,7 @@ export const getCustomerChatById = gql`
                 items{
                     id
                     content
+                    image
                     sender
                     chatId
                     createdAt

@@ -42,6 +42,7 @@ export default function RateTechnicianModal({ isOpen, onOpenChange, service, tec
                                 height={150}
                                 alt='technician_profile_picture'
                                 className='rounded-full w-[8rem] h-[8rem]'
+                                priority
                                 src={technician.profilePicture ? technician.profilePicture : '/image/defaultProfilePicture.jpg'}
                             />
                             <div>
