@@ -164,7 +164,7 @@ const SignUp = () => {
   return (
     <AmplifyContext>
 
-      <div className="xl:h-screen bg-gradient-to-b from-zinc-900 to-zinc-800 w-full flex justify-center text-white px-8">
+      <div className="xl:h-screen bg-gradient-to-b from-zinc-900 to-zinc-800 w-full flex justify-center text-white px-8 overflow-y-scroll">
         <Formik initialValues={{
           fullName: "",
           email: "",
