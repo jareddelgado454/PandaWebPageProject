@@ -68,10 +68,10 @@ export default function BlockTwoComponent() {
                       alt={`car_${service.car.id}`}
                     />
                   </div>
-                  <div className='w-[80%] h-full flex flex-col justify-center'>
+                  <div className='w-[80%] h-full flex flex-col justify-center gap-2'>
                     <div className='flex flex-row justify-between'>
                       <p className='tracking-wider text-xs 2xl:text-base'>{service.title}</p>
-                      <p className='tracking-wider text-xs 2xl:text-base'>{formatDistance(new Date(service.createdAt), new Date(), { addSuffix: true })}</p>
+                      <p className='tracking-wider text-xs'>{formatDistance(new Date(service.createdAt), new Date(), { addSuffix: true })}</p>
                     </div>
                     <p className='tracking-wider text-xs 2xl:text-base'>status: {service.status}</p>
                     <p className='tracking-wider text-xs 2xl:text-base'>total: ${service.total ? service.total : 0}</p>

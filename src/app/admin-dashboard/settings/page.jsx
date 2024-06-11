@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 import { uploadData } from "aws-amplify/storage";
 import { client } from "@/contexts/AmplifyContext";
 import { getUser } from "@/graphql/custom-queries";
-import { statesUSA } from "@/assets/data/StatesUSA";
 import { updateInformation } from "@/graphql/users/mutation/users";
 import Image from "next/image";
 import { dataURLtoBlob } from "@/utils/photo/BlobImage";

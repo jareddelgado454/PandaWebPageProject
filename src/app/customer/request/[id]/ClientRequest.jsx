@@ -66,7 +66,6 @@ export default function ClientRequest() {
       .subscribe({
         next: ({ data }) => {
           const updatedService = data.onUpdateService;
-          console.log(data);
           if (updatedService) {
             setService((prevState) => ({
               ...prevState,
