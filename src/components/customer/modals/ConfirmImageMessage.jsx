@@ -26,7 +26,7 @@ export default function ConfirmImageMessage({ isOpen, onOpenChange, photograph, 
             console.error(error);
         }
     }
-    const handleUpdatePicture = async () => {
+    const handleUpdatePicture = async (onClose) => {
         setLoading(true);
         const uniqueId = uuidv4();
         const filename = `messages-pictures/${uniqueId}.jpg`;
@@ -50,6 +50,7 @@ export default function ConfirmImageMessage({ isOpen, onOpenChange, photograph, 
             console.log("Succeeded: ", result);
             sendImageAsMessage(filename);
             setLoading(false);
+            onClose();
         } catch (error) {
             console.error(error);
             setLoading(false);
@@ -60,7 +61,7 @@ export default function ConfirmImageMessage({ isOpen, onOpenChange, photograph, 
             className='bg-zinc-200 dark:bg-zinc-900 max-h-full'
         >
             <ModalContent>
-                {() => (
+                {(onClose) => (
                     <>
                         <ModalHeader className="flex flex-col gap-1">
                             <p className='text-center bg-white dark:bg-zinc-800 rounded-lg mx-4 py-4'>Photo from your device</p>
@@ -75,7 +76,7 @@ export default function ConfirmImageMessage({ isOpen, onOpenChange, photograph, 
                             />
                         </ModalBody>
                         <ModalFooter>
-                            <Button type='button' onClick={handleUpdatePicture} className='text-white bg-green-panda'>
+                            <Button type='button' onClick={() => handleUpdatePicture(onClose)} className='text-white bg-green-panda'>
                                 {loading ? <LoadingComponent /> : 'Send'}
                             </Button>
                         </ModalFooter>
