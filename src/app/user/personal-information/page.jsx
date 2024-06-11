@@ -2,6 +2,8 @@
 
 import React, { useContext, useState, useEffect } from "react";
 import Link from "next/link";
+import { uploadData } from "aws-amplify/storage";
+import { v4 as uuidv4 } from 'uuid';
 import { FaCamera } from "react-icons/fa6";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Select, SelectItem, Button } from "@nextui-org/react";
@@ -9,14 +11,13 @@ import { statesUSA } from "@/assets/data/StatesUSA";
 import { updateUserAttributes } from "aws-amplify/auth";
 import {
   RiArrowDropRightLine,
-  RiMailOpenFill,
-  RiAlertFill,
   RiErrorWarningFill,
 } from "react-icons/ri";
 import { Contexto } from "../layout";
 import { handleRetrieveTechnician } from "@/api";
 import { updatePersonalInformationTechnician } from "@/graphql/users/mutation/technicians";
 import { client } from "@/contexts/AmplifyContext";
+import { dataURLtoBlob } from "@/utils/photo/BlobImage";
 
 const PersonalInformation = () => {
   const [loading, setLoading] = useState(true);
@@ -33,31 +34,17 @@ const PersonalInformation = () => {
   const { user } = useContext(Contexto);
   console.log(user);
 
-  const dataURLtoBlob = (dataURL) => {
-    if (!dataURL) {
-      return null;
-    }
-    var parts = dataURL.split(";base64,");
-    var contentType = parts[0].split(":")[1];
-    var raw = window.atob(parts[1]);
-    var rawLength = raw.length;
-    var uInt8Array = new Uint8Array(rawLength);
-    for (var i = 0; i < rawLength; ++i) {
-      uInt8Array[i] = raw.charCodeAt(i);
-    }
-    return new Blob([uInt8Array], { type: contentType });
-  };
-  const handleChangePhotograph = (event) => {
+  function handleChangePhotograph(event) {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
+      reader.onloadend = async () => {
         setPhotograph(reader.result);
-        handleUpdatePicture(dataURLtoBlob(reader.result));
+        await handleUpdatePicture(dataURLtoBlob(reader.result));
       };
       reader.readAsDataURL(file);
     }
-  };
+  }
   const handleUpdatePicture = async (picture) => {
     const uniqueId = uuidv4();
     const filename = `user-profile-pictures/${uniqueId}.jpg`;
@@ -79,8 +66,18 @@ const PersonalInformation = () => {
         },
       }).result;
       console.log("Succeeded: ", result);
+      await client.graphql({
+        query: updatePersonalInformationTechnician,
+        variables: {
+          id: user.sub,
+          input: {
+            id: user.sub,
+            profilePicture: `https://d3nqi6yd86hstw.cloudfront.net/public/${filename}`,
+          },
+        },
+      });
     } catch (error) {
-      console.log(`Error from here : ${error}`);
+      console.log(error);
     }
   };
 
@@ -118,9 +115,9 @@ const PersonalInformation = () => {
         });
         setUploadingInformation(false);
         setUserDataBase({
-            id: user.sub,
-            state: statesUSA[stateUSA],
-            ...values,
+          id: user.sub,
+          state: statesUSA[stateUSA],
+          ...values,
         });
         setProfileCompleted(true);
         console.log("usuario cambiado correctamente");
@@ -164,7 +161,7 @@ const PersonalInformation = () => {
 
   // When Personal Information is completed
   const handleUpdateInfo = async () => {
-    console.log("valueeeeee",infoEditing);
+    console.log("valueeeeee", infoEditing);
   }
   //....
 
@@ -232,13 +229,7 @@ const PersonalInformation = () => {
                   </div>
                 </div>
                 <img
-                  src={
-                    photograph
-                      ? photograph
-                      : user.profilePicture
-                      ? user.profilePicture
-                      : "/image/defaultProfilePicture.jpg"
-                  }
+                  src={photograph ? photograph : (userDataBase.profilePicture ? userDataBase.profilePicture : "/image/defaultProfilePicture.jpg")}
                   className="rounded-full w-[4rem] h-[4rem] md:w-[6rem] md:h-[6rem] cursor-pointer "
                   alt="Profile Picture"
                 />
@@ -327,7 +318,7 @@ const PersonalInformation = () => {
                             label="Complete this field"
                             className="w-full text-white h-[40px]"
                             selectedKeys={[stateUSA]}
-                            onChange={(e) => setInfoEditing({field:state, value:statesUSA[e.target.value]})}
+                            onChange={(e) => setInfoEditing({ field: state, value: statesUSA[e.target.value] })}
                           >
                             {statesUSA.map((stateUSA, index) => (
                               <SelectItem
@@ -342,12 +333,12 @@ const PersonalInformation = () => {
                         </div>
                         <div className="flex gap-x-2 items-center">
                           <button
-                            onClick={() => {setIsEditing(null); setInfoEditing(null)}}
+                            onClick={() => { setIsEditing(null); setInfoEditing(null) }}
                             className="h-[40px] w-[80px] rounded-md bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
                           >
                             Cancel
                           </button>
-                          <button onClick={()=>handleUpdateInfo()} className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
+                          <button onClick={() => handleUpdateInfo()} className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
                             Update
                           </button>
                         </div>
@@ -377,7 +368,7 @@ const PersonalInformation = () => {
                             type="text"
                             className="w-full rounded-lg bg-transparent border-[1px] border-zinc-500 p-2"
                             placeholder="Enter your city"
-                            onChange={(e)=>setInfoEditing({field:city, value:e.target.value})}
+                            onChange={(e) => setInfoEditing({ field: city, value: e.target.value })}
                           />
                         </div>
                         <div className="flex gap-x-2 items-center">
@@ -387,7 +378,7 @@ const PersonalInformation = () => {
                           >
                             Cancel
                           </button>
-                          <button onClick={()=>handleUpdateInfo()} className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
+                          <button onClick={() => handleUpdateInfo()} className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
                             Update
                           </button>
                         </div>
@@ -417,7 +408,7 @@ const PersonalInformation = () => {
                             type="text"
                             className="w-full rounded-lg bg-transparent border-[1px] border-zinc-500 p-2"
                             placeholder="Enter your address"
-                            onChange={(e)=>setInfoEditing({field:address, value:e.target.value})}
+                            onChange={(e) => setInfoEditing({ field: address, value: e.target.value })}
                           />
                         </div>
                         <div className="flex gap-x-2 items-center">
@@ -427,7 +418,7 @@ const PersonalInformation = () => {
                           >
                             Cancel
                           </button>
-                          <button onClick={()=>handleUpdateInfo()} className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
+                          <button onClick={() => handleUpdateInfo()} className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
                             Update
                           </button>
                         </div>
@@ -466,7 +457,7 @@ const PersonalInformation = () => {
                             type="text"
                             className="w-full rounded-lg bg-transparent border-[1px] border-zinc-500 p-2"
                             placeholder="Enter your contact number"
-                            onChange={(e)=>setInfoEditing({field:contactNumber, value:e.target.value})}
+                            onChange={(e) => setInfoEditing({ field: contactNumber, value: e.target.value })}
                           />
                         </div>
                         <div className="flex gap-x-2 items-center">
@@ -476,7 +467,7 @@ const PersonalInformation = () => {
                           >
                             Cancel
                           </button>
-                          <button onClick={()=>handleUpdateInfo()} className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
+                          <button onClick={() => handleUpdateInfo()} className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
                             Update
                           </button>
                         </div>
@@ -506,7 +497,7 @@ const PersonalInformation = () => {
                             type="text"
                             className="w-full rounded-lg bg-transparent border-[1px] border-zinc-500 p-2"
                             placeholder="Enter your zipCode"
-                            onChange={(e)=>setInfoEditing({field:zipCode, value:e.target.value})}
+                            onChange={(e) => setInfoEditing({ field: zipCode, value: e.target.value })}
                           />
                         </div>
                         <div className="flex gap-x-2 items-center">
@@ -516,7 +507,7 @@ const PersonalInformation = () => {
                           >
                             Cancel
                           </button>
-                          <button onClick={()=>handleUpdateInfo()} className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
+                          <button onClick={() => handleUpdateInfo()} className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
                             Update
                           </button>
                         </div>
