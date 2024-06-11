@@ -10,6 +10,8 @@ import { useDisclosure } from "@nextui-org/react";
 import { client } from "@/contexts/AmplifyContext";
 import "@/app/app.css";
 import { PlaceTechnicianProvider } from "@/contexts/placeTechnician/PlaceTechnicianProvider";
+import ServiceAssignedProvider from "@/contexts/serviceAssigned/ServiceAssignedProvider";
+import { ServiceAssignedContext } from "@/contexts/serviceAssigned/ServiceAssignedContext";
 
 export const Contexto = createContext();
 
@@ -19,8 +21,14 @@ const UserLayout = ({ children }) => {
   const [isOnline, setIsOnline] = useState(null);
   const [technicianActivityStatus, setTechnicianActivityStatus] =
     useState(null);
-  const [serviceAssigned, setServiceAssigned] = useState(null);
-  const [serviceIdWaitingFor, setServiceIdWaitingFor] = useState(null);
+
+  const {
+      serviceAssigned,
+      setServiceAssigned,
+      setTechnicianActivityStatus: setContextTechnicianActivityStatus,
+      setLoading: setContextLoading,
+  } = useContext(ServiceAssignedContext);
+
   const {
     isOpen: isAssignedTechnicianModalOpen,
     onOpen: onAssignedTechnicianModalOpen,
@@ -52,6 +60,7 @@ const UserLayout = ({ children }) => {
   };
 
   useEffect(() => {
+    setContextLoading(true);
     setLoading(true);
     retrieveOneUser();
     const storedService = localStorage.getItem("serviceAssigned");
@@ -60,43 +69,45 @@ const UserLayout = ({ children }) => {
       setTechnicianActivityStatus("assigned");
       onAssignedTechnicianModalOpen();
     }
+    setContextLoading(false);
     setLoading(false);
   }, []);
 
   useEffect(() => {
     if (!user) {
+      console.log("No hay user o servicioAssigned");
       return;
     }
-
+  
     console.log("este es el id del tecnico", user.sub);
-      const subscription = client
-        .graphql({
-          query: listenUpdateService,
-          // variables: { serviceId: serviceIdWaitingFor, technicianId: user.sub },
-          // variables: { serviceId: "49e19b34-44b2-4377-b298-7b057ca99350", technicianId: "d731f20e-a471-4220-9237-b26b130ae87f" },
-        })
-        .subscribe({
-          next: ({ data }) => {
-              console.log("este es el id del tecnico", user.sub, serviceIdWaitingFor);
-              console.log("dataaaaaaaaaaa", data);
-              console.log("esta es la data retornadaaa",data);
-              console.log(data.onUpdateService);
-              setTechnicianActivityStatus("assigned");
-              setServiceAssigned(data.onUpdateService);
-              localStorage.setItem("serviceAssigned", JSON.stringify(data.onUpdateService));
-              onAssignedTechnicianModalOpen();
-          },
-          error: (error) => console.log("error en la suscripcion",error),
-        });
+    console.log("Este es el id del servicio asignado", serviceAssigned?.id);
+  
+    const subscription = client
+      .graphql({
+        query: listenUpdateService,
+        variables: { serviceId: serviceAssigned?.id, technicianId: user.sub },
+      })
+      .subscribe({
+        next: ({ data }) => {
+          console.log("este es el id del tecnico dentro de la suscripcion", user.sub);
+          console.log("Este es el id del servicio asignado dentro de la suscripcion", serviceAssigned?.id);
+          console.log("data recibida en suscripción", data);
+          if (data?.onUpdateService) {
+            setServiceAssigned(data.onUpdateService);
+            setTechnicianActivityStatus("assigned");
+            onAssignedTechnicianModalOpen();
+          } else {
+            console.log("No se recibieron datos de actualización");
+          }
+        },
+        error: (error) => console.log("error en la suscripción", error),
+      });
+  
+    return () => {
+      subscription.unsubscribe();
+    };
 
-      return () => {
-        subscription.unsubscribe();
-      };
-
-    // if (serviceIdWaitingFor) {
-      
-    // }
-  }, [user, serviceIdWaitingFor]);
+  }, [user, serviceAssigned?.id]); 
 
   return (
     <div className="w-full h-screen bg-zinc-900 dark">
@@ -108,53 +119,51 @@ const UserLayout = ({ children }) => {
           handleChangeStatus,
           retrieveOneUser,
           setTechnicianActivityStatus,
-          setServiceIdWaitingFor,
         }}
       >
-        <PlaceTechnicianProvider>
-          {loading ? (
-            <div className="text-white"></div>
-          ) : (
-            user && (
-              <div
-                className={`w-full h-full flex justify-center items-center p-0 ${
-                  technicianActivityStatus === "waitingResponse"
-                    ? "relative"
-                    : ""
-                }`}
-              >
-                {technicianActivityStatus === "waitingResponse" && (
-                  <div className="text-white font-bold text-[17px] flex flex-col absolute bottom-3 right-3 border-[2px] border-emerald-400 bg-emerald-600 shadow-emerald-500/20 shadow-lg w-[250px] h-[80px] z-50 rounded-md p-3">
-                    <div className="flex w-full gap-x-2 items-center">
-                      Client reviewing offer{" "}
-                      <img
-                        src="/loading/loading4.gif"
-                        className="w-[25px] h-[25px]"
-                      />
+          <PlaceTechnicianProvider>
+            {loading ? (
+              <div className="text-white"></div>
+            ) : (
+              user && (
+                <div
+                  className={`w-full h-full flex justify-center items-center p-0 ${
+                    technicianActivityStatus === "waitingResponse"
+                      ? "relative"
+                      : ""
+                  }`}
+                >
+                  {technicianActivityStatus === "waitingResponse" && (
+                    <div className="text-white font-bold text-[17px] flex flex-col absolute bottom-3 right-3 border-[2px] border-emerald-400 bg-emerald-600 shadow-emerald-500/20 shadow-lg w-[250px] h-[80px] z-50 rounded-md p-3">
+                      <div className="flex w-full gap-x-2 items-center">
+                        Client reviewing offer{" "}
+                        <img
+                          src="/loading/loading4.gif"
+                          className="w-[25px] h-[25px]"
+                        />
+                      </div>
+                      <u className="cursor-pointer text-[15px] text-zinc-100">
+                        Go to the Offer
+                      </u>
                     </div>
-                    <u className="cursor-pointer text-[15px] text-zinc-100">
-                      Go to the Offer
-                    </u>
+                  )}
+                  <UserSidebar user={user} />
+                  <div className="flex-1 flex flex-col h-screen">
+                    <UserNavBar
+                      user={user}
+                      isOnline={isOnline}
+                      handleChangeStatus={handleChangeStatus}
+                    />
+                    {children}
                   </div>
-                )}
-                <UserSidebar user={user} />
-                <div className="flex-1 flex flex-col h-screen">
-                  <UserNavBar
-                    user={user}
-                    isOnline={isOnline}
-                    handleChangeStatus={handleChangeStatus}
+                  <AssignedTechnicianModal
+                    isOpen={isAssignedTechnicianModalOpen}
+                    onOpenChange={onAssignedTechnicianModalOpenChange}
                   />
-                  {children}
                 </div>
-                <AssignedTechnicianModal
-                  isOpen={isAssignedTechnicianModalOpen}
-                  onOpenChange={onAssignedTechnicianModalOpenChange}
-                  serviceAssigned={serviceAssigned}
-                />
-              </div>
-            )
-          )}
-        </PlaceTechnicianProvider>
+              )
+            )}
+          </PlaceTechnicianProvider>
       </Contexto.Provider>
     </div>
   );

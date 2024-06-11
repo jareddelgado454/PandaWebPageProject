@@ -100,7 +100,7 @@ export const handleUpdateStatusService = async (values) => {
             query: updateStatusService,
             variables: {
                 serviceId : values.serviceId,
-                status: values.status
+                status: values.status,
             }
         })
         return data;

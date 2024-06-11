@@ -6,13 +6,21 @@ import {
   RiToolsFill,
   RiMoneyDollarCircleFill,
   RiCheckFill,
+  RiCheckboxCircleFill,
 } from "react-icons/ri";
 import { onUpdateStatusServiceSubscription } from "@/graphql/services/subscriptions/subscription";
 import { Contexto } from "@/app/user/layout";
 import { client } from "@/contexts/AmplifyContext";
+import { ServiceAssignedContext } from "@/contexts/serviceAssigned/ServiceAssignedContext";
 
-const Payment = ({ serviceAssigned, isOpen, onOpenChange }) => {
+const Completed = ({ isOpen, onOpenChange }) => {
   const { user } = useContext(Contexto);
+  const {clearServiceAssigned} = useContext(ServiceAssignedContext);
+
+  const handleClose = () => {
+    clearServiceAssigned();
+    onOpenChange(false);
+  };
 
   return (
     <div className="w-full h-full flex flex-col bg-zinc-900 items-center p-3 gap-y-4">
@@ -38,32 +46,26 @@ const Payment = ({ serviceAssigned, isOpen, onOpenChange }) => {
         <div className="flex flex-col items-center justify-center ">
           <div className="w-[40px] h-[40px] border-[2px] flex items-center justify-center border-emerald-400 rounded-full">
             <div className="w-[30px] h-[30px] bg-emerald-400 rounded-full flex justify-center items-center">
-              <RiMoneyDollarCircleFill className="text-zinc-700 text-[22px]" />
+                <RiCheckFill className="text-zinc-700 text-[20px]" />
             </div>
           </div>
           <span className="text-zinc-200 text-[14px]">Payment</span>
         </div>
       </div>
       <div className="flex-1 w-full flex flex-col justify-center items-center gap-y-2">
-        <img
-          src="/image/CardPaymentImage.png"
-          alt="Reparación en curso"
-          className="w-[500px] h-[500px] object-cover rounded-lg mb-4"
-        />
+        <RiCheckboxCircleFill className="text-[100px] text-emerald-500"/>
         <div className="text-zinc-400 text-[22px] mb-4 text-center flex flex-col">
           <span className="text-zinc-100 text-[35px] font-bold">
-            Payment Process
+            Payment Completed
           </span>{" "}
-          The customer is making the payment, waiting to complete the service.
+            The service has been completed successfully!
         </div>
-        <img
-          src="/loading/loading4.gif"
-          alt="Reparación en curso"
-          className="w-[60px] h-[60px] object-cover rounded-lg mb-4"
-        />
+        <button onClick={handleClose} className="px-4 py-1 text-[17px] rounded-md bg-emerald-500 text-white">
+            Exit Service
+        </button>
       </div>
     </div>
   );
 };
 
-export default Payment;
+export default Completed;

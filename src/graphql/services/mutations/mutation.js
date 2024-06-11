@@ -84,8 +84,26 @@ export const updateStatusService = gql`
       id
       status
       serviceCustomerId
-      paymentLink
       serviceTechnicianSelectedId
+      completed
+      serviceTechnicianSelectedId
+      originLatitude
+      originLongitude
+      destLatitude
+      destLongitude
+      status
+      type
+      customer {
+        id
+        profilePicture
+        fullName
+      }
+      car {
+        id
+        image
+        brand
+        model
+      }
     }
   }
 `;
