@@ -58,10 +58,10 @@ export default function ClientProfile() {
                         <Tabs aria-label="Options">
                             <Tab key="My Profile" title="My Profile">
                                 <div className='h-full flex flex-col gap-4'>
-                                    <p>Full Name: <strong>{user.fullName}</strong></p>
-                                    <p>Contact Number: <strong>{user.contactNumber ? `(+1) ${user.contactNumber}` : 'To fill'}</strong></p>
-                                    <p>State: <strong>{user.state ? user.state : 'To fill'}</strong></p>
-                                    <p>City: <strong>{user.city ? user.city : 'To fill'}</strong></p>
+                                    <p>Full Name: <strong>{user.fullName ? user.fullName : <span className='text-rose-600'>This is required</span>}</strong></p>
+                                    <p>Contact Number: <strong>{user.contactNumber ? `(+1) ${user.contactNumber}` : <span className='text-rose-600'>This is required</span>}</strong></p>
+                                    <p>State: <strong>{user.state ? user.state : <span className='text-rose-600'>This is required</span>}</strong></p>
+                                    <p>City: <strong>{user.city ? user.city : <span className='text-rose-600'>This is required</span>}</strong></p>
                                     <p>Member since: {SecondDateFormatter(new Date(user.createdAt))}</p>
                                     <p className='transition-all duration-300 text-[#40C48E] hover:font-bold cursor-pointer' onClick={onUpdateInformationnModalOpen}>You want to edit?</p>
                                 </div>

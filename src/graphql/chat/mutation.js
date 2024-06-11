@@ -62,6 +62,7 @@ export const createImageMessage = gql`
       id
       chatId
       content
+      image
       sender
       createdAt
     }

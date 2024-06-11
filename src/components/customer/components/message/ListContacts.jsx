@@ -25,9 +25,7 @@ export default function ListContacts({ setChatActive, setChatSelected }) {
                 ...data.listChatsWithTechnicians.items,
                 ...data.listChatsWithAdmins.items
             ];
-            console.log(combinedChats);
             setChats(combinedChats);
-            console.log(data);
             setLoading(false);
         } catch (error) {
             console.log(error);

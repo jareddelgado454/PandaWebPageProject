@@ -97,7 +97,7 @@ export default function InformationHeader({ user }) {
           </div>
           <div className='flex flex-col gap-2 text-center md:text-left'>
             <div className='flex flex-row gap-2 items-center justify-center md:justify-start flex-wrap'>
-              <p className='w-full'>Welcome back, <strong className='text-[#40C48E]'>{user && user.fullName}</strong></p>
+              <p className='w-full'>Welcome back, <strong className='text-[#40C48E]'>{user && user.fullName ? user.fullName : <span className='text-rose-600'>This is required</span>}</strong></p>
               <FaStar className='text-amber-500' /><FaStar className='text-amber-500' /><FaStar className='text-amber-500' /><FaStar className='text-amber-500' />
               <FaRegStar className='text-amber-500' />
               <p>4 stars</p>
