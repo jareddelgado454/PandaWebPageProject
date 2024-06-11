@@ -367,7 +367,7 @@ const SignUp = () => {
                         setDataSignUp({ ...dataSignUp, role: e.target.value });
                       }}
                       className="block w-full bg-zinc-800 text-white py-3 px-4 rounded-lg mb-2"
-                      value="Select an option"
+                      value={dataSignUp.role}
                     >
                       <option className="text-white" value="">
                         Select an option
