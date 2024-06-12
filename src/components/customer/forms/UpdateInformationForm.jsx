@@ -5,6 +5,7 @@ import { Button } from '@nextui-org/react';
 import { client } from '@/contexts/AmplifyContext';
 import { updateMyInformation } from '@/graphql/users/customer/mutation';
 import { toast } from 'react-toastify';
+import { updateUserAttributes } from 'aws-amplify/auth';
 export default function UpdateInformationForm({ callback, customer, closeModal }) {
     const onHandleUpdateInformationSubmit = async(values) => {
         try {
@@ -31,7 +32,7 @@ export default function UpdateInformationForm({ callback, customer, closeModal }
                 ['custom:profileCompleted']: "true"
               },
             });
-            setIsAgreed(true);
+            //setIsAgreed(true);
             toast.success(`Accepted Succesfully`);
           } catch (error) {
             console.error(error);
