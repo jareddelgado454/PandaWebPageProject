@@ -30,7 +30,6 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
     role: "",
-    agreed: false,
   });
   const [roleSelected, setRoleSelected] = useState(null);
   const [errors, setErrors] = useState({});
@@ -81,8 +80,7 @@ const SignUp = () => {
       dataSignUp.email !== "" &&
       dataSignUp.password !== "" &&
       dataSignUp.confirmPassword !== "" &&
-      dataSignUp.role !== "" &&
-      dataSignUp.agreed
+      dataSignUp.role !== ""
     ) {
       setMessageDataMissing(false);
       try {
