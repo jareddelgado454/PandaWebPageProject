@@ -98,9 +98,9 @@ export default function ServiceForm() {
     useEffect(() => { setService(serviceRequest); }, [setServiceRequest]);
 
     return (
-        <div className='relative h-full '>
+        <div className='relative h-full'>
             <AddNewCarModal isOpen={isOpen} onOpenChange={onOpenChange} callback={retrieveMyCars} setMyCars={setMyCars} />
-            <div className={`container mx-auto px-4 py-4 w-full lg:w-[90%] h-full overflow-y-scroll ${service && (service.status === 'service accepted' || service.status === 'in progress' || service.status === 'payment') && 'hidden'}`} style={{
+            <div className={`container mx-auto px-4 py-4 w-full lg:w-[90%] h-full overflow-y-scroll ${service && (service.status === 'service accepted' || service.status === 'on the way' || service.status === 'in progress' || service.status === 'payment') && 'hidden'}`} style={{
               msOverflowStyle: 'none',
               scrollbarWidth: 'none',
               overflowY: 'scroll'
@@ -210,7 +210,7 @@ export default function ServiceForm() {
                 )
             }
             {
-                (service && (service.status !== 'completed') && (
+                (service && (service.status !== 'service accepted') && (
                     <div className='w-full h-full flex flex-col gap-4 justify-center items-center'>
                         <p className='font-semibold'>You already have a service petition. Click here to see full detail:</p>
                         <Link href={`/customer/request/${service.id}`} className='bg-green-panda rounded px-2 py-2 shadow-lg text-white'>Service Detail</Link>
