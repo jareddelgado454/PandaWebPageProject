@@ -53,6 +53,22 @@ export const onUpdateServiceGlobal = gql`
   }
 `;
 
+export const onUpdateServiceStatus = gql`
+  subscription OnUpdateService($serviceId: ID!) {
+    onUpdateService(filter: {id: {eq: $serviceId}}){
+      id
+      status
+      destLatitude
+      destLongitude
+      paymentLink
+      price
+      tax
+      total
+    }
+  }
+`;
+
+
 export const onUpdateServiceCoordinates = gql`
     subscription OnUpdateServiceCoordinates($serviceId: ID!, $customerId: ID!) {
         onUpdateService(filter: {id: {eq: $serviceId}, serviceCustomerId: {eq: $customerId}}){

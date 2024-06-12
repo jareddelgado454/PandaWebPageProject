@@ -78,7 +78,7 @@ export default function Map() {
           });
 
           const pulsatingCircle = document.createElement('div');
-          pulsatingCircle.className = 'pulsating-circle';
+          pulsatingCircle.className = 'customer-pulsating-circle';
 
           new maplibregl.Marker(pulsatingCircle)
             .setLngLat(userLocation)

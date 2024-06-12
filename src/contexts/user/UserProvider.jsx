@@ -18,14 +18,14 @@ export const UserProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     const getUserFromCookies = () => {
-        const userCookie = Cookies.get('currentUser') ? Cookies.get('currentUser') : null;
-        if (userCookie) {
-          try {
-            return JSON.parse(userCookie);
-          } catch (error) {
-            console.error('Error parsing user cookie', error);
-            return null;
-          }
+        const userCookie = Cookies.get('currentUser');
+        if (userCookie && userCookie !== '') {
+            try {
+                return JSON.parse(userCookie);
+            } catch (error) {
+                console.error('Error parsing user cookie', error);
+                return null;
+            }
         }
         return null;
     };
