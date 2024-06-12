@@ -95,7 +95,7 @@ const SignUp = () => {
               "custom:status": status,
               "custom:subscription": values.role === "technician" ? "pending" : "",
               "custom:infoCompleted": "false",
-              "custom:termsAccepted": "false",
+              "custom:termsAccepted": isAccepted ? "true" : "false",
               "custom:profileCompleted": "false"
             },
           },
