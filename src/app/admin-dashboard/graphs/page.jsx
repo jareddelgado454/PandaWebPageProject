@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
 import { DonutChartPerRole, LineChartGained } from '@/components/chartjs'
-import { listUsersForGraphics } from '@/graphql/users/query/user';
+import { listDataToGraphs } from '@/graphql/users/query/user';
 import { client } from '@/contexts/AmplifyContext';
 import HighRateComponent from '@/components/chartjs/highRate/HighRateComponent';
 import MonthlyComponent from '@/components/chartjs/monthlyServices/MonthlyComponent';
@@ -16,25 +16,28 @@ const Graphs = () => {
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState(null);
 
-  const retrieveData = async() => 
+  const retrieveUsersData = async() => 
   {
     setLoading(true);
 
     try {
       
       const { data } = await client.graphql({
-        query: listUsersForGraphics
+        query: listDataToGraphs
       });
-      setUsers(data.listUsers.items);
+      const combinedUsers = [
+        ...data.listCustomers.items,
+        ...data.listTechnicians.items
+    ];
+      setUsers(combinedUsers);
       setLoading(false);
     } catch (error) {
       console.log(error);
       setLoading(false);
     }
   }
-
   useEffect(() => {
-    retrieveData();
+    retrieveUsersData();
   }, []);
 
   return (
