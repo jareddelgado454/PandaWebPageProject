@@ -6,6 +6,7 @@ import ReactStars from "react-rating-stars-component";
 import { calculateRate } from '@/utils/service/AVGRate';
 import { formatDistance } from 'date-fns';
 export default function TechnicianModal({ isOpen, onOpenChange, technician }) {
+  console.log(technician);
   const calculateAverageRate = (items) => {
     if (items.length === 0) return 0; // Manejo de caso donde el array está vacío
 
@@ -14,7 +15,7 @@ export default function TechnicianModal({ isOpen, onOpenChange, technician }) {
   };
   return (
     <Modal backdrop='opaque' isOpen={isOpen} onOpenChange={onOpenChange} size='lg' placement='center'
-      className='bg-white dark:bg-zinc-900 shadow h-full 2xl:max-h-[48rem] overflow-y-scroll'
+      className='bg-white dark:bg-zinc-900 shadow h-full 2xl:h-[36rem] 2xl:max-h-[49rem] overflow-y-scroll'
       style={{
         msOverflowStyle: 'none',
         scrollbarWidth: 'none',
@@ -52,13 +53,13 @@ export default function TechnicianModal({ isOpen, onOpenChange, technician }) {
               {technician.rate.items.length > 0 ? technician.rate.items.map((single_rate, i) => (
                 <div
                   key={i}
-                  className='flex flex-col gap-2 w-full'
+                  className='flex flex-col gap-3 w-full'
                 >
                   <div className='flex gap-3 w-full'>
                     <Image
                       width={50}
                       height={50}
-                      src={single_rate.createdBy.profilePicture ? single_rate.createdBy.profilePicture : `/image/defaultProfilePicture.jpg`}
+                      src={single_rate.createdBy?.profilePicture ? single_rate.createdBy.profilePicture : `/image/defaultProfilePicture.jpg`}
                       className='rounded-full'
                       alt={`customer_rate_${i}`}
                     />
@@ -67,7 +68,7 @@ export default function TechnicianModal({ isOpen, onOpenChange, technician }) {
                       <p className='text-sm'>{formatDistance(new Date(single_rate.createdAt), new Date(), { addSuffix: true })}</p>
                     </div>
                   </div>
-                  <p className='text-justify line-clamp-6'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque quia labore veritatis modi eos impedit maxime aperiam exercitationem eum assumenda magnam similique nam quaerat at rerum numquam placeat, praesentium sequi.</p>
+                  <p className='text-justify line-clamp-6'>{single_rate.comment}</p>
                   <hr className='my-5' />
                 </div>
               )) : <div>There is no rate for this technician yet.</div>}
