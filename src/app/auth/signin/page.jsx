@@ -67,13 +67,14 @@ const SignIn = () => {
           },
         });
         setDataPassed({ email: values.email, password: values.password });
+        console.log(nextStep);
         if (isSignedIn) {
           console.log("Login succesfull");
         } else {
           if (nextStep?.signInStep === "CONFIRM_SIGN_UP") {
             onVerifyCodeModalOpen();
           } else {
-            setErrorMessage("Error signing in. Please try again.");
+            console.log("Error signing in. Please try again.");
           }
         }
       } catch (error) {
@@ -161,7 +162,7 @@ const SignIn = () => {
             </div>
             <Formik
               initialValues={initialValue}
-              onSubmit={(values) => onHandleSubmit(values)}
+              onSubmit={onHandleSubmit}
             >
               {({ handleSubmit }) => (
                 <Form onSubmit={handleSubmit} className="mb-7  w-full">
