@@ -113,8 +113,8 @@ const Subscription = () => {
       try {
         const accountLink = await stripe.accountLinks.create({
           account: stripeId,
-          refresh_url: "http://localhost:3000/user",
-          return_url: "http://localhost:3000/user/subscription",
+          refresh_url: "https://master.d3dtglewderhtg.amplifyapp.com/user",
+          return_url: "https://master.d3dtglewderhtg.amplifyapp.com/user/subscription",
           type: "account_onboarding",
         });
         if (accountLink.url) {
