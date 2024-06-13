@@ -1,5 +1,5 @@
 'use client';
-import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useRef } from 'react';
 import { createMap } from 'maplibre-gl-js-amplify';
 import maplibregl from 'maplibre-gl';
 import { PlaceContext } from '@/contexts/place/PlaceContext';
@@ -58,7 +58,7 @@ export default function Map() {
           zoom: 14
         });
         setMap(mapC);
-        if(serviceRequest){
+        if (serviceRequest) {
           displayTechnicianMarker(mapC, serviceRequest.destLatitude, serviceRequest.destLongitude);
         }
         if (userLocation) {
@@ -87,14 +87,23 @@ export default function Map() {
   const displayTechnicianMarker = (mapC, destLatitude = 0, destLongitude = 0) => {
     const technicianMarker = document.createElement('div');
     technicianMarker.className = 'technician-marker';
-    technicianMarker.addEventListener('click', () => {
-      handleModalInformation(serviceRequest.technicianSelected);
-    });
 
     technicianMarkerRef.current = new maplibregl.Marker({ element: technicianMarker })
       .setLngLat([destLongitude, destLatitude])
       .addTo(mapC);
   };
+  // useEffect(() => {
+  //   if (map) {
+  //     techniciansList.map((technician, i) => {
+  //       const technicianMarker = document.createElement('div');
+  //       technicianMarker.className = 'technician-marker';
+
+  //       new maplibregl.Marker({ element: technicianMarker })
+  //         .setLngLat([technician.loLongitude, technician.loLatitude])
+  //         .addTo(map);
+  //     });
+  //   }
+  // }, [isMapReady, map]);
 
   useEffect(() => {
     if ((isMapReady && map) && serviceRequest) {
