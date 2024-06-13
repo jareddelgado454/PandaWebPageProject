@@ -3,7 +3,7 @@ import { getUserByCognitoID, getUserByEmail } from '@/graphql/custom-queries';
 import { createOffer, updatePaymentLinkService, updateStatusService, updateTechnicianLocation, updateTotalAmountService } from '@/graphql/services/mutations/mutation';
 import { getRequestServiceById } from '@/graphql/services/queries/query';
 import { createCustomer } from '@/graphql/users/mutation/customer';
-import { createTechnician, updateLocationTechnician } from '@/graphql/users/mutation/technicians';
+import { createTechnician, updateLocationTechnician, updateStripeInformationTechnician } from '@/graphql/users/mutation/technicians';
 import { createUser } from '@/graphql/users/mutation/users';
 import { getTechnician } from '@/graphql/users/query/technician';
 export const handleCreateUserOnDatabase = async(values, isAdded) => {
@@ -35,6 +35,20 @@ export const handleCreateTechnicianOnDataBase = async(values, isAdded) => {
     } catch (error) {
         console.log(error);
     }
+}
+
+export const handleUpdateStripeInformationTechnician = async(values) => {
+    try {
+        const { data } = await client.graphql({
+            query: updateStripeInformationTechnician,
+            variables: {
+                input: { ...values }
+            },
+        });
+        return data;
+    } catch (error) {
+        console.log(error);
+    }   
 }
 
 export const handleUpdateLocationTechnician = async(values) => {

@@ -100,17 +100,23 @@ const Page = () => {
                       </div>
                     </div>
                     <div
-                      className={`w-[95px] p-2 relative border-[1px] rounded-md border-red-400 bg-zinc-800`}
+                      className={`w-[95px] p-2 relative border-[1px] rounded-md ${user["custom:stripeAccountStatus"] && user["custom:stripeAccountStatus"]==="verified" ? "border-green-400" : "border-red-400"} bg-zinc-800`}
                     >
-                      <RiAlertFill className="absolute -top-2 -right-2 w-[22px] h-[22px] flex justify-center items-center text-red-500" />
+                      {
+                        user["custom:stripeAccountStatus"] && user["custom:stripeAccountStatus"] == "verified" ? <RiCheckboxCircleFill className="absolute -top-2 -right-2 w-[22px] h-[22px] flex justify-center items-center text-green-500"/> 
+                        : <RiAlertFill className="absolute -top-2 -right-2 w-[22px] h-[22px] flex justify-center items-center text-red-500" />
+                      }
+                      
                       <div className="w-full flex flex-col">
                         <span className="w-full text-left text-[11px] text-zinc-300">
                           Stripe acct:
                         </span>
                         <span
-                          className={`w-full text-left text-[13px] text-red-400`}
+                          className={`w-full text-left text-[13px]  ${user["custom:stripeAccountStatus"] && user["custom:stripeAccountStatus"]==="verified" ? "text-green-400" : "text-red-400"}`}
                         >
-                          None
+                          {
+                            !user["custom:stripeId"] ? "none" :  user["custom:stripeAccountStatus"] == "verified" ? "Verified" : "incomplete"
+                          }
                         </span>
                       </div>
                     </div>
