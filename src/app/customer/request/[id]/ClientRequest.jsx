@@ -11,15 +11,12 @@ import { ServiceContext } from '@/contexts/service/ServiceContext';
 import { onUpdateServiceGlobal } from '@/graphql/users/customer/subscription';
 import Cookies from 'js-cookie';
 export default function ClientRequest() {
-  const { setServiceRequest, serviceRequest, setServiceId } = useContext(ServiceContext);
+  const { setServiceRequest, serviceRequest } = useContext(ServiceContext);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const param = useSearchParams().get('paymentStatus');
   const [loading, setLoading] = useState(true);
   const [service, setService] = useState(null);
   const { id } = useParams();
-  useEffect(() => {
-    setServiceId(id);
-  }, [id]);
   useEffect(() => {
     const retrieveServiceDetail = async () => {
       setLoading(true);
@@ -60,7 +57,6 @@ export default function ClientRequest() {
     }
   }
   useEffect(() => {
-    console.log('ready');
     const subscription = client
       .graphql({
         query: onUpdateServiceGlobal,
