@@ -161,7 +161,7 @@ const SignIn = () => {
             </div>
             <Formik
               initialValues={initialValue}
-              onSubmit={(values) => onHandleSubmit(values)}
+              onSubmit={onHandleSubmit}
             >
               {({ handleSubmit }) => (
                 <Form onSubmit={handleSubmit} className="mb-7  w-full">
