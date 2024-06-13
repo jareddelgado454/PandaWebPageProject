@@ -47,7 +47,7 @@ export default function TechnicianDetail({ technician }) {
         <div className='flex flex-col lg:flex-row gap-2 gap-y-4 items-center h-full'>
           <div className='w-full lg:w-[80%] flex flex-row gap-4 items-center'>
             <Image
-              src={`/image/defaultProfilePicture.jpg`}
+              src={technician.profilePicture ? technician.profilePicture : `/image/defaultProfilePicture.jpg`}
               alt='image_technician_profile_picture'
               width={100}
               height={100}
