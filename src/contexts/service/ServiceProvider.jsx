@@ -10,11 +10,9 @@ const INITIAL_STATE = {
     serviceRequest: undefined
 }
 
-
 export const ServiceProvider = ({ children }) => {
-    const [status, setStatus] = useState(null);
-    const [serviceId, setServiceId] = useState(null);
     const [state, dispatch] = useReducer(ServiceReducer, INITIAL_STATE);
+    const [status, setStatus] = useState(null);
     const [loading, setLoading] = useState(true);
 
     const getServiceFromCookies = () => {
@@ -97,8 +95,7 @@ export const ServiceProvider = ({ children }) => {
         <ServiceContext.Provider value={{
             ...state,
             setServiceRequest,
-            setServiceCoordinates,
-            setServiceId
+            setServiceCoordinates
         }}>
             {children}
         </ServiceContext.Provider>
