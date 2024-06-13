@@ -2,23 +2,20 @@
 import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createMap } from 'maplibre-gl-js-amplify';
 import maplibregl from 'maplibre-gl';
-import { useDisclosure } from "@nextui-org/react";
 import { PlaceContext } from '@/contexts/place/PlaceContext';
 import { MapContext } from '@/contexts/map/MapContext';
 import { ServiceContext } from '@/contexts/service/ServiceContext';
-import 'maplibre-gl/dist/maplibre-gl.css';
-import "maplibre-gl-js-amplify/dist/public/amplify-map.css";
-import { TechnicianInformationModal } from './customer';
 import { onUpdateServiceCoordinates } from '@/graphql/users/customer/subscription';
 import { client } from '@/contexts/AmplifyContext';
 import { CalculateAngleFromLocation } from '@/utils/service/CalculateAngle';
 import { getServiceById } from '@/graphql/services/queries/query';
+import 'maplibre-gl/dist/maplibre-gl.css';
+import "maplibre-gl-js-amplify/dist/public/amplify-map.css";
 export default function Map() {
   const mapDiv = useRef(null);
   const technicianMarkerRef = useRef(null);
   const { userLocation, isLoading } = useContext(PlaceContext);
   const { map, setMap, isMapReady } = useContext(MapContext);
-  const [technicianSelected, setTechnicianSelected] = useState(null);
   const { serviceRequest, setServiceRequest, setServiceCoordinates } = useContext(ServiceContext);
   const interpolate = (start, end, t) => start + (end - start) * t;
   const animateMarker = (marker, startCoords, endCoords, duration) => {
@@ -38,11 +35,6 @@ export default function Map() {
     };
     requestAnimationFrame(animate);
   };
-  const {
-    isOpen: isTechnicianModalOpen,
-    onOpen: onTechnicianModalOpen,
-    onOpenChange: onTechnicianModalChange,
-  } = useDisclosure();
   const retrieveService = async () => {
     try {
       if (!serviceRequest) return;
@@ -92,10 +84,6 @@ export default function Map() {
     };
     initializeMap();
   }, [isLoading]);
-  const handleModalInformation = (technician) => {
-    setTechnicianSelected(technician);
-    onTechnicianModalOpen();
-  }
   const displayTechnicianMarker = (mapC, destLatitude = 0, destLongitude = 0) => {
     const technicianMarker = document.createElement('div');
     technicianMarker.className = 'technician-marker';
@@ -148,7 +136,6 @@ export default function Map() {
   }, [serviceRequest, setServiceCoordinates]);
   return (
     <>
-      <TechnicianInformationModal isOpen={isTechnicianModalOpen} onOpenChange={onTechnicianModalChange} technician={technicianSelected} />
       <div ref={mapDiv} id='map' className='map h-full lg:h-[100%] w-[100%] rounded-lg'></div>
     </>
   );

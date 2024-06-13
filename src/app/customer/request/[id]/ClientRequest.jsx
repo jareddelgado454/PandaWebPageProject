@@ -71,7 +71,7 @@ export default function ClientRequest() {
               status: updatedService?.status || prevState.status,
               destLatitude: updatedService?.destLatitude || prevState.destLatitude || 0,
               destLongitude: updatedService?.destLongitude || prevState.destLongitude || 0,
-              paymentLink: updatedService?.paymentLink || prevState.paymentLink || '',
+              paymentLink: updatedService?.paymentLink || prevState?.paymentLink || '',
               price: updatedService?.price || prevState.price || 0,
               tax: updatedService?.tax || prevState.tax || 0,
               total: updatedService?.total || prevState.total || 0,
