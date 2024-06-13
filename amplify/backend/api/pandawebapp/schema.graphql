@@ -70,7 +70,7 @@ type Rate @model @auth(
     id: ID!
     technicianId: ID! @index(name: "byTechnician")
     technician: Technician @belongsTo(fields: ["technicianId"])
-    customer: Customer! @hasOne
+    createdBy: Customer! @hasOne
     rate: Float!
     comment: String
     createdAt: AWSDateTime

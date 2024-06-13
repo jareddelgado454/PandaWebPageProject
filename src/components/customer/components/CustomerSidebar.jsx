@@ -103,32 +103,38 @@ export default function CustomerSidebar() {
             </div>
             <h4 className='font-bold text-[#40C48E] w-full text-left mb-2 hidden md:block'>Additional</h4>
             <div className='w-full flex flex-col gap-y-2'>
-              <div onClick={onDeleteUserModalOpen} className={`text-rose-600 w-full rounded-md transition-all hover:bg-emerald-500 hover:text-white flex gap-x-2 text-sm md:text-[16px] items-center p-2 px-3 cursor-pointer`}>
-                <FaUserXmark />
-                Delete Account
-              </div>
-            </div>
-            <div className='w-full flex flex-col gap-y-2'>
-              <div onClick={onChangePasswordModalOpen} className={`text-cyan-600 w-full rounded-md transition-all hover:bg-emerald-500 hover:text-white flex gap-x-2 text-sm md:text-[16px] items-center p-2 px-3 cursor-pointer`}>
-                <FaKey />
-                Change Password
-              </div>
-            </div>
-            <div className='w-full flex flex-col gap-y-2'>
-              <div onClick={onSendReportModalOpen} className={`text-amber-400 w-full rounded-md transition-all hover:bg-emerald-500 hover:text-white flex gap-x-2 text-sm md:text-[16px] items-center p-2 px-3 cursor-pointer`}>
-                <FaCircleExclamation />
-                Report
-              </div>
-            </div>
-            <div className='w-full flex flex-col gap-y-2'>
               <div onClick={handleChangeTheme} className={`text-zinc-950 dark:text-white w-full rounded-md transition-all hover:bg-emerald-500 hover:text-white flex gap-x-2 text-sm md:text-[16px] items-center p-2 px-3 cursor-pointer`}>
                 <FaRegMoon />
                 {theme === 'light' ? 'Dark' : 'Light'} Mode
               </div>
             </div>
+            <div className='w-full flex flex-col gap-y-2'>
+              <div onClick={onDeleteUserModalOpen} className={`text-rose-600 w-full rounded-md transition-all hover:bg-emerald-500 hover:text-white flex gap-x-2 text-sm md:text-[16px] items-center p-2 px-3 cursor-pointer`}>
+                <FaUserXmark />
+                Delete Account
+              </div>
+            </div>
+            {user['custom:profileCompleted'] ? (
+              <>
+                <div className='w-full flex flex-col gap-y-2'>
+                  <div onClick={onChangePasswordModalOpen} className={`text-cyan-600 w-full rounded-md transition-all hover:bg-emerald-500 hover:text-white flex gap-x-2 text-sm md:text-[16px] items-center p-2 px-3 cursor-pointer`}>
+                    <FaKey />
+                    Change Password
+                  </div>
+                </div>
+                <div className='w-full flex flex-col gap-y-2'>
+                  <div onClick={onSendReportModalOpen} className={`text-amber-400 w-full rounded-md transition-all hover:bg-emerald-500 hover:text-white flex gap-x-2 text-sm md:text-[16px] items-center p-2 px-3 cursor-pointer`}>
+                    <FaCircleExclamation />
+                    Report
+                  </div>
+                </div>
+              </>
+            ) : (
+              <p className='text-rose-600'>You need to complete you general information.</p>
+            )}
             <div className="w-full flex items-center p-4 ">
               <div
-                onClick={async() => {
+                onClick={async () => {
                   router.replace("/");
                   await signOut();
                   logout();

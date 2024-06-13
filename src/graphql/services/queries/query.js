@@ -133,3 +133,16 @@ export const getServiceById = gql`
     }
     }
 `;
+
+export const listTechnicians = gql`
+query ListTechnicians {
+  listTechnicians(filter: {status: {eq: "active"}}) {
+    items {
+      id
+      fullName
+      loLatitude
+      loLongitude
+    }
+  }
+}
+`

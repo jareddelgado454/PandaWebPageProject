@@ -27,26 +27,44 @@ export const GetEmailById = gql`
   }
 `;
 
-export const listUsersForGraphics = gql`
-  query ListUsers{
-    listUsers {
+export const listDataToGraphs = gql`
+  query ListData{
+    listCustomers: listCustomers {
       items {
         id
-        email
-        role
         fullName
-        contactNumber
-        createdAt
+        email
         status
-        address
-        city
-        state
         profilePicture
-        updatedAt
-        __typename
+        createdAt
+      }
+    }
+    listTechnicians: listTechnicians {
+      items {
+        id
+        fullName
+        email
+        status
+        profilePicture
+        rate{
+          items{
+            id
+            rate
+          }
+        }
+        createdAt
+      }
+    }
+    listServices {
+      items{
+        id
+        title
+        status
+        createdAt
       }
     }
   }
+
 `;
 
 export const listUsers = gql`

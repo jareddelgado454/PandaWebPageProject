@@ -210,7 +210,7 @@ export default function ServiceForm() {
                 )
             }
             {
-                (service && (service.status !== 'service accepted') && (
+                (service && (service.status !== 'completed') && (
                     <div className='w-full h-full flex flex-col gap-4 justify-center items-center'>
                         <p className='font-semibold'>You already have a service petition. Click here to see full detail:</p>
                         <Link href={`/customer/request/${service.id}`} className='bg-green-panda rounded px-2 py-2 shadow-lg text-white'>Service Detail</Link>
