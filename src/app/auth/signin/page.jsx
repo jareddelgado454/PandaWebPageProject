@@ -31,7 +31,6 @@ import { UserContext } from "@/contexts/user/UserContext";
 import Image from "next/image";
 const SignIn = () => {
   const { login } = useContext(UserContext);
-  const status = "inactive";
   const router = useRouter();
   const {
     isOpen: isVerifyCodeModalOpen,
@@ -74,7 +73,7 @@ const SignIn = () => {
           if (nextStep?.signInStep === "CONFIRM_SIGN_UP") {
             onVerifyCodeModalOpen();
           } else {
-            setError("Error signing in. Please try again.");
+            setErrorMessage("Error signing in. Please try again.");
           }
         }
       } catch (error) {
