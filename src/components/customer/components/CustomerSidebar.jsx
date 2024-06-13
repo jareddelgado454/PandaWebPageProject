@@ -59,10 +59,15 @@ export default function CustomerSidebar() {
         </div>
       ) : (
         <>
-          <DeleteUserModal isOpen={isDeleteUserModalOpen} onOpenChange={onDeleteUserModalChange} user={user} />
-          <PassWordModal isOpen={isChangePasswordModalOpen} onOpenChange={onChangePasswordModalChange} />
-          <SendReportModal isOpen={isSendReportModalOpen} onOpenChange={onSendReportModalChange} />
-
+          {user['custom:profileCompleted'] ? (
+            <>
+              <DeleteUserModal isOpen={isDeleteUserModalOpen} onOpenChange={onDeleteUserModalChange} user={user} />
+              <PassWordModal isOpen={isChangePasswordModalOpen} onOpenChange={onChangePasswordModalChange} />
+              <SendReportModal isOpen={isSendReportModalOpen} onOpenChange={onSendReportModalChange} />
+            </>
+          ) : (
+            <p className='text-rose-600'>You need to complete you general information.</p>
+          )}
           <div className="w-full flex flex-row lg:flex-col items-center p-4 gap-2 font-medium">
             <h4 className='font-bold text-[#40C48E] w-full text-left mb-2 hidden md:block'>Main Menu</h4>
             <div className='w-full flex flex-col gap-y-2'>
@@ -128,7 +133,7 @@ export default function CustomerSidebar() {
             </div>
             <div className="w-full flex items-center p-4 ">
               <div
-                onClick={async() => {
+                onClick={async () => {
                   router.replace("/");
                   await signOut();
                   logout();
