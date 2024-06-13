@@ -1,5 +1,5 @@
 'use client';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import Image from 'next/image'
 import { format } from 'date-fns';
 import { FaChevronLeft, FaPhone } from 'react-icons/fa6'
@@ -14,6 +14,11 @@ export default function ChatComponent({ setChatActive, chatSelected, setChatSele
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [messages, setMessages] = useState([]);
+    const messagesEndRef = useRef(null);
+    const messagesContainerRef = useRef(null);
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
     const retrieveMessagesFromChat = async () => {
         setLoading(true);
         try {
@@ -23,8 +28,10 @@ export default function ChatComponent({ setChatActive, chatSelected, setChatSele
                     chatId: chatSelected.id
                 }
             });
-            setMessages(data.getChat.messages.items);
+            const sortedMessages = data.getChat.messages.items.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+            setMessages(sortedMessages);
             setLoading(false);
+            scrollToBottom();
         } catch (error) {
             setError(error);
             setLoading(false);
@@ -37,7 +44,11 @@ export default function ChatComponent({ setChatActive, chatSelected, setChatSele
             .subscribe({
                 next: ({ data }) => {
                     // Update previous state
-                    setMessages((prevMessages) => [...prevMessages, data.onCreateMessage]);
+                    setMessages((prevMessages) => {
+                        const updatedMessages = [...prevMessages, data.onCreateMessage];
+                        return updatedMessages.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+                    });
+                    scrollToBottom();
                 },
                 error: (error) => console.warn(error)
             });
@@ -47,6 +58,9 @@ export default function ChatComponent({ setChatActive, chatSelected, setChatSele
             subscription.unsubscribe();
         };
     }, [chatSelected]);
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
     return (
         <div className='flex flex-col gap-2 w-full h-full relative'>
             <div id='header' className='w-full bg-green-600/50 dark:bg-zinc-700 p-2 rounded-lg flex flex-row justify-between gap-2'>
@@ -75,7 +89,15 @@ export default function ChatComponent({ setChatActive, chatSelected, setChatSele
                     </div>
                 </div>
             </div>
-            <div className='flex flex-col gap-2 justify-end h-full' id="messages">
+            <div
+                className='flex flex-col gap-2 h-[80%] overflow-y-scroll' id="messages"
+                style={{
+                    msOverflowStyle: 'none',
+                    scrollbarWidth: 'none',
+                    overflowY: 'scroll'
+                }}
+                ref={messagesContainerRef}
+            >
                 {messages.length > 0 ? messages.map((message, i) => (
                     <div
                         key={i}
@@ -89,6 +111,7 @@ export default function ChatComponent({ setChatActive, chatSelected, setChatSele
                                         src={`${baseUrl}${message.image}`}
                                         width={150}
                                         height={150}
+                                        alt='message_from'
                                         className='rounded-lg md:w-[14rem] md:h-[14rem]'
                                     />
                                 )}
@@ -99,6 +122,7 @@ export default function ChatComponent({ setChatActive, chatSelected, setChatSele
                         </div>
                     </div>
                 )) : null}
+                <div ref={messagesEndRef} />
             </div>
             {chatSelected && <ChatAnswerInput chatId={chatSelected.id} senderId={user.id} />}
         </div>

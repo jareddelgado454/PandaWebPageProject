@@ -97,9 +97,7 @@ export default function CustomerSidebar() {
             </div>
             <div className='w-full flex flex-col gap-y-2'>
               <Link href={'/customer/messages'} className={`w-full rounded-md transition-all hover:bg-emerald-500 hover:text-white flex gap-x-2 text-sm md:text-[16px] items-center p-2 px-3 cursor-pointer`}>
-                <Badge color="default" size={'sm'} content={0} shape="circle">
-                  <FaComments />
-                </Badge>
+                <FaComments />
                 Messages
               </Link>
             </div>

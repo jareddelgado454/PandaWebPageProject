@@ -30,7 +30,6 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
     role: "",
-    agreed: false,
   });
   const [roleSelected, setRoleSelected] = useState(null);
   const [errors, setErrors] = useState({});
@@ -81,8 +80,7 @@ const SignUp = () => {
       dataSignUp.email !== "" &&
       dataSignUp.password !== "" &&
       dataSignUp.confirmPassword !== "" &&
-      dataSignUp.role !== "" &&
-      dataSignUp.agreed
+      dataSignUp.role !== ""
     ) {
       setMessageDataMissing(false);
       try {
@@ -97,7 +95,8 @@ const SignUp = () => {
               "custom:status": status,
               "custom:subscription": values.role === "technician" ? "pending" : "",
               "custom:infoCompleted": "false",
-              "custom:termsAccepted": "false"
+              "custom:termsAccepted": isAccepted ? "true" : "false",
+              "custom:profileCompleted": "false"
             },
           },
         });
@@ -164,7 +163,14 @@ const SignUp = () => {
   return (
     <AmplifyContext>
 
-      <div className="xl:h-screen bg-gradient-to-b from-zinc-900 to-zinc-800 w-full flex justify-center text-white px-8">
+      <div
+        className="xl:h-screen bg-gradient-to-b from-zinc-900 to-zinc-800 w-full flex justify-center text-white px-8 overflow-y-scroll"
+        style={{
+          msOverflowStyle: 'none',
+          scrollbarWidth: 'none',
+          overflowY: 'scroll'
+        }}
+      >
         <Formik initialValues={{
           fullName: "",
           email: "",
@@ -367,7 +373,7 @@ const SignUp = () => {
                         setDataSignUp({ ...dataSignUp, role: e.target.value });
                       }}
                       className="block w-full bg-zinc-800 text-white py-3 px-4 rounded-lg mb-2"
-                      value="Select an option"
+                      value={dataSignUp.role}
                     >
                       <option className="text-white" value="">
                         Select an option

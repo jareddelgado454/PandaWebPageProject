@@ -196,7 +196,7 @@ export const Sidebar = () => {
               <div className="overflow-hidden flex flex-col gap-2 w-full">
                 <p className={` text-sm line-clamp-1 tracking-wider ${!active && "hidden"}`}>{user && reduceName(user?.fullName)}</p>
                 <p
-                  className={`text-xs text-zinc-300 dark:text-zinc-200 tracking-wider ${!active && "hidden"
+                  className={`text-xs text-zinc-300 dark:text-zinc-200 tracking-wider line-clamp-1 ${!active && "hidden"
                     }`}
                 >
                   {user && user.email}

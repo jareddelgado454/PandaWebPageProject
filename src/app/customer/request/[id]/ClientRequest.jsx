@@ -11,12 +11,15 @@ import { ServiceContext } from '@/contexts/service/ServiceContext';
 import { onUpdateServiceGlobal } from '@/graphql/users/customer/subscription';
 import Cookies from 'js-cookie';
 export default function ClientRequest() {
-  const { setServiceRequest, serviceRequest } = useContext(ServiceContext);
+  const { setServiceRequest, serviceRequest, setServiceId } = useContext(ServiceContext);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const param = useSearchParams().get('paymentStatus');
   const [loading, setLoading] = useState(true);
   const [service, setService] = useState(null);
   const { id } = useParams();
+  useEffect(() => {
+    setServiceId(id);
+  }, [id]);
   useEffect(() => {
     const retrieveServiceDetail = async () => {
       setLoading(true);
@@ -66,7 +69,6 @@ export default function ClientRequest() {
       .subscribe({
         next: ({ data }) => {
           const updatedService = data.onUpdateService;
-          console.log(data);
           if (updatedService) {
             setService((prevState) => ({
               ...prevState,
@@ -97,11 +99,6 @@ export default function ClientRequest() {
     }
   }, [param, serviceRequest]);
 
-  // useEffect(() => {
-  //   if(service && service.status === 'cancelled'){
-  //     router.replace("/customer")
-  //   }
-  // }, [service, router]);
   return (
     <>
       <CancelConfirmModal isOpen={isOpen} onOpenChange={onOpenChange} service={service} />

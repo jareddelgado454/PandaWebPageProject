@@ -19,13 +19,13 @@ export const UserProvider = ({ children }) => {
 
     const getUserFromCookies = () => {
         const userCookie = Cookies.get('currentUser');
-        if (userCookie) {
-          try {
-            return JSON.parse(userCookie);
-          } catch (error) {
-            console.error('Error parsing user cookie', error);
-            return null;
-          }
+        if (userCookie && userCookie !== '') {
+            try {
+                return JSON.parse(userCookie);
+            } catch (error) {
+                console.error('Error parsing user cookie', error);
+                return null;
+            }
         }
         return null;
     };

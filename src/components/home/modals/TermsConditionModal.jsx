@@ -18,35 +18,31 @@ export default function TermsConditionModal({ isOpen, onOpenChange, setIsAccepte
                         <ModalBody>
                             <Tabs className='dark:dark' aria-label='Options'>
                                 <Tab className='dark:dark' key='Terms/Conditions' title='Terms And Conditions'>
-                                    {terms && (
-                                        <div className='flex flex-col gap-4'>
-                                            <p className='text-center text-2xl'>Panda Terms and Conditions</p>
-                                            <iframe
-                                                src={officeViewerUrlTerms}
-                                                width="100%"
-                                                height="600px"
-                                                style={{ border: 'none' }}
-                                                title="Terms and Conditions"
-                                            />
-                                        </div>
-                                    )}
+                                    <div className='flex flex-col gap-4'>
+                                        <p className='text-center text-2xl'>Panda Terms and Conditions</p>
+                                        <iframe
+                                            src={officeViewerUrlTerms}
+                                            width="100%"
+                                            height="600px"
+                                            style={{ border: 'none' }}
+                                            title="Terms and Conditions"
+                                        />
+                                    </div>
                                 </Tab>
                                 <Tab className='dark:dark' key='PrivacyPolicy' title='PrivacyPolicy'>
-                                    {terms && (
-                                        <div className='flex flex-col gap-4'>
-                                            <p className='text-center text-2xl'>Privacy Policy</p>
-                                            <iframe
-                                                src={officeViewerUrlPrivacy}
-                                                width="100%"
-                                                height="600px"
-                                                style={{ border: 'none' }}
-                                                title="Terms and Conditions"
-                                            />
-                                            <Button type='button' color='success' className='text-white' onClick={() => { setIsAccepted && setIsAccepted(true); onClose(); callback(); }}>
-                                                Accept
-                                            </Button>
-                                        </div>
-                                    )}
+                                    <div className='flex flex-col gap-4'>
+                                        <p className='text-center text-2xl'>Privacy Policy</p>
+                                        <iframe
+                                            src={officeViewerUrlPrivacy}
+                                            width="100%"
+                                            height="600px"
+                                            style={{ border: 'none' }}
+                                            title="Terms and Conditions"
+                                        />
+                                        <Button type='button' color='success' className='text-white' onClick={() => { setIsAccepted && setIsAccepted(true); onClose(); callback(); }}>
+                                            Accept
+                                        </Button>
+                                    </div>
                                 </Tab>
                             </Tabs>
                         </ModalBody>
