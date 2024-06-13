@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   RiAlertFill,
   RiMapPin2Fill,
@@ -11,6 +11,7 @@ import { Select, SelectItem } from "@nextui-org/react";
 import { repairTasks } from "@/assets/data/RepairTasks";
 import { handleUpdatePaymentLinkService, handleUpdateStatusService, handleUpdateTotalService } from "@/api";
 import Stripe from "stripe";
+import { Contexto } from "@/app/user/layout";
 
 const InProgress = ({ serviceAssigned, isOpen, setServiceStatus }) => {
   const [values, setValues] = useState(new Set([]));
@@ -19,6 +20,8 @@ const InProgress = ({ serviceAssigned, isOpen, setServiceStatus }) => {
   const [tax, setTax] = useState(0);
   const [isRepairing, setIsRepairing] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const {user} = useContext(Contexto);
+  console.log("useeeeeeeeeeeeeeeeer",user);
 
   const stripe = new Stripe('sk_test_51MHZf4JbGPo8jsLC7uInizJy0DjyqYbFZrSYMN0USaP1L3w6r4D1tbTWuF5pwWMOq6UoVlhdeBfsFa68sGIE7tY600NlVl5zAf');
 
@@ -87,12 +90,12 @@ const InProgress = ({ serviceAssigned, isOpen, setServiceStatus }) => {
             payment_intent_data: {
               application_fee_amount: Math.round(total * 10),
             },
-            success_url:`http://localhost:3000/customer/request/${serviceAssigned.id}?paymentStatus=completed`,
-            cancel_url:`http://localhost:3000/customer/request/${serviceAssigned.id}?paymentStatus=failed`,
+            success_url:`https://master.d3dtglewderhtg.amplifyapp.com/customer/request/${serviceAssigned.id}?paymentStatus=completed`,
+            cancel_url:`https://master.d3dtglewderhtg.amplifyapp.com/customer/request/${serviceAssigned.id}?paymentStatus=failed`,
             customer_email:"test@gmail.com",
           },
           {
-            stripeAccount: "acct_1PLqySQvh8Ih9xWz", 
+            stripeAccount: user["custom:stripeId"], 
           }
         );
 

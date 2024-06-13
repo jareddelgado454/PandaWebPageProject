@@ -21,6 +21,16 @@ export const updatePersonalInformationTechnician = gql`
   }
 `;
 
+export const updateStripeInformationTechnician = gql`
+  mutation MyMutation($input: UpdateTechnicianInput!) {
+    updateTechnician(input: $input){
+      id
+      stripeId
+      stripeAccountStatus
+    }
+  }  
+`;
+
 export const updatePricesTechnician = gql`
   mutation MyMutation($input: UpdateTechnicianInput!) {
     updateTechnician(input: $input) {
