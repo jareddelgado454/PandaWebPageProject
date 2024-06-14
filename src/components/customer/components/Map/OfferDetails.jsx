@@ -2,6 +2,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { FaCarOn, FaRegStar, FaRegStarHalf, FaStar } from 'react-icons/fa6';
 import Image from 'next/image';
+import dynamic from 'next/dynamic'
 import Cookies from 'js-cookie';
 import ReactStars from "react-rating-stars-component";
 import { Badge, useDisclosure } from '@nextui-org/react';
@@ -13,7 +14,7 @@ import { updateService } from '@/graphql/users/customer/mutation';
 import { MapContext } from '@/contexts/map/MapContext';
 import { PlaceContext } from '@/contexts/place/PlaceContext';
 import { calculateRate } from '@/utils/service/AVGRate';
-import { TechnicianInformationModal } from '../..';
+const TechnicianModal = dynamic(() => import('../../modals/TechnicianModal'))
 export default function OfferDetails() {
   const [active, setActive] = useState(false);
   const [offers, setOffers] = useState([]);
@@ -33,7 +34,6 @@ export default function OfferDetails() {
         }
       });
       setOffers(data.listOffers.items);
-      console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -72,7 +72,6 @@ export default function OfferDetails() {
           destLongitude: offer.technician.loLongitude
         }
       });
-      console.log(data);
       setServiceRequest(data.updateService);
       setActive(false);
       Cookies.set(
@@ -98,7 +97,7 @@ export default function OfferDetails() {
   }
   return (
     <>
-      <TechnicianInformationModal isOpen={isOpen} onOpenChange={onOpenChange} technician={technicianSelected} />
+      {technicianSelected && <TechnicianModal isOpen={isOpen} onOpenChange={onOpenChange} technician={technicianSelected} />}
       {serviceRequest && serviceRequest.status === 'pending' && (
         <div className='absolute top-0 left-0 z-10 md:w-[31rem] 2xl:w-[36rem] h-[17rem] 2xl:h-[22rem]'>
           <div className='p-4 flex gap-4 h-full overflow-y-hidden'>
