@@ -121,6 +121,7 @@ type Car @model @auth(
     image: String!
     model: String!
     year: String!
+    identificationNumber: Int!
 }
 
 type Customer @model @auth(
