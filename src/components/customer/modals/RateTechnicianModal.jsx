@@ -43,7 +43,7 @@ export default function RateTechnicianModal({ isOpen, onOpenChange, service, tec
                                 alt='technician_profile_picture'
                                 className='rounded-full w-[8rem] h-[8rem]'
                                 priority
-                                src={technician.profilePicture ? technician.profilePicture : '/image/defaultProfilePicture.jpg'}
+                                src={technician?.profilePicture ? technician.profilePicture : '/image/defaultProfilePicture.jpg'}
                             />
                             <div>
                                 <ReactStars
