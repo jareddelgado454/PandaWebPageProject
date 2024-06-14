@@ -20,7 +20,7 @@ import { getUserByMail } from "@/api";
 import Image from "next/image";
 import { UserContext } from "@/contexts/user/UserContext";
 export const Sidebar = () => {
-  
+
   const { logout } = useContext(UserContext);
   const router = useRouter();
   const [active, setActive] = useState(false);
@@ -125,7 +125,24 @@ export const Sidebar = () => {
           </Link>
         </ul>
         <div className="w-full px-4 absolute bottom-4 transition-all">
-          <div className="bg-zinc-600 dark:bg-green-panda shadow-xl p-3 rounded-md mb-4">
+          <div className="bg-zinc-600 dark:bg-green-panda shadow-xl p-3 rounded-md my-4">
+            <ul className="flex flex-col flex-wrap gap-4">
+              <Link href={`/admin-dashboard`} className="flex gap-3 items-center">
+                <FaHouse className="text-xl transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
+                <p className={`text-xl  ${!active && "hidden"}`}>
+                  Home
+                </p>
+              </Link>
+              <div onClick={handleChangeTheme} className="flex gap-3 items-center cursor-pointer">
+                <FaRegMoon className="text-xl transition-all ease-in-out hover:-translate-y-1 hover:scale-110" />
+                <p className={`text-xl  ${!active && "hidden"}`}>
+                  {theme === 'light' ? 'Dark' : 'Light'} Mode
+                </p>
+              </div>
+            </ul>
+          </div>
+          <Separator />
+          <div className="bg-zinc-600 dark:bg-green-panda shadow-xl p-3 rounded-md my-4">
             <ul className="flex flex-col flex-wrap gap-4">
               <Link href={`/admin-dashboard/messages`} className="flex gap-3 items-center">
                 <FaComments className="text-xl transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
@@ -160,23 +177,6 @@ export const Sidebar = () => {
                   Configuration
                 </p>
               </Link>
-            </ul>
-          </div>
-          <Separator />
-          <div className="bg-zinc-600 dark:bg-green-panda shadow-xl p-3 rounded-md my-4">
-            <ul className="flex flex-col flex-wrap gap-4">
-              <Link href={`/admin-dashboard`} className="flex gap-3 items-center">
-                <FaHouse className="text-xl transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
-                <p className={`text-xl  ${!active && "hidden"}`}>
-                  Home
-                </p>
-              </Link>
-              <div onClick={handleChangeTheme} className="flex gap-3 items-center">
-                <FaRegMoon className="text-xl transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
-                <p className={`text-xl  ${!active && "hidden"}`}>
-                  {theme === 'light' ? 'Dark' : 'Light'} Mode
-                </p>
-              </div>
             </ul>
           </div>
 
