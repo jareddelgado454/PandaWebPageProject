@@ -13,3 +13,15 @@ export const listenToMessages = gql`
     }
 
 `;
+
+export const listenToMessagesGlobal = gql`
+    subscription onCreateMessage($chatId: ID!) {
+        onCreateMessage(filter: {chatId: {eq: $chatId}}) {
+            id
+            content
+            image
+            sender
+            chatId
+        }
+    }
+`;

@@ -58,19 +58,35 @@ export default function ChatComponent({ setChatActive, chatSelected, setChatSele
             subscription.unsubscribe();
         };
     }, [chatSelected]);
+    const handleChatClick = () => {
+        setChatActive(false);
+        setChatSelected(null)
+        const url = new URL(window.location);
+        url.searchParams.delete('chatId');
+        window.history.replaceState({}, '', url);
+    };
     useEffect(() => {
         scrollToBottom();
     }, [messages]);
+    const getProfilePictureSrc = (chat) => {
+        if (chat?.technicianSelected?.profilePicture) {
+            return chat.technicianSelected.profilePicture;
+        }
+        if (chat?.admin?.profilePicture) {
+            return chat.admin.profilePicture;
+        }
+        return '/image/defaultProfilePicture.jpg';  // Asegúrate de que esta ruta es correcta
+    };
     return (
         <div className='flex flex-col gap-2 w-full h-full relative'>
             <div id='header' className='w-full bg-green-600/50 dark:bg-zinc-700 p-2 rounded-lg flex flex-row justify-between gap-2'>
                 {loading ? (<div>Loading</div>) : error ? (<div>{error}</div>) : chatSelected && (
                     <div className='flex flex-row gap-2'>
-                        <div onClick={() => { setChatActive(false); setChatSelected(null) }} className='flex justify-center items-center'>
+                        <div onClick={handleChatClick} className='flex justify-center items-center'>
                             <FaChevronLeft className='cursor-pointer' />
                         </div>
                         <Image
-                            src={`${chatSelected.technicianSelected ? chatSelected.technicianSelected.profilePicture : chatSelected.admin.profilePicture ? chatSelected.admin.profilePicture : '/image/defaultProfilePicture.jpg'}`}
+                            src={getProfilePictureSrc(chatSelected)}
                             width={150}
                             height={150}
                             alt='alt_profile_technician_selected'

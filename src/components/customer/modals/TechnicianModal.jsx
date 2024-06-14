@@ -6,7 +6,6 @@ import ReactStars from "react-rating-stars-component";
 import { calculateRate } from '@/utils/service/AVGRate';
 import { formatDistance } from 'date-fns';
 export default function TechnicianModal({ isOpen, onOpenChange, technician }) {
-  console.log(technician);
   const calculateAverageRate = (items) => {
     if (items.length === 0) return 0; // Manejo de caso donde el array está vacío
 
@@ -57,14 +56,14 @@ export default function TechnicianModal({ isOpen, onOpenChange, technician }) {
                 >
                   <div className='flex gap-3 w-full'>
                     <Image
-                      width={50}
-                      height={50}
+                      width={100}
+                      height={100}
                       src={single_rate.createdBy?.profilePicture ? single_rate.createdBy.profilePicture : `/image/defaultProfilePicture.jpg`}
-                      className='rounded-full'
+                      className='rounded-full w-[3.5rem] h-[3.5rem]'
                       alt={`customer_rate_${i}`}
                     />
                     <div className='flex flex-col gap-1'>
-                      <p className='font-bold'>{single_rate.createdBy.fullName}</p>
+                      <p className='font-bold'>{single_rate.createdBy?.fullName || ''}</p>
                       <p className='text-sm'>{formatDistance(new Date(single_rate.createdAt), new Date(), { addSuffix: true })}</p>
                     </div>
                   </div>

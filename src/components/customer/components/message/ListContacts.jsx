@@ -25,6 +25,9 @@ export default function ListContacts({ setChatActive, setChatSelected }) {
                 ...data.listChatsWithTechnicians.items,
                 ...data.listChatsWithAdmins.items
             ];
+            combinedChats.forEach(chat => {
+                chat.messages.items.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+            });
             setChats(combinedChats);
             setLoading(false);
         } catch (error) {
@@ -34,7 +37,15 @@ export default function ListContacts({ setChatActive, setChatSelected }) {
         }
     }
     useEffect(() => { retrieveMyChats(); }, [user]);
-
+    const getProfilePictureSrc = (chat) => {
+        if (chat?.technicianSelected?.profilePicture) {
+            return chat.technicianSelected.profilePicture;
+        }
+        if (chat?.admin?.profilePicture) {
+            return chat.admin.profilePicture;
+        }
+        return '/image/defaultProfilePicture.jpg';  // Asegúrate de que esta ruta es correcta
+    };
     return (
         <>
             <div className='w-full'>
@@ -52,7 +63,7 @@ export default function ListContacts({ setChatActive, setChatSelected }) {
                             <div onClick={() => { setChatActive(true); setChatSelected(chat) }} key={i} id="chat_technician" className='flex flex-row justify-between gap-2 dark:hover:bg-zinc-700 hover:rounded-lg transition-all duration-300 ease-in cursor-pointer p-3 border-b-1 border-zinc-300 dark:border-zinc-500'>
                                 <div className='flex flex-row gap-2'>
                                     <Image
-                                        src={`${chat.technicianSelected ? chat.technicianSelected.profilePicture : chat.admin.profilePicture ? chat.admin.profilePicture : '/image/defaultProfilePicture.jpg'}`}
+                                        src={getProfilePictureSrc(chat)}
                                         width={100}
                                         height={100}
                                         alt='technician_profile_picture'
