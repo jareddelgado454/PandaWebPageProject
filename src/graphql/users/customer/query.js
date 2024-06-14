@@ -61,6 +61,7 @@ export const listCarsById = gql`
                 image
                 model
                 year
+                identificationNumber
                 createdAt
             }
         }
