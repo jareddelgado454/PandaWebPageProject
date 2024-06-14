@@ -10,8 +10,8 @@ export const existChatWithTechnicianSelected = async(customerId, technicianId) =
                 technicianId
             }
         });
-        
-        return data.listChats.items && data.listChats.items[0].id;
+        console.log(data);
+        return data && data.listChats.items > 0 ? true : false;
     } catch (error) {
         console.log(error);
     }
