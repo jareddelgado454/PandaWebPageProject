@@ -72,6 +72,7 @@ export const listMyServicesHome = gql`
   query ListMyServices($customerId: ID!) {
     listServices(filter: {serviceCustomerId: {eq: $customerId}}, limit: 5) {
       items {
+        id
         car {
           id
           image
@@ -95,6 +96,7 @@ export const getServiceById = gql`
         description
         type
         status
+        completed
         originLatitude
         originLongitude
         tax
