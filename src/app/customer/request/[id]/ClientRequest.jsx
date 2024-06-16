@@ -71,6 +71,7 @@ export default function ClientRequest() {
             setService((prevState) => ({
               ...prevState,
               status: updatedService?.status || prevState.status,
+              completed: updatedService?.completed || prevState.completed || 'No',
               destLatitude: updatedService?.destLatitude || prevState.destLatitude || 0,
               destLongitude: updatedService?.destLongitude || prevState.destLongitude || 0,
               paymentLink: updatedService?.paymentLink || prevState?.paymentLink || '',
