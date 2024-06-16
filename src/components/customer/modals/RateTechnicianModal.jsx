@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { FaRegStar, FaRegStarHalf, FaStar } from 'react-icons/fa6';
 import { Modal, ModalContent, ModalBody, ModalFooter, Button } from "@nextui-org/react";
 import { client } from '@/contexts/AmplifyContext';
-import { createTechnicianRate } from '@/graphql/services/mutations/mutation';
+import { createTechnicianRate, updateStatusServiceWithInput } from '@/graphql/services/mutations/mutation';
 export default function RateTechnicianModal({ isOpen, onOpenChange, service, technician }) {
     const [rate, setRate] = useState(0);
     const [comment, setComment] = useState("");
@@ -21,11 +21,24 @@ export default function RateTechnicianModal({ isOpen, onOpenChange, service, tec
                     customerId: service.customer.id
                 }
             });
+            onCompleteService();
             setRate(0);
             setComment("");
             onClose();
         } catch (error) {
             console.log(error);
+        }
+    }
+    const onCompleteService = async () => {
+        try {
+            await client.graphql({
+                query: updateStatusServiceWithInput,
+                variables: {
+                    input: { completed: "yes" }
+                }
+            });
+        } catch (error) {
+            console.warn(error);
         }
     }
     return (
