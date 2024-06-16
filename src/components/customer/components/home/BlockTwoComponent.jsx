@@ -7,6 +7,7 @@ import { UserContext } from '@/contexts/user/UserContext';
 import { client } from '@/contexts/AmplifyContext';
 import { listMyServicesHome } from '@/graphql/services/queries/query';
 import { baseUrl } from '@/utils/CloudFront';
+import Link from 'next/link';
 export default function BlockTwoComponent() {
   const { user } = useContext(UserContext);
   const [services, setServices] = useState([]);
@@ -57,7 +58,7 @@ export default function BlockTwoComponent() {
         ) : error ? (<div>{JSON.stringify(error, null, 2)}</div>) : (
           <>
             {services.map((service, key) => (
-              <div key={key} className='dark:bg-zinc-950/65 bg-white h-[6rem] rounded-lg px-4 py-2 shadow-md'>
+              <Link href={`/customer/request/${service.id}`} key={key} className='dark:bg-zinc-950/65 bg-white h-[6rem] rounded-lg px-4 py-2 shadow-md cursor-pointer'>
                 <div className='w-full h-full flex flex-row gap-1'>
                   <div className='w-[20%] flex items-center'>
                     <Image
@@ -77,7 +78,7 @@ export default function BlockTwoComponent() {
                     <p className='tracking-wider text-xs 2xl:text-base'>total: ${service.total ? service.total : 0}</p>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </>
         )

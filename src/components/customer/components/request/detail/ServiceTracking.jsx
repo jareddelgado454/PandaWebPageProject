@@ -18,7 +18,7 @@ export default function ServiceTracking({ service, setService }) {
     "completed": 5
   };
   useEffect(() => {
-    if (service.status === "completed") {
+    if (service.status === "completed" && service.completed === "no") {
       onRateTechnicianModalOpen();
     }
   }, [service, onRateTechnicianModalOpen]);
