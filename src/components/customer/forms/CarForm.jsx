@@ -187,7 +187,7 @@ export default function CarForm({ callback, car, edit, onClose, setMyCars }) {
               Identification Number
             </label>
             <Field
-              type="number"
+              type="text"
               name="identificationNumber"
               className={`dark:text-white shadow appearance-none border ${!isValid && 'border-rose-600'} bg-transparent rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
             />
