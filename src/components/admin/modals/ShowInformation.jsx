@@ -31,9 +31,9 @@ const ShowInformation = ({ isOpen, onOpenChange, user }) => {
                             <Image
                                 src={user.profilePicture ? user.profilePicture : '/image/defaultProfilePicture.jpg'}
                                 alt="user_image_modalShow"
-                                width={250}
-                                height={250}
-                                className="rounded"
+                                width={450}
+                                height={450}
+                                className="rounded w-[14rem] h-[14rem]"
                             />
                         </div>
                         <div className="flex flex-col justify-center gap-4">
