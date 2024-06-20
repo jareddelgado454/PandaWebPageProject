@@ -92,7 +92,7 @@ const Users = () => {
         {/* Todo: Table */}
         <div className="px-4">
           {filteredUsers && (
-            <Table item={filteredUsers} callback={retrieveData} />
+            <Table item={filteredUsers} callback={retrieveData} typeUser={"admin"} />
           )}
         </div>
         <div className="flex flex-col md:flex-row items-center justify-between w-full gap-4 px-4">
