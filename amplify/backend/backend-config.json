@@ -74,6 +74,11 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "technicianSubscriptionPlan": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "geo": {
@@ -141,6 +146,22 @@
         {
           "category": "function",
           "resourceName": "createStripeTechnicianAccount"
+        }
+      ]
+    },
+    "AMPLIFY_function_technicianSubscriptionPlan_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "technicianSubscriptionPlan"
+        }
+      ]
+    },
+    "AMPLIFY_function_technicianSubscriptionPlan_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "technicianSubscriptionPlan"
         }
       ]
     }
