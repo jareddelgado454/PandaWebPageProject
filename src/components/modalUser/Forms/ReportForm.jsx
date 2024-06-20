@@ -1,13 +1,14 @@
 'use client';
 import React, { useState } from 'react';
 import { Field, Form, Formik } from 'formik';
+import * as Yup from 'yup';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
+import { uploadData } from 'aws-amplify/storage';
 import { createReport } from '@/graphql/issues/mutations/mutation';
 import { client } from '@/contexts/AmplifyContext';
 import { Progress } from '@nextui-org/react';
-import { uploadData } from 'aws-amplify/storage';
 export const ReportForm = () => {
     const [percent, setPercent] = useState(0);
     const [photograph, setPhotograph] = useState(null);
@@ -93,6 +94,8 @@ export const ReportForm = () => {
                 description: '',
             }}
             onSubmit={onSubmit}
+            validationSchema={formSchema}
+            validateOnChange
         >
             {({ isValid, handleSubmit }) => (
                 <Form onSubmit={handleSubmit}>
@@ -144,3 +147,8 @@ export const ReportForm = () => {
         </Formik>
     )
 }
+
+const formSchema = Yup.object().shape({
+    title:  Yup.string().required('This field is required.').max(150),
+    description: Yup.string().required('This field is required.').max(350),
+})
