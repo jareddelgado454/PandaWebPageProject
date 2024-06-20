@@ -2,11 +2,11 @@
 import React, { useEffect, useState } from "react";
 import { isSameMonth, parseISO } from "date-fns";
 import Link from "next/link";
-import { FaGear, FaChartSimple } from "react-icons/fa6";
 import CardHome from "../../components/CardHome";
 import { client } from "@/contexts/AmplifyContext";
 import { listAllUsers } from "@/graphql/users/query/user";
 import LoadingComponent from "@/components/LoadingComponent";
+import { ShortCutItemsComponent } from "@/components/admin";
 const AdminDashboard = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -69,22 +69,7 @@ const AdminDashboard = () => {
           <h2 className="text-[22px] text-black dark:text-white font-bold my-8">
             Other Options:
           </h2>
-          <div className="flex gap-x-4">
-            <Link
-              href="/admin-dashboard/graphs"
-              className="text-white bg-zinc-600 hover:text-gray-200 cursor-pointer font-semibold flex gap-x-2 items-center shadow-lg text-base dark:text-white dark:bg-zinc-800  px-3 py-2 rounded-lg  transition-all hover:-translate-y-1 hover:scale-110 duration-300"
-            >
-              <FaChartSimple />
-              View Charts
-            </Link>
-            <Link
-              href="/admin-dashboard/settings"
-              className="text-white bg-zinc-600 hover:text-gray-200 cursor-pointer font-semibold flex gap-x-2 items-center shadow-lg text-base  dark:text-white dark:bg-zinc-800  px-3 py-2 rounded-lg transition-all hover:-translate-y-1 hover:scale-110 duration-300"
-            >
-              <FaGear />
-              Settings
-            </Link>
-          </div>
+          <ShortCutItemsComponent />
         </>
       )}
 
