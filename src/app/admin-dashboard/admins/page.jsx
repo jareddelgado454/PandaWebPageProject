@@ -1,11 +1,13 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Table } from "@/components/Table";
 import { CardData } from "@/components/admin/cards/CardData";
 import { calculateTotalPages, totalNumbers } from "@/utils/calculate";
 import { listUsers } from "@/graphql/users/query/user";
 import { client } from "@/contexts/AmplifyContext";
+import { UserContext } from "@/contexts/user/UserContext";
 const Users = () => {
+  const { user } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [totalPages, setTotalPages] = useState(0);
@@ -19,6 +21,9 @@ const Users = () => {
     try {
       const { data } = await client.graphql({
         query: listUsers,
+        variables: {
+          currentAdminId: user.id
+        }
       });
       setUsers(data.listUsers.items);
       setLoading(false);
@@ -30,7 +35,7 @@ const Users = () => {
 
   useEffect(() => {
     retrieveData();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (users !== null) {
@@ -63,7 +68,7 @@ const Users = () => {
     <>
       <div className="container mx-auto md:px-0 mb-8 slide-in-left">
         <p className="text-xl md:text-3xl text-center bg-white text-zinc-800 dark:text-white dark:bg-zinc-800 rounded-b-lg font-bold py-6 tracking-[0.1em] drop-shadow-lg transition-all">
-          Users Management
+          Administrators
         </p>
         {/* Todo: Cards */}
 
@@ -87,7 +92,7 @@ const Users = () => {
         {/* Todo: Table */}
         <div className="px-4">
           {filteredUsers && (
-            <Table item={filteredUsers} callback={retrieveData} />
+            <Table item={filteredUsers} callback={retrieveData} typeUser={"admin"} />
           )}
         </div>
         <div className="flex flex-col md:flex-row items-center justify-between w-full gap-4 px-4">

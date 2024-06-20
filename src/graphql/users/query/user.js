@@ -68,25 +68,19 @@ export const listDataToGraphs = gql`
 `;
 
 export const listUsers = gql`
-  query ListUsers{
-    listUsers {
-      items {
-        id
-        email
-        role
-        fullName
-        contactNumber
-        createdAt
-        status
-        address
-        city
-        state
-        profilePicture
-        updatedAt
-        __typename
-      }
+query ListUsers($currentAdminId: ID!) {
+  listUsers(filter: {id: {notContains: $currentAdminId}}) {
+    items {
+      id
+      email
+      fullName
+      contactNumber
+      status
+      profilePicture
+      createdAt
     }
   }
+}
 `;
 
 export const listCustomers = gql`
@@ -134,6 +128,41 @@ export const filterUserByRate = gql`
         role
         cognitoId
         rate
+      }
+    }
+  }
+`;
+
+export const listAllUsers = gql`
+  query listAllUser {
+    listUsers{
+      items{
+        id
+        fullName
+        email
+        status
+        profilePicture
+        createdAt
+      }
+    }
+    listTechnicians{
+      items{
+        id
+        fullName
+        email
+        status
+        profilePicture
+        createdAt
+      }
+    }
+    listCustomers{
+      items{
+        id
+        fullName
+        email
+        status
+        profilePicture
+        createdAt
       }
     }
   }

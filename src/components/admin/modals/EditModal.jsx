@@ -4,9 +4,9 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from
 import { Select, SelectItem } from "@nextui-org/react";
 import { updateCustomerStatus, updateTechnicianStatus } from '@/graphql/users/mutation';
 import { client } from '@/contexts/AmplifyContext';
+import { updateAdminStatus } from '@/graphql/users/admin/mutation';
 const EditModal = ({ isOpen, onOpenChange, user, callback, setRecordSelected, typeUser }) => {
   const [selectedStatus, setSelectedStatus] = useState(user.status);
-
   const handleStatusChange = (event) => {
     console.log(event.target.value)
     setSelectedStatus(event.target.value);
@@ -23,6 +23,9 @@ const EditModal = ({ isOpen, onOpenChange, user, callback, setRecordSelected, ty
           break;
         case 'technician':
           query = updateTechnicianStatus;
+          break;
+        case 'admin':
+          query = updateAdminStatus;
           break;
         default:
           return;

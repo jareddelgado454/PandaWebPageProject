@@ -63,8 +63,8 @@ export default function BlockTwoComponent() {
                   <div className='w-[20%] flex items-center'>
                     <Image
                       src={service.car.image ? `${baseUrl}${service.car.image}` : 'image/car_default.jpg' }
-                      width={100}
-                      height={100}
+                      width={250}
+                      height={250}
                       className='rounded-full w-[2.7rem] h-[2.7rem] 2xl:w-[4rem] 2xl:h-[4rem] object-cover object-center'
                       alt={`car_${service.car.id}`}
                     />

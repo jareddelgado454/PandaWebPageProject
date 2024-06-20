@@ -1,7 +1,7 @@
 'use client';
 import { SecondDateFormatter } from '@/utils/parseDate';
 import { Tooltip } from '@nextui-org/react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { client } from '@/contexts/AmplifyContext';
 import { getAnswersByReport } from '@/graphql/issues/queries/query';
 import { ListenAnswersById, onDeleteAnswersSubscription } from '@/graphql/issues/subscriptions/subscription';
@@ -9,7 +9,9 @@ import { FaXmark } from 'react-icons/fa6';
 import { onDeleteAnswerById } from '@/graphql/issues/mutations/mutation';
 import 'animate.css';
 import Image from 'next/image';
+import { UserContext } from '@/contexts/user/UserContext';
 export default function ShowComments({ reportId }) {
+    const { user } = useContext(UserContext);
     const [answers, setAnswers] = useState([]);
     const answerRefs = useRef({});
     const retrieveAnswers = async () => {
@@ -26,7 +28,7 @@ export default function ShowComments({ reportId }) {
             console.log(error);
         }
     };
-    const onHandleDeleteAnswer = async(userId, answerId, reportId) => {
+    const onHandleDeleteAnswer = async (userId, answerId, reportId) => {
         try {
             await client.graphql({
                 query: onDeleteAnswerById,
@@ -53,7 +55,7 @@ export default function ShowComments({ reportId }) {
                 },
                 error: (error) => console.warn(error)
             });
-            
+
         const subscriptionToDeleteAnswer = client
             .graphql({ query: onDeleteAnswersSubscription })
             .subscribe({
@@ -101,7 +103,9 @@ export default function ShowComments({ reportId }) {
                             </div>
                         </div>
                         <div className='relative'>
-                            <FaXmark className='text-center hover:text-rose-600 cursor-pointer' onClick={() => onHandleDeleteAnswer(answer.user.id, answer.id, answer.reportId)} />
+                            {user.id === answer.user.id && (
+                                <FaXmark className='text-center hover:text-rose-600 cursor-pointer' onClick={() => onHandleDeleteAnswer(answer.user.id, answer.id, answer.reportId)} />
+                            )}
                         </div>
                     </div>
                     <div className='bg-zinc-100 dark:bg-zinc-700 rounded-md p-4'>

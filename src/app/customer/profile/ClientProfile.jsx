@@ -35,11 +35,11 @@ export default function ClientProfile() {
         }
     }
     useEffect(() => {
-        if (userSaved && userSaved.id) { // Solo intenta cargar información si userSaved.id está disponible
+        if (userSaved && userSaved.id) { // Runs once userSaved.id is detect
             retrieveInfo();
         }
     }, [userSaved]);
-
+    // 
     if (!userSaved || !userSaved.id) {
         return <GearSpinner />;
     }

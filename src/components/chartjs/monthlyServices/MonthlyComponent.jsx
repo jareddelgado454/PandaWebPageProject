@@ -8,36 +8,35 @@ function MonthlyComponent({ services }) {
 
   useEffect(() => {
     if (services && services.length > 0) {
-      // Inicializar un objeto para contar los servicios por mes
+      // Set an object to count each service's month
       const monthlyData = {
-        Enero: 0,
-        Febrero: 0,
-        Marzo: 0,
-        Abril: 0,
-        Mayo: 0,
-        Junio: 0,
-        Julio: 0,
-        Agosto: 0,
-        Septiembre: 0,
-        Octubre: 0,
-        Noviembre: 0,
-        Diciembre: 0,
+        January: 0,
+        February: 0,
+        March: 0,
+        April: 0,
+        May: 0,
+        June: 0,
+        July: 0,
+        August: 0,
+        September: 0,
+        October: 0,
+        November: 0,
+        December: 0
       };
-
-      // Mapear los nombres de los meses a sus índices
+      // Map all month names with their index
       const monthNames = [
-        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-      ];
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ];      
 
       // Contar los servicios por mes
+      // Count services for each month
       services.forEach(service => {
         const monthIndex = parseISO(service.createdAt).getMonth();
         const monthName = monthNames[monthIndex];
         monthlyData[monthName] += 1;
       });
-
-      // Convertir el objeto a un array para el gráfico
+      // Convert from object to array for charts
       const chartData = Object.keys(monthlyData).map(month => ({
         name: month,
         createdAt: monthlyData[month],
@@ -52,7 +51,7 @@ function MonthlyComponent({ services }) {
       const { name, createdAt } = payload[0].payload;
       return (
         <div className="custom-tooltip">
-          <p>{`${name} : ${createdAt} servicios`}</p>
+          <p>{`${name} : ${createdAt} services`}</p>
         </div>
       );
     }
