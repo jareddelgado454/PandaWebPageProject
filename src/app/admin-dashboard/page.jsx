@@ -1,44 +1,93 @@
-import React from "react";
-import CardHome from "../../components/CardHome";
+'use client';
+import React, { useEffect, useState } from "react";
+import { isSameMonth, parseISO } from "date-fns";
 import Link from "next/link";
 import { FaGear, FaChartSimple } from "react-icons/fa6";
+import CardHome from "../../components/CardHome";
+import { client } from "@/contexts/AmplifyContext";
+import { listAllUsers } from "@/graphql/users/query/user";
+import LoadingComponent from "@/components/LoadingComponent";
 const AdminDashboard = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [customers, setCustomers] = useState([]);
+  const [technicians, setTechnicians] = useState([]);
+  const [admins, setAdmins] = useState([]);
+  const retrieveAllUsers = async () => {
+    // Indicate that the loading process has started.
+    setLoading(true);
+    try {
+      // Perform a GraphQL query to fetch all users.
+      const { data } = await client.graphql({
+        query: listAllUsers,
+      });
+      // Set the retrieved customers data to the customers state.
+      setCustomers(data.listCustomers.items);
+      // Set the retrieved technicians data to the technicians state.
+      setTechnicians(data.listTechnicians.items);
+      // Set the retrieved admins data to the admins state.
+      setAdmins(data.listUsers.items);
+      // Indicate that the loading process has finished.
+      setLoading(false);
+    } catch (error) {
+      // Log any errors to the console.
+      console.warn(error);
+      // Set the error state to the caught error.
+      setError(error);
+      // Indicate that the loading process has finished, even if there was an error.
+      setLoading(false);
+    }
+  }
+  useEffect(() => { retrieveAllUsers() }, []);
+  // We want to calculate users per month with this function
+  const usersPerMonth = (users = []) => {
+    const now = new Date(); // Get current date
+    return users.filter((u) => { // filter array of users
+      const createdAt = parseISO(u.createdAt); // parse to ISO using Date-fns
+      return isSameMonth(createdAt, now); // return if user createdAt date is the same to our current month
+    }).length; // return just lenght of that filtered array.
+  }
   return (
     <div className="m-4">
-      <h4 className="text-[22px] mb-8 text-gray-700 dark:text-gray-100 font-semibold">
-        The bussiness information is here
-      </h4>
+      {loading ? (
+        <LoadingComponent />
+      ) : error ? (
+        <div className="w-full h-full flex justify-center items-center">Something went wrong</div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 lg:grid-cols-3 w-full gap-2">
+            <Link href={`/admin-dashboard/customers`} className='w-full flex items-center justify-center'>
+              <CardHome type="Customers" numberActive={customers.length} lastRegistrations={usersPerMonth(customers)} />
+            </Link>
+            <Link href={`/admin-dashboard/technicians`} className='w-full flex items-center justify-center'>
+              <CardHome type="Technicians" numberActive={technicians.length} lastRegistrations={usersPerMonth(technicians)} />
+            </Link>
+            <Link href={`/admin-dashboard/admins`} className='w-full flex items-center justify-center'>
+              <CardHome type="Users" numberActive={admins.length} lastRegistrations={usersPerMonth(admins)} />
+            </Link>
+          </div>
+          <h2 className="text-[22px] text-black dark:text-white font-bold my-8">
+            Other Options:
+          </h2>
+          <div className="flex gap-x-4">
+            <Link
+              href="/admin-dashboard/graphs"
+              className="text-white bg-zinc-600 hover:text-gray-200 cursor-pointer font-semibold flex gap-x-2 items-center shadow-lg text-base dark:text-white dark:bg-zinc-800  px-3 py-2 rounded-lg  transition-all hover:-translate-y-1 hover:scale-110 duration-300"
+            >
+              <FaChartSimple />
+              View Charts
+            </Link>
+            <Link
+              href="/admin-dashboard/settings"
+              className="text-white bg-zinc-600 hover:text-gray-200 cursor-pointer font-semibold flex gap-x-2 items-center shadow-lg text-base  dark:text-white dark:bg-zinc-800  px-3 py-2 rounded-lg transition-all hover:-translate-y-1 hover:scale-110 duration-300"
+            >
+              <FaGear />
+              Settings
+            </Link>
+          </div>
+        </>
+      )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 w-full gap-2">
-        <div className='w-full flex items-center justify-center mb-8'>
-            <CardHome type="Customers" numberActive={50} lastRegistrations={5} />
-        </div>
-        <div className='w-full flex items-center justify-center mb-8'>
-            <CardHome type="Technicians" numberActive={50} lastRegistrations={5} />
-        </div>
-        <div className='w-full flex items-center justify-center mb-8'>
-            <CardHome type="Users" numberActive={50} lastRegistrations={5} />
-        </div>
-      </div>
-      <h2 className="text-[22px] text-black dark:text-white font-bold mb-8">
-        Other Options:
-      </h2>
-      <div className="flex gap-x-4">
-        <Link
-          href="/admin-dashboard/graphs"
-          className="text-white bg-zinc-600 hover:text-gray-200 cursor-pointer font-semibold flex gap-x-2 items-center shadow-lg text-base dark:text-white dark:bg-zinc-800  px-3 py-2 rounded-lg  transition-all hover:-translate-y-1 hover:scale-110 duration-300"
-        >
-          <FaChartSimple />
-          View Charts
-        </Link>
-        <Link
-          href="/admin-dashboard/settings"
-          className="text-white bg-zinc-600 hover:text-gray-200 cursor-pointer font-semibold flex gap-x-2 items-center shadow-lg text-base  dark:text-white dark:bg-zinc-800  px-3 py-2 rounded-lg transition-all hover:-translate-y-1 hover:scale-110 duration-300"
-        >
-          <FaGear />
-          Settings
-        </Link>
-      </div>
     </div>
   );
 };
