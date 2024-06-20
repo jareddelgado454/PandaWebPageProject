@@ -7,16 +7,16 @@ function HighRateComponent({ technicians }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (technicians) {
+        if (technicians && technicians.length > 0) {
             // Filtrar y ordenar los técnicos por su calificación
             const sortedTechnicians = technicians
                 .map(technician => ({
                     ...technician,
                     rate: technician.rate.items.length > 0 ? technician.rate.items[0].rate : 0
                 }))
-                .filter(technician => technician.rate > 4.5)
+                .filter(technician => technician.rate >= 4)
                 .sort((a, b) => b.rate - a.rate);
-
+                console.log(sortedTechnicians);
             setTechniciansSorted(sortedTechnicians);
             setLoading(false);
         }
