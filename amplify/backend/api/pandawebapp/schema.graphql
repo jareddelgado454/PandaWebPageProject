@@ -97,6 +97,7 @@ type Technician @model @auth(
     subscription: String
     stripeId: String
     stripeAccountStatus: String
+    subscriptionExpirationDate: AWSDateTime
     fee: Int
     rate: [Rate] @hasMany(indexName: "byTechnician", fields: ["id"])
     loLatitude: Float
@@ -229,4 +230,22 @@ type Message @model @auth(
     image: String
     sender: ID!
     chatId: ID! @index(name: "byChat")
+}
+
+type Goal @model @auth(
+    rules: [
+        { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
+    ]
+){
+    id: ID!
+    type: GoalType!
+    goal: Int!
+    monthYear: String!
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+enum GoalType {
+    MONTHLY
+    ANNUAL
 }

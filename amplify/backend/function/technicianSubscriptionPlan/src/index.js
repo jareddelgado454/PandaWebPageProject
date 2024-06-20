@@ -52,6 +52,18 @@ exports.handler = async (event) => {
               console.log("idPassed", idPassed);
               console.log("cognitoUsername", cognitoUsername);
 
+              const subscriptionType = checkoutSessionCompleted.amount_total === 500000 ? "annual" : "monthly";
+        
+              const currentDate = new Date();
+              let expirationDate;
+              if (subscriptionType === "annual") {
+                expirationDate = new Date(currentDate.setFullYear(currentDate.getFullYear() + 1));
+              } else {
+                expirationDate = new Date(currentDate.setMonth(currentDate.getMonth() + 1));
+              }
+              const expirationDateISOString = expirationDate.toISOString();
+
+
               const client = new DynamoDBClient({ region: 'us-east-1'});
               const cognitoClient = new CognitoIdentityProviderClient({ region: "us-east-1" });
 
@@ -69,10 +81,11 @@ exports.handler = async (event) => {
                   Key: {
                       "id": { S: idPassed } 
                   },
-                  UpdateExpression: "SET subscription = :subscriptionValue, fee = :feeValue",
+                  UpdateExpression: "SET subscription = :subscriptionValue, fee = :feeValue, subscriptionExpirationDate = :expirationDate",
                   ExpressionAttributeValues: {
-                      ":subscriptionValue": { S: `${checkoutSessionCompleted.amount_total == 500000 ? "annual" : "monthly"}` },
-                      ":feeValue": { N: "0" } 
+                      ":subscriptionValue": { S: subscriptionType },
+                      ":feeValue": { N: "0" },
+                      ":expirationDate": { S: expirationDateISOString }
                   },
                   ReturnValues: "UPDATED_NEW"
               };
