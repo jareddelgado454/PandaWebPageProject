@@ -138,3 +138,38 @@ export const filterUserByRate = gql`
     }
   }
 `;
+
+export const listAllUsers = gql`
+  query listAllUser {
+    listUsers{
+      items{
+        id
+        fullName
+        email
+        status
+        profilePicture
+        createdAt
+      }
+    }
+    listTechnicians{
+      items{
+        id
+        fullName
+        email
+        status
+        profilePicture
+        createdAt
+      }
+    }
+    listCustomers{
+      items{
+        id
+        fullName
+        email
+        status
+        profilePicture
+        createdAt
+      }
+    }
+  }
+`;
