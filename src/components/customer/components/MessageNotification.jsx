@@ -30,7 +30,7 @@ export default function MessageNotification() {
         if (user.id) {
             retrieveChats();
         }
-    }, [user.id]);
+    }, [user?.id]);
 
     useEffect(() => {
         const cleanupSubscriptions = () => {
