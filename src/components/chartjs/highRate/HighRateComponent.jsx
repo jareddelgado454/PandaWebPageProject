@@ -1,11 +1,9 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { FaFaceSmile, FaStar } from 'react-icons/fa6';
-
 function HighRateComponent({ technicians }) {
     const [techniciansSorted, setTechniciansSorted] = useState([]);
     const [loading, setLoading] = useState(true);
-
     useEffect(() => {
         if (technicians && technicians.length > 0) {
             // Filtrar y ordenar los técnicos por su calificación
@@ -16,7 +14,6 @@ function HighRateComponent({ technicians }) {
                 }))
                 .filter(technician => technician.rate >= 4)
                 .sort((a, b) => b.rate - a.rate);
-                console.log(sortedTechnicians);
             setTechniciansSorted(sortedTechnicians);
             setLoading(false);
         }
