@@ -35,3 +35,18 @@ export const getUserByEmail = gql`
         }
     }
 `;
+
+export const getGoalPerMonth = gql`
+query listGoalPerMonth($month: String!) {
+  listGoals(filter: {monthYear: {eq: $month}}){
+    items
+    {
+      id
+      type
+      goal
+      monthYear
+      createdAt
+    }
+  }
+}
+`;

@@ -240,7 +240,7 @@ type Goal @model @auth(
     id: ID!
     type: GoalType!
     goal: Int!
-    monthYear: String!
+    monthYear: String! @index
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
 }

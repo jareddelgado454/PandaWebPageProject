@@ -103,9 +103,15 @@ export const Sidebar = () => {
         </p>
         <Separator />
         <ul
-          className={`bg-zinc-600 dark:bg-green-panda shadow-sm transition-all rounded-md p-3 mt-4 ${active && "w-full"
+          className={`bg-zinc-600 dark:bg-green-panda shadow-sm transition-all rounded-md p-3 mt-4 flex flex-col gap-4 ${active && "w-full"
             }`}
         >
+          <Link href={`/admin-dashboard`} className="flex gap-3 items-center">
+            <FaHouse className="text-xs 2xl:text-base transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
+            <p className={`text-xs 2xl:text-base  ${!active && "hidden"}`}>
+              Home
+            </p>
+          </Link>
           <Link
             href={`/admin-dashboard/customers`}
             className="flex gap-3 items-center"
@@ -117,7 +123,7 @@ export const Sidebar = () => {
           </Link>
           <Link
             href={`/admin-dashboard/technicians`}
-            className="flex gap-3 items-center mt-5"
+            className="flex gap-3 items-center"
           >
             <FaUserGear className="text-xs 2xl:text-base transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
             <p className={`text-xs 2xl:text-base ${!active && "hidden"}`}>
@@ -126,7 +132,7 @@ export const Sidebar = () => {
           </Link>
           <Link
             href={`/admin-dashboard/admins`}
-            className="flex gap-3 items-center mt-5"
+            className="flex gap-3 items-center"
           >
             <FaUserGroup className="text-xs 2xl:text-base transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
             <p className={`text-xs 2xl:text-base  ${!active && "hidden"}`}>
@@ -137,18 +143,6 @@ export const Sidebar = () => {
         <div className="w-full px-4 absolute bottom-4 transition-all">
           <div className="bg-zinc-600 dark:bg-green-panda shadow-sm p-3 rounded-md my-4">
             <ul className="flex flex-col flex-wrap gap-4">
-              <Link href={`/admin-dashboard`} className="flex gap-3 items-center">
-                <FaHouse className="text-xs 2xl:text-base transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
-                <p className={`text-xs 2xl:text-base  ${!active && "hidden"}`}>
-                  Home
-                </p>
-              </Link>
-              <Link href={`/admin-dashboard/messages`} className="flex gap-3 items-center">
-                <FaComments className="text-xs 2xl:text-base transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
-                <p className={`text-xs 2xl:text-base  ${!active && "hidden"}`}>
-                  Messages
-                </p>
-              </Link>
               <Link href={`/admin-dashboard/issues`} className="flex gap-3 items-center">
                 <FaFlag className="text-xs 2xl:text-base transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
                 <p className={`text-xs 2xl:text-base  ${!active && "hidden"}`}>
@@ -162,6 +156,12 @@ export const Sidebar = () => {
                 <FaChartSimple className="text-xs 2xl:text-base transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
                 <p className={`text-xs 2xl:text-base  ${!active && "hidden"}`}>
                   Charts
+                </p>
+              </Link>
+              <Link href={`/admin-dashboard/messages`} className="flex gap-3 items-center">
+                <FaComments className="text-xs 2xl:text-base transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
+                <p className={`text-xs 2xl:text-base  ${!active && "hidden"}`}>
+                  Messages
                 </p>
               </Link>
               <Link
