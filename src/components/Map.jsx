@@ -11,7 +11,7 @@ import { CalculateAngleFromLocation } from '@/utils/service/CalculateAngle';
 import { getServiceById } from '@/graphql/services/queries/query';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import "maplibre-gl-js-amplify/dist/public/amplify-map.css";
-export default function Map() {
+export default function Map({ userMarkerRef }) {
   const mapDiv = useRef(null);
   const technicianMarkerRef = useRef(null);
   const { userLocation, isLoading } = useContext(PlaceContext);
@@ -72,11 +72,11 @@ export default function Map() {
           const pulsatingCircle = document.createElement('div');
           pulsatingCircle.className = 'customer-pulsating-circle';
 
-          new maplibregl.Marker(pulsatingCircle)
+          const userMarker = new maplibregl.Marker(pulsatingCircle)
             .setLngLat(userLocation)
             .addTo(mapC);
 
-
+          userMarkerRef.current = userMarker
         }
         retrieveService();
       }
