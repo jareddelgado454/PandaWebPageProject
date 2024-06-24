@@ -13,6 +13,7 @@ const SubscriptionPlan = ({isOpen, onOpenChange, idsPassed}) => {
     const stripe = new Stripe("sk_test_51MHZf4JbGPo8jsLC7uInizJy0DjyqYbFZrSYMN0USaP1L3w6r4D1tbTWuF5pwWMOq6UoVlhdeBfsFa68sGIE7tY600NlVl5zAf");
     const plans = await stripe.prices.list();
     setPrices(plans.data);
+    console.log("plans",plans);
   } 
 
   useEffect(()=>{
@@ -22,7 +23,7 @@ const SubscriptionPlan = ({isOpen, onOpenChange, idsPassed}) => {
 
   return (
     <Modal backdrop='blur' isOpen={isOpen} onOpenChange={onOpenChange} size='4xl' placement='center'>
-          <ModalContent className='bg-gray-100 text-zinc-900 border-[2px] border-gray-300 p-0'>
+          <ModalContent className=' border-[2px] dark:border-gray-800 border-gray-300 p-0'>
             {(onClose) => (
               <>
                 <ModalHeader>
@@ -30,7 +31,7 @@ const SubscriptionPlan = ({isOpen, onOpenChange, idsPassed}) => {
                 </ModalHeader>
                 <ModalBody className='w-full flex flex-col '>
                     <h2 className='text-[30px] font-extrabold mb-0'>Choose your plan </h2>  
-                    <p className='text-gray-700 m-0 p-0 mb-3'>All our subscription plans have their benefits.</p>
+                    <p className='text-gray-700 dark:text-zinc-400 m-0 p-0 mb-3'>All our subscription plans have their benefits.</p>
                     <div className='w-full flex justify-around'>
                       <CardSubscription freePlan={true} idsPassed={idsPassed}/>
                       {

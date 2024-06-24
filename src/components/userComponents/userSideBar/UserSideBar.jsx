@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useRouter } from "next/navigation";
 import { uploadData } from 'aws-amplify/storage';
 import { v4 as uuidv4 } from 'uuid';
-import { RiUserFill, RiCalendarTodoFill, RiDashboardFill, RiLogoutCircleLine, RiSettings4Fill , RiArrowDownSFill , RiArrowRightCircleLine  } from "react-icons/ri";
+import { RiUserFill, RiCalendarTodoFill, RiDashboardFill, RiLogoutCircleLine, RiSettings4Fill , RiArrowDownSFill , RiArrowRightCircleLine, RiHome3Fill   } from "react-icons/ri";
 import { TbDiamondFilled } from "react-icons/tb";
 import Link from 'next/link';
 import { signOut } from "aws-amplify/auth";
@@ -99,21 +99,21 @@ function UserSidebar({ user }) {
             <DeleteUserModal isOpen={isDeleteUserModalOpen} onOpenChange={onDeleteUserModalChange} user={user} />
             <PassWordModal isOpen={isChangePasswordModalOpen} onOpenChange={onChangePasswordModalChange} />
             <SendReportModal isOpen={isSendReportModalOpen} onOpenChange={onSendReportModalChange} />
-            <div className=" text-white rounded-lg shadow-lg h-screen  w-[300px] relative">
+            <div className="  rounded-lg shadow-lg h-screen  w-[300px] relative">
                 <div className="flex flex-row md:flex-col items-center justify-center px-[20px] py-0">
                     <div className="h-[80px] flex gap-x-1 items-center justify-start w-full">
                         <Image width={70} height={55} src="/panda.png" className="w-[65px] h-[50px] drop-shadow-lg" alt="panda_logo" />
-                        <p className="font-bold drop-shadow-xl tracking-wider text-white">PANDA <span className='text-emerald-300'>TECHS</span></p> 
+                        <p className="font-bold drop-shadow-xl tracking-wider ">PANDA <span className='dark:text-emerald-300 text-emerald-600'>TECHS</span></p> 
                     </div>
 
-                    <div className="w-full h-[calc(100vh-100px)] rounded-2xl bg-zinc-800 flex flex-col items-center justify-between gap-2 overflow-y-auto">
+                    <div className="w-full h-[calc(100vh-100px)] rounded-2xl dark:bg-zinc-800/70 bg-emerald-600 dark:shadow-none shadow-lg shadow-zinc-500 text-white flex flex-col items-center justify-between gap-2 overflow-y-auto">
                         
                         <div className="w-full flex flex-col items-center p-4 ">
                             <h4 className='font-bold text-gray-200 w-full text-left mb-2'>Main Menu</h4>
-                            <div className='w-full flex flex-col gap-y-2 border-b-[2px] border-zinc-700 pb-4 mb-4'>
-                                <Link href={'/user'} className={`w-full rounded-md bg-emerald-500 flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
-                                    <RiUserFill />
-                                    Profile
+                            <div className='w-full flex flex-col gap-y-2 border-b-[2px] dark:border-zinc-700 border-emerald-500 pb-4 mb-4'>
+                                <Link href={'/user'} className={`w-full rounded-md dark:bg-emerald-600 bg-zinc-100/90 dark:text-white text-zinc-950 flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
+                                    <RiHome3Fill  />
+                                    Home Page
                                 </Link>
                                 <Link href={'/user/subscription'} className={`w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
                                     <TbDiamondFilled />
@@ -122,7 +122,7 @@ function UserSidebar({ user }) {
                                 
                             </div> 
                             <h4 className='font-bold text-gray-200 w-full text-left mb-2'>My Work</h4> 
-                            <div className='w-full flex flex-col gap-y-2  border-b-[2px] border-zinc-700 pb-4 mb-4'>
+                            <div className='w-full flex flex-col gap-y-2  border-b-[2px] dark:border-zinc-700 border-emerald-500 pb-4 mb-4'>
                                 <Link href={'/user/schedule'} className={`w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
                                     <RiCalendarTodoFill  />
                                     Schedule
@@ -133,7 +133,7 @@ function UserSidebar({ user }) {
                                 </Link>
                             </div>   
                             <h4 className='font-bold text-gray-200 w-full text-left mb-2'>Finances</h4> 
-                            <div className='w-full flex flex-col gap-y-2  border-b-[2px] border-zinc-700 pb-4 mb-4'>
+                            <div className='w-full flex flex-col gap-y-2  border-b-[2px] dark:border-zinc-700 border-emerald-500 pb-4 mb-4'>
                                 <Link href={'/user/finances'} className={`w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 px-3 cursor-pointer`}>
                                     <RiDashboardFill  />
                                     Overview
@@ -174,7 +174,7 @@ function UserSidebar({ user }) {
                                     signOut();
                                     router.replace("/");
                                 }} 
-                                className={`w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 pt-4 cursor-pointer border-t-[2px] border-zinc-700 `}
+                                className={`w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 pt-4 cursor-pointer border-t-[2px] dark:border-zinc-700 border-emerald-500 `}
                             >
                                 <RiLogoutCircleLine  />
                                 Logout

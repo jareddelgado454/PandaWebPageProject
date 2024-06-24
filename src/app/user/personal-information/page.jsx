@@ -18,6 +18,7 @@ import { handleRetrieveTechnician } from "@/api";
 import { updatePersonalInformationTechnician } from "@/graphql/users/mutation/technicians";
 import { client } from "@/contexts/AmplifyContext";
 import { dataURLtoBlob } from "@/utils/photo/BlobImage";
+import ProfileCompleted from "@/components/userComponents/technician/ProfileCompleted";
 
 const PersonalInformation = () => {
   const [loading, setLoading] = useState(true);
@@ -230,8 +231,8 @@ const PersonalInformation = () => {
                 </div>
                 <img
                   src={photograph ? photograph : (userDataBase.profilePicture ? userDataBase.profilePicture : "/image/defaultProfilePicture.jpg")}
-                  className="rounded-full w-[4rem] h-[4rem] md:w-[6rem] md:h-[6rem] cursor-pointer "
-                  alt="Profile Picture"
+                  className="rounded-full w-[4rem] h-[4rem] md:w-[6rem] md:h-[6rem] cursor-pointer border-[3px] border-zinc-600/60"
+                  alt="Profile Picture "
                 />
                 <input
                   id="file-upload"
@@ -307,228 +308,7 @@ const PersonalInformation = () => {
           ) : (
             <>
               {profileCompleted ? (
-                <div className="w-full h-full flex flex-col">
-                  <div className="flex flex-col text-white border-b-[2px] border-zinc-700 pb-3">
-                    <div className="pt-3">Your state:</div>
-                    {isEditing === "state" ? (
-                      <div className="w-full flex gap-x-2 h-[50px]">
-                        <div className="flex-1">
-                          <Select
-                            variant={"bordered"}
-                            label="Complete this field"
-                            className="w-full text-white h-[40px]"
-                            selectedKeys={[stateUSA]}
-                            onChange={(e) => setInfoEditing({ field: state, value: statesUSA[e.target.value] })}
-                          >
-                            {statesUSA.map((stateUSA, index) => (
-                              <SelectItem
-                                key={index}
-                                value={stateUSA}
-                                style={{ color: "#E1E0DD" }}
-                              >
-                                {stateUSA}
-                              </SelectItem>
-                            ))}
-                          </Select>
-                        </div>
-                        <div className="flex gap-x-2 items-center">
-                          <button
-                            onClick={() => { setIsEditing(null); setInfoEditing(null) }}
-                            className="h-[40px] w-[80px] rounded-md bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
-                          >
-                            Cancel
-                          </button>
-                          <button onClick={() => handleUpdateInfo()} className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
-                            Update
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="w-full flex justify-between md:mb-0 h-[50px] ">
-                        <div className="pt-1 text-zinc-400">
-                          {userDataBase?.state}
-                        </div>
-                        <div className="flex justify-end items-end ">
-                          <button
-                            onClick={() => setIsEditing("state")}
-                            className="h-[40px] w-[80px] rounded-md bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
-                          >
-                            Edit
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex flex-col text-white border-b-[2px] border-zinc-700 pb-3">
-                    <div className="pt-3">Your city:</div>
-                    {isEditing === "city" ? (
-                      <div className="w-full flex gap-x-2 h-[50px]">
-                        <div className="flex-1 pt-1">
-                          <input
-                            type="text"
-                            className="w-full rounded-lg bg-transparent border-[1px] border-zinc-500 p-2"
-                            placeholder="Enter your city"
-                            onChange={(e) => setInfoEditing({ field: city, value: e.target.value })}
-                          />
-                        </div>
-                        <div className="flex gap-x-2 items-center">
-                          <button
-                            onClick={() => setIsEditing(null)}
-                            className="h-[40px] w-[80px] rounded-md bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
-                          >
-                            Cancel
-                          </button>
-                          <button onClick={() => handleUpdateInfo()} className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
-                            Update
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="w-full flex justify-between md:mb-0 h-[50px]">
-                        <div className="pt-1 text-zinc-400 ">
-                          {userDataBase?.city}
-                        </div>
-                        <div className="flex justify-end items-end ">
-                          <button
-                            onClick={() => setIsEditing("city")}
-                            className="h-[40px] w-[80px] rounded-md bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
-                          >
-                            Edit
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex flex-col text-white border-b-[2px] border-zinc-700 pb-3">
-                    <div className="pt-3">Your address:</div>
-                    {isEditing === "address" ? (
-                      <div className="w-full flex gap-x-2 h-[50px]">
-                        <div className="flex-1 pt-1">
-                          <input
-                            type="text"
-                            className="w-full rounded-lg bg-transparent border-[1px] border-zinc-500 p-2"
-                            placeholder="Enter your address"
-                            onChange={(e) => setInfoEditing({ field: address, value: e.target.value })}
-                          />
-                        </div>
-                        <div className="flex gap-x-2 items-center">
-                          <button
-                            onClick={() => setIsEditing(null)}
-                            className="h-[40px] w-[80px] rounded-md bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
-                          >
-                            Cancel
-                          </button>
-                          <button onClick={() => handleUpdateInfo()} className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
-                            Update
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="w-full flex justify-between md:mb-0 h-[50px]">
-                        <div className="pt-1 text-zinc-400">
-                          {userDataBase?.address}
-                        </div>
-                        <div className="flex justify-end items-end ">
-                          <button
-                            onClick={() => setIsEditing("address")}
-                            className="h-[40px] w-[80px] rounded-md bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
-                          >
-                            Edit
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex flex-col text-white border-b-[2px] border-zinc-700 pb-3">
-                    <div className="pt-3 ">Your email:</div>
-                    <div className="w-full flex justify-between md:mb-0 h-[50px]">
-                      <div className="pt-1 text-zinc-400">
-                        {userDataBase?.email}
-                      </div>
-                      <div className="flex justify-end items-end "></div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col text-white border-b-[2px] border-zinc-700 pb-3">
-                    <div className="pt-3">Your contact number:</div>
-                    {isEditing === "contactNumber" ? (
-                      <div className="w-full flex gap-x-2 h-[50px]">
-                        <div className="flex-1 pt-1">
-                          <input
-                            type="text"
-                            className="w-full rounded-lg bg-transparent border-[1px] border-zinc-500 p-2"
-                            placeholder="Enter your contact number"
-                            onChange={(e) => setInfoEditing({ field: contactNumber, value: e.target.value })}
-                          />
-                        </div>
-                        <div className="flex gap-x-2 items-center">
-                          <button
-                            onClick={() => setIsEditing(null)}
-                            className="h-[40px] w-[80px] rounded-md bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
-                          >
-                            Cancel
-                          </button>
-                          <button onClick={() => handleUpdateInfo()} className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
-                            Update
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="w-full flex justify-between md:mb-0 h-[50px]">
-                        <div className="pt-1 text-zinc-400">
-                          {userDataBase?.contactNumber}
-                        </div>
-                        <div className="flex justify-end items-end ">
-                          <button
-                            onClick={() => setIsEditing("contactNumber")}
-                            className="h-[40px] w-[80px] rounded-md bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
-                          >
-                            Edit
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex flex-col text-white border-b-[2px] border-zinc-700 pb-3">
-                    <div className="pt-3">Your zip code:</div>
-                    {isEditing === "zipCode" ? (
-                      <div className="w-full flex gap-x-2 h-[50px]">
-                        <div className="flex-1 pt-1">
-                          <input
-                            type="text"
-                            className="w-full rounded-lg bg-transparent border-[1px] border-zinc-500 p-2"
-                            placeholder="Enter your zipCode"
-                            onChange={(e) => setInfoEditing({ field: zipCode, value: e.target.value })}
-                          />
-                        </div>
-                        <div className="flex gap-x-2 items-center">
-                          <button
-                            onClick={() => setIsEditing(null)}
-                            className="h-[40px] w-[80px] rounded-md bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
-                          >
-                            Cancel
-                          </button>
-                          <button onClick={() => handleUpdateInfo()} className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors">
-                            Update
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="w-full flex justify-between md:mb-0 h-[50px]">
-                        <div className="pt-1 text-zinc-400">
-                          {userDataBase?.zipCode}
-                        </div>
-                        <div className="flex justify-end items-end ">
-                          <button
-                            onClick={() => setIsEditing("zipCode")}
-                            className="h-[40px] w-[80px] rounded-md bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
-                          >
-                            Edit
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                <ProfileCompleted userDataBase={userDataBase} setUserDataBase={setUserDataBase}/>
               ) : (
                 <Formik
                   initialValues={{

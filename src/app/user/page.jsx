@@ -45,36 +45,36 @@ const Page = () => {
         </div>
       )  : (
         user && (
-          <div className="w-full h-[calc(100vh-100px)] flex flex-col px-4 bg-zinc-800 rounded-xl pt-4">
+          <div className="w-full h-[calc(100vh-100px)] flex flex-col px-4 dark:bg-zinc-800 bg-zinc-100 dark:shadow-none  shadow-lg shadow-zinc-400 rounded-xl pt-4">
             <div className="w-full mb-6">
-              <div className="w-[250px] bg-zinc-700 rounded-2xl flex items-center justify-center p-2 ">
-                <Link href={"/user"} className="text-zinc-400 text-[15px]">
+              <div className="w-[250px] dark:bg-zinc-700 bg-zinc-300 rounded-2xl flex items-center justify-center p-2 ">
+                <Link href={"/user"} className="dark:text-zinc-400 text-zinc-600 text-[15px]">
                   Technician panel
                 </Link>
-                <RiArrowDropRightLine className="text-zinc-400 text-[25px] " />
-                <Link href={"/user"} className="text-white text-[15px]">
+                <RiArrowDropRightLine className="dark:text-zinc-400 text-zinc-600 text-[25px] " />
+                <Link href={"/user"} className="dark:text-white text-black text-[15px]">
                   Profile
                 </Link>
               </div>
             </div>
 
             <div className="w-full flex mb-8 gap-x-[20px]">
-              <div className="w-[70%] flex rounded-xl bg-zinc-700 p-4 gap-x-3">
+              <div className="w-[70%] flex rounded-xl dark:bg-zinc-700/70 bg-emerald-600/60 p-4 gap-x-3">
                 <Image
-                  src={profileDefaultPicture}
+                  src={user.profilePictureUrl ? user.profilePictureUrl : profileDefaultPicture}
                   alt={`profile picture`}
                   width={170}
                   height={170}
-                  className="rounded-full"
+                  className="rounded-full object-cover border-zinc-600/50 border-[5px] shadow-md"
                 />
                 <div className="flex-1 ">
-                  <div className="w-full text-white text-[40px] font-bold">
+                  <div className="w-full dark:text-white text-emerald-100 text-[40px] font-bold">
                     Welcome again{" "}
-                    <span className="text-emerald-400">
+                    <span className="dark:text-emerald-400 text-zinc-900">
                       {user["custom:fullName"] ? user["custom:fullName"].split(' ').slice(0, 2).join(' ') : user.name.split(' ').slice(0, 2).join(' ')}!
                     </span>
                   </div>
-                  <div className="w-full flex items-center gap-x-1 text-gray-400 text-[18px] mb-4">
+                  <div className="w-full flex items-center gap-x-1 dark:text-gray-400 text-zinc-900 text-[18px] mb-4">
                     <RiMailOpenFill className="text-gray-200 text-[25px]" />{" "}
                     {user?.email}
                   </div>
@@ -138,26 +138,26 @@ const Page = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex-1 rounded-xl bg-zinc-700">Panel derecho</div>
+              <div className="flex-1 rounded-xl bg-zinc-700/70">Panel derecho</div>
             </div>
 
-            <div className="text-[30px] flex items-center gap-x-1 text-white font-bold mb-4">
-              Complete your profile{" "}
-              <RiArrowDownSLine className="text-emerald-400" />
+            <div className="text-[30px] flex items-center gap-x-1  font-bold mb-4">
+              Complete the fields{" "}
+              <RiArrowDownSLine className="dark:text-emerald-400 text-emerald-600" />
             </div>
             <div className="w-full grid grid-cols-3 gap-4">
               <Link
                 href={"/user/personal-information"}
-                className="rounded-xl bg-zinc-800 border-zinc-700 border-[2px] cursor-pointer flex flex-row items-center p-3 pr-5"
+                className="rounded-xl dark:bg-zinc-900/60 dark:border-emerald-500/10 dark:hover:border-zinc-700/70 bg-zinc-300/70 border-zinc-300  border-[2px] cursor-pointer flex flex-row items-center p-4 pr-5 shadow-lg transition-all "
               >
-                <div className="w-[80px] flex items-center justify-center bg-zinc-700 rounded-lg px-2 py-3 mr-3">
-                  <TbUserSquare className="text-[30px] text-emerald-400" />
+                <div className="w-[80px] flex items-center justify-center dark:bg-zinc-700/60 bg-zinc-400 rounded-lg px-2 py-3 mr-3">
+                  <TbUserSquare className="text-[30px] dark:text-emerald-400 text-emerald-200" />
                 </div>
                 <div className="flex flex-col">
-                  <h4 className="flex gap-x-1 items-center text-white text-[20px] font-bold">
-                    PERSONAL INFORMATION
+                  <h4 className="flex gap-x-1 items-center  text-[20px] font-bold">
+                    PROFILE INFORMATION
                   </h4>
-                  <p className="text-gray-300 text-[14px]">
+                  <p className="dark:text-gray-300 text-zinc-900 text-[14px]">
                     Here you can access and complete your personal information,
                     such as name, city, phone number, etc. You can also edit.
                   </p>
@@ -165,16 +165,16 @@ const Page = () => {
               </Link>
               <Link
                 href={"/user/specialization-area"}
-                className=" rounded-xl bg-zinc-800 border-zinc-700 border-[2px] cursor-pointer flex flex-row items-center p-3 pr-5"
+                className=" rounded-xl dark:bg-zinc-900/60 dark:border-emerald-500/10 dark:hover:border-zinc-700/70 bg-zinc-300/70 border-zinc-300 border-[2px] cursor-pointer flex flex-row items-center p-4 pr-5 shadow-lg  transition-all "
               >
-                <div className="w-[80px] flex items-center justify-center bg-zinc-700 rounded-lg px-2 py-3 mr-3">
-                  <TbTool className="text-[30px] text-emerald-400" />
+                <div className="w-[80px] flex items-center justify-center dark:bg-zinc-700/60 bg-zinc-400 rounded-lg px-2 py-3 mr-3">
+                  <TbTool className="text-[30px] dark:text-emerald-400 text-emerald-200" />
                 </div>
                 <div className="flex flex-col">
-                  <h4 className="flex gap-x-1 items-center text-white  text-[20px] font-bold">
+                  <h4 className="flex gap-x-1 items-center   text-[20px] font-bold">
                     SPECIALIZATION AREA
                   </h4>
-                  <p className="text-gray-300 text-[14px]">
+                  <p className="dark:text-gray-300 text-zinc-900 text-[14px]">
                     Here you can complete the information about the cars you
                     specialize in repairing, so we can recommend you.
                   </p>
@@ -182,16 +182,16 @@ const Page = () => {
               </Link>
               <Link
                 href={"/user/certifications"}
-                className="rounded-xl bg-zinc-800 border-zinc-700 border-[2px] cursor-pointer flex flex-row items-center p-3 pr-5"
+                className="rounded-xl dark:bg-zinc-900/60 dark:border-emerald-500/10 dark:hover:border-zinc-700/70 bg-zinc-300/70 border-zinc-300 border-[2px] cursor-pointer flex flex-row items-center p-4 pr-5 shadow-lg  transition-all "
               >
-                <div className="w-[80px] flex items-center justify-center bg-zinc-700 rounded-lg px-2 py-3 mr-3">
-                  <TbCertificate2 className="text-[30px] text-emerald-400" />
+                <div className="w-[80px] flex items-center justify-center dark:bg-zinc-700/60 bg-zinc-400 rounded-lg px-2 py-3 mr-3">
+                  <TbCertificate2 className="text-[30px] dark:text-emerald-400 text-emerald-200" />
                 </div>
                 <div className="flex flex-col">
-                  <h4 className="flex gap-x-1 items-center text-white  text-[20px] font-bold">
+                  <h4 className="flex gap-x-1 items-center   text-[20px] font-bold">
                     CERTIFICATIONS
                   </h4>
-                  <p className="text-gray-300 text-[14px]">
+                  <p className="dark:text-gray-300 text-zinc-900 text-[14px]">
                     Here you can upload the certifications you have, if you have
                     them, certifications in the field of mechanics.
                   </p>
@@ -199,16 +199,16 @@ const Page = () => {
               </Link>
               <Link
                 href={"/user/profile-card"}
-                className="rounded-xl bg-zinc-800 border-zinc-700 border-[2px] cursor-pointer flex flex-row items-center p-3 pr-5"
+                className="rounded-xl dark:bg-zinc-900/60 dark:border-emerald-500/10 dark:hover:border-zinc-700/70 bg-zinc-300/70 border-zinc-300 border-[2px] cursor-pointer flex flex-row items-center p-4 pr-5 shadow-lg  transition-all "
               >
-                <div className="w-[80px] flex items-center justify-center bg-zinc-700 rounded-lg px-2 py-3 mr-3">
-                  <TbId className="text-[30px] text-emerald-400" />
+                <div className="w-[80px] flex items-center justify-center dark:bg-zinc-700/60 bg-zinc-400 rounded-lg px-2 py-3 mr-3">
+                  <TbId className="text-[30px] dark:text-emerald-400 text-emerald-200" />
                 </div>
                 <div className="flex flex-col">
-                  <h4 className="flex gap-x-1 items-center text-white  text-[20px] font-bold">
+                  <h4 className="flex gap-x-1 items-center text-[20px] font-bold">
                     PROFILE CARD
                   </h4>
-                  <p className="text-gray-300 text-[14px]">
+                  <p className="dark:text-gray-300 text-zinc-900 text-[14px]">
                     Here you can see your profile card, it is how potential
                     clients see you and can interact with your information.
                   </p>

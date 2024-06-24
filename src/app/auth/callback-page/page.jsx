@@ -75,7 +75,9 @@ const CallbackPage = () => {
           "custom:role": "technician",
           "custom:infoCompleted" : "false",
           "custom:termsAccepted": "false",
-          "custom:profileCompleted": "false"
+          "custom:profileCompleted": "false",
+          "custom:subscription" : "free",
+          "custom:fee" : "10"
         },
       });
       const { tokens, userSub } = await fetchAuthSession({ forceRefresh: true });
@@ -157,17 +159,17 @@ const CallbackPage = () => {
                 <span className="flex gapx-x-3 text-[15px] mb-2">
                   {" "}
                   <RiCheckboxCircleFill className="text-[15px] min-w-[22px] h-[22px] pt-1 mr-2 " />{" "}
-                  Jkafjals asndb adsmn alsd
+                  Repair your car.
                 </span>
                 <span className="flex gapx-x-3 text-[15px] mb-2">
                   {" "}
                   <RiCheckboxCircleFill className="text-[15px] min-w-[22px] h-[22px] pt-1 mr-2 " />{" "}
-                  Jkafjals jfaskdasg .
+                  Request towing Service .
                 </span>
                 <span className="flex gapx-x-3 text-[15px] mb-2">
                   {" "}
                   <RiCheckboxCircleFill className="text-[15px] min-w-[22px] h-[22px] pt-1 mr-2 " />{" "}
-                  Jkafjals jfaskdasg kajsdg ioasdv ajhsdasj faksjd ahmgsdv asd.
+                  Choose between the offers of the best technicians.
                 </span>
               </div>
               <Button
@@ -193,17 +195,17 @@ const CallbackPage = () => {
                 <span className="flex gapx-x-3 text-[15px] mb-2">
                   {" "}
                   <RiCheckboxCircleFill className="text-[15px] min-w-[22px] h-[22px] pt-1 mr-2 " />{" "}
-                  Jkafjals ahjsd jnd asjdkg{" "}
+                  The best app for your bussiness{" "}
                 </span>
                 <span className="flex gapx-x-3 text-[15px] mb-2">
                   {" "}
                   <RiCheckboxCircleFill className="text-[15px] min-w-[22px] h-[22px] pt-1 mr-2 " />{" "}
-                  Jkafjals jfaskdasg .
+                  Maximize the efficiency of your business .
                 </span>
                 <span className="flex gapx-x-3 text-[15px] mb-2">
                   {" "}
                   <RiCheckboxCircleFill className="text-[15px] min-w-[22px] h-[22px] pt-1 mr-2 " />{" "}
-                  Jkafjals jfaskdasg kajsdg ioasdv ajhsdasj faksjd ahmgsdv asd.
+                  Quickly contact people who need to repair their car.
                 </span>
               </div>
               <Button
