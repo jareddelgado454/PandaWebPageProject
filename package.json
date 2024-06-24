@@ -24,7 +24,7 @@
     "animate.css": "^4.1.1",
     "aws-amplify": "^6.2.0",
     "date-fns": "^3.6.0",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.11",
     "embla-carousel-react": "^8.0.4",
     "formik": "^2.4.5",
     "framer-motion": "^11.2.2",

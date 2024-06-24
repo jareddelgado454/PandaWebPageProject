@@ -60,11 +60,28 @@ export const getPricesTechnician = gql`
   }
 `;
 
+export const getSubscriptionExpirationDate = gql`
+  query MyQuery($id: ID!) {
+    getTechnician(id: $id) {
+      subscriptionExpirationDate
+    }
+  }
+`;
+
 export const getStripeInformationTechnician = gql`
   query MyQuery($id: ID!) {
     getTechnician(id: $id) {
       stripeAccountStatus
       stripeId
+    }
+  }
+`;
+
+export const getProfilePicture = gql`
+  query MyQuery($id: ID!) {
+    getTechnician(id: $id) {
+      id
+      profilePicture
     }
   }
 `;
