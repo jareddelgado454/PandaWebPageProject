@@ -46,8 +46,8 @@ const CardSubscription = ({freePlan, infoPlan, idsPassed}) => {
                             quantity : 1,
                         }
                     ],
-                    success_url : "http://localhost:3000/user",
-                    cancel_url : "http://localhost:3000/user",
+                    success_url : "http://localhost:3000/user/subscription",
+                    cancel_url : "http://localhost:3000/user/subscription",
                     metadata : idsPassed ? {...idsPassed} : {},
                 }); 
                 router.push(checkout?.url);
@@ -58,7 +58,7 @@ const CardSubscription = ({freePlan, infoPlan, idsPassed}) => {
         }
     }
   return (
-    <div className={`${freePlan ? "bg-emerald-500 text-white" : "bg-white text-black relative"}  rounded-xl shadow-lg flex flex-col  w-[250px] p-3 px-5`}>
+    <div className={`${freePlan ? "dark:bg-emerald-600 bg-emerald-500 text-white" : "dark:bg-zinc-800 bg-white dark:text-white text-black relative"}  rounded-xl shadow-lg flex flex-col  w-[250px] p-3 px-5`}>
         {  
             freePlan ? "" : <div className="absolute -top-2 -right-2 bg-zinc-700 rounded-full px-4 py-2 text-gray-200 text-[13px]">-15%</div>
         }
@@ -70,7 +70,7 @@ const CardSubscription = ({freePlan, infoPlan, idsPassed}) => {
             <span className='flex gapx-x-3 text-[15px] mb-3'>{freePlan ? <RiCheckboxCircleFill className='text-[15px] min-w-[22px] h-[22px] pt-1 mr-2 '/> : <RiVipCrownFill className='text-[15px] text-emerald-600 min-w-[22px] h-[22px] pt-1 mr-2 '/> } Jkafjals jfaskdasg .</span>
             <span className='flex gapx-x-3 text-[15px] mb-3'>{freePlan ? <RiCheckboxCircleFill className='text-[15px] min-w-[22px] h-[22px] pt-1 mr-2 '/> : <RiVipCrownFill className='text-[15px] text-emerald-600 min-w-[22px] h-[22px] pt-1 mr-2 '/> } Jkafjals jfaskdasg kajsdg ioasdv ajhsdasj faksjd ahmgsdv asd.</span>
         </div>
-        <button onClick={() => handleClick()} className={`${freePlan ? "bg-white text-emerald-800" : "bg-emerald-500 text-white"} w-full rounded-xl text-center py-3`} >Select plan</button>
+        <button onClick={() => handleClick()} className={`${freePlan ? "dark:bg-emerald-900 bg-white dark:text-white text-emerald-800" : "dark:bg-emerald-600 bg-emerald-500 text-white"} w-full rounded-xl text-center py-3`} >Select plan</button>
     </div>
   )
 }

@@ -70,7 +70,7 @@ type Rate @model @auth(
     id: ID!
     technicianId: ID! @index(name: "byTechnician")
     technician: Technician @belongsTo(fields: ["technicianId"])
-    customer: Customer! @hasOne
+    createdBy: Customer! @hasOne
     rate: Float!
     comment: String
     createdAt: AWSDateTime
@@ -97,6 +97,7 @@ type Technician @model @auth(
     subscription: String
     stripeId: String
     stripeAccountStatus: String
+    subscriptionExpirationDate: AWSDateTime
     fee: Int
     rate: [Rate] @hasMany(indexName: "byTechnician", fields: ["id"])
     loLatitude: Float
@@ -121,6 +122,7 @@ type Car @model @auth(
     image: String!
     model: String!
     year: String!
+    identificationNumber: String!
 }
 
 type Customer @model @auth(

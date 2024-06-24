@@ -12,6 +12,7 @@ import "@/app/app.css";
 import { PlaceTechnicianProvider } from "@/contexts/placeTechnician/PlaceTechnicianProvider";
 import ServiceAssignedProvider from "@/contexts/serviceAssigned/ServiceAssignedProvider";
 import { ServiceAssignedContext } from "@/contexts/serviceAssigned/ServiceAssignedContext";
+import { getProfilePicture } from "@/graphql/users/query/technician";
 
 export const Contexto = createContext();
 
@@ -51,7 +52,14 @@ const UserLayout = ({ children }) => {
   const retrieveOneUser = async () => {
     try {
       const userInfo = await fetchUserAttributes();
-      setUser({ ...userInfo });
+      const {data} = await client.graphql({
+        query: getProfilePicture,
+        variables: {
+          id: userInfo.sub,
+        },
+      });
+      const profilePictureUrl = data?.getTechnician?.profilePicture;
+      setUser({ ...userInfo, profilePictureUrl: profilePictureUrl });
       console.log("Este es el coso del tecnico", userInfo.sub);
       setIsOnline(userInfo["custom:isOnline"] === "true" ? true : false);
     } catch (error) {
@@ -110,7 +118,7 @@ const UserLayout = ({ children }) => {
   }, [user, serviceAssigned?.id]); 
 
   return (
-    <div className="w-full h-screen bg-zinc-900 dark">
+    <div className="w-full h-screen dark:bg-zinc-900 bg-zinc-200 ">
       <Contexto.Provider
         value={{
           user,
@@ -123,7 +131,7 @@ const UserLayout = ({ children }) => {
       >
           <PlaceTechnicianProvider>
             {loading ? (
-              <div className="text-white"></div>
+              <div className="text-white dark:bg-zinc-900 bg-zinc-900 w-full h-screen"></div>
             ) : (
               user && (
                 <div

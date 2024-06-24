@@ -19,7 +19,11 @@
         },
         "createStripeTechnicianAccount": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/createStripeTechnicianAccount-4365654b726b6875366e-build.zip"
+          "s3Key": "amplify-builds/createStripeTechnicianAccount-4e774d752b3364503945-build.zip"
+        },
+        "technicianSubscriptionPlan": {
+          "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
+          "s3Key": "amplify-builds/technicianSubscriptionPlan-6b7a374f4d676d66642f-build.zip"
         }
       },
       "auth": {
