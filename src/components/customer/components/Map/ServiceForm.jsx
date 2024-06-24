@@ -34,7 +34,6 @@ export default function ServiceForm() {
                 }
             });
             setMyCars(data.listCars.items);
-            console.log(data);
         } catch (error) {
             console.error(error);
         }

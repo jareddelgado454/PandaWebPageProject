@@ -59,3 +59,43 @@
 .mapboxgl-ctrl-bottom-right, .maplibregl-ctrl-bottom-right {
   display: none;
 }
+
+.maplibregl-ctrl-top-left{
+  @apply w-[95%] lg:w-full;
+}
+
+.my-geocoder {
+  @apply bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-lg rounded-lg;
+}
+
+.my-geocoder .mapboxgl-ctrl-geocoder--pin-right{
+  @apply bg-transparent;
+}
+
+.my-geocoder .mapboxgl-ctrl-geocoder--button{
+  @apply bg-transparent;
+}
+
+.my-geocoder .maplibregl-ctrl-geocoder--input {
+  @apply bg-transparent border-none focus:outline-none dark:text-white;
+}
+
+.my-geocoder .maplibregl-ctrl-geocoder--icon {
+  @apply text-gray-400;
+}
+
+.my-geocoder .suggestions-wrapper {
+  @apply bg-white dark:bg-zinc-900 dark:hover:bg-zinc-950 dark:text-white transition-colors duration-300;
+}
+
+.my-geocoder .suggestions li {
+  @apply bg-white dark:bg-zinc-900 dark:hover:bg-zinc-950 dark:text-white transition-colors duration-300;
+}
+
+.my-geocoder .suggestions a {
+  @apply bg-white dark:bg-zinc-900 dark:hover:bg-zinc-950 dark:text-white transition-colors duration-300;
+}
+
+.my-geocoder .mapboxgl-ctrl-geocoder--suggestion{
+  @apply bg-white dark:bg-zinc-900 dark:hover:bg-zinc-950 dark:text-white transition-colors duration-300;
+}
