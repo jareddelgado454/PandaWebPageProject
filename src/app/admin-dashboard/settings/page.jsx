@@ -45,11 +45,11 @@ const Settings = () => {
       await updateUserAttributes({
         userAttributes: {
           "custom:fullName": values.fullName,
-          "custom:address": values.address,
-          "custom:city": values.city,
-          "custom:state": values.state,
           "custom:phoneNumber": values.contactNumber,
-          "custom:zipCode": values.zipCode,
+          // "custom:address": values.address,
+          // "custom:city": values.city,
+          // "custom:state": values.state,
+          // "custom:zipCode": values.zipCode,
         },
       });
       await client.graphql({
@@ -145,6 +145,7 @@ const Settings = () => {
                     alt="Fotografía de perfil"
                     width={250}
                     height={250}
+                    priority
                   />
                   <input
                     id="file-upload"
@@ -163,10 +164,10 @@ const Settings = () => {
                   fullName: user["custom:fullName"] || "",
                   email: user.email || "",
                   contactNumber: user["custom:phoneNumber"] || 0,
-                  address: user["custom:address"] || "",
-                  city: user["custom:city"] || "",
-                  state: user["custom:state"] || "",
-                  zipCode: user['custom:zipCode'] || 0,
+                  // address: user["custom:address"] || "",
+                  // city: user["custom:city"] || "",
+                  // state: user["custom:state"] || "",
+                  // zipCode: user['custom:zipCode'] || 0,
                 }}
                 onSubmit={onHandleSubmit}
                 validationSchema={formSchema}
@@ -207,8 +208,8 @@ const Settings = () => {
 
                       <button
                         type="submit"
-                        className={`${!isValid ? "bg-gray-200" : "bg-green-panda"
-                          } bg-green-panda dark:bg-zinc-800 rounded py-3 w-full`}
+                        className={`transition-all duration-300 ${!isValid ? "bg-gray-200" : "bg-green-panda"
+                          } bg-green-panda dark:bg-zinc-800 dark:hover:bg-zinc-700 rounded py-3 w-full`}
                         disabled={!isValid}
                       >
                         Update Information
@@ -228,9 +229,9 @@ const Settings = () => {
 const formSchema = Yup.object().shape({
   fullName: Yup.string().required("Required").max(50),
   email: Yup.string().email().required("Required"),
-  city: Yup.string().required("Required"),
-  state: Yup.string().required("Required"),
   contactNumber: Yup.number().required("Required").positive().integer(),
+  // city: Yup.string().required("Required"),
+  // state: Yup.string().required("Required"),
 });
 
 export default Settings;

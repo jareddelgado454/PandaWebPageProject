@@ -15,12 +15,13 @@ import {
   FaComments,
   FaRegMoon,
   FaHouse,
+  FaUserGroup,
 } from "react-icons/fa6";
 import { getUserByMail } from "@/api";
 import Image from "next/image";
 import { UserContext } from "@/contexts/user/UserContext";
 export const Sidebar = () => {
-  
+
   const { logout } = useContext(UserContext);
   const router = useRouter();
   const [active, setActive] = useState(false);
@@ -83,14 +84,14 @@ export const Sidebar = () => {
             className="text-xl cursor-pointer transition-all ease-in-out hover:-translate-y-1 hover:scale-110 text-zinc-600 dark:text-white font-black"
           />
           <p
-            className={`font-black drop-shadow-xl tracking-wider text-zinc-600 dark:text-white ${active ? "block" : "hidden"
+            className={`font-black text-lg tracking-normal text-zinc-600 dark:text-white ${active ? "block" : "hidden"
               }`}
           >
             Panda CMS
           </p>
           <Image
             src="/panda.png"
-            className={`w-[4rem] h-[4rem] drop-shadow-lg  ${active ? "block" : "hidden"
+            className={`w-[3rem] h-[3rem] drop-shadow-lg  ${active ? "block" : "hidden"
               }`}
             width={150}
             height={150}
@@ -102,40 +103,49 @@ export const Sidebar = () => {
         </p>
         <Separator />
         <ul
-          className={`bg-zinc-600 dark:bg-green-panda shadow-xl transition-all rounded-md p-3 mt-4 ${active && "w-full"
+          className={`bg-zinc-600 dark:bg-green-panda shadow-sm transition-all rounded-md p-3 mt-4 flex flex-col gap-4 ${active && "w-full"
             }`}
         >
+          <Link href={`/admin-dashboard`} className="flex gap-3 items-center">
+            <FaHouse className="text-xs 2xl:text-base transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
+            <p className={`text-xs 2xl:text-base  ${!active && "hidden"}`}>
+              Home
+            </p>
+          </Link>
           <Link
             href={`/admin-dashboard/customers`}
             className="flex gap-3 items-center"
           >
-            <FaUser className="text-xl transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
-            <p className={`text-xl  ${!active && "hidden"}`}>
+            <FaUser className="text-xs 2xl:text-base transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
+            <p className={`text-xs 2xl:text-base  ${!active && "hidden"}`}>
               Customers
             </p>
           </Link>
           <Link
             href={`/admin-dashboard/technicians`}
-            className="flex gap-3 items-center mt-5"
+            className="flex gap-3 items-center"
           >
-            <FaUserGear className="text-xl transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
-            <p className={`text-xl  ${!active && "hidden"}`}>
+            <FaUserGear className="text-xs 2xl:text-base transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
+            <p className={`text-xs 2xl:text-base ${!active && "hidden"}`}>
               Technicians
+            </p>
+          </Link>
+          <Link
+            href={`/admin-dashboard/admins`}
+            className="flex gap-3 items-center"
+          >
+            <FaUserGroup className="text-xs 2xl:text-base transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
+            <p className={`text-xs 2xl:text-base  ${!active && "hidden"}`}>
+              Admins
             </p>
           </Link>
         </ul>
         <div className="w-full px-4 absolute bottom-4 transition-all">
-          <div className="bg-zinc-600 dark:bg-green-panda shadow-xl p-3 rounded-md mb-4">
+          <div className="bg-zinc-600 dark:bg-green-panda shadow-sm p-3 rounded-md my-4">
             <ul className="flex flex-col flex-wrap gap-4">
-              <Link href={`/admin-dashboard/messages`} className="flex gap-3 items-center">
-                <FaComments className="text-xl transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
-                <p className={`text-xl  ${!active && "hidden"}`}>
-                  Messages
-                </p>
-              </Link>
               <Link href={`/admin-dashboard/issues`} className="flex gap-3 items-center">
-                <FaFlag className="text-xl transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
-                <p className={`text-xl  ${!active && "hidden"}`}>
+                <FaFlag className="text-xs 2xl:text-base transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
+                <p className={`text-xs 2xl:text-base  ${!active && "hidden"}`}>
                   Issues
                 </p>
               </Link>
@@ -143,37 +153,32 @@ export const Sidebar = () => {
                 href={`/admin-dashboard/graphs`}
                 className="flex gap-3 items-center"
               >
-                <FaChartSimple className="text-xl transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
-                <p className={`text-xl  ${!active && "hidden"}`}>
+                <FaChartSimple className="text-xs 2xl:text-base transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
+                <p className={`text-xs 2xl:text-base  ${!active && "hidden"}`}>
                   Charts
+                </p>
+              </Link>
+              <Link href={`/admin-dashboard/messages`} className="flex gap-3 items-center">
+                <FaComments className="text-xs 2xl:text-base transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
+                <p className={`text-xs 2xl:text-base  ${!active && "hidden"}`}>
+                  Messages
                 </p>
               </Link>
               <Link
                 href={`/admin-dashboard/settings`}
                 className="flex gap-3 items-center"
               >
-                <FaGear className="text-xl transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
+                <FaGear className="text-xs 2xl:text-base transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
                 <p
-                  className={`text-xl  transition-all ${!active && "hidden"
+                  className={`text-xs 2xl:text-base  transition-all ${!active && "hidden"
                     }`}
                 >
                   Configuration
                 </p>
               </Link>
-            </ul>
-          </div>
-          <Separator />
-          <div className="bg-zinc-600 dark:bg-green-panda shadow-xl p-3 rounded-md my-4">
-            <ul className="flex flex-col flex-wrap gap-4">
-              <Link href={`/admin-dashboard`} className="flex gap-3 items-center">
-                <FaHouse className="text-xl transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
-                <p className={`text-xl  ${!active && "hidden"}`}>
-                  Home
-                </p>
-              </Link>
-              <div onClick={handleChangeTheme} className="flex gap-3 items-center">
-                <FaRegMoon className="text-xl transition-all ease-in-out hover:-translate-y-1 hover:scale-110 cursor-pointer" />
-                <p className={`text-xl  ${!active && "hidden"}`}>
+              <div onClick={handleChangeTheme} className="flex gap-3 items-center cursor-pointer">
+                <FaRegMoon className="text-xs 2xl:text-base transition-all ease-in-out hover:-translate-y-1 hover:scale-110" />
+                <p className={`text-xs 2xl:text-base  ${!active && "hidden"}`}>
                   {theme === 'light' ? 'Dark' : 'Light'} Mode
                 </p>
               </div>
@@ -181,19 +186,19 @@ export const Sidebar = () => {
           </div>
 
           <div
-            className={`bg-zinc-600 dark:bg-green-panda shadow-xl p-3 rounded-md mt-4 transition-all w-full ${active ? "h-[7rem]" : "h-[3rem]"
+            className={`bg-zinc-600 dark:bg-green-panda shadow-sm p-3 rounded-md mt-4 transition-all w-full ${active ? "h-[5rem] 2xl:h-[7rem]" : "h-[3rem]"
               }`}
           >
             <div className="flex items-center w-full h-full gap-2">
               <Image
                 src={user && user.profilePicture ? user.profilePicture : "/image/defaultProfilePicture.jpg"}
                 alt="user_logo"
-                width={150}
-                height={150}
-                className={`rounded-full object-cover object-center ${active ? "w-[3rem] h-[3rem]" : "w-[1.8rem] h-[1.5rem]"
+                width={350}
+                height={350}
+                className={`rounded-full bg-cover bg-center ${active ? "w-[3rem] h-[3rem]" : "w-[1.8rem] h-[1.5rem]"
                   }`}
               />
-              <div className="overflow-hidden flex flex-col gap-2 w-full">
+              <div className="overflow-hidden flex flex-col gap-1 2xl:gap-2 w-full">
                 <p className={` text-sm line-clamp-1 tracking-wider ${!active && "hidden"}`}>{user && reduceName(user?.fullName)}</p>
                 <p
                   className={`text-xs text-zinc-300 dark:text-zinc-200 tracking-wider line-clamp-1 ${!active && "hidden"

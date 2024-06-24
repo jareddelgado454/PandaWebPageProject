@@ -105,7 +105,8 @@ const CallbackPage = () => {
       await updateUserAttributes({
         userAttributes: {
           "custom:role": "customer",
-          "custom:termsAccepted": "false"
+          "custom:termsAccepted": "false",
+          "custom:profileCompleted": "false"
         },
       });
       const { tokens } = await fetchAuthSession({ forceRefresh: true });

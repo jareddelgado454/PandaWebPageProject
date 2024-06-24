@@ -26,6 +26,7 @@ query ListAllMyChats($customerId: ID!) {
                     sender
 	                chatId
 	                content
+                    image
 	                createdAt
 	            }
 	        }
@@ -54,6 +55,7 @@ query ListAllMyChats($customerId: ID!) {
                     sender
 	                chatId
 	                content
+                    image
 	                createdAt
 	            }
 	        }

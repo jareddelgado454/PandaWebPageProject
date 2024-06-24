@@ -1,90 +1,61 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import Chart from "chart.js/auto";
-import { CategoryScale } from "chart.js";
-import { DonutChartPerRole, LineChartGained } from '@/components/chartjs'
-import { listUsersForGraphics } from '@/graphql/users/query/user';
+import { listDataToGraphs } from '@/graphql/users/query/user';
 import { client } from '@/contexts/AmplifyContext';
 import HighRateComponent from '@/components/chartjs/highRate/HighRateComponent';
 import MonthlyComponent from '@/components/chartjs/monthlyServices/MonthlyComponent';
-import {Progress} from "@nextui-org/react";
-
-Chart.register(CategoryScale);
-
+import MonthGoalComponent from '@/components/chartjs/MonthlyGoal/MonthGoalComponent';
 const Graphs = () => {
 
   const [loading, setLoading] = useState(true);
-  const [users, setUsers] = useState(null);
+  const [error, setError] = useState(null)
+  const [data, setData] = useState([]);
 
-  const retrieveData = async() => 
-  {
+  const retrieveUsersData = async () => {
     setLoading(true);
-
     try {
-      
       const { data } = await client.graphql({
-        query: listUsersForGraphics
+        query: listDataToGraphs
       });
-      setUsers(data.listUsers.items);
+      const combinedData = {
+        customers: [...data.listCustomers.items],
+        technicians: [...data.listTechnicians.items],
+        services: [...data.listServices.items],
+      };
+      setData(combinedData);
       setLoading(false);
     } catch (error) {
       console.log(error);
       setLoading(false);
+      setError(error);
     }
   }
-
   useEffect(() => {
-    retrieveData();
+    retrieveUsersData();
   }, []);
 
   return (
-    <>
-      
-      <div className='container mx-auto my-10 transition-all h-full px-4'>
-        <p className='dark:text-white text-zinc-800 font-semibold text-xl'>ThePanda Analytics</p>
-        <div className='w-full bg-zinc-800 my-4 rounded-lg h-[14rem] lg:h-[12rem] py-3 px-7'>
-          <div className='flex flex-col gap-1'>
-            <p className='text-lg font-bold'>Service goal</p>
-            <p className='text-gray-400'>total performance this month</p>
-            <div className='flex flex-row justify-between'>
-              <p>Service request successfully</p>
-              <p className='text-2xl font-black text-[#40C48E]'>366</p>
+    <div className='container mx-auto my-10 transition-all px-4 overflow-x-hidden'>
+      {loading ? (<div></div>) : error ? (<div></div>) : data && (
+        <>
+          <MonthGoalComponent services={data.services} />
+          <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 my-8'>
+            <div className='bg-zinc-800 rounded-lg h-[20rem] lg:h-[26rem] p-7 col-span-2'>
+              <p className='font-bold text-lg mb-5'>Monthly Services</p>
+              <MonthlyComponent services={data.services} />
             </div>
-            <Progress color='success' aria-label="Loading..." value={60} className="w-full my-2"/>
-            <div className='flex flex-row justify-between'>
-              <p className='text-gray-400'>Monthly target</p>
-              <p className='text-lg text-gray-400'>100%</p>
+            <div className='bg-zinc-800 rounded-lg h-full p-7 flex flex-col gap-4 col-span-2 overflow-auto'>
+              <p className='font-bold text-lg'>Technicians with High Rate</p>
+              <HighRateComponent technicians={data.technicians} />
+            </div>
+            <div className='bg-zinc-800 rounded-lg h-full p-7 flex flex-col gap-4 col-span-2 overflow-auto'>
+              <p className='font-bold text-lg'>Customers with High Rate</p>
+              {/* <HighRateComponent technicians={data.technicians} /> */}
             </div>
           </div>
-        </div>
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 my-8'>
-          <div className='bg-zinc-800 rounded-lg h-[20rem] lg:h-[26rem] p-7'>
-            <p className='font-bold text-lg'>Monthly Services</p>
-            <p className='text-2xl my-3 text-[#40C48E]'>+75</p>
-            <MonthlyComponent />
-          </div>
-          <div className='bg-zinc-800 rounded-lg h-[26rem] p-7 flex flex-col gap-4 overflow-auto'>
-            <p className='font-bold text-lg'>Technicians with High Rate</p>
-            <HighRateComponent />
-          </div>
-        </div>
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 mb-4 pb-8'>
-          {
-            loading ? (<div>cargando graficos...</div>) :
-            (
-                <>
-                  <div className='flex flex-col items-center gap-2'>
-                    <LineChartGained users={users} />
-                  </div>
-                  <div className='flex flex-col items-center gap-2'>
-                    <DonutChartPerRole users={users} />
-                  </div>
-                </>
-            )
-          }
-        </div>
-      </div>
-    </>
+        </>
+      )}
+    </div>
   )
 }
 

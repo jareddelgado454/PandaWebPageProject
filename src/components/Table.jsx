@@ -207,9 +207,9 @@ export const Table = ({ item, callback, typeUser }) => {
                         : "/image/defaultProfilePicture.jpg"
                     }
                     alt="logo_image"
-                    className="w-[2rem] h-[2rem] rounded-lg object-cover bg-center"
-                    height={100}
-                    width={100}
+                    className="w-[2rem] h-[2rem] rounded-lg bg-cover bg-center"
+                    height={250}
+                    width={250}
                   />
                 </th>
                 <td className="px-6 py-4">

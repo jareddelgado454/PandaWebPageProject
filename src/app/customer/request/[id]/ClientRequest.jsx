@@ -15,6 +15,7 @@ export default function ClientRequest() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const param = useSearchParams().get('paymentStatus');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null)
   const [service, setService] = useState(null);
   const { id } = useParams();
   useEffect(() => {
@@ -30,6 +31,7 @@ export default function ClientRequest() {
         setService(data.getService);
       } catch (error) {
         console.error(error);
+        setError(error);
       } finally {
         setLoading(false);
       }
@@ -69,9 +71,10 @@ export default function ClientRequest() {
             setService((prevState) => ({
               ...prevState,
               status: updatedService?.status || prevState.status,
+              completed: updatedService?.completed || prevState.completed || 'No',
               destLatitude: updatedService?.destLatitude || prevState.destLatitude || 0,
               destLongitude: updatedService?.destLongitude || prevState.destLongitude || 0,
-              paymentLink: updatedService?.paymentLink || prevState.paymentLink || '',
+              paymentLink: updatedService?.paymentLink || prevState?.paymentLink || '',
               price: updatedService?.price || prevState.price || 0,
               tax: updatedService?.tax || prevState.tax || 0,
               total: updatedService?.total || prevState.total || 0,
@@ -102,7 +105,7 @@ export default function ClientRequest() {
         <div className='h-full w-full flex justify-center items-center'>
           <div className='loader bg-green-pan' />
         </div>
-      ) : (
+      ) : error ? (<div>Something went wrong :c</div>) : (
         <div className='container mx-auto px-4 h-full py-4 overflow-hidden'>
           <div className='flex flex-col gap-4 h-full'>
             <div className='flex justify-between'>
@@ -114,7 +117,7 @@ export default function ClientRequest() {
             {service && (
               <>
                 <div className='bg-green-700/15 dark:bg-zinc-700 h-full rounded-lg shadow-md'>
-                  <TechnicianDetailComponent technician={service.technicianSelected} />
+                  <TechnicianDetailComponent technician={service.technicianSelected} status={service.status} />
                 </div>
                 <div className='bg-green-700/15 dark:bg-zinc-700 h-full rounded-lg shadow-md'>
                   {service && <ServiceTrackingComponent service={service} setService={setService} />}

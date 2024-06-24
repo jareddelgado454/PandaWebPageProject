@@ -53,7 +53,7 @@ export default function Client_Component() {
           <BlockOneComponent />
         </div>
         <div
-          className={`transition-all ease-in-out duration-200 col-span-3 2xl:col-span-0 shadow w-full lg:w-[30%] 2xl:h-full bg-green-700/15 dark:bg-zinc-900 rounded-lg overflow-y-scroll p-4 cursor-pointer`}
+          className={`transition-all ease-in-out duration-200 col-span-3 2xl:col-span-0 shadow w-full lg:w-[30%] 2xl:h-full bg-green-700/15 dark:bg-zinc-900 rounded-lg overflow-y-scroll p-4`}
           style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none'

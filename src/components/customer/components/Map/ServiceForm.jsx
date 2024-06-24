@@ -189,7 +189,6 @@ export default function ServiceForm() {
                                             placeholder="My cars"
                                             onChange={({ target }) => setFieldValue('paymentMethod', target.value)}
                                         >
-                                            <option value="in cash"> In Cash</option>
                                             <option value="card">Pay with card</option>
                                         </Field>
                                     </div>

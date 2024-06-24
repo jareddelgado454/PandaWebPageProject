@@ -1,5 +1,5 @@
 'use client';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { FaChevronLeft, FaPhone } from 'react-icons/fa6';
 import { format } from 'date-fns';
@@ -15,6 +15,11 @@ export default function ChatComponent({ setChatActive, chatSelected, setChatSele
     const [error, setError] = useState(null);
     const [chat, setChat] = useState(null);
     const [messages, setMessages] = useState([]);
+    const messagesEndRef = useRef(null);
+    const messagesContainerRef = useRef(null);
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
     const retrieveMessagesFromChat = async () => {
         setLoading(true);
         try {
@@ -27,7 +32,7 @@ export default function ChatComponent({ setChatActive, chatSelected, setChatSele
             setLoading(false);
             setChat(data.getChat);
             setMessages(data.getChat.messages.items);
-            console.log(data);
+            scrollToBottom();
         } catch (error) {
             setError(error);
             setLoading(false);
@@ -41,6 +46,7 @@ export default function ChatComponent({ setChatActive, chatSelected, setChatSele
                 next: ({ data }) => {
                     // Update previous state
                     setMessages((prevMessages) => [...prevMessages, data.onCreateMessage]);
+                    scrollToBottom();
                 },
                 error: (error) => console.warn(error)
             });
@@ -57,6 +63,9 @@ export default function ChatComponent({ setChatActive, chatSelected, setChatSele
         url.searchParams.delete('chatId');
         window.history.replaceState({}, '', url);
     };
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
     return (
         <div className='flex flex-col gap-2 w-full h-full relative'>
             <div id='header' className='w-full bg-zinc-700 dark:bg-zinc-700 p-2 rounded-lg flex flex-row justify-between gap-2'>
@@ -85,7 +94,14 @@ export default function ChatComponent({ setChatActive, chatSelected, setChatSele
                     </div>
                 </div>
             </div>
-            <div className='flex flex-col gap-2 justify-end h-full' id="messages">
+            <div className='flex flex-col gap-2 justify-end h-full' id="messages"
+                style={{
+                    msOverflowStyle: 'none',
+                    scrollbarWidth: 'none',
+                    overflowY: 'scroll'
+                }}
+                ref={messagesContainerRef}
+            >
                 {messages.length > 0 ? messages.map((message, i) => (
                     <div
                         key={i}
@@ -110,6 +126,7 @@ export default function ChatComponent({ setChatActive, chatSelected, setChatSele
                         </div>
                     </div>
                 )) : null}
+                <div ref={messagesEndRef} />
             </div>
             {chat && <ChatAnswerInput chatId={chat.id} senderId={user.id} />}
         </div>

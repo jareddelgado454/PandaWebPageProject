@@ -2,9 +2,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { FaCarOn, FaRegStar, FaRegStarHalf, FaStar } from 'react-icons/fa6';
 import Image from 'next/image';
+import dynamic from 'next/dynamic'
 import Cookies from 'js-cookie';
 import ReactStars from "react-rating-stars-component";
-import { Badge } from '@nextui-org/react';
+import { Badge, useDisclosure } from '@nextui-org/react';
 import { onCreateOffers } from '@/graphql/users/customer/subscription';
 import { client } from '@/contexts/AmplifyContext';
 import { listOffersByServiceId } from '@/graphql/users/customer/query';
@@ -13,13 +14,15 @@ import { updateService } from '@/graphql/users/customer/mutation';
 import { MapContext } from '@/contexts/map/MapContext';
 import { PlaceContext } from '@/contexts/place/PlaceContext';
 import { calculateRate } from '@/utils/service/AVGRate';
-
+const TechnicianModal = dynamic(() => import('../../modals/TechnicianModal'))
 export default function OfferDetails() {
   const [active, setActive] = useState(false);
   const [offers, setOffers] = useState([]);
   const { serviceRequest, setServiceRequest } = useContext(ServiceContext);
   const { map } = useContext(MapContext);
   const { userLocation } = useContext(PlaceContext);
+  const [technicianSelected, setTechnicianSelected] = useState({})
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const retrieveOffersFromApi = async () => {
     setOffers([]);
     try {
@@ -69,7 +72,6 @@ export default function OfferDetails() {
           destLongitude: offer.technician.loLongitude
         }
       });
-      console.log(data);
       setServiceRequest(data.updateService);
       setActive(false);
       Cookies.set(
@@ -89,8 +91,13 @@ export default function OfferDetails() {
   const onDeleteOffer = (id) => {
     setOffers((prevOffers) => prevOffers.filter((offer) => offer.id !== id));
   }
+  const handleDetailTechnicianModal = (OneTechnician) => {
+    setTechnicianSelected(OneTechnician);
+    onOpen();
+  }
   return (
     <>
+      {technicianSelected && <TechnicianModal isOpen={isOpen} onOpenChange={onOpenChange} technician={technicianSelected} />}
       {serviceRequest && serviceRequest.status === 'pending' && (
         <div className='absolute top-0 left-0 z-10 md:w-[31rem] 2xl:w-[36rem] h-[17rem] 2xl:h-[22rem]'>
           <div className='p-4 flex gap-4 h-full overflow-y-hidden'>
@@ -119,7 +126,7 @@ export default function OfferDetails() {
                       />
                       <div className='flex flex-col gap-1 w-full'>
                         <div className='flex flex-row gap-4 justify-between items-center'>
-                          <p className='text-sm 2xl:text-base line-clamp-1'>{offer.technician.fullName}</p>
+                          <p onClick={() => handleDetailTechnicianModal(offer.technician)} className='text-sm font-semibold 2xl:text-base line-clamp-1 cursor-pointer'>{offer.technician && offer.technician.fullName}</p>
                           <div className='flex gap-2 justify-center items-center'>
                             {offer.technician.rate ? (
                               <ReactStars

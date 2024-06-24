@@ -58,7 +58,6 @@ export default function CarForm({ callback, car, edit, onClose, setMyCars }) {
     }
   };
   const handleUpdateCar = async (values, customerId) => {
-    console.log(values);
     try {
       await client.graphql({
         query: updateMyCar,
@@ -83,7 +82,8 @@ export default function CarForm({ callback, car, edit, onClose, setMyCars }) {
             model:values.model,
             year: values.year,
             customerCarsId: customerId,
-            image: image
+            image: image,
+            identificationNumber: values.identificationNumber
           }
         }
       });
@@ -125,7 +125,8 @@ export default function CarForm({ callback, car, edit, onClose, setMyCars }) {
         id: car?.id || '',
         brand: car?.brand || '',
         model: car?.model || '',
-        year: car?.year || ''
+        year: car?.year || '',
+        identificationNumber: car?.identificationNumber || 0
       }}
       onSubmit={onSubmit}
       validateOnBlur={false}
@@ -178,6 +179,16 @@ export default function CarForm({ callback, car, edit, onClose, setMyCars }) {
             <Field
               type="text"
               name="year"
+              className={`dark:text-white shadow appearance-none border ${!isValid && 'border-rose-600'} bg-transparent rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+            />
+          </div>
+          <div className='mt-4 flex flex-col gap-4 w-full'>
+            <label htmlFor="identifyNumber" className='dark:text-white text-gray-700 text-sm font-bold'>
+              Identification Number
+            </label>
+            <Field
+              type="text"
+              name="identificationNumber"
               className={`dark:text-white shadow appearance-none border ${!isValid && 'border-rose-600'} bg-transparent rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
             />
           </div>

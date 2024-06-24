@@ -231,3 +231,21 @@ type Message @model @auth(
     sender: ID!
     chatId: ID! @index(name: "byChat")
 }
+
+type Goal @model @auth(
+    rules: [
+        { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
+    ]
+){
+    id: ID!
+    type: GoalType!
+    goal: Int!
+    monthYear: String! @index
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+enum GoalType {
+    MONTHLY
+    ANNUAL
+}

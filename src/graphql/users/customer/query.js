@@ -33,7 +33,15 @@ export const listOffersByServiceId = gql`
                     loLongitude
                     rate {
                         items{
+                            id
                             rate
+                            comment
+                            createdBy{
+                                id
+                                fullName
+                                profilePicture
+                            }
+                            createdAt
                         }
                     }
                 }
@@ -53,6 +61,7 @@ export const listCarsById = gql`
                 image
                 model
                 year
+                identificationNumber
                 createdAt
             }
         }

@@ -11,7 +11,7 @@ export default function AddNewCarModal({ isOpen, onOpenChange, callback, car = {
                 alert('There is no car');
                 return;
             }
-            const { data } = await client.graphql({
+            await client.graphql({
                 query: deleteMyCar,
                 variables: {
                     carId: car.id

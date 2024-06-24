@@ -18,7 +18,7 @@ export default function ServiceTracking({ service, setService }) {
     "completed": 5
   };
   useEffect(() => {
-    if (service.status === "completed") {
+    if (service.status === "completed" && service.completed === "no") {
       onRateTechnicianModalOpen();
     }
   }, [service, onRateTechnicianModalOpen]);
@@ -60,9 +60,9 @@ const CustomerInformation = ({ service }) => {
       <p>Customer Name: <strong className='text-[#40C48E]'>{service.customer.fullName}</strong></p>
       <p>Car: <strong className='text-[#40C48E]'>{service.car.model}</strong></p>
       {(service.status === 'service accepted' || service.status === 'on the way') ? (
-        <div className='flex flex-row gap-2'>
-          <p className='text-xs font-bold'>
-            {calculateDistance([service.destLatitude, service.destLongitude], [service.originLatitude, service.originLongitude])} km
+        <div className='text-xs flex flex-row gap-2'>
+          <p className='font-bold'>
+            {calculateDistance([service.destLatitude, service.destLongitude], [service.originLatitude, service.originLongitude])}
           </p>
           <strong>km</strong> from your location
         </div>
