@@ -18,10 +18,15 @@ export const PlaceProvider = ({ children }) => {
       getUserLocation().then(lngLat => dispatch({ type: 'setUserLocation', payload: lngLat }))
       
     }, []);
+
+    const updateUserLocation = (lngLat) => {
+      dispatch({ type: 'setUserLocation', payload: lngLat });
+    }
   
     return (
       <PlaceContext.Provider value={{
-        ...state
+        ...state,
+        updateUserLocation
       }}>
         { children }
       </PlaceContext.Provider>
