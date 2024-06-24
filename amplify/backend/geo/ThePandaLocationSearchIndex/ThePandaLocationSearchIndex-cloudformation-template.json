@@ -293,6 +293,9 @@
         "Roles": [
           {
             "Ref": "authRoleName"
+          },
+          {
+            "Ref": "unauthRoleName"
           }
         ]
       }
@@ -326,6 +329,5 @@
         ]
       }
     }
-  },
-  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"12.10.1\",\"stackType\":\"geo-PlaceIndex\",\"metadata\":{}}"
+  }
 }

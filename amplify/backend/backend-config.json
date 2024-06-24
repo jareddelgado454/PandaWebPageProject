@@ -83,7 +83,7 @@
   },
   "geo": {
     "ThePandaLocationSearchIndex": {
-      "accessType": "AuthorizedUsers",
+      "accessType": "AuthorizedAndGuestUsers",
       "dataProvider": "HERE",
       "dataSourceIntendedUse": "SingleUse",
       "dependsOn": [
