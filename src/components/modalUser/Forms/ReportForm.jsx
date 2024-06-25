@@ -78,13 +78,14 @@ export const ReportForm = () => {
                     }
                 }
             })
-            toast.success('Report sended.');
+            toast.success('Report has been sent.');
             resetForm();
             setPercent(0);
             setPhotograph(null);
 
         } catch (error) {
             console.error(error);
+            toast.error('Something went wrong.')
         }
     }
     return (

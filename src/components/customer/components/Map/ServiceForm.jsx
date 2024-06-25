@@ -34,7 +34,6 @@ export default function ServiceForm() {
                 }
             });
             setMyCars(data.listCars.items);
-            console.log(data);
         } catch (error) {
             console.error(error);
         }
@@ -111,7 +110,7 @@ export default function ServiceForm() {
                         description: '',
                         car: '',
                         type: 'repair',
-                        paymentMethod: 'in cash'
+                        paymentMethod: 'card'
                     }}
                     onSubmit={onHandleSubmit}
                     validationSchema={formSchema}
@@ -180,7 +179,6 @@ export default function ServiceForm() {
                                         <div className='flex flex-row gap-2'>
                                             <label htmlFor="paymentMethod">Payment method</label>
                                             {values.paymentMethod === 'card' && <FaCreditCard className='text-xl flex justify-center items-center h-full ' />}
-                                            {values.paymentMethod === 'in cash' && <FaMoneyBill className='text-xl flex justify-center items-center h-full' />}
                                         </div>
                                         <Field
                                             as='select'
