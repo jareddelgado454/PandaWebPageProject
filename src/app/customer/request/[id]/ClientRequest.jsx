@@ -116,7 +116,7 @@ export default function ClientRequest() {
             </div>
             {service && (
               <>
-                <div className='bg-green-700/15 dark:bg-zinc-700 h-full rounded-lg shadow-md'>
+                <div className='bg-green-700/15 dark:bg-zinc-700 lg:h-full rounded-lg shadow-md'>
                   <TechnicianDetailComponent technician={service.technicianSelected} status={service.status} />
                 </div>
                 <div className='bg-green-700/15 dark:bg-zinc-700 h-full rounded-lg shadow-md'>

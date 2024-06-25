@@ -54,7 +54,7 @@ export default function ClientProfile() {
                 <div className='max-h-full animate__animated animate__fadeInLeft'>
                     <UpdateInformationModal isOpen={isUpdateInformationnModalOpen} onOpenChange={onUpdateInformationnModalChange} customer={user} callback={retrieveInfo} />
                     <InformationHeader user={user} />
-                    <div className="flex w-full flex-col my-4 px-4">
+                    <div className="flex w-full flex-col my-4 px-4 h-full">
                         <Tabs aria-label="Options">
                             <Tab key="My Profile" title="My Profile">
                                 <div className='h-full flex flex-col gap-4'>
@@ -66,7 +66,7 @@ export default function ClientProfile() {
                                     <p className='transition-all duration-300 text-[#40C48E] hover:font-bold cursor-pointer' onClick={onUpdateInformationnModalOpen}>You want to edit?</p>
                                 </div>
                             </Tab>
-                            <Tab key="vehicles" title="My Vehicles">
+                            <Tab key="vehicles" title="My Vehicles" className='h-full'>
                                 <CarsComponent />
                             </Tab>
                         </Tabs>
