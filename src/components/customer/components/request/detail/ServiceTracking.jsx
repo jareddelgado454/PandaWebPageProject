@@ -26,7 +26,7 @@ export default function ServiceTracking({ service, setService }) {
   return (
     <>
       <RateTechnicianModal isOpen={isRateTechnicianModalOpen} onOpenChange={onRateTechnicianModalChange} service={service} technician={service.technicianSelected} />
-      <div className='w-full h-full flex flex-col lg:flex-row gap-2'>
+      <div className='w-full h-full flex flex-col lg:flex-row gap-2 items-center justify-center'>
         <div className='w-[50%] flex justify-center items-center'>
           <Steppers currentStep={steps[service.status]} service={service} setService={setService} />
         </div>
@@ -55,7 +55,7 @@ const CustomerInformation = ({ service }) => {
     return distance.toFixed(1);
   }
   return (
-    <div className='w-[50%] flex flex-col justify-center gap-2 py-2'>
+    <div className='w-[60%] lg:w-[50%] flex flex-col justify-center gap-4 py-2'>
       <p>Type of service: <strong className='text-[#40C48E]'>{service.type}</strong></p>
       <p>Customer Name: <strong className='text-[#40C48E]'>{service.customer.fullName}</strong></p>
       <p>Car: <strong className='text-[#40C48E]'>{service.car.model}</strong></p>

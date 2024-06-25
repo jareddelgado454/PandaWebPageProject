@@ -81,18 +81,16 @@ export default function TechnicianDetail({ technician, status }) {
               </div>
             </div>
           </div>
-          <div className='w-full lg:w-[20%] flex flex-row h-full gap-4 justify-end'>
-            {status !== "completed" && (
-              <>
-                <Button isIconOnly className='bg-white dark:bg-zinc-800 dark:hover:bg-green-panda transition-all duration-300 p-4 w-[3rem] h-[3rem] rounded-full shadow-lg cursor-pointer'>
-                  <FaPhoneVolume className='text-lg' />
-                </Button>
-                <Button isIconOnly onClick={onCreateChat} className='bg-white dark:bg-zinc-800 dark:hover:bg-green-panda transition-all duration-300 p-4 w-[3rem] h-[3rem] rounded-full shadow-lg cursor-pointer'>
-                  <FaCommentSms className='text-2xl' />
-                </Button>
-              </>
-            )}
-          </div>
+          {status !== "completed" && (
+            <div className='w-full lg:w-[20%] flex flex-row h-full gap-4 justify-end'>
+              <Button isIconOnly className='bg-white dark:bg-zinc-800 dark:hover:bg-green-panda transition-all duration-300 p-4 w-[3rem] h-[3rem] rounded-full shadow-lg cursor-pointer'>
+                <FaPhoneVolume className='text-lg' />
+              </Button>
+              <Button isIconOnly onClick={onCreateChat} className='bg-white dark:bg-zinc-800 dark:hover:bg-green-panda transition-all duration-300 p-4 w-[3rem] h-[3rem] rounded-full shadow-lg cursor-pointer'>
+                <FaCommentSms className='text-2xl' />
+              </Button>
+            </div>
+          )}
         </div>
       ) : (<div className='font-semibold text-2xl dark:text-zinc-400'>No technician assigned yet</div>)}
     </div>

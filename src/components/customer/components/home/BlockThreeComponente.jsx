@@ -31,9 +31,9 @@ export default function BlockThreeComponente() {
     ];
     "Chats", "Make a request", "My Requests", "My Information"
     return (
-        <div className='flex flex-col w-full gap-4 my-2 py-4 h-full relative'>
-            <p className='p-2 text-zinc-950 dark:text-white font-semibold'>Shortcuts:</p>
-            <div className='flex flex-col xl:flex-row gap-5 justify-center items-center w-full h-full px-4'>
+        <div className='flex flex-col w-full gap-4 my-2 py-4 h-full relative overflow-auto'>
+            <p className='text-xs 2xl:text-base p-2 text-zinc-950 dark:text-white font-semibold'>Shortcuts:</p>
+            <div className='flex flex-col lg:flex-row gap-5 justify-center items-center w-full h-full px-4'>
                 {numbers.map((item, i) => (
                     <Link
                         href={item.link}
