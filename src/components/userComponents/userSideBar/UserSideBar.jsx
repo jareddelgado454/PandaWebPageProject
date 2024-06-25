@@ -106,7 +106,7 @@ function UserSidebar({ user }) {
                         <p className="font-bold drop-shadow-xl tracking-wider ">PANDA <span className='dark:text-emerald-300 text-emerald-600'>TECHS</span></p> 
                     </div>
 
-                    <div className="w-full h-[calc(100vh-100px)] rounded-2xl dark:bg-zinc-800/70 bg-emerald-600 dark:shadow-none shadow-lg shadow-zinc-500 text-white flex flex-col items-center justify-between gap-2 overflow-y-auto">
+                    <div className="w-full h-[calc(100vh-100px)] rounded-2xl dark:bg-zinc-900 bg-emerald-600 dark:shadow-none shadow-lg shadow-zinc-500 text-white flex flex-col items-center justify-between gap-2 overflow-y-auto">
                         
                         <div className="w-full flex flex-col items-center p-4 ">
                             <h4 className='font-bold text-gray-200 w-full text-left mb-2'>Main Menu</h4>

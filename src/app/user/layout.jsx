@@ -118,7 +118,7 @@ const UserLayout = ({ children }) => {
   }, [user, serviceAssigned?.id]); 
 
   return (
-    <div className="w-full h-screen dark:bg-zinc-900 bg-zinc-200 ">
+    <div className="w-full h-screen dark:bg-zinc-800 bg-zinc-200 ">
       <Contexto.Provider
         value={{
           user,

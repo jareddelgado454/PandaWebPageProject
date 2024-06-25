@@ -42,15 +42,15 @@ const UserNavBar = ({user, isOnline, handleChangeStatus}) => {
         >
           <motion.div
             transition={{ type: "spring", damping: 30, stiffness: 700 }}
-            animate={{ height: isOnline ? "26px" : "15px", width: isOnline ? "26px" : "15px", backgroundColor: theme === "dark" ? (isOnline ? "#2C3137" : "#61666C") : (isOnline ? "#FFFFFF" : "#61666C") }}
+            animate={{ height: isOnline ? "26px" : "15px", width: isOnline ? "26px" : "15px", backgroundColor: theme === "dark" ? (isOnline ? "#191C1F" : "#61666C") : (isOnline ? "#FFFFFF" : "#61666C") }}
             className= "rounded-full"
           />
         </div>
 
-        <div className="rounded-full w-[45px] h-[45px] dark:bg-zinc-700 bg-zinc-400/70 flex items-center justify-center cursor-pointer">
+        <div className="rounded-full w-[45px] h-[45px] dark:bg-zinc-900 bg-zinc-400/70 flex items-center justify-center cursor-pointer">
           <RiNotification3Fill className="text-[20px] dark:text-white text-zinc-800" />
         </div>
-        <div onClick={handleChangeTheme} className="rounded-full w-[45px] h-[45px] dark:bg-zinc-700 bg-zinc-400/70 flex items-center justify-center cursor-pointer mr-[10px]">
+        <div onClick={handleChangeTheme} className="rounded-full w-[45px] h-[45px] dark:bg-zinc-900 bg-zinc-400/70 flex items-center justify-center cursor-pointer mr-[10px]">
           {
             theme === "dark" ? <RiSunFill className="text-[20px] dark:text-white text-zinc-800" />
             : <RiMoonFill className="text-[20px] dark:text-white text-zinc-800"/>

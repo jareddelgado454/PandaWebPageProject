@@ -45,7 +45,7 @@ const Page = () => {
         </div>
       )  : (
         user && (
-          <div className="w-full h-[calc(100vh-100px)] flex flex-col px-4 dark:bg-zinc-800 bg-zinc-100 dark:shadow-none  shadow-lg shadow-zinc-400 rounded-xl pt-4">
+          <div className="w-full h-[calc(100vh-100px)] flex flex-col px-4 dark:bg-zinc-900 bg-zinc-100 dark:shadow-none  shadow-lg shadow-zinc-400 rounded-xl pt-4">
             <div className="w-full mb-6">
               <div className="w-[250px] dark:bg-zinc-700 bg-zinc-300 rounded-2xl flex items-center justify-center p-2 ">
                 <Link href={"/user"} className="dark:text-zinc-400 text-zinc-600 text-[15px]">

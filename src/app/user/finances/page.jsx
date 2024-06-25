@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import {
   RiArrowDropRightLine,
@@ -15,6 +15,8 @@ import {
   RiCircleFill 
 } from "react-icons/ri";
 import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import Stripe from "stripe";
+import { Contexto } from "../layout";
 
 
 const data = [
@@ -28,11 +30,57 @@ const data = [
 ];
 
 const Finances = () => {
+
+  const [loading, setLoading] = useState(true);
+  const {user} = useContext(Contexto);
+
+  const TEST_SECRET_KEY = "sk_test_51MHZf4JbGPo8jsLC7uInizJy0DjyqYbFZrSYMN0USaP1L3w6r4D1tbTWuF5pwWMOq6UoVlhdeBfsFa68sGIE7tY600NlVl5zAf";
+  const stripe = new Stripe(TEST_SECRET_KEY);
+
+  const getPaymentsByTechnician = async (connectAccountId) => {
+    let payments = [];
+    let hasMore = true;
+    let startingAfter = null;
+  
+    while (hasMore) {
+      const response = await stripe.paymentIntents.list({
+        limit: 100,
+        starting_after: startingAfter,
+        stripeAccount: connectAccountId
+      });
+  
+      payments = payments.concat(response.data);
+      hasMore = response.has_more;
+  
+      if (hasMore) {
+        startingAfter = response.data[response.data.length - 1].id;
+      }
+    }
+  
+    return payments;
+  };
+
+  const retrieveData = async () => {
+    setLoading(true);
+    const connectAccountId = user["custom:stripeId"];
+    
+    if(connectAccountId && connectAccountId != ""){
+      const payments = await getPaymentsByTechnician(connectAccountId);
+      console.log("Aqui los payments perri", payments);
+    }
+    setLoading(false);
+  }
+
+  useEffect(()=>{
+    retrieveData();
+  },[]);
+
+
   return (
     <div className="w-full h-[calc(100vh-100px)] relative pr-[20px]">
-      <div className="w-full h-[calc(100vh-100px)] flex flex-col px-4 bg-zinc-800/70 rounded-xl pt-4">
+      <div className="w-full h-[calc(100vh-100px)] flex flex-col px-4 bg-zinc-900 rounded-xl pt-4">
         <div className="w-full mb-6">
-          <div className="w-[270px] bg-zinc-700/70 rounded-2xl flex items-center justify-center p-2 ">
+          <div className="w-[270px] bg-zinc-800 rounded-2xl flex items-center justify-center p-2 ">
             <Link href={"/user"} className="text-zinc-400">
               Technician panel
             </Link>
@@ -44,7 +92,7 @@ const Finances = () => {
         </div>
         <div className="w-full flex flex-col gap-y-4">
           <div className="w-full flex  justify-between items-center py-2 gap-x-4">
-            <div className="w-[23%] flex flex-col rounded-xl bg-zinc-900 p-3 shadow-lg">
+            <div className="w-[23%] flex flex-col rounded-xl bg-zinc-800/60 p-3 shadow-lg">
               <div className="w-[35px] h-[35px] rounded-lg bg-zinc-700/50 flex items-center justify-center mb-2">
                 <RiCoinsLine className="text-[25px] text-emerald-400" />
               </div>
@@ -59,8 +107,8 @@ const Finances = () => {
                 </div>
               </div>
             </div>
-            <div className="w-[23%] flex flex-col rounded-xl bg-zinc-900 p-3 shadow-lg">
-              <div className="w-[35px] h-[35px] rounded-lg bg-zinc-700/50 flex items-center justify-center mb-2">
+            <div className="w-[23%] flex flex-col rounded-xl bg-zinc-800/70 p-3 shadow-lg">
+              <div className="w-[35px] h-[35px] rounded-lg bg-zinc-700/60 flex items-center justify-center mb-2">
                 <RiCoinFill className="text-[25px] text-emerald-400" />
               </div>
               <div className="w-full text-[14px]">Total commissions paid</div>
@@ -74,7 +122,7 @@ const Finances = () => {
                 </div>
               </div>
             </div>
-            <div className="w-[23%] flex flex-col rounded-xl bg-zinc-900 p-3 shadow-lg">
+            <div className="w-[23%] flex flex-col rounded-xl bg-zinc-800/70 p-3 shadow-lg">
               <div className="w-[35px] h-[35px] rounded-lg bg-zinc-700/50 flex items-center justify-center mb-2">
                 <RiToolsFill className="text-[25px] text-emerald-400" />
               </div>
@@ -89,7 +137,7 @@ const Finances = () => {
                 </div>
               </div>
             </div>
-            <div className="w-[23%] flex flex-col rounded-xl bg-zinc-900 p-3 shadow-lg">
+            <div className="w-[23%] flex flex-col rounded-xl bg-zinc-800/70 p-3 shadow-lg">
               <div className="w-[35px] h-[35px] rounded-lg bg-zinc-700/50 flex items-center justify-center mb-2">
                 <RiTruckFill className="text-[25px] text-emerald-400" />
               </div>
@@ -106,7 +154,7 @@ const Finances = () => {
             </div>
           </div>
           <div className="w-full flex gap-x-4 justify-between ">
-            <div className="flex-1 bg-zinc-900 rounded-lg p-4 flex flex-col shadow-lg">
+            <div className="flex-1 bg-zinc-800/70 rounded-lg p-4 flex flex-col shadow-lg">
               <div className="w-full flex justify-between items-center mb-5">
                 <div className="flex flex-col">
                   <span className="text-[20px]">Revenue Stream Summary</span>
@@ -151,7 +199,7 @@ const Finances = () => {
                 </ResponsiveContainer>
               </div>
             </div>
-            <div className="w-[400px] bg-zinc-900 rounded-lg p-5 flex flex-col shadow-lg">
+            <div className="w-[400px] bg-zinc-800/70 rounded-lg p-5 flex flex-col shadow-lg">
                 <span className="text-[20px]">My Balance</span>
                 <span className="text-[12px] text-zinc-300 mb-3">
                     This is my balance report
