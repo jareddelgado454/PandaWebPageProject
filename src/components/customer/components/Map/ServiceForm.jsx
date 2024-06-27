@@ -109,7 +109,7 @@ export default function ServiceForm() {
                 initialStep={0}
                 onExit={() => setStepsEnabled(false)}
             />
-            <div className='absolute top-3 left-3'>
+            <div className='static px-2 py-1 md:absolute top-3 right-5 md:left-3 md:right-0'>
                 <div
                     onClick={handleStartTour}
                     className='bg-green-panda text-white dark:bg-zinc-800 rounded-full p-2 w-[2rem] flex justify-center items-center shadow-md transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300 cursor-pointer'
