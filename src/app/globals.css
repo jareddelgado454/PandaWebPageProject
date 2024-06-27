@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import '~react-toastify/dist/ReactToastify.min.css';
-
+@import '~intro.js/introjs.css';
 @font-face {
   font-family: 'Montserrat';
   src: url('../assets//fonts/Roboto/Montserrat-Regular.ttf');

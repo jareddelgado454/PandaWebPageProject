@@ -1,7 +1,8 @@
 'use client';
-import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { FaCreditCard, FaMoneyBill } from 'react-icons/fa6';
+import { Steps } from 'intro.js-react';
+import { FaCreditCard, FaInfo } from 'react-icons/fa6';
 import { fetchUserAttributes } from 'aws-amplify/auth';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
@@ -14,7 +15,9 @@ import { listCarsById } from '@/graphql/users/customer/query';
 import { useDisclosure } from '@nextui-org/react';
 import { AddNewCarModal } from '../..';
 import { UserContext } from '@/contexts/user/UserContext';
+import { ServiceRequestSteps } from '@/utils/tour/serviceRequest/steps';
 export default function ServiceForm() {
+    const [stepsEnabled, setStepsEnabled] = useState(false);
     const { user } = useContext(UserContext);
     const { userLocation } = useContext(PlaceContext);
     const { serviceRequest, setServiceRequest } = useContext(ServiceContext);
@@ -95,14 +98,30 @@ export default function ServiceForm() {
     }
 
     useEffect(() => { setService(serviceRequest); }, [setServiceRequest]);
-
+    const handleStartTour = () => {
+        setStepsEnabled(true);
+    };
     return (
-        <div className='relative h-full'>
+        <div className='relative h-full service-form-item-selector1'>
+            <Steps
+                enabled={stepsEnabled}
+                steps={ServiceRequestSteps}
+                initialStep={0}
+                onExit={() => setStepsEnabled(false)}
+            />
+            <div className='absolute top-3 left-3'>
+                <div
+                    onClick={handleStartTour}
+                    className='bg-green-panda text-white dark:bg-zinc-800 rounded-full p-2 w-[2rem] flex justify-center items-center shadow-md transition ease-in-out hover:-translate-y-1 hover:scale-110 duration-300 cursor-pointer'
+                >
+                    <FaInfo />
+                </div>
+            </div>
             <AddNewCarModal isOpen={isOpen} onOpenChange={onOpenChange} callback={retrieveMyCars} setMyCars={setMyCars} />
             <div className={`container mx-auto px-4 py-4 w-full lg:w-[90%] h-full overflow-y-scroll ${service && (service.status === 'service accepted' || service.status === 'on the way' || service.status === 'in progress' || service.status === 'payment') && 'hidden'}`} style={{
-              msOverflowStyle: 'none',
-              scrollbarWidth: 'none',
-              overflowY: 'scroll'
+                msOverflowStyle: 'none',
+                scrollbarWidth: 'none',
+                overflowY: 'scroll'
             }}>
                 <Formik
                     initialValues={{

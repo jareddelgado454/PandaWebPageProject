@@ -24,6 +24,7 @@ export default function GeoSearchInput({ userMarkerRef }) {
             const geocoderEl = document.querySelector('.maplibregl-ctrl-geocoder');
             if (geocoderEl) {
                 geocoderEl.classList.add('my-geocoder');
+                geocoderEl.classList.add('service-form-item-selector3');
             }
 
             // Listen for the result event to update the user location
