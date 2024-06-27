@@ -10,7 +10,6 @@ import { useDisclosure } from "@nextui-org/react";
 import { DeleteUserModal, PassWordModal, SendReportModal } from '@/components/modalUser';
 import { UserContext } from '@/contexts/user/UserContext';
 import { Steps as Steppers } from '@/utils/tour/customer/steps';
-import 'intro.js/introjs.css';
 export default function CustomerSidebar() {
   const [stepsEnabled, setStepsEnabled] = useState(false);
   const { logout } = useContext(UserContext);
