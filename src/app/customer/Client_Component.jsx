@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { fetchUserAttributes, updateUserAttributes } from 'aws-amplify/auth';
 import { toast } from 'react-toastify';
 import { BlockOneComponent, BlockTreeComponent, BlockTwoComponent } from '@/components/customer';
@@ -42,7 +42,6 @@ export default function Client_Component() {
       console.error(error);
     }
   }
-
   return (
     <div className='h-full flex flex-col p-4 overflow-hidden animate__animated animate__fadeInLeft'>
       <TermsAndConditionsModal isOpen={isOpen} onOpenChange={onOpenChange} obligatory={isAgreed ? true : false} callback={updateCustomAttribute} />
