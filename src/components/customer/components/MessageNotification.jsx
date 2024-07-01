@@ -27,7 +27,7 @@ export default function MessageNotification() {
             }
         };
 
-        if (user.id) {
+        if (user?.id) {
             retrieveChats();
         }
     }, [user?.id]);

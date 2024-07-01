@@ -54,13 +54,13 @@ export default function Map({ userMarkerRef }) {
       if (!isLoading) {
         const mapC = await createMap({
           container: mapDiv.current,
-          center: userLocation ? userLocation : [-123.1187, 49.2819],
+          center: userLocation ? userLocation : [0, 0],
           zoom: 14
         });
         setMap(mapC);
-        if (serviceRequest) {
-          displayTechnicianMarker(mapC, serviceRequest.destLatitude, serviceRequest.destLongitude);
-        }
+        // if (serviceRequest) {
+        //   displayTechnicianMarker(mapC, serviceRequest.destLatitude, serviceRequest.destLongitude);
+        // }
         if (userLocation) {
           mapC.flyTo({
             center: userLocation,
@@ -84,14 +84,14 @@ export default function Map({ userMarkerRef }) {
     };
     initializeMap();
   }, [isLoading]);
-  const displayTechnicianMarker = (mapC, destLatitude = 0, destLongitude = 0) => {
-    const technicianMarker = document.createElement('div');
-    technicianMarker.className = 'technician-marker';
+  // const displayTechnicianMarker = (mapC, destLatitude = 0, destLongitude = 0) => {
+  //   const technicianMarker = document.createElement('div');
+  //   technicianMarker.className = 'technician-marker';
 
-    technicianMarkerRef.current = new maplibregl.Marker({ element: technicianMarker })
-      .setLngLat([destLongitude, destLatitude])
-      .addTo(mapC);
-  };
+  //   technicianMarkerRef.current = new maplibregl.Marker({ element: technicianMarker })
+  //     .setLngLat([destLongitude, destLatitude])
+  //     .addTo(mapC);
+  // };
   // useEffect(() => {
   //   if (map) {
   //     techniciansList.map((technician, i) => {
@@ -105,44 +105,44 @@ export default function Map({ userMarkerRef }) {
   //   }
   // }, [isMapReady, map]);
 
-  useEffect(() => {
-    if ((isMapReady && map) && serviceRequest) {
-      const { destLatitude, destLongitude } = serviceRequest;
+  // useEffect(() => {
+  //   if ((isMapReady && map) && serviceRequest) {
+  //     const { destLatitude, destLongitude } = serviceRequest;
 
-      if (!technicianMarkerRef.current) {
-        displayTechnicianMarker(map, destLatitude || 0, destLongitude || 0);
-      } else {
-        const startCoords = technicianMarkerRef.current.getLngLat().toArray();
-        const endCoords = [destLongitude || 0, destLatitude || 0];
+  //     if (!technicianMarkerRef.current) {
+  //       displayTechnicianMarker(map, destLatitude || 0, destLongitude || 0);
+  //     } else {
+  //       const startCoords = technicianMarkerRef.current.getLngLat().toArray();
+  //       const endCoords = [destLongitude || 0, destLatitude || 0];
 
-        animateMarker(technicianMarkerRef.current, startCoords, endCoords, 1500);
-        technicianMarkerRef.current.setLngLat(endCoords); // Update position directly
+  //       animateMarker(technicianMarkerRef.current, startCoords, endCoords, 1500);
+  //       technicianMarkerRef.current.setLngLat(endCoords); // Update position directly
 
-        const angleDegrees = CalculateAngleFromLocation(startCoords, endCoords);
-        technicianMarkerRef.current.setRotation(angleDegrees);
-        technicianMarkerRef.current.setLngLat(endCoords);
-      }
-    }
-  }, [setServiceCoordinates]);
-  useEffect(() => {
-    if (!serviceRequest) return;
-    const subscription = client
-      .graphql({ query: onUpdateServiceCoordinates, variables: { serviceId: serviceRequest && serviceRequest.id, customerId: serviceRequest && serviceRequest.customer.id } })
-      .subscribe({
-        next: ({ data }) => {
-          setServiceCoordinates({
-            destLatitude: data.onUpdateService.destLatitude,
-            destLongitude: data.onUpdateService.destLongitude,
-          });
-        },
-        error: (error) => console.warn(error)
-      });
+  //       const angleDegrees = CalculateAngleFromLocation(startCoords, endCoords);
+  //       technicianMarkerRef.current.setRotation(angleDegrees);
+  //       technicianMarkerRef.current.setLngLat(endCoords);
+  //     }
+  //   }
+  // }, [setServiceCoordinates]);
+  // useEffect(() => {
+  //   if (!serviceRequest) return;
+  //   const subscription = client
+  //     .graphql({ query: onUpdateServiceCoordinates, variables: { serviceId: serviceRequest && serviceRequest.id, customerId: serviceRequest && serviceRequest.customer.id } })
+  //     .subscribe({
+  //       next: ({ data }) => {
+  //         setServiceCoordinates({
+  //           destLatitude: data.onUpdateService.destLatitude,
+  //           destLongitude: data.onUpdateService.destLongitude,
+  //         });
+  //       },
+  //       error: (error) => console.warn(error)
+  //     });
 
-    return () => {
-      // Cancel the subscription when this component's life cycle ends
-      subscription.unsubscribe();
-    };
-  }, [serviceRequest, setServiceCoordinates]);
+  //   return () => {
+  //     // Cancel the subscription when this component's life cycle ends
+  //     subscription.unsubscribe();
+  //   };
+  // }, [serviceRequest, setServiceCoordinates]);
   return (
     <>
       <div ref={mapDiv} id='map' className='map h-full lg:h-[100%] w-[100%] rounded-lg'></div>
