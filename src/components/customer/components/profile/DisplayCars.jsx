@@ -63,7 +63,7 @@ export default function DisplayCars() {
                   <strong className='text-white dark:text-zinc-300'>Model:</strong><p className='text-white dark:text-zinc-300'> {car.model}</p>
                 </div>
                 <div className='flex flex-row gap-2'>
-                  <strong className='text-white dark:text-zinc-300'>Car Identification Number:</strong><p className='text-white dark:text-zinc-300'> {car.identificationNumber}</p>
+                  <strong className='text-white dark:text-zinc-300'>Identification Number:</strong><p className='text-white dark:text-zinc-300'> {car.identificationNumber}</p>
                 </div>
                 <div className='flex flex-row gap-2'>
                   <strong className='text-white dark:text-zinc-300'>Added:</strong><p className='text-white dark:text-zinc-300'> {DateFormatter(car.createdAt)}</p>
