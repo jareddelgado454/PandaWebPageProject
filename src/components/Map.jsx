@@ -1,7 +1,7 @@
 'use client';
 import React, { useContext, useEffect, useLayoutEffect, useRef } from 'react';
 import { createMap } from 'maplibre-gl-js-amplify';
-import maplibregl from 'maplibre-gl';
+import maplibregl, { Marker } from 'maplibre-gl';
 import { PlaceContext } from '@/contexts/place/PlaceContext';
 import { MapContext } from '@/contexts/map/MapContext';
 import { ServiceContext } from '@/contexts/service/ServiceContext';
@@ -69,12 +69,16 @@ export default function Map({ userMarkerRef }) {
             easing: (t) => t,
           });
 
-          const pulsatingCircle = document.createElement('div');
-          pulsatingCircle.className = 'customer-pulsating-circle';
-
-          new maplibregl.Marker(pulsatingCircle)
-            .setLngLat(userLocation)
+          new Marker()
+            .setLngLat([-123.1187, 49.2819])
             .addTo(mapC);
+
+          // const pulsatingCircle = document.createElement('div');
+          // pulsatingCircle.className = 'customer-pulsating-circle';
+
+          // new maplibregl.Marker(pulsatingCircle)
+          //   .setLngLat(userLocation)
+          //   .addTo(mapC);
 
         }
         retrieveService();

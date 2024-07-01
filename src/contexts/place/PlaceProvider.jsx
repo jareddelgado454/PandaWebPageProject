@@ -15,14 +15,16 @@ export const PlaceProvider = ({ children }) => {
   
     useEffect(() => {
       
-      const userLocationStorage = localStorage.getItem('userLocation') ? JSON.parse(localStorage.getItem('userLocation')) : null;
+      // const userLocationStorage = localStorage.getItem('userLocation') ? JSON.parse(localStorage.getItem('userLocation')) : null;
 
-      if(!userLocationStorage){
-        getUserLocation().then(lngLat => dispatch({ type: 'setUserLocation', payload: lngLat }))
-      }else {
-        dispatch({type: 'setUserLocation', payload: userLocationStorage})
-      }
+      // if(!userLocationStorage){
+      //   getUserLocation().then(lngLat => dispatch({ type: 'setUserLocation', payload: lngLat }))
+      // }else {
+      //   dispatch({type: 'setUserLocation', payload: userLocationStorage})
+      // }
       
+      getUserLocation().then(lngLat => dispatch({ type: 'setUserLocation', payload: lngLat }))
+
     }, []);
 
     const updateUserLocation = (lngLat) => {
