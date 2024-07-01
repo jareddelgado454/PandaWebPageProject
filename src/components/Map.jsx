@@ -54,8 +54,8 @@ export default function Map({ userMarkerRef }) {
       if (!isLoading) {
         const mapC = await createMap({
           container: mapDiv.current,
-          center: userLocation ? userLocation : [0, 0],
-          zoom: 14
+          center: [-123.1187, 49.2819],
+          zoom: 12
         });
         setMap(mapC);
         // if (serviceRequest) {
@@ -72,11 +72,10 @@ export default function Map({ userMarkerRef }) {
           const pulsatingCircle = document.createElement('div');
           pulsatingCircle.className = 'customer-pulsating-circle';
 
-          const userMarker = new maplibregl.Marker(pulsatingCircle)
+          new maplibregl.Marker(pulsatingCircle)
             .setLngLat(userLocation)
             .addTo(mapC);
 
-          userMarkerRef.current = userMarker
         }
         retrieveService();
       }
