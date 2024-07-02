@@ -50,7 +50,7 @@ export default function GeoSearchInput({ userMarkerRef }) {
                     userMarkerRef.current.setLngLat([longitude, latitude]);
                 } else {
                     userMarkerRef.current = new Marker()
-                        .setLngLat(userLocation)
+                        .setLngLat([longitude, latitude])
                         .addTo(map);
 
                     // const markerElement = document.createElement('div');
