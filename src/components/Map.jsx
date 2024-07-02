@@ -95,18 +95,18 @@ export default function Map({ userMarkerRef }) {
       .setLngLat([destLongitude, destLatitude])
       .addTo(mapC);
   };
-  useEffect(() => {
-    if (map) {
-      techniciansList.map((technician, i) => {
-        const technicianMarker = document.createElement('div');
-        technicianMarker.className = 'technician-marker';
+  // useEffect(() => {
+  //   if (map) {
+  //     techniciansList.map((technician, i) => {
+  //       const technicianMarker = document.createElement('div');
+  //       technicianMarker.className = 'technician-marker';
 
-        new maplibregl.Marker({ element: technicianMarker })
-          .setLngLat([technician.loLongitude, technician.loLatitude])
-          .addTo(map);
-      });
-    }
-  }, [isMapReady, map]);
+  //       new maplibregl.Marker({ element: technicianMarker })
+  //         .setLngLat([technician.loLongitude, technician.loLatitude])
+  //         .addTo(map);
+  //     });
+  //   }
+  // }, [isMapReady, map]);
 
   useEffect(() => {
     if ((isMapReady && map) && serviceRequest) {
