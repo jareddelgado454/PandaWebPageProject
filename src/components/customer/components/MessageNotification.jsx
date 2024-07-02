@@ -9,7 +9,7 @@ export default function MessageNotification() {
     const { user } = useContext(UserContext);
     const [chats, setChats] = useState([]);
     const [subscriptions, setSubscriptions] = useState([]);
-
+    const [isNotificationSupported, setIsNotificationSupported] = useState(false);
     useEffect(() => {
         const retrieveChats = async () => {
             try {
@@ -66,7 +66,7 @@ export default function MessageNotification() {
     }, [chats]);
 
     const showNotification = (message) => {
-        if (Notification.permission === 'granted') {
+        if (isNotificationSupported && Notification.permission === 'granted') {
             new Notification('New message', {
                 body: message.content,
             });
@@ -74,8 +74,14 @@ export default function MessageNotification() {
     };
 
     useEffect(() => {
-        if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
-            Notification.requestPermission();
+        if (typeof window !== "undefined" && "Notification" in window) {
+            setIsNotificationSupported(true);
+            if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+                Notification.requestPermission();
+            }
+        } else {
+            setIsNotificationSupported(false);
+            console.warn("La API de Notificaciones no está disponible en este entorno.");
         }
     }, []);
 

@@ -42,10 +42,14 @@ const AdminDashboard = () => {
   // We want to calculate users per month with this function
   const usersPerMonth = (users = []) => {
     const now = new Date(); // Get current date
-    return users.filter((u) => { // filter array of users
+    return users ? users.filter((u) => { // filter array of users
+      if (!u.createdAt) {
+        console.warn('User createdAt is null or undefined', u);
+        return false; // Skip this user if createdAt is null or undefined
+      }
       const createdAt = parseISO(u.createdAt); // parse to ISO using Date-fns
       return isSameMonth(createdAt, now); // return if user createdAt date is the same to our current month
-    }).length; // return just lenght of that filtered array.
+    }).length : 0; // return just length of that filtered array.
   }
   return (
     <div className="m-4">
