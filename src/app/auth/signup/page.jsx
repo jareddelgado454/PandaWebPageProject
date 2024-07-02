@@ -162,6 +162,19 @@ const SignUp = () => {
   }
   return (
     <AmplifyContext>
+      <TermsAndConditionsModal isOpen={isTermsConditionsModalOpen} onOpenChange={onTermsConditionsModalOpenChange} setIsAccepted={setIsAccepted} isAccepted={isAccepted} />
+      <VerificationCodeModal
+        isOpen={isVerifyCodeModalOpen}
+        onOpenChange={onVerifyCodeModalOpenChange}
+        dataSignIn={{ email: dataSignUp.email, password: dataSignUp.password }}
+        resultData={dataResult}
+        roleSelected={roleSelected}
+      />
+      <ErrorAlert
+        isOpen={isErrorAlertModalOpen}
+        onOpenChange={onErrorAlertModalOpenChange}
+        error={errorPassed}
+      />
       <div
         className="h-full w-full text-white px-8 pb-4"
       >
