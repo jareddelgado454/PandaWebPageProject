@@ -70,7 +70,7 @@ export default function Map({ userMarkerRef }) {
           });
 
           new Marker()
-            .setLngLat([-123.1187, 49.2819])
+            .setLngLat(userLocation)
             .addTo(mapC);
 
           // const pulsatingCircle = document.createElement('div');
