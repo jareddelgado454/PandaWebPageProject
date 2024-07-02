@@ -1,14 +1,32 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaRegBell, FaXmark } from 'react-icons/fa6';
+
 export default function NotificationsButton() {
     const [allowed, setAllowed] = useState(false);
+    const [unsupported, setUnsupported] = useState(false);
+
+    useEffect(() => {
+        const permission = localStorage.getItem('notificationPermission');
+        if (permission === "granted") {
+            setAllowed(true);
+        }
+    }, []);
+
     const handleNotifications = () => {
-        Notification.requestPermission().then((resultado) => {
-            resultado === "granted" && setAllowed(true);
-            localStorage.setItem('notificationPermission', "granted")
-        })
-    }
+        if (typeof window !== "undefined" && "Notification" in window) {
+            Notification.requestPermission().then((resultado) => {
+                if (resultado === "granted") {
+                    setAllowed(true);
+                    localStorage.setItem('notificationPermission', "granted");
+                }
+            });
+        } else {
+            console.warn("La API de Notificaciones no está disponible en este entorno.");
+            setUnsupported(true);
+        }
+    };
+
     return (
         <>
             <div className='absolute right-2'>
@@ -19,14 +37,22 @@ export default function NotificationsButton() {
                     <FaRegBell className='text-xs 2xl:text-lg' />
                 </div>
             </div>
-            {!allowed && (
+            {!allowed && !unsupported && (
                 <div className='absolute right-[3.4rem] top-4'>
                     <div className='bg-white dark:bg-green-panda rounded-lg p-2 flex items-center gap-3'>
                         <FaXmark className='cursor-pointer' onClick={() => setAllowed(!allowed)} />
-                        <p className='text-xs 2xl:text-base'>Active notifications with clicking here:</p>
+                        <p className='text-xs 2xl:text-base'>Active notifications by clicking here:</p>
+                    </div>
+                </div>
+            )}
+            {unsupported && (
+                <div className='absolute right-[3.4rem] top-4'>
+                    <div className='bg-white dark:bg-green-panda rounded-lg p-2 flex items-center gap-3'>
+                        <FaXmark className='cursor-pointer' onClick={() => setUnsupported(false)} />
+                        <p className='text-xs 2xl:text-base'>Notifications are not supported on this device.</p>
                     </div>
                 </div>
             )}
         </>
-    )
+    );
 }
