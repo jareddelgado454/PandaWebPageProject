@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from 'react';
 import { createAmplifyGeocoder } from 'maplibre-gl-js-amplify';
 import { MapContext } from '@/contexts/map/MapContext';
 import { PlaceContext } from '@/contexts/place/PlaceContext';
-import maplibregl from 'maplibre-gl';
+import maplibregl, { Marker } from 'maplibre-gl';
 import '@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css';
 import 'maplibre-gl-js-amplify/dist/public/amplify-geocoder.css';
 
@@ -49,12 +49,16 @@ export default function GeoSearchInput({ userMarkerRef }) {
                 if (userMarkerRef.current) {
                     userMarkerRef.current.setLngLat([longitude, latitude]);
                 } else {
-                    const markerElement = document.createElement('div');
-                    markerElement.className = 'customer-pulsating-circle';
-
-                    userMarkerRef.current = new maplibregl.Marker(markerElement)
+                    userMarkerRef.current = new Marker()
                         .setLngLat([longitude, latitude])
                         .addTo(map);
+
+                    // const markerElement = document.createElement('div');
+                    // markerElement.className = 'customer-pulsating-circle';
+
+                    // userMarkerRef.current = new maplibregl.Marker(markerElement)
+                    //     .setLngLat([longitude, latitude])
+                    //     .addTo(map);
                 }
             }
         };

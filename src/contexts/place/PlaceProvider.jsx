@@ -23,6 +23,8 @@ export const PlaceProvider = ({ children }) => {
         dispatch({type: 'setUserLocation', payload: userLocationStorage})
       }
       
+      // getUserLocation().then(lngLat => dispatch({ type: 'setUserLocation', payload: lngLat }))
+
     }, []);
 
     const updateUserLocation = (lngLat) => {
