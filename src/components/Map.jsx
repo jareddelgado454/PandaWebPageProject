@@ -69,7 +69,7 @@ export default function Map({ userMarkerRef }) {
             easing: (t) => t,
           });
 
-          userMarkerRef = new Marker()
+          userMarkerRef.current = new Marker()
             .setLngLat(userLocation)
             .addTo(mapC);
 
