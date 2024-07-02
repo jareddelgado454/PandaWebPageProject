@@ -51,7 +51,7 @@ export default function GeoSearchInput({ userMarkerRef }) {
                 } else {
                     userMarkerRef.current = new Marker()
                         .setLngLat(userLocation)
-                        .addTo(mapC);
+                        .addTo(map);
 
                     // const markerElement = document.createElement('div');
                     // markerElement.className = 'customer-pulsating-circle';
