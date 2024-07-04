@@ -39,7 +39,8 @@ export default function TechnicianDetail({ technician, status }) {
     if (items.length === 0) return 0; // Manejo de caso donde el array está vacío
 
     const totalRate = items.reduce((sum, item) => sum + item.rate, 0);
-    return totalRate / items.length;
+    const AVGRate = totalRate / items.length;
+    return AVGRate.toFixed(1);
   };
   return (
     <div className='w-full h-full p-4'>
