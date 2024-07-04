@@ -4,6 +4,7 @@ import { UserContext } from './UserContext';
 import { userReducer } from './UserReducer';
 import Cookies from 'js-cookie';
 import GearSpinner from '@/components/GearSpinner';
+import { getCustomerById } from '@/api';
 
 const INITIAL_USER_STATE = {
     user: {
@@ -31,7 +32,6 @@ export const UserProvider = ({ children }) => {
     };
 
     const login = (userData) => {
-        console.log(userData);
         Cookies.set(
             "currentUser",
             JSON.stringify(userData)
@@ -48,11 +48,23 @@ export const UserProvider = ({ children }) => {
 
     useEffect(() => {
         const userFromCookies = getUserFromCookies();
-        if(userFromCookies) {
+        if (userFromCookies) {
             dispatch({ type: 'setUser', payload: userFromCookies })
         }
         setLoading(false);
     }, []);
+
+    useEffect(() => {
+        const retrieveInfoFromCustomer = async () => {
+            const userFromCookies = getUserFromCookies();
+            if (userFromCookies) {
+                const data = await getCustomerById(userFromCookies.id);
+                dispatch({ type: 'setUser', payload: data });
+            }
+        }
+        retrieveInfoFromCustomer();
+    }, []);
+
 
 
     if (loading) {
@@ -63,7 +75,7 @@ export const UserProvider = ({ children }) => {
         )
     }
 
-    return(
+    return (
         <UserContext.Provider
             value={{
                 ...state,
@@ -74,5 +86,5 @@ export const UserProvider = ({ children }) => {
             {children}
         </UserContext.Provider>
     )
-    
+
 }
