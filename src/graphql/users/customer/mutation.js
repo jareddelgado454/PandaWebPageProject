@@ -20,8 +20,6 @@ export const createService = gql`
             customer {
                 id
                 fullName
-                email
-                contactNumber
                 profilePicture
             }
             car {
@@ -44,7 +42,7 @@ export const updateService = gql`
             originLongitude
             status
             serviceTechnicianSelectedId
-            serviceCustomerId
+            customerId
             technicianSelected{
                 id
                 email

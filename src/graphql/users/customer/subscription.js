@@ -28,7 +28,7 @@ export const onCreateOffers = gql`
 
 export const onUpdateService = gql`
     subscription MySubscription($serviceId: ID!, $customerId: ID!) {
-        onUpdateService(filter: {id: {eq: $serviceId}, serviceCustomerId: {eq: $customerId}}){
+        onUpdateService(filter: {id: {eq: $serviceId}, customerId: {eq: $customerId}}){
             id
             status
             destLatitude
@@ -40,7 +40,7 @@ export const onUpdateService = gql`
 
 export const onUpdateServiceGlobal = gql`
   subscription OnUpdateService($serviceId: ID!, $customerId: ID!) {
-    onUpdateService(filter: {id: {eq: $serviceId}, serviceCustomerId: {eq: $customerId}}){
+    onUpdateService(filter: {id: {eq: $serviceId}, customerId: {eq: $customerId}}){
       id
       status
       destLatitude
@@ -71,7 +71,7 @@ export const onUpdateServiceStatus = gql`
 
 export const onUpdateServiceCoordinates = gql`
     subscription OnUpdateServiceCoordinates($serviceId: ID!, $customerId: ID!) {
-        onUpdateService(filter: {id: {eq: $serviceId}, serviceCustomerId: {eq: $customerId}}){
+        onUpdateService(filter: {id: {eq: $serviceId}, customerId: {eq: $customerId}}){
             id
             destLatitude
             destLongitude

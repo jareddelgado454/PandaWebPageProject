@@ -8,7 +8,7 @@ export const retrieveMyInformation = gql`
             fullName
             contactNumber
             state
-                city
+            city
             address
             zipCode
             profilePicture
@@ -63,6 +63,16 @@ export const listCarsById = gql`
                 year
                 identificationNumber
                 createdAt
+            }
+        }
+    }
+`;
+
+export const verifyIfCustomerRated = gql`
+    query ListRates($customerId: String!) {
+        listRates(filter: {customer: {eq: $customerId}}){
+            items{
+                id
             }
         }
     }
