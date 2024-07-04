@@ -1,6 +1,7 @@
 'use client';
-import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
+import Cookies from 'js-cookie';
 import { PaymentComponent, ServiceTrackingComponent, TechnicianDetailComponent } from '@/components/customer';
 import { client } from '@/contexts/AmplifyContext';
 import CancelConfirmModal from '@/components/customer/modals/CancelConfirmModal';
@@ -9,15 +10,24 @@ import { getServiceById } from '@/graphql/services/queries/query';
 import { updateStatusService } from '@/graphql/services/mutations/mutation';
 import { ServiceContext } from '@/contexts/service/ServiceContext';
 import { onUpdateServiceGlobal } from '@/graphql/users/customer/subscription';
-import Cookies from 'js-cookie';
+import RateTechnicianModal from '@/components/customer/modals/RateTechnicianModal';
+import { verifyIfCustomerRated } from '@/graphql/users/customer/query';
+import { UserContext } from '@/contexts/user/UserContext';
 export default function ClientRequest() {
+  const { id } = useParams();
   const { setServiceRequest, serviceRequest } = useContext(ServiceContext);
+  const { user } = useContext(UserContext);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const param = useSearchParams().get('paymentStatus');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null)
   const [service, setService] = useState(null);
-  const { id } = useParams();
+  const [hasRated, setHasRated] = useState(true);
+  const {
+    isOpen: isRateTechnicianModalOpen,
+    onOpen: onRateTechnicianModalOpen,
+    onOpenChange: onRateTechnicianModalChange,
+  } = useDisclosure();
   useEffect(() => {
     const retrieveServiceDetail = async () => {
       setLoading(true);
@@ -36,9 +46,23 @@ export default function ClientRequest() {
         setLoading(false);
       }
     };
+    const verifyIsRateByCustomer = async() => {
+      try {
+        const { data } = await client.graphql({
+          query: verifyIfCustomerRated,
+          variables: { customerId: user?.id }
+        });
+        if(data?.listRates.length > 0){
+          setHasRated(true);
+        }
+      } catch (error) {
+        console.warn(error);
+      }
+    }
   
+    verifyIsRateByCustomer();
     retrieveServiceDetail();
-  }, [id, client]);
+  }, [id, client, user]);
   const onChangeToComplete = async () => {
     try {
       const { data } = await client.graphql({
@@ -90,17 +114,23 @@ export default function ClientRequest() {
 
   }, [serviceRequest, param]);
   useEffect(() => {
-    if (param == "completed" && serviceRequest) {
-      console.log('executing =>');
+    if (param == "completed") {
       onChangeToComplete();
     } else if (param == "failed") {
       alert("The payment could not be made satisfactorily");
     }
   }, [param, serviceRequest]);
 
+  useEffect(() => {
+    if(!hasRated){
+      onRateTechnicianModalOpen();
+    }
+  }, [hasRated, setHasRated, setServiceRequest]);
+  
   return (
     <>
       <CancelConfirmModal isOpen={isOpen} onOpenChange={onOpenChange} service={service} />
+      {service && <RateTechnicianModal isOpen={isRateTechnicianModalOpen} onOpenChange={onRateTechnicianModalChange} service={service} technician={service.technicianSelected} />}
       {loading ? (
         <div className='h-full w-full flex justify-center items-center'>
           <div className='loader bg-green-pan' />
