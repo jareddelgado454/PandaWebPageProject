@@ -72,6 +72,7 @@ type Rate @model @auth(
     technician: Technician @belongsTo(fields: ["technicianId"])
     createdBy: Customer! @hasOne
     rate: Float!
+    serviceId: ID!
     comment: String
     createdAt: AWSDateTime
 }
@@ -174,12 +175,13 @@ type Service @model @auth(
     completed: String
     originLatitude: Float!
     originLongitude: Float!
-    customer: Customer! @hasOne
+    customerId: ID! @index(name: "servicesByCustomer")
+    customer: ICustomer
     technicianSelected: Technician @hasOne
     destLatitude: Float
     destLongitude: Float
     offers: [Offer] @hasMany(indexName: "byOffer", fields: ["id"])
-    car: Car! @hasOne
+    car: ICar
     paymentMethod: String!
     price: Float
     paymentLink: String
@@ -248,4 +250,19 @@ type Goal @model @auth(
 enum GoalType {
     MONTHLY
     ANNUAL
+}
+
+type ICustomer {
+    id: ID!
+    fullName: String!
+    profilePicture: String!
+}
+
+type ICar {
+    id: ID!
+    brand: String!
+    image: String!
+    model: String!
+    year: String!
+    identificationNumber: String!
 }
