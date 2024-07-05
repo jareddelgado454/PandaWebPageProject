@@ -44,7 +44,7 @@ export default function ListContacts({ setChatActive, setChatSelected }) {
         if (chat?.admin?.profilePicture) {
             return chat.admin.profilePicture;
         }
-        return '/image/defaultProfilePicture.jpg';  // Asegúrate de que esta ruta es correcta
+        return '/image/defaultProfilePicture.jpg';
     };
     return (
         <>

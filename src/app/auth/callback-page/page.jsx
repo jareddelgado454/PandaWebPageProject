@@ -16,7 +16,7 @@ import loading3 from "../../../../public/loading/loading3.gif"
 import { Button } from "@nextui-org/react";
 import { Amplify } from "aws-amplify";
 import config from "@/amplifyconfiguration.json";
-import { handleCreateCustomerOnDataBase, handleCreateTechnicianOnDataBase } from "@/api";
+import { getCustomerById, getTechnicianById, handleCreateCustomerOnDataBase, handleCreateTechnicianOnDataBase } from "@/api";
 import Image from "next/image";
 import { UserContext } from "@/contexts/user/UserContext";
 Amplify.configure(config);
@@ -37,15 +37,20 @@ const CallbackPage = () => {
         if (userRole) {
           const { tokens, userSub } = await fetchAuthSession({ forceRefresh: true });
           const expiredAt = tokens.accessToken.payload.exp;
-          login({ role: userRole, expiredAt, id: userSub })
+          let data;
           switch (userRole) {
             case "technician":
+              data = await getTechnicianById(userSub);
+              login({ role, expiredAt, id: userSub, ...data });
               router.push("/user");
               break;
             case "customer":
+              data = await getCustomerById(userSub);
+              login({ role: userRole, expiredAt, id: userSub, ...data });
               router.push("/customer");
               break;
             case "admin":
+              login({ role: userRole, expiredAt, id: userSub })
               router.push("/admin-dashboard");
               break;
             default:

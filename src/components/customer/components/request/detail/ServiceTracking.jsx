@@ -1,15 +1,6 @@
-'use client';
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Steppers } from '@/components/customer/components/Steppers';
-import { useDisclosure } from '@nextui-org/react';
-import RateTechnicianModal from '@/components/customer/modals/RateTechnicianModal';
 export default function ServiceTracking({ service, setService }) {
-  const {
-    isOpen: isRateTechnicianModalOpen,
-    onOpen: onRateTechnicianModalOpen,
-    onOpenChange: onRateTechnicianModalChange,
-  } = useDisclosure();
-
   const steps = {
     "service accepted": 1,
     "on the way": 2,
@@ -17,15 +8,9 @@ export default function ServiceTracking({ service, setService }) {
     "payment": 4,
     "completed": 5
   };
-  useEffect(() => {
-    if (service.status === "completed" && service.completed === "no") {
-      onRateTechnicianModalOpen();
-    }
-  }, [service, onRateTechnicianModalOpen]);
 
   return (
     <>
-      <RateTechnicianModal isOpen={isRateTechnicianModalOpen} onOpenChange={onRateTechnicianModalChange} service={service} technician={service.technicianSelected} />
       <div className='w-full h-full flex flex-col lg:flex-row gap-2 items-center justify-center'>
         <div className='w-[50%] flex justify-center items-center'>
           <Steppers currentStep={steps[service.status]} service={service} setService={setService} />

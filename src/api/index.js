@@ -2,10 +2,11 @@ import { client } from '@/contexts/AmplifyContext';
 import { getUserByCognitoID, getUserByEmail } from '@/graphql/custom-queries';
 import { createOffer, updatePaymentLinkService, updateStatusService, updateTechnicianLocation, updateTotalAmountService } from '@/graphql/services/mutations/mutation';
 import { getRequestServiceById } from '@/graphql/services/queries/query';
+import { retrieveMyInformation } from '@/graphql/users/customer/query';
 import { createCustomer } from '@/graphql/users/mutation/customer';
 import { createTechnician, updateLocationTechnician, updateStripeInformationTechnician } from '@/graphql/users/mutation/technicians';
 import { createUser } from '@/graphql/users/mutation/users';
-import { getTechnician } from '@/graphql/users/query/technician';
+import { getTechnician, getTehcnicianById } from '@/graphql/users/query/technician';
 export const handleCreateUserOnDatabase = async(values, isAdded) => {
     
     try {
@@ -216,5 +217,37 @@ export const getUserByMail = async (email) => {
         return data && data.listUsers.items[0];
     } catch (error) {
         console.log(error);
+    }
+}
+
+export const getCustomerById = async (customerId) => {
+    try {
+        const { data } = await client.graphql({
+            query: retrieveMyInformation,
+            variables: {
+                id: customerId
+            }
+        });
+        if(!data) return;
+
+        return data.getCustomer;
+    } catch (error) {
+        console.warn(error);
+    }
+}
+
+export const getTechnicianById = async (technicianId) => {
+    try {
+        const { data } = await client.graphql({
+            query: getTehcnicianById,
+            variables: {
+                id: technicianId
+            }
+        });
+        if(!data) return;
+
+        return data.getCustomer;
+    } catch (error) {
+        console.warn(error);
     }
 }

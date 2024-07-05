@@ -23,6 +23,7 @@ export default function ServiceForm() {
     const { serviceRequest, setServiceRequest } = useContext(ServiceContext);
     const [service, setService] = useState({});
     const [myCars, setMyCars] = useState([]);
+    const [carSelected, setCarSelected] = useState(null);
     const {
         isOpen,
         onOpen,
@@ -42,15 +43,7 @@ export default function ServiceForm() {
         }
     }
 
-    const retrieveSubFromCognito = async () => {
-        try {
-            const { sub } = await fetchUserAttributes();
-            return sub;
-        } catch (error) {
-            console.error(error);
-        }
-    }
-    useEffect(() => { retrieveSubFromCognito(); retrieveMyCars(); }, [user]);
+    useEffect(() => { retrieveMyCars(); }, [user]);
 
     useEffect(() => {
         const savedService = Cookies.get("ServiceRequest");
@@ -67,8 +60,6 @@ export default function ServiceForm() {
 
     const onHandleSubmit = async (values, { resetForm }) => {
         const [longitude, latitude] = userLocation;
-        console.log(values);
-        const sub = await retrieveSubFromCognito();
         try {
             const { data } = await client.graphql({
                 query: createService,
@@ -78,11 +69,23 @@ export default function ServiceForm() {
                         description: values.description,
                         originLatitude: latitude,
                         originLongitude: longitude,
-                        serviceCustomerId: sub,
+                        customerId: user.id,
+                        customer: {
+                            id: user.id,
+                            fullName: user.fullName,
+                            profilePicture: user.profilePicture,
+                        },
+                        car: {
+                            id: carSelected?.id,
+                            brand: carSelected?.brand,
+                            model: carSelected?.model,
+                            identificationNumber: carSelected?.identificationNumber,
+                            year: carSelected?.year,
+                            image: carSelected?.image
+                        },
                         status: 'pending',
                         type: values.type,
                         paymentMethod: values.paymentMethod,
-                        serviceCarId: values.car
                     }
                 }
             });
@@ -168,10 +171,15 @@ export default function ServiceForm() {
                                             name='car'
                                             className='block appearance-none border border-gray-200 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-gray-500 w-full'
                                             placeholder="My cars"
+                                            onChange={(e) => {
+                                                const selectedCar = myCars.find(car => car.id === e.target.value);
+                                                setCarSelected(selectedCar);
+                                                setFieldValue('car', e.target.value);
+                                            }}
                                         >
                                             <option value="default">Choose a car</option>
                                             {myCars.map((car, i) => (
-                                                <option key={i} value={car.id}>{car.brand}</option>
+                                                <option key={i} value={car.id} >{car.brand}</option>
                                             ))}
                                         </Field>
                                     ) : (

@@ -4,7 +4,6 @@ import { UserContext } from './UserContext';
 import { userReducer } from './UserReducer';
 import Cookies from 'js-cookie';
 import GearSpinner from '@/components/GearSpinner';
-
 const INITIAL_USER_STATE = {
     user: {
         role: "",
@@ -31,7 +30,6 @@ export const UserProvider = ({ children }) => {
     };
 
     const login = (userData) => {
-        console.log(userData);
         Cookies.set(
             "currentUser",
             JSON.stringify(userData)
@@ -48,12 +46,11 @@ export const UserProvider = ({ children }) => {
 
     useEffect(() => {
         const userFromCookies = getUserFromCookies();
-        if(userFromCookies) {
+        if (userFromCookies) {
             dispatch({ type: 'setUser', payload: userFromCookies })
         }
         setLoading(false);
     }, []);
-
 
     if (loading) {
         return (
@@ -63,7 +60,7 @@ export const UserProvider = ({ children }) => {
         )
     }
 
-    return(
+    return (
         <UserContext.Provider
             value={{
                 ...state,
@@ -74,5 +71,5 @@ export const UserProvider = ({ children }) => {
             {children}
         </UserContext.Provider>
     )
-    
+
 }

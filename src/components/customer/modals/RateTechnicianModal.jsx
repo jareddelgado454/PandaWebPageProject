@@ -34,7 +34,7 @@ export default function RateTechnicianModal({ isOpen, onOpenChange, service, tec
             await client.graphql({
                 query: updateStatusServiceWithInput,
                 variables: {
-                    input: { completed: "yes" }
+                    input: { id: service.id, completed: "yes" }
                 }
             });
         } catch (error) {

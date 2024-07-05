@@ -6,13 +6,7 @@ export const retrieveMyInformation = gql`
             id
             email
             fullName
-            contactNumber
-            state
-                city
-            address
-            zipCode
             profilePicture
-            createdAt
         }
     }
 `;
@@ -63,6 +57,16 @@ export const listCarsById = gql`
                 year
                 identificationNumber
                 createdAt
+            }
+        }
+    }
+`;
+
+export const verifyIfCustomerRated = gql`
+    query ListRates($customerId: String!) {
+        listRates(filter: {customer: {eq: $customerId}}){
+            items{
+                id
             }
         }
     }
