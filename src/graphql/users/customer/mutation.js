@@ -17,6 +17,7 @@ export const createService = gql`
             originLongitude
             status
             type
+            customerId
             customer {
                 id
                 fullName
