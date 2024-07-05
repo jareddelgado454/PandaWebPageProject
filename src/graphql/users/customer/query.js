@@ -6,13 +6,7 @@ export const retrieveMyInformation = gql`
             id
             email
             fullName
-            contactNumber
-            state
-            city
-            address
-            zipCode
             profilePicture
-            createdAt
         }
     }
 `;

@@ -4,8 +4,6 @@ import { UserContext } from './UserContext';
 import { userReducer } from './UserReducer';
 import Cookies from 'js-cookie';
 import GearSpinner from '@/components/GearSpinner';
-import { getCustomerById } from '@/api';
-
 const INITIAL_USER_STATE = {
     user: {
         role: "",
@@ -53,19 +51,6 @@ export const UserProvider = ({ children }) => {
         }
         setLoading(false);
     }, []);
-
-    useEffect(() => {
-        const retrieveInfoFromCustomer = async () => {
-            const userFromCookies = getUserFromCookies();
-            if (userFromCookies) {
-                const data = await getCustomerById(userFromCookies.id);
-                dispatch({ type: 'setUser', payload: data });
-            }
-        }
-        retrieveInfoFromCustomer();
-    }, []);
-
-
 
     if (loading) {
         return (
