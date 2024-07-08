@@ -20,8 +20,10 @@ const InProgress = ({ serviceAssigned, isOpen, setServiceStatus }) => {
   const [tax, setTax] = useState(0);
   const [isRepairing, setIsRepairing] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+
   const {user} = useContext(Contexto);
   console.log("useeeeeeeeeeeeeeeeer",user);
+  console.log("serviceeeee assigned", serviceAssigned);
 
   const stripe = new Stripe('sk_test_51MHZf4JbGPo8jsLC7uInizJy0DjyqYbFZrSYMN0USaP1L3w6r4D1tbTWuF5pwWMOq6UoVlhdeBfsFa68sGIE7tY600NlVl5zAf');
 
@@ -70,6 +72,10 @@ const InProgress = ({ serviceAssigned, isOpen, setServiceStatus }) => {
   const handleSendEstimate = async () => {
     if (validate()) {
       const total = parseFloat(calculateTotal());
+      let applicationFeeAmount = 0;
+      if (user["custom:subscription"] === "free") {
+        applicationFeeAmount = Math.round(total * 10);
+      } 
       try {
         const session = await stripe.checkout.sessions.create(
           {
@@ -88,7 +94,10 @@ const InProgress = ({ serviceAssigned, isOpen, setServiceStatus }) => {
             ],
             mode: "payment",
             payment_intent_data: {
-              application_fee_amount: Math.round(total * 10),
+              application_fee_amount: applicationFeeAmount,
+              metadata: {
+                serviceType: serviceAssigned.type
+              } 
             },
             success_url:`http://localhost:3000/customer/request/${serviceAssigned.id}?paymentStatus=completed`,
             cancel_url:`http://localhost:3000/customer/request/${serviceAssigned.id}?paymentStatus=failed`,

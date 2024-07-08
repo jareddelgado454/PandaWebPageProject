@@ -70,44 +70,43 @@ const EspecializationArea = () => {
   };
 
   return (
-    <div className="w-full h-[calc(100vh-100px)] relative pr-[20px]">
-      <div className="w-full h-[calc(100vh-100px)] flex flex-col px-4 bg-zinc-800 rounded-xl pt-4">
+    <div className="w-full overflow-y-auto sm:h-[calc(100vh-80px)] flex flex-col h-[calc(100vh-120px)] relative  sm:px-8 px-3 lg:pl-8 sm:pl-[105px] pl-2 pt-4 pb-4">
         <div className="w-full mb-6">
-          <div className="w-[340px] bg-zinc-700 rounded-2xl flex items-center justify-center p-2 ">
-            <Link href={"/user"} className="text-zinc-400 text-[14px]">
+          <div className="w-[340px] dark:bg-zinc-800 bg-zinc-300 rounded-2xl flex items-center justify-center p-2 ">
+            <Link href={"/user"} className="dark:text-zinc-400 text-zinc-700 text-[14px]">
               Technician panel
             </Link>
-            <RiArrowDropRightLine className="text-zinc-400 text-[25px] " />
-            <Link href={"/user"} className="text-zinc-400 text-[14px]">
+            <RiArrowDropRightLine className="dark:text-zinc-400 text-zinc-700 text-[25px] " />
+            <Link href={"/user"} className="dark:text-zinc-400 text-zinc-700 text-[14px]">
               Profile
             </Link>
-            <RiArrowDropRightLine className="text-zinc-400 text-[25px] " />
-            <Link href={"/user/personal-information"} className="text-white text-[14px]">
+            <RiArrowDropRightLine className="dark:text-zinc-400 text-zinc-700 text-[25px] " />
+            <Link href={"/user/personal-information"} className=" text-[14px]">
               Specialization
             </Link>
           </div>
         </div>
-        <div className="w-full text-white flex flex-col mb-6">
+        <div className="w-full font-bold flex flex-col mb-6">
           <h4 className="w-full text-[24px] font-bold mb-2">
             Your Specialization Area
           </h4>
-          <span className="text-gray-300">
+          <span className="dark:text-gray-300 text-zinc-700">
             It is necessary that this information be updated. Here you can
             change the prices for diagnosis and repair.
           </span>
         </div>
         <div className="w-full">
-          <div className="w-[400px] bg-zinc-900/50 rounded-md p-3">
-            <div className="w-full flex text-white items-center gap-x-2 text-[17px] font-semibold mb-2">
+          <div className="sm:w-[400px] w-full dark:bg-zinc-900/50 bg-white dark:shadow-none shadow-lg rounded-md p-3">
+            <div className="w-full flex  items-center gap-x-2 text-[17px] font-semibold mb-2">
               <RiInformationFill className="text-zinc-700 text-[25px]" /> Your
               prices
             </div>
-            <div className="w-full flex gap-x-1 text-zinc-400 text-[13px] mb-2">
+            <div className="w-full flex gap-x-1 dark:text-zinc-400 text-zinc-700 text-[13px] mb-2">
               <span className="text-red-400">*</span> You need to complete these
               prices
             </div>
             <div className="w-full flex gap-x-2 justify-between items-center mb-3">
-              <div className="w-[150px] text-white text-[16px]">
+              <div className="w-[150px]  text-[16px]">
                 Diagnosis Price :
               </div>
               {loading ? (
@@ -130,7 +129,7 @@ const EspecializationArea = () => {
               )}
             </div>
             <div className="w-full flex gap-x-2 justify-between items-center mb-3">
-              <div className="w-[150px] text-white text-[16px]">
+              <div className="w-[150px]  text-[16px]">
                 Repair Price p / h :
               </div>
               {loading ? (
@@ -162,7 +161,6 @@ const EspecializationArea = () => {
             </Button>
           </div>
         </div>
-      </div>
     </div>
   );
 };

@@ -18,6 +18,7 @@ export const UserProvider = ({ children }) => {
 
     const getUserFromCookies = () => {
         const userCookie = Cookies.get('currentUser');
+        console.log("hola perrita")
         if (userCookie && userCookie !== '') {
             try {
                 return JSON.parse(userCookie);
