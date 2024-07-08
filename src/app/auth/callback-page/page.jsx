@@ -43,7 +43,7 @@ const CallbackPage = () => {
             case "technician":
               console.log("Antes de tecnico")
               data = await getTechnicianById(userSub);
-              login({ role, expiredAt, id: userSub, ...data });
+              login({ role:userRole , expiredAt, id: userSub, ...data });
               router.push("/user");
               break;
             case "customer":
