@@ -44,7 +44,6 @@ const ModalDetailRequest = ({
   id,
   technicianId,
   setTechnicianActivityStatus,
-  setServiceIdWaitingFor,
   addressDistanceSelected,
   setAddressDistanceSelected,
   pricesTechnician,
@@ -55,6 +54,16 @@ const ModalDetailRequest = ({
   const [sendingOffer, setSendingOffer] = useState(false);
   const [emblaRef] = useEmblaCarousel({ loop: true });
   const { technicianLocation } = useContext(PlaceTechnicianContext);
+  console.log({
+    ...isOpen,
+    onOpenChange,
+    id,
+    technicianId,
+    setTechnicianActivityStatus,
+    addressDistanceSelected,
+    setAddressDistanceSelected,
+    pricesTechnician,
+  });
 
   const handleAcceptRequest = async () => {
     setSendingOffer(true);
@@ -81,7 +90,6 @@ const ModalDetailRequest = ({
         setSendingOffer(false);
         onOpenChange(false);
         setTechnicianActivityStatus("waitingResponse");
-        setServiceIdWaitingFor(data.createOffer.serviceId);
       } catch (error) {
         console.log(error);
         setSendingOffer(false);
@@ -129,21 +137,21 @@ const ModalDetailRequest = ({
       scrollBehavior="outside"
       size="xl"
     >
-      <ModalContent className="dark:bg-zinc-900 dark:text-white border-[1px] border-zinc-800 shadow-lg flex flex-col shadow-zinc-800 pb-4">
+      <ModalContent className="dark:bg-zinc-900 dark:text-white border-[1px] dark:border-zinc-800 border-zinc-400 shadow-lg flex flex-col dark:shadow-zinc-800 shadow-zinc-900 pb-4">
         {(onClose) => (
           <>
             <ModalHeader className="flex">
               {loading ? (
                 <div className="w-full flex gap-x-2">
-                  <div className="w-[100px] h-[25px] bg-zinc-700 rounded-lg animate-pulse"></div>
-                  <span className="text-zinc-300">-</span>
-                  <div className="w-[150px] h-[25px] bg-zinc-700 rounded-lg animate-pulse"></div>
+                  <div className="w-[100px] h-[25px] dark:bg-zinc-700 bg-zinc-400 rounded-lg animate-pulse"></div>
+                  <span className="">-</span>
+                  <div className="w-[150px] h-[25px] dark:bg-zinc-700 bg-zinc-400 rounded-lg animate-pulse"></div>
                 </div>
               ) : (
                 <h4 className="text-[22px]">
                   {request?.type && request?.type}{" "}
                   <span className="text-emerald-400">-</span>{" "}
-                  <span className="text-[17px] text-zinc-300">
+                  <span className="text-[17px] dark:text-zinc-300 text-zinc-700">
                     {addressDistanceSelected?.address}
                   </span>
                 </h4>
@@ -152,43 +160,50 @@ const ModalDetailRequest = ({
             <ModalBody className="flex flex-col justify-center overflow-y-auto">
               {loading ? (
                 <div className="w-full flex flex-col gap-y-2">
-                  <div className="w-full h-[250px] flex items-center justify-center bg-zinc-700 rounded-lg p-3 mb-3 animate-pulse"></div>
-                  <div className="h-[25px] w-1/2 mb-2 bg-zinc-700 rounded-md animate-pulse"></div>
-                  <div className="h-[25px] w-1/2 mb-2 bg-zinc-600 rounded-md animate-pulse"></div>
-                  <div className="h-[25px] w-[150px] mb-2 bg-zinc-700 rounded-md animate-pulse"></div>
-                  <div className="w-full h-[100px] flex items-center justify-center bg-zinc-700 rounded-lg p-3 mb-3 animate-pulse"></div>
+                  <div className="w-full h-[250px] flex items-center justify-center dark:bg-zinc-700 bg-zinc-300 rounded-lg p-3 mb-3 animate-pulse"></div>
+                  <div className="h-[25px] w-1/2 mb-2 dark:bg-zinc-700 bg-zinc-400 rounded-md animate-pulse"></div>
+                  <div className="h-[25px] w-1/2 mb-2 dark:bg-zinc-600 bg-zinc-300 rounded-md animate-pulse"></div>
+                  <div className="h-[25px] w-[150px] mb-2 dark:bg-zinc-700 bg-zinc-400 rounded-md animate-pulse"></div>
+                  <div className="w-full h-[100px] flex items-center justify-center dark:bg-zinc-700 bg-zinc-400 rounded-lg p-3 mb-3 animate-pulse"></div>
                 </div>
               ) : (
                 <>
-                  <div className="w-full h-[250px] flex items-center justify-center bg-zinc-800 rounded-lg p-3 ">
-                    <MapProvider>
-                      <MiniTechnicianServiceMap customerLocation={{ lon: request?.originLongitude, lat: request?.originLatitude }} />
-                    </MapProvider>
+                  <div className="w-full h-[250px] flex items-center justify-center rounded-lg overflow-hidden dark:bg-zinc-800 bg-zinc-200 border-[1px] dark:border-zinc-700 border-zinc-400">
+                    {request?.originLatitude && request?.originLatitude ? (
+                      <MapProvider>
+                        <MiniTechnicianServiceMap
+                          customerLocation={{
+                            lon: request?.originLongitude,
+                            lat: request?.originLatitude,
+                          }}
+                        />
+                      </MapProvider>
+                    ) : (
+                      <div>loading map</div>
+                    )}
                   </div>
-                  <span className="text-zinc-300 flex gap-x-1 items-center">
-                    <RiMapPinUserFill className="text-emerald-400" />
+                  <span className="dark:text-zinc-300 text-zinc-800 flex gap-x-1 items-center">
+                    <RiMapPinUserFill className="dark:text-emerald-400 text-emerald-600" />
                     You are{" "}
-                    <span className="text-emerald-300 font-bold">
+                    <span className="dark:text-emerald-300 text-emerald-600 font-bold">
                       {addressDistanceSelected?.distance} miles
                     </span>{" "}
                     from the location
                   </span>
-                  <span className="text-zinc-300 flex gap-x-1 items-center">
-                    <RiCarFill className="text-emerald-400" />
+                  <span className="dark:text-zinc-300 text-zinc-800 flex gap-x-1 items-center">
+                    <RiCarFill className="dark:text-emerald-400 text-emerald-600" />
                     {`${request?.car?.model} ${request?.car?.year}`}
                   </span>
                   <div className="w-full flex flex-col ">
-                    <span className="text-white font-bold text-[16px]">
+                    <span className="font-bold text-[16px]">
                       Description:
                     </span>
-                    <div className="bg-zinc-800 rounded-lg p-3 mb-4">
-                      {`Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s, when an unknown
-                      printer took a galley of type and scrambled it to make a
-                      type specimen book. It has survived not only five.`}
+                    <div className="dark:bg-zinc-800 bg-zinc-200 rounded-lg p-3 mb-4">
+                      {
+                        request?.description
+                      }
                     </div>
-                    <Accordion
+                    {/* <Accordion
                       motionProps={{
                         variants: {
                           enter: {
@@ -262,13 +277,13 @@ const ModalDetailRequest = ({
                           </div>
                         </div>
                       </AccordionItem>
-                    </Accordion>
-                    <span className="text-white font-bold text-[17px] mb-2">
+                    </Accordion> */}
+                    <span className=" font-bold text-[17px] mb-2">
                       Your prices to offer repair services:
                     </span>
                     <div className="w-full flex flex-col gap-x-1  border-b-[1px] border-b-zinc-700 pb-4">
                       <div className="w-full flex  gap-x-1 items-center justify-between mb-3">
-                        <span className="text-zinc-300 font-semibold text-[16px] w-[200px]">
+                        <span className="dark:text-zinc-300 text-zinc-700 font-semibold text-[16px] w-[200px]">
                           Diagnosis price
                         </span>
                         <Input
@@ -290,7 +305,7 @@ const ModalDetailRequest = ({
                       </div>
                       {request?.type == "repair" && (
                         <div className="w-full flex  gap-x-1 items-center justify-between mb-3">
-                          <span className="text-zinc-300 font-semibold text-[16px] w-[200px]">
+                          <span className="dark:text-zinc-300 text-zinc-700 font-semibold text-[16px] w-[200px]">
                             Repair price
                           </span>
                           <Input
@@ -312,12 +327,12 @@ const ModalDetailRequest = ({
                         </div>
                       )}
 
-                      <div className="w-full p-2 flex items-center gap-x-1 text-zinc-400  text-[14px]">
+                      <div className="w-full p-2 flex items-center gap-x-1 dark:text-zinc-400 text-zinc-600  text-[14px]">
                         <RiInformationFill />
                         You can change this prices in{" "}
                         <Link
                           href={"/user/specialization-area"}
-                          className="cursor-pointer text-emerald-400 font-bold text-[15px]"
+                          className="cursor-pointer dark:text-emerald-400 text-emerald-600 font-bold text-[15px]"
                         >
                           My specializations
                         </Link>

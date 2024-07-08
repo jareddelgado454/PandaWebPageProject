@@ -13,6 +13,7 @@ import { PlaceTechnicianProvider } from "@/contexts/placeTechnician/PlaceTechnic
 import ServiceAssignedProvider from "@/contexts/serviceAssigned/ServiceAssignedProvider";
 import { ServiceAssignedContext } from "@/contexts/serviceAssigned/ServiceAssignedContext";
 import { getProfilePicture } from "@/graphql/users/query/technician";
+import UserMobileBar from "@/components/userComponents/userMobileBar/UserMobileBar";
 
 export const Contexto = createContext();
 
@@ -20,6 +21,7 @@ const UserLayout = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isOnline, setIsOnline] = useState(null);
+  const [theme, setTheme] = useState("dark");
   const [technicianActivityStatus, setTechnicianActivityStatus] =
     useState(null);
 
@@ -118,7 +120,7 @@ const UserLayout = ({ children }) => {
   }, [user, serviceAssigned?.id]); 
 
   return (
-    <div className="w-full h-screen dark:bg-zinc-900 bg-zinc-200 ">
+    <div className="w-full h-screen dark:bg-zinc-900 bg-zinc-100 ">
       <Contexto.Provider
         value={{
           user,
@@ -127,6 +129,7 @@ const UserLayout = ({ children }) => {
           handleChangeStatus,
           retrieveOneUser,
           setTechnicianActivityStatus,
+          theme
         }}
       >
           <PlaceTechnicianProvider>
@@ -156,13 +159,16 @@ const UserLayout = ({ children }) => {
                     </div>
                   )}
                   <UserSidebar user={user} />
-                  <div className="flex-1 flex flex-col h-screen">
+                  <div className="flex-1 flex flex-col h-screen dark:bg-zinc-950 bg-zinc-100 transition-all">
                     <UserNavBar
                       user={user}
                       isOnline={isOnline}
                       handleChangeStatus={handleChangeStatus}
+                      theme={theme}
+                      setTheme={setTheme}
                     />
                     {children}
+                    <UserMobileBar user={user}/>
                   </div>
                   <AssignedTechnicianModal
                     isOpen={isAssignedTechnicianModalOpen}

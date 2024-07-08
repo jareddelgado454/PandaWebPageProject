@@ -190,36 +190,35 @@ const PersonalInformation = () => {
   }, []);
 
   return (
-    <div className="w-full h-[calc(100vh-100px)] relative pr-[20px]">
-      <div className="w-full h-[calc(100vh-100px)] overflow-y-scroll flex flex-col px-4 bg-zinc-800 rounded-xl pt-4 pb-8">
+    <div className="w-full sm:h-[calc(100vh-80px)] h-[calc(100vh-120px)] relative flex flex-col  overflow-y-scroll sm:px-8 px-3 lg:pl-8 sm:pl-[105px] pl-3 pt-4 pb-4">
         <div className="w-full mb-6">
-          <div className="w-[320px] bg-zinc-700 rounded-2xl flex items-center justify-center p-2 ">
-            <Link href={"/user"} className="text-zinc-400 text-[14px]">
+          <div className="w-[320px] dark:bg-zinc-800 bg-zinc-300 rounded-2xl flex items-center justify-center p-2 ">
+            <Link href={"/user"} className="dark:text-zinc-400 text-zinc-600 text-[14px]">
               Technician panel
             </Link>
-            <RiArrowDropRightLine className="text-zinc-400 text-[25px] " />
-            <Link href={"/user"} className="text-zinc-400 text-[14px]">
+            <RiArrowDropRightLine className="dark:text-zinc-400 text-zinc-600 text-[25px] " />
+            <Link href={"/user"} className="dark:text-zinc-400 text-zinc-600 text-[14px]">
               Profile
             </Link>
-            <RiArrowDropRightLine className="text-zinc-400 text-[25px] " />
-            <Link href={"/user/personal-information"} className="text-white text-[14px]">
+            <RiArrowDropRightLine className="dark:text-zinc-400 text-zinc-600 text-[25px] " />
+            <Link href={"/user/personal-information"} className=" text-[14px]">
               Information
             </Link>
           </div>
         </div>
 
-        <div className="w-full text-white flex flex-col mb-6">
+        <div className="w-full  flex flex-col mb-6">
           <h4 className="w-full text-[24px] font-bold mb-2">
             Review and Update your personal information details
           </h4>
-          <span className="text-gray-300 text-[15px]">
+          <span className="dark:text-gray-300 text-zinc-700 text-[15px]">
             Make sure this data is up to date, as it will be used so customers
             can find you quickly.{" "}
           </span>
         </div>
 
-        <div className="w-[800px] flex flex-col ">
-          <div className="w-full flex gap-x-3 border-b-[2px] border-zinc-700 pb-3 ">
+        <div className="lg:w-[800px] w-full flex flex-col ">
+          <div className="w-full flex gap-x-3 border-b-[2px] dark:border-zinc-700 border-zinc-300 pb-3 ">
             {loading ? (
               <div className="w-[4rem] h-[4rem] md:w-[6rem] md:h-[6rem] rounded-full shadow-md bg-zinc-700 animate-pulse"></div>
             ) : (
@@ -231,7 +230,7 @@ const PersonalInformation = () => {
                 </div>
                 <img
                   src={photograph ? photograph : (userDataBase.profilePicture ? userDataBase.profilePicture : "/image/defaultProfilePicture.jpg")}
-                  className="rounded-full w-[4rem] h-[4rem] md:w-[6rem] md:h-[6rem] cursor-pointer border-[3px] border-zinc-600/60"
+                  className="rounded-full w-[4rem] h-[4rem] md:w-[6rem] md:h-[6rem] cursor-pointer border-[3px] dark:border-zinc-600/60 border-zinc-300"
                   alt="Profile Picture "
                 />
                 <input
@@ -258,12 +257,12 @@ const PersonalInformation = () => {
               </div>
             ) : (
               <div className="flex flex-col justify-center">
-                <div className="text-white text-[25px] font-bold">
+                <div className=" text-[25px] font-bold">
                   {user["custom:fullName"]
                     ? user["custom:fullName"]
                     : user?.name}
                 </div>
-                <div className="text-gray-200">{user?.email}</div>
+                <div className="dark:text-gray-200 text-zinc-600">{user?.email}</div>
               </div>
             )}
           </div>
@@ -272,7 +271,7 @@ const PersonalInformation = () => {
               Completing Fields
             </div>
           ) : (
-            <div className="text-[20px] text-gray-100 pt-3 font-bold">
+            <div className="text-[20px] dark:text-gray-100 text-zinc-800 pt-3 font-bold">
               {!profileCompleted
                 ? "Complete this fields:"
                 : "Your Personal Information"}
@@ -280,7 +279,7 @@ const PersonalInformation = () => {
           )}
           {loading ? (
             <div className="w-full h-full flex flex-col">
-              <div className="flex flex-col pt-3 text-transparent border-b-[2px] border-zinc-700 pb-3 animate-pulse">
+              <div className="flex flex-col pt-3 text-transparent border-b-[2px] dark:border-zinc-700 border-zinc-300 pb-3 animate-pulse">
                 <div
                   className={`mb-2 text-transparent bg-zinc-700 rounded-lg w-[100px] animate-pulse`}
                 >
@@ -288,7 +287,7 @@ const PersonalInformation = () => {
                 </div>
                 <div className="w-full md:w-2/4 md:mb-0 h-[40px] bg-zinc-600 rounded-lg animate-pulse"></div>
               </div>
-              <div className="flex flex-col pt-3 text-transparent border-b-[2px] border-zinc-700 pb-3 animate-pulse">
+              <div className="flex flex-col pt-3 text-transparent border-b-[2px] dark:border-zinc-700 border-zinc-300 pb-3 animate-pulse">
                 <div
                   className={`mb-2 text-transparent bg-zinc-700 rounded-lg w-[100px] animate-pulse`}
                 >
@@ -296,7 +295,7 @@ const PersonalInformation = () => {
                 </div>
                 <div className="w-full md:w-2/4 md:mb-0 h-[40px] bg-zinc-700 rounded-lg animate-pulse"></div>
               </div>
-              <div className="flex flex-col pt-3 text-transparent border-b-[2px] border-zinc-700 pb-3 animate-pulse">
+              <div className="flex flex-col pt-3 text-transparent border-b-[2px] dark:border-zinc-700 border-zinc-300 pb-3 animate-pulse">
                 <div
                   className={`mb-2 text-transparent bg-zinc-700 rounded-lg w-[100px] animate-pulse`}
                 >
@@ -326,7 +325,7 @@ const PersonalInformation = () => {
                         className={`w-full h-full flex flex-col`}
                         autoComplete="off"
                       >
-                        <div className="flex flex-col pt-3 text-white border-b-[2px] border-zinc-700 pb-3">
+                        <div className="flex flex-col pt-3  border-b-[2px] dark:border-zinc-700 border-zinc-300 pb-3">
                           <div className={`mb-2`}>
                             <span className="text-red-400">* </span>State you
                             are in:
@@ -336,7 +335,7 @@ const PersonalInformation = () => {
                             <Select
                               variant={"bordered"}
                               label="Complete this field"
-                              className="w-full text-white"
+                              className="w-full "
                               selectedKeys={[stateUSA]}
                               onChange={(e) => setStateUSA(e.target.value)}
                             >
@@ -344,7 +343,6 @@ const PersonalInformation = () => {
                                 <SelectItem
                                   key={index}
                                   value={stateUSA}
-                                  style={{ color: "#E1E0DD" }}
                                 >
                                   {stateUSA}
                                 </SelectItem>
@@ -352,58 +350,58 @@ const PersonalInformation = () => {
                             </Select>
                           </div>
                         </div>
-                        <div className="flex flex-col pt-5 text-white border-b-[2px] border-zinc-700 pb-3">
+                        <div className="flex flex-col pt-5  border-b-[2px] dark:border-zinc-700 border-zinc-300 pb-3">
                           <div className={`mb-2`}>
                             <span className="text-red-400">* </span>Your city:
                           </div>
                           <div className="w-full md:w-2/4 md:mb-0">
                             <Field
-                              className={`appearance-none block w-full bg-zinc-800 text-white border-[1px] border-zinc-500
-                        rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-zinc-700 focus:border-gray-500`}
+                              className={`appearance-none block w-full dark:bg-zinc-800 bg-zinc-100 transition-all  border-[1px] border-zinc-500
+                        rounded-lg py-3 px-4 leading-tight focus:outline-none dark:focus:bg-zinc-700 focus:bg-zinc-100 focus:border-gray-500`}
                               type="text"
                               placeholder="Complete this field"
                               name="city"
                             />
                           </div>
                         </div>
-                        <div className="flex flex-col pt-5 text-white border-b-[2px] border-zinc-700 pb-3">
+                        <div className="flex flex-col pt-5  border-b-[2px] dark:border-zinc-700 border-zinc-300 pb-3">
                           <div className="mb-2">
                             <span className="text-red-400">* </span>Your
                             address:
                           </div>
                           <div className="w-full md:w-2/4 md:mb-0">
                             <Field
-                              className={`appearance-none block w-full bg-zinc-800 text-white border-[1px] border-zinc-500
-                        rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-zinc-700 focus:border-gray-500`}
+                              className={`appearance-none block w-full dark:bg-zinc-800 bg-zinc-100  border-[1px] border-zinc-500
+                        rounded-lg py-3 px-4 leading-tight focus:outline-none dark:focus:bg-zinc-700 focus:bg-zinc-100 focus:border-gray-500`}
                               type="text"
                               placeholder="Complete this field"
                               name="address"
                             />
                           </div>
                         </div>
-                        <div className="flex flex-col pt-5 text-white border-b-[2px] border-zinc-700 pb-3">
+                        <div className="flex flex-col pt-5  border-b-[2px] dark:border-zinc-700 border-zinc-300 pb-3">
                           <div className="mb-2">
                             <span className="text-red-400">* </span>Your
                             zipCode:
                           </div>
                           <div className="w-full md:w-2/4 md:mb-0">
                             <Field
-                              className={`appearance-none block w-full bg-zinc-800 text-white border-[1px] border-zinc-500
-                        rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-zinc-700 focus:border-gray-500`}
+                              className={`appearance-none block w-full dark:bg-zinc-800 bg-zinc-100 border-[1px] border-zinc-500
+                        rounded-lg py-3 px-4 leading-tight focus:outline-none dark:focus:bg-zinc-700 focus:bg-zinc-100 focus:border-gray-500`}
                               type="text"
                               placeholder="Complete this field"
                               name="zipCode"
                             />
                           </div>
                         </div>
-                        <div className="flex flex-col pt-5 text-white  pb-3 mb-4">
+                        <div className="flex flex-col pt-5   pb-3 mb-4">
                           <div className="mb-2">
                             <span className="text-red-400">* </span>Your Phone
                             Number:
                           </div>
                           <div className="w-full md:w-2/4 md:mb-0">
                             <Field
-                              className={`appearance-none block w-full bg-zinc-800 text-white border-[1px] border-zinc-500 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-zinc-700 focus:border-gray-500`}
+                              className={`appearance-none block w-full dark:bg-zinc-800 bg-zinc-100  border-[1px] border-zinc-500 rounded-lg py-3 px-4 leading-tight focus:outline-none dark:focus:bg-zinc-700 focus:bg-zinc-100 focus:border-gray-500`}
                               type="text"
                               placeholder="Complete this field"
                               name="contactNumber"
@@ -422,7 +420,7 @@ const PersonalInformation = () => {
                             isLoading={upLoadingInformation}
                             isDisabled={upLoadingInformation}
                             type="submit"
-                            className={`bg-emerald-500 hover:bg-emerald-600 p-3 px-5 rounded-lg text-white font-bold  transition-all`}
+                            className={`bg-emerald-600 hover:bg-emerald-600 p-3 px-5 rounded-lg text-white font-bold  transition-all`}
                           >
                             Save Information
                           </Button>
@@ -435,7 +433,6 @@ const PersonalInformation = () => {
             </>
           )}
         </div>
-      </div>
     </div>
   );
 };

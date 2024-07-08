@@ -37,7 +37,7 @@ export const OnChangeStatusService = gql`
         rate
       }
       serviceTechnicianSelectedId
-      serviceCustomerId
+      customerId
       createdAt
       updatedAt
     }
@@ -46,6 +46,7 @@ export const OnChangeStatusService = gql`
 
 export const OnChangeStatusServiceByCustomer = gql`
   mutation UpdateService($input: UpdateServiceInput!, $customerId: ID!) {
+    updateService(input: $input, condition: {customerId: {eq: $customerId}}) {
     updateService(input: $input, condition: {customerId: {eq: $customerId}}) {
       id
       completed
@@ -73,8 +74,8 @@ export const OnChangeStatusServiceByCustomer = gql`
 `;
 
 export const DeleteMyRequest = gql`
-  mutation DeleteRequest($serviceId: ID!, $serviceCustomerId: ID!) {
-    deleteService(input: {id: $serviceId}, condition: {customerId: {eq: $serviceCustomerId}}){
+  mutation DeleteRequest($serviceId: ID!, $customerId: ID!) {
+    deleteService(input: {id: $serviceId}, condition: {customerId: {eq: $customerId}}){
       id
     }
   }
@@ -82,12 +83,13 @@ export const DeleteMyRequest = gql`
 `;
 
 export const updateTechnicianLocation = gql`
-  mutation MyMutation ($input: UpdateServiceInput!, $serviceCustomerId: ID!) {
-    updateService(input: $input, condition: {customerId: {eq: $serviceCustomerId}}) {
+  mutation MyMutation ($input: UpdateServiceInput!, $customerId: ID!) {
+    updateService(input: $input, condition: {customerId: {eq: $customerId}}) {
       id
       destLatitude
       destLongitude
       status
+      customerId
       customerId
     }
   }
@@ -128,6 +130,7 @@ export const updateStatusServiceWithInput = gql`
       id
       status
       customerId
+      serviceTechnicianSelectedId
       completed
       serviceTechnicianSelectedId
       originLatitude
@@ -159,7 +162,7 @@ export const updateTotalAmountService = gql`
       price
       tax
       status
-      serviceCustomerId
+      customerId
       paymentLink
     }
   }

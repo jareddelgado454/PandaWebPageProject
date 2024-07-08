@@ -80,7 +80,7 @@ const OnTheWay = ({ isOpen, serviceAssigned, setServiceStatus }) => {
           id: serviceAssigned.id,
           destLatitude: newLocation[1],
           destLongitude: newLocation[0],
-          serviceCustomerId: serviceAssigned.customer.id,
+          customerId: serviceAssigned.customer.id,
         });
         updateTechnicianLocation(newLocation);
       } catch (error) {
