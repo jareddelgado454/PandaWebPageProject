@@ -99,8 +99,8 @@ const InProgress = ({ serviceAssigned, isOpen, setServiceStatus }) => {
                 serviceType: serviceAssigned.type
               } 
             },
-            success_url:`http://localhost:3000/customer/request/${serviceAssigned.id}?paymentStatus=completed`,
-            cancel_url:`http://localhost:3000/customer/request/${serviceAssigned.id}?paymentStatus=failed`,
+            success_url:`https://master.d3dtglewderhtg.amplifyapp.com/customer/request/${serviceAssigned.id}?paymentStatus=completed`,
+            cancel_url:`https://master.d3dtglewderhtg.amplifyapp.com/customer/request/${serviceAssigned.id}?paymentStatus=failed`,
             customer_email:"test@gmail.com",
           },
           {
