@@ -126,10 +126,6 @@ const Home = () => {
                 <p className="text-gray-100 md:text-xl lg:text-[22px] font-bold">Changing the auto repair industry by</p>
                 <p className="text-gray-100 md:text-xl lg:text-[22px] font-bold mb-8">placing power in the small business owner`s hands.</p>
                 <div className="md:w-[500px] w-full flex flex-col lg:flex-row items-center gap-4">
-                  <Link href="/auth/signin" className='md:w-1/2 w-full px-9 py-3 font-semibold border-[2px] rounded-xl text-white border-emerald-500 bg-emerald-500 text-[20px] hover:bg-emerald-300 hover:border-emerald-300 hover:text-zinc-950 transition delay-50'>
-                      Start here
-                  </Link>
-
                   <button onClick={onVideoModalOpen} className='md:w-1/2 w-full flex justify-center items-center gap-x-2 px-5 py-3 font-semibold border-[2px] rounded-xl text-zinc-900 border-gray-100 bg-gray-100  text-[20px] hover:bg-gray-300 hover:border-gray-300 hover:text-zinc-950 transition delay-50'>
                     <RiVideoFill className="text-[20px]"/>
                     Watch Video
