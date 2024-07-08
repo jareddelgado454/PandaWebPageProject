@@ -9,7 +9,7 @@ export const ListenService = gql`
       status
       type
       customer {
-        email
+        profilePicture
         fullName
         id
       }

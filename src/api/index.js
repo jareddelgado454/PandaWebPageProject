@@ -163,7 +163,7 @@ export const handleUpdateTechnicianLocationInService = async (values) => {
                   destLatitude: values.destLatitude,
                   destLongitude: values.destLongitude
                 },
-                serviceCustomerId: values.serviceCustomerId
+                customerId: values.customerId
               }
         })
         return data;

@@ -165,8 +165,7 @@ const Subscription = () => {
   }
 
   return (
-    <div className="w-full h-[calc(100vh-100px)] relative pr-[20px]">
-      <div className="w-full h-[calc(100vh-100px)] flex flex-col px-4 dark:bg-zinc-900 bg-zinc-100 dark:shadow-none  shadow-lg shadow-zinc-400 rounded-xl pt-4">
+    <div className="w-full sm:h-[calc(100vh-80px)] h-[calc(100vh-120px)] relative sm:px-8 px-3 lg:pl-8 sm:pl-[105px] pl-3 pt-4 pb-4  overflow-y-auto">
         <div className="w-full mb-6">
           <div className="w-[270px] dark:bg-zinc-800 bg-zinc-300 rounded-2xl flex items-center justify-center p-2 ">
             <Link
@@ -191,10 +190,10 @@ const Subscription = () => {
             price and benefits.
           </span>
         </div>
-        <div className="w-full px-20 flex flex-col justify-center">
+        <div className="w-full xl:px-20 px-0 flex flex-col justify-center">
           <div className="w-full flex flex-col  gap-y-3">
             {!stripeAccountStatus ? (
-              <div className="w-full dark:bg-red-500/40 bg-red-600/80 text-zinc-200 p-3 text-[15px] flex justify-between gap-x-2 items-center shadow-md mb-4">
+              <div className="w-full dark:bg-red-500/40 bg-red-600/80 text-zinc-200 p-3 text-[15px] flex md:flex-row flex-col md:justify-between gap-2 md:items-center shadow-md mb-4">
                 <div className="flex flex-col gap-y-1  justify-center">
                   <div className="flex items-center gap-x-1">
                     <RiAlertFill className="dark:text-red-400 text-red-200 text-[25px]" />
@@ -221,7 +220,7 @@ const Subscription = () => {
               </div>
             ) : stripeAccountStatus === "incomplete" ||
               stripeAccountStatus === "pending_verification" ? (
-              <div className="w-full dark:bg-red-500/40 bg-red-600/80 text-zinc-200 p-3 text-[15px] flex justify-between items-center shadow-md mb-4">
+              <div className="w-full dark:bg-red-500/40 bg-red-600/80 text-zinc-200 p-3 text-[15px] flex md:flex-row flex-col md:justify-between gap-2 md:items-center shadow-md mb-4">
                 <div className="flex flex-col gap-y-1  justify-center">
                   <div className="flex items-center gap-x-1">
                     <RiAlertFill className="dark:text-red-400 text-red-200 text-[25px]" />
@@ -244,7 +243,7 @@ const Subscription = () => {
                 </Button>
               </div>
             ) : (
-              <div className="w-full dark:bg-green-400/40 bg-emerald-500/60  p-3 text-[15px] flex justify-between items-center shadow-md mb-4">
+              <div className="w-full dark:bg-green-400/40 bg-emerald-500/60  p-3 text-[15px] flex md:flex-row flex-col md:justify-between md:items-center gap-2 shadow-md mb-4">
                 <div className="flex flex-col gap-y-1  justify-center">
                   <div className="flex items-center gap-x-1">
                     <RiCheckboxCircleFill className="dark:text-green-400 text-emerald-100 text-[27px]" />
@@ -270,7 +269,7 @@ const Subscription = () => {
                 Current Plan
               </div>
               <div className="w-full flex items-center justify-between border-b-[1px] pb-3 border-zinc-700 mb-6">
-                <div className="flex gap-x-3 items-center text-[35px]  font-bold">
+                <div className="flex gap-x-3 items-center sm:text-[35px] text-[25px]  font-bold">
                   <BsCalendar2Check className="dark:text-zinc-400 text-zinc-700" />
                   {
                     user["custom:subscription"] === "free" ? "Free Plan" : user["custom:subscription"] === "annual" ? "Annualy Plan" : "Monthly Plan"
@@ -281,13 +280,13 @@ const Subscription = () => {
                     Upgrade
                   </Button>
                 ) : (
-                  <div className="py-2 px-4 rounded-xl bg-emerald-600 text-white cursor-pointer">
+                  <div className="py-2 sm:px-4 px-3 rounded-xl sm:text-[17px] text-[14px] bg-emerald-600 text-white cursor-pointer">
                     Renew Plan
                   </div>
                 )}
               </div>
-              <div className="w-full flex ">
-                <div className="w-1/4 flex flex-col py-2 px-8">
+              <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
+                <div className="flex flex-col py-2 px-8">
                   <span className="text-[16px] dark:text-zinc-300 text-zinc-700 mb-3">
                     Devices
                   </span>
@@ -301,7 +300,7 @@ const Subscription = () => {
                     Device Management
                   </span>
                 </div>
-                <div className="w-1/4 flex flex-col py-2 px-8">
+                <div className=" flex flex-col py-2 px-8">
                   <span className="text-[16px] dark:text-zinc-300 text-zinc-700 mb-3">
                     Active devices
                   </span>
@@ -315,7 +314,7 @@ const Subscription = () => {
                     Device Management
                   </span>
                 </div>
-                <div className="w-1/4 flex flex-col py-2 px-8">
+                <div className=" flex flex-col py-2 px-8">
                   <span className="text-[16px] dark:text-zinc-300 text-zinc-700 mb-3">
                     Renewal date
                   </span>
@@ -331,7 +330,7 @@ const Subscription = () => {
                   {  user["custom:subscription"] === "free" ? "Unlimited plan" : differenceDays ? `Expires in ${differenceDays} days` : "We couldn't find the information" }
                   </span>
                 </div>
-                <div className="w-1/4 flex flex-col py-2 px-8">
+                <div className=" flex flex-col py-2 px-8">
                   <span className="text-[16px] dark:text-zinc-300 text-zinc-700 mb-3">
                     Renewal Amount
                   </span>
@@ -349,7 +348,6 @@ const Subscription = () => {
             </div>
           </div>
         </div>
-      </div>
       <SubscriptionPlan isOpen={isSubscriptionPlanModalOpen} onOpenChange={onSubscriptionPlanModalOpenChange} idsPassed={idsPassed}/>
     </div>
   );

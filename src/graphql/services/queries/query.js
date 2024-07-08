@@ -9,7 +9,7 @@ export const getAllRequestServices = gql`
         title
         status
         serviceTechnicianSelectedId
-        serviceCustomerId
+        customerId
         originLongitude
         originLatitude
         id
@@ -33,7 +33,7 @@ export const getRequestServiceById = gql`
             id
             originLatitude
             originLongitude
-            serviceCustomerId
+            customerId
             serviceTechnicianSelectedId
             createdAt
             status

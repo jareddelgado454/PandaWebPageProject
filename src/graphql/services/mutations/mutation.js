@@ -37,7 +37,7 @@ export const OnChangeStatusService = gql`
         rate
       }
       serviceTechnicianSelectedId
-      serviceCustomerId
+      customerId
       createdAt
       updatedAt
     }
@@ -46,7 +46,7 @@ export const OnChangeStatusService = gql`
 
 export const OnChangeStatusServiceByCustomer = gql`
   mutation UpdateService($input: UpdateServiceInput!, $customerId: ID!) {
-    updateService(input: $input, condition: {serviceCustomerId: {eq: $customerId}}) {
+    updateService(input: $input, condition: {customerId: {eq: $customerId}}) {
       id
       completed
       serviceTechnicianSelectedId
@@ -73,8 +73,8 @@ export const OnChangeStatusServiceByCustomer = gql`
 `;
 
 export const DeleteMyRequest = gql`
-  mutation DeleteRequest($serviceId: ID!, $serviceCustomerId: ID!) {
-    deleteService(input: {id: $serviceId}, condition: {serviceCustomerId: {eq: $serviceCustomerId}}){
+  mutation DeleteRequest($serviceId: ID!, $customerId: ID!) {
+    deleteService(input: {id: $serviceId}, condition: {customerId: {eq: $customerId}}){
       id
     }
   }
@@ -82,13 +82,13 @@ export const DeleteMyRequest = gql`
 `;
 
 export const updateTechnicianLocation = gql`
-  mutation MyMutation ($input: UpdateServiceInput!, $serviceCustomerId: ID!) {
-    updateService(input: $input, condition: {serviceCustomerId: {eq: $serviceCustomerId}}) {
+  mutation MyMutation ($input: UpdateServiceInput!, $customerId: ID!) {
+    updateService(input: $input, condition: {customerId: {eq: $customerId}}) {
       id
       destLatitude
       destLongitude
       status
-      serviceCustomerId
+      customerId
     }
   }
 `;
@@ -98,7 +98,7 @@ export const updateStatusService = gql`
     updateService(input: { id: $serviceId, status: $status }) {
       id
       status
-      serviceCustomerId
+      customerId
       serviceTechnicianSelectedId
       completed
       serviceTechnicianSelectedId
@@ -128,7 +128,7 @@ export const updateStatusServiceWithInput = gql`
     updateService(input: $input) {
       id
       status
-      serviceCustomerId
+      customerId
       serviceTechnicianSelectedId
       completed
       serviceTechnicianSelectedId
@@ -161,7 +161,7 @@ export const updateTotalAmountService = gql`
       price
       tax
       status
-      serviceCustomerId
+      customerId
       paymentLink
     }
   }

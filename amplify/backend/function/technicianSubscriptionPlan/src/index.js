@@ -6,27 +6,27 @@
 
 const { DynamoDBClient , UpdateItemCommand} = require("@aws-sdk/client-dynamodb");
 const { CognitoIdentityProviderClient, AdminUpdateUserAttributesCommand } = require("@aws-sdk/client-cognito-identity-provider");
-// const {
-//   SecretsManagerClient,
-//   GetSecretValueCommand,
-// } = require("@aws-sdk/client-secrets-manager");
+const {
+  SecretsManagerClient,
+  GetSecretValueCommand,
+} = require("@aws-sdk/client-secrets-manager");
 
 exports.handler = async (event) => {
   try {
-    //   const secret_name = "STRIPE_TEST_KEY";
-    //   const clientSecrets = new SecretsManagerClient({
-    //     region: "us-east-1",
-    //   });
+      const secret_name = "STRIPE_TEST_KEY";
+      const clientSecrets = new SecretsManagerClient({
+        region: "us-east-1",
+      });
 
-    //   const response = await clientSecrets.send(
-    //     new GetSecretValueCommand({
-    //       SecretId: secret_name,
-    //       VersionStage: "AWSCURRENT", 
-    //     })
-    //   );
+      const response = await clientSecrets.send(
+        new GetSecretValueCommand({
+          SecretId: secret_name,
+          VersionStage: "AWSCURRENT", 
+        })
+      );
 
-    //   const secret = JSON.parse(response.SecretString);
-    //   console.log("This are the secreeeeeeeeeeets", secret);
+      const secret = JSON.parse(response.SecretString);
+      console.log("This are the secreeeeeeeeeeets", secret);
 
       const stripe = require('stripe')("sk_test_51MHZf4JbGPo8jsLC7uInizJy0DjyqYbFZrSYMN0USaP1L3w6r4D1tbTWuF5pwWMOq6UoVlhdeBfsFa68sGIE7tY600NlVl5zAf");
 
