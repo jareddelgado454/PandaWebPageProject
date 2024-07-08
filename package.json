@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@apollo/experimental-nextjs-app-support": "^0.8.0",
     "@aws-amplify/adapter-nextjs": "^1.0.17",
     "@aws-amplify/geo": "^3.0.29",
     "@emotion/react": "^11.11.4",
