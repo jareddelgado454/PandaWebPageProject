@@ -41,16 +41,19 @@ const CallbackPage = () => {
           let data;
           switch (userRole) {
             case "technician":
+              console.log("Antes de tecnico")
               data = await getTechnicianById(userSub);
               login({ role, expiredAt, id: userSub, ...data });
               router.push("/user");
               break;
             case "customer":
+              console.log("Antes de Cliente")
               data = await getCustomerById(userSub);
               login({ role: userRole, expiredAt, id: userSub, ...data });
               router.push("/customer");
               break;
             case "admin":
+              console.log("Antes de Admin")
               login({ role: userRole, expiredAt, id: userSub })
               router.push("/admin-dashboard");
               break;
