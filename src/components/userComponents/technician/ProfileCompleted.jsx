@@ -73,7 +73,7 @@ const ProfileCompleted = ({ userDataBase, setUserDataBase }) => {
   return (
     <div className="w-full h-full flex flex-col">
       {/* State */}
-      <div className="flex flex-col text-white border-b-[2px] border-zinc-700 pb-3">
+      <div className="flex flex-col  border-b-[2px] dark:border-zinc-700 border-zinc-300 pb-3">
         <div className="pt-3">Your state:</div>
         {isEditing === "state" ? (
           <div className="w-full flex gap-x-2 h-[50px]">
@@ -81,7 +81,7 @@ const ProfileCompleted = ({ userDataBase, setUserDataBase }) => {
               <Select
                 variant={"bordered"}
                 label="Complete this field"
-                className="w-full text-white h-[40px]"
+                className="w-full  h-[40px]"
                 selectedKeys={selectedState}
                 onChange={handleSelectionChange}
               >
@@ -89,7 +89,6 @@ const ProfileCompleted = ({ userDataBase, setUserDataBase }) => {
                   <SelectItem
                     key={index}
                     value={stateUSA}
-                    style={{ color: "#E1E0DD" }}
                   >
                     {stateUSA}
                   </SelectItem>
@@ -102,13 +101,13 @@ const ProfileCompleted = ({ userDataBase, setUserDataBase }) => {
                   setIsEditing(null);
                   setInfoEditing({ field: "", value: "" });
                 }}
-                className="h-[40px] w-[80px] rounded-md bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
+                className="h-[40px] w-[80px] rounded-md text-white bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleUpdateInfo}
-                className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors"
+                className="h-[40px] w-[80px] rounded-md text-white  dark:bg-emerald-500 bg-emerald-600 cursor-pointer hover:bg-emerald-600 transition-colors"
               >
                 Update
               </button>
@@ -116,14 +115,14 @@ const ProfileCompleted = ({ userDataBase, setUserDataBase }) => {
           </div>
         ) : (
           <div className="w-full flex justify-between md:mb-0 h-[50px] ">
-            <div className="pt-1 text-zinc-400">{userDataBase?.state}</div>
+            <div className="pt-1 dark:text-zinc-400 text-zinc-500">{userDataBase?.state}</div>
             <div className="flex justify-end items-end ">
               <button
                 onClick={() => {
                   setIsEditing("state");
                   setInfoEditing({ field: "state", value: userDataBase?.state });
                 }}
-                className="h-[40px] w-[80px] rounded-md bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
+                className="h-[40px] w-[80px] rounded-md text-white bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
               >
                 Edit
               </button>
@@ -133,7 +132,7 @@ const ProfileCompleted = ({ userDataBase, setUserDataBase }) => {
       </div>
 
       {/* City */}
-      <div className="flex flex-col text-white border-b-[2px] border-zinc-700 pb-3">
+      <div className="flex flex-col  border-b-[2px] dark:border-zinc-700 border-zinc-300 pb-3">
         <div className="pt-3">Your city:</div>
         {isEditing === "city" ? (
           <div className="w-full flex gap-x-2 h-[50px]">
@@ -154,13 +153,13 @@ const ProfileCompleted = ({ userDataBase, setUserDataBase }) => {
                   setIsEditing(null);
                   setInfoEditing({ field: "", value: "" });
                 }}
-                className="h-[40px] w-[80px] rounded-md bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
+                className="h-[40px] w-[80px] rounded-md text-white bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleUpdateInfo}
-                className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors"
+                className="h-[40px] w-[80px] rounded-md text-white dark:bg-emerald-500 bg-emerald-600 cursor-pointer hover:bg-emerald-600 transition-colors"
               >
                 Update
               </button>
@@ -168,14 +167,14 @@ const ProfileCompleted = ({ userDataBase, setUserDataBase }) => {
           </div>
         ) : (
           <div className="w-full flex justify-between md:mb-0 h-[50px]">
-            <div className="pt-1 text-zinc-400 ">{userDataBase?.city}</div>
+            <div className="pt-1 dark:text-zinc-400 text-zinc-500">{userDataBase?.city}</div>
             <div className="flex justify-end items-end ">
               <button
                 onClick={() => {
                   setIsEditing("city");
                   setInfoEditing({ field: "city", value: userDataBase?.city });
                 }}
-                className="h-[40px] w-[80px] rounded-md bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
+                className="h-[40px] w-[80px] rounded-md text-white bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
               >
                 Edit
               </button>
@@ -185,7 +184,7 @@ const ProfileCompleted = ({ userDataBase, setUserDataBase }) => {
       </div>
 
       {/* Address */}
-      <div className="flex flex-col text-white border-b-[2px] border-zinc-700 pb-3">
+      <div className="flex flex-col  border-b-[2px] dark:border-zinc-700 border-zinc-300 pb-3">
         <div className="pt-3">Your address:</div>
         {isEditing === "address" ? (
           <div className="w-full flex gap-x-2 h-[50px]">
@@ -206,13 +205,13 @@ const ProfileCompleted = ({ userDataBase, setUserDataBase }) => {
                   setIsEditing(null);
                   setInfoEditing({ field: "", value: "" });
                 }}
-                className="h-[40px] w-[80px] rounded-md bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
+                className="h-[40px] w-[80px] rounded-md text-white bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleUpdateInfo}
-                className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors"
+                className="h-[40px] w-[80px] rounded-md text-white dark:bg-emerald-500 bg-emerald-600 cursor-pointer hover:bg-emerald-600 transition-colors"
               >
                 Update
               </button>
@@ -220,7 +219,7 @@ const ProfileCompleted = ({ userDataBase, setUserDataBase }) => {
           </div>
         ) : (
           <div className="w-full flex justify-between md:mb-0 h-[50px]">
-            <div className="pt-1 text-zinc-400">{userDataBase?.address}</div>
+            <div className="pt-1 dark:text-zinc-400 text-zinc-500">{userDataBase?.address}</div>
             <div className="flex justify-end items-end ">
               <button
                 onClick={() => {
@@ -230,7 +229,7 @@ const ProfileCompleted = ({ userDataBase, setUserDataBase }) => {
                     value: userDataBase?.address,
                   });
                 }}
-                className="h-[40px] w-[80px] rounded-md bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
+                className="h-[40px] w-[80px] rounded-md text-white bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
               >
                 Edit
               </button>
@@ -240,16 +239,16 @@ const ProfileCompleted = ({ userDataBase, setUserDataBase }) => {
       </div>
 
       {/* Email */}
-      <div className="flex flex-col text-white border-b-[2px] border-zinc-700 pb-3">
+      <div className="flex flex-col  border-b-[2px] dark:border-zinc-700 border-zinc-300 pb-3">
         <div className="pt-3 ">Your email:</div>
         <div className="w-full flex justify-between md:mb-0 h-[50px]">
-          <div className="pt-1 text-zinc-400">{userDataBase?.email}</div>
+          <div className="pt-1 dark:text-zinc-400 text-zinc-500">{userDataBase?.email}</div>
           <div className="flex justify-end items-end "></div>
         </div>
       </div>
 
       {/* Contact Number */}
-      <div className="flex flex-col text-white border-b-[2px] border-zinc-700 pb-3">
+      <div className="flex flex-col  border-b-[2px] dark:border-zinc-700 border-zinc-300 pb-3">
         <div className="pt-3">Your contact number:</div>
         {isEditing === "contactNumber" ? (
           <div className="w-full flex gap-x-2 h-[50px]">
@@ -273,13 +272,13 @@ const ProfileCompleted = ({ userDataBase, setUserDataBase }) => {
                   setIsEditing(null);
                   setInfoEditing({ field: "", value: "" });
                 }}
-                className="h-[40px] w-[80px] rounded-md bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
+                className="h-[40px] w-[80px] rounded-md text-white bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleUpdateInfo}
-                className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors"
+                className="h-[40px] w-[80px] rounded-md text-white bg-emerald-600 dark:bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors"
               >
                 Update
               </button>
@@ -287,7 +286,7 @@ const ProfileCompleted = ({ userDataBase, setUserDataBase }) => {
           </div>
         ) : (
           <div className="w-full flex justify-between md:mb-0 h-[50px]">
-            <div className="pt-1 text-zinc-400">
+            <div className="pt-1 dark:text-zinc-400 text-zinc-500">
               {userDataBase?.contactNumber}
             </div>
             <div className="flex justify-end items-end ">
@@ -299,7 +298,7 @@ const ProfileCompleted = ({ userDataBase, setUserDataBase }) => {
                     value: userDataBase?.contactNumber,
                   });
                 }}
-                className="h-[40px] w-[80px] rounded-md bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
+                className="h-[40px] w-[80px] rounded-md text-white bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
               >
                 Edit
               </button>
@@ -309,7 +308,7 @@ const ProfileCompleted = ({ userDataBase, setUserDataBase }) => {
       </div>
 
       {/* Zip Code */}
-      <div className="flex flex-col text-white border-b-[2px] border-zinc-700 pb-3">
+      <div className="flex flex-col border-b-[2px] dark:border-zinc-700 border-zinc-300 pb-3">
         <div className="pt-3">Your zip code:</div>
         {isEditing === "zipCode" ? (
           <div className="w-full flex gap-x-2 h-[50px]">
@@ -330,13 +329,13 @@ const ProfileCompleted = ({ userDataBase, setUserDataBase }) => {
                   setIsEditing(null);
                   setInfoEditing({ field: "", value: "" });
                 }}
-                className="h-[40px] w-[80px] rounded-md bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
+                className="h-[40px] w-[80px] rounded-md text-white bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleUpdateInfo}
-                className="h-[40px] w-[80px] rounded-md bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors"
+                className="h-[40px] w-[80px] rounded-md text-white bg-emerald-600 dark:bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-colors"
               >
                 Update
               </button>
@@ -344,7 +343,7 @@ const ProfileCompleted = ({ userDataBase, setUserDataBase }) => {
           </div>
         ) : (
           <div className="w-full flex justify-between md:mb-0 h-[50px]">
-            <div className="pt-1 text-zinc-400">{userDataBase?.zipCode}</div>
+            <div className="pt-1 dark:text-zinc-400 text-zinc-500">{userDataBase?.zipCode}</div>
             <div className="flex justify-end items-end ">
               <button
                 onClick={() => {
@@ -354,7 +353,7 @@ const ProfileCompleted = ({ userDataBase, setUserDataBase }) => {
                     value: userDataBase?.zipCode,
                   });
                 }}
-                className="h-[40px] w-[80px] rounded-md bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
+                className="h-[40px] w-[80px] rounded-md text-white bg-zinc-700 cursor-pointer hover:bg-zinc-600 transition-colors"
               >
                 Edit
               </button>

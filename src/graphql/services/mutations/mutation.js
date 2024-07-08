@@ -82,8 +82,8 @@ export const DeleteMyRequest = gql`
 `;
 
 export const updateTechnicianLocation = gql`
-  mutation MyMutation ($input: UpdateServiceInput!, $serviceCustomerId: ID!) {
-    updateService(input: $input, condition: {customerId: {eq: $serviceCustomerId}}) {
+  mutation MyMutation ($input: UpdateServiceInput!, $customerId: ID!) {
+    updateService(input: $input, condition: {customerId: {eq: $customerId}}) {
       id
       destLatitude
       destLongitude
@@ -159,7 +159,7 @@ export const updateTotalAmountService = gql`
       price
       tax
       status
-      serviceCustomerId
+      customerId
       paymentLink
     }
   }
