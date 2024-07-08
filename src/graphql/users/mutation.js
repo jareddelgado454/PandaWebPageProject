@@ -1,4 +1,4 @@
-import { gql} from "@apollo/client";
+import { gql } from "graphql-tag";
 
 export const updateStatus = gql`
   mutation UpdateUser($id: ID!, $status: String!, $email: String!) {
