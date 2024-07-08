@@ -47,6 +47,7 @@ export const OnChangeStatusService = gql`
 export const OnChangeStatusServiceByCustomer = gql`
   mutation UpdateService($input: UpdateServiceInput!, $customerId: ID!) {
     updateService(input: $input, condition: {customerId: {eq: $customerId}}) {
+    updateService(input: $input, condition: {customerId: {eq: $customerId}}) {
       id
       completed
       serviceTechnicianSelectedId
@@ -89,6 +90,7 @@ export const updateTechnicianLocation = gql`
       destLongitude
       status
       customerId
+      customerId
     }
   }
 `;
@@ -99,7 +101,6 @@ export const updateStatusService = gql`
       id
       status
       customerId
-      serviceTechnicianSelectedId
       completed
       serviceTechnicianSelectedId
       originLatitude

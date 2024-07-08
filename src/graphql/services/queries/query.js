@@ -55,7 +55,7 @@ export const getRequestServiceById = gql`
 
 export const listMyServices = gql`
   query ListServices($customerId: ID!) {
-    listServices(filter: {serviceCustomerId: {eq: $customerId}}) {
+    listServices(filter: {customerId: {eq: $customerId}}) {
     items {
       id
       status
@@ -70,7 +70,7 @@ export const listMyServices = gql`
 
 export const listMyServicesHome = gql`
   query ListMyServices($customerId: ID!) {
-    listServices(filter: {serviceCustomerId: {eq: $customerId}}, limit: 5) {
+    listServices(filter: {customerId: {eq: $customerId}}, limit: 5) {
       items {
         id
         car {
@@ -114,7 +114,6 @@ export const getServiceById = gql`
         customer{
             id
             fullName
-            contactNumber
         }
         technicianSelected{
             id

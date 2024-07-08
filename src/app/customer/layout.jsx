@@ -6,8 +6,8 @@ import { ServiceProvider } from '@/contexts/service/ServiceProvider';
 import MessageNotification from '@/components/customer/components/MessageNotification';
 export default function layout({ children }) {
   return (
-    <div className=' bg-stone-300 dark:bg-zinc-700 h-full'>
-      <div className='flex flex-col lg:flex-row items-center h-full xl:h-screen px-4 py-4 lg:py-0 gap-2'>
+    <div className=' bg-stone-300 dark:bg-zinc-700 h-full md:max-h-screen'>
+      <div className='flex flex-col lg:flex-row items-center h-full md:h-screen px-4 py-4 lg:py-0 gap-2'>
       <ServiceProvider>
         <MessageNotification />
         <CustomerBar />

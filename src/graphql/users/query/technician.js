@@ -1,5 +1,22 @@
 import { gql } from 'graphql-tag';
 
+export const getTehcnicianById = gql`
+query GetTechnician($id: ID!) {
+    getTechnician(id: $id) {
+      id
+      email
+      fullName
+      contactNumber
+      status
+      profilePicture
+      subscription
+      repairPriceHour
+      diagnosticPrice
+      fee
+    }
+  }
+`;
+
 export const getTechnician = gql`
   query GetTechnician($id: ID!) {
     getTechnician(id: $id) {

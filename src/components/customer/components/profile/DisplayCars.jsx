@@ -38,9 +38,9 @@ export default function DisplayCars() {
     onOpen();
   }
   return (
-    <div className='w-full flex flex-col lg:flex-row gap-2 h-[40vh] md:h-[53vh] 2xl:h-[63vh] relative'>
+    <div className='w-full flex flex-col gap-2 h-[40vh] md:h-[53vh] 2xl:h-[63vh] relative'>
       <AddNewCarModal isOpen={isOpen} onOpenChange={onOpenChange} callback={retrieveMyCars} car={carSelected} edit={isEditing} />
-      <div className={`transition-all duration-300 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full overflow-y-auto`}>
+      <div className={`transition-all duration-300 grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 w-full overflow-y-auto`}>
         {cars.map((car, i) => (
           <div
             key={i}
@@ -63,7 +63,7 @@ export default function DisplayCars() {
                   <strong className='text-white dark:text-zinc-300'>Model:</strong><p className='text-white dark:text-zinc-300'> {car.model}</p>
                 </div>
                 <div className='flex flex-row gap-2'>
-                  <strong className='text-white dark:text-zinc-300'>Car Identification Number:</strong><p className='text-white dark:text-zinc-300'> {car.identificationNumber}</p>
+                  <strong className='text-white dark:text-zinc-300'>Identification Number:</strong><p className='text-white dark:text-zinc-300'> {car.identificationNumber}</p>
                 </div>
                 <div className='flex flex-row gap-2'>
                   <strong className='text-white dark:text-zinc-300'>Added:</strong><p className='text-white dark:text-zinc-300'> {DateFormatter(car.createdAt)}</p>
@@ -73,7 +73,7 @@ export default function DisplayCars() {
           </div>
         ))}
       </div>
-      <div className='absolute left-0 bottom-0 md:left-2 md:bottom-2'>
+      <div className='w-full'>
         <p className='text-rose-600 cursor-pointer' onClick={() => {onOpen(); setIsEditing(false); setCarSelected(null)}}>Add new car</p>
       </div>
     </div>

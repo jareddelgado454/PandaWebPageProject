@@ -99,3 +99,17 @@
 .my-geocoder .mapboxgl-ctrl-geocoder--suggestion{
   @apply bg-white dark:bg-zinc-900 dark:hover:bg-zinc-950 dark:text-white transition-colors duration-300;
 }
+
+.introjs-tooltip {
+  @apply dark:bg-zinc-900 text-black dark:text-white drop-shadow;
+}
+
+.introjs-arrow.left {
+  @apply dark:border-r-zinc-900
+}
+.introjs-arrow.top {
+  @apply dark:border-b-zinc-900
+}
+.introjs-tooltipbuttons > a {
+  @apply bg-green-panda hover:bg-green-900 focus:bg-green-panda active:bg-green-panda focus:text-white active:text-white hover:text-white transition-all duration-300 rounded border-none text-white;
+}

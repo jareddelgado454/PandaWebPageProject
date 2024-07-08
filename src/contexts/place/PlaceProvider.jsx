@@ -6,7 +6,7 @@ import { placeReducer } from './placeReducer';
 
 const INITIAL_STATE = {
     isLoading: true,
-    userLocation: undefined
+    userLocation: null
 }
 
 export const PlaceProvider = ({ children }) => {
@@ -15,11 +15,20 @@ export const PlaceProvider = ({ children }) => {
   
     useEffect(() => {
       
-      getUserLocation().then(lngLat => dispatch({ type: 'setUserLocation', payload: lngLat }))
+      const userLocationStorage = localStorage.getItem('userLocation') ? JSON.parse(localStorage.getItem('userLocation')) : null;
+
+      if(!userLocationStorage){
+        getUserLocation().then(lngLat => dispatch({ type: 'setUserLocation', payload: lngLat }))
+      }else {
+        dispatch({type: 'setUserLocation', payload: userLocationStorage})
+      }
       
+      // getUserLocation().then(lngLat => dispatch({ type: 'setUserLocation', payload: lngLat }))
+
     }, []);
 
     const updateUserLocation = (lngLat) => {
+      localStorage.setItem('userLocation', JSON.stringify(lngLat));
       dispatch({ type: 'setUserLocation', payload: lngLat });
     }
   

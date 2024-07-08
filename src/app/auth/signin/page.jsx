@@ -29,6 +29,7 @@ import {
 } from "@nextui-org/react";
 import { UserContext } from "@/contexts/user/UserContext";
 import Image from "next/image";
+import { getCustomerById, getTechnicianById } from "@/api";
 const SignIn = () => {
   const { login } = useContext(UserContext);
   const router = useRouter();
@@ -118,16 +119,18 @@ const SignIn = () => {
         case "signedIn":
           onOpenLoadingModal(true);
           const { role, expiredAt, userSub } = await currentAuthenticatedUser();
-          login({ role, expiredAt, id: userSub })
           if (role === "admin") {
-            router.replace("/admin-dashboard/");
+            login({ role, expiredAt, id: userSub })
+            router.push("/admin-dashboard/");
           } else if (role === "technician") {
-            router.replace("/user");
+            const data = await getTechnicianById(userSub);
+            login({ role, expiredAt, id: userSub, ...data });
+            router.push("/user");
           } else if (role === "customer") {
-            router.replace("/customer");
+            const data = await getCustomerById(userSub);
+            login({ role, expiredAt, id: userSub, ...data });
+            router.push("/customer");
           }
-          break;
-
         default:
           break;
       }

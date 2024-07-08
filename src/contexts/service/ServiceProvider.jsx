@@ -14,6 +14,7 @@ export const ServiceProvider = ({ children }) => {
     const [state, dispatch] = useReducer(ServiceReducer, INITIAL_STATE);
     const [status, setStatus] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isNotificationSupported, setIsNotificationSupported] = useState(false);
 
     const getServiceFromCookies = () => {
         const serviceCookie = Cookies.get("ServiceRequest");
@@ -42,6 +43,18 @@ export const ServiceProvider = ({ children }) => {
     const setServiceCoordinates = (coordinates) => {
         dispatch({type: 'updateServiceCoordinates', payload: coordinates});
     }
+
+    useEffect(() => {
+        if (typeof window !== "undefined" && "Notification" in window) {
+            setIsNotificationSupported(true);
+            if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+                Notification.requestPermission();
+            }
+        } else {
+            setIsNotificationSupported(false);
+            console.warn("La API de Notificaciones no está disponible en este entorno.");
+        }
+    }, []);
 
     useEffect(() => {
         if (state?.serviceRequest) {
@@ -75,7 +88,7 @@ export const ServiceProvider = ({ children }) => {
     }, [status]);
 
     const notifyStatusChange = (newStatus) => {
-        if (Notification.permission === 'granted') {
+        if (isNotificationSupported && Notification.permission === 'granted') {
             new Notification('Service Status Update', {
                 body: `The service status has changed to: ${newStatus}`,
                 icon: 'https://master.d3dtglewderhtg.amplifyapp.com/panda.png'
