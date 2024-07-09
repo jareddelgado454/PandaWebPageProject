@@ -153,15 +153,15 @@ const InProgress = ({ serviceAssigned, isOpen, setServiceStatus }) => {
   }, [values]);
 
   return (
-    <div className="w-full h-full flex flex-col bg-zinc-900 items-center p-3 gap-y-4">
-      <div className="md:w-[500px] w-[80%] h-[80px] flex justify-center items-center shadow-lg bg-zinc-800/90 z-50 rounded-xl mb-4">
+    <div className="w-full h-full flex flex-col bg-zinc-900 items-center p-3 gap-y-4 overflow-y-auto">
+      <div className="md:w-[500px] sm:w-[80%] w-[95%] h-[80px] flex justify-center items-center shadow-lg bg-zinc-800/90 z-50 rounded-xl mb-4">
         <div className="flex flex-col items-center justify-center">
           <div className="w-[40px] h-[40px] border-[2px] flex items-center justify-center border-emerald-400 rounded-full">
             <div className="w-[30px] h-[30px] bg-emerald-400 rounded-full flex justify-center items-center">
               <RiCheckFill className="text-zinc-700 text-[23px] font-bold" />
             </div>
           </div>
-          <span className="text-zinc-200 text-[14px]">On my Way</span>
+          <span className="text-zinc-200 sm:text-[14px] text-[11px]">On my Way</span>
         </div>
         <div className="w-[30px] h-[25px] border-t-[2px] border-emerald-500 opacity-60"></div>
         <div className="flex flex-col items-center justify-center">
@@ -170,7 +170,7 @@ const InProgress = ({ serviceAssigned, isOpen, setServiceStatus }) => {
               <RiToolsFill className="text-zinc-700 text-[20px]" />
             </div>
           </div>
-          <span className="text-zinc-200 text-[14px]">On Service</span>
+          <span className="text-zinc-200 sm:text-[14px] text-[11px]">On Service</span>
         </div>
         <div className="w-[30px] h-[25px] border-t-[2px] border-emerald-500 opacity-60"></div>
         <div className="flex flex-col items-center justify-center opacity-60">
@@ -179,7 +179,7 @@ const InProgress = ({ serviceAssigned, isOpen, setServiceStatus }) => {
               <RiMoneyDollarCircleFill className="text-zinc-700 text-[22px]" />
             </div>
           </div>
-          <span className="text-zinc-200 text-[14px]">Payment</span>
+          <span className="text-zinc-200 sm:text-[14px] text-[11px]">Payment</span>
         </div>
       </div>
       {isRepairing ? (
@@ -187,15 +187,15 @@ const InProgress = ({ serviceAssigned, isOpen, setServiceStatus }) => {
           <img
             src="/image/MakingService.png"
             alt="Reparación en curso"
-            className="w-[500px] h-[500px] object-cover rounded-lg mb-4"
+            className="lg:w-[500px] lg:h-[500px] md:w-[400px] sm:w-[70%] w-[90%] object-cover rounded-lg mb-4"
           />
-          <div className="text-zinc-400 text-[22px] mb-4 text-center flex flex-col">
-            <span className="text-zinc-200 text-[30px] font-bold">Repair in process</span> When you finish press the button to finish the
+          <div className="text-zinc-400 lg:text-[22px] md:text-[20px] tex-[16px] mb-4 text-center flex flex-col">
+            <span className="text-zinc-200 lg:text-[30px] md:text-[25px] text-[20px] font-bold">Repair in process</span> When you finish press the button to finish the
             payment process
           </div>
           <button
             onClick={() => finishRepair()}
-            className="px-6 p-2 bg-emerald-600 hover:bg-emerald-700 transition-all rounded-lg cursor-pointer text-[18px]"
+            className="md:w-[200px] w-[90%] text-center px-6 p-2 bg-emerald-600 hover:bg-emerald-700 transition-all rounded-lg cursor-pointer md:text-[18px] text-[16px]"
           >
             Complete repair
           </button>
@@ -203,11 +203,11 @@ const InProgress = ({ serviceAssigned, isOpen, setServiceStatus }) => {
       ) : (
         <>
           <div className="w-full flex flex-col text-white px-4 border-b-[2px] border-zinc-800 pb-3">
-            <div className="text-[23px] font-semibold border-b-[2px] border-zinc-800 mb-4">
+            <div className="md:text-[23px] text-[19px] font-semibold border-b-[2px] border-zinc-800 mb-4">
               COMPLETE this when you{" "}
               <span className="text-emerald-300">finish the diagnosis</span>
             </div>
-            <div className="text-zinc-400 mb-1">
+            <div className="text-zinc-400 mb-3 md:text-[18px] text-[15px]">
               Select{" "}
               <span className="text-white font-semibold">one or more</span> of
               these options that cover the repair work that can be done to the
@@ -218,7 +218,7 @@ const InProgress = ({ serviceAssigned, isOpen, setServiceStatus }) => {
               selectionMode="multiple"
               placeholder="Select what will be repaired"
               selectedKeys={values}
-              className="w-1/2 text-white"
+              className="md:w-1/2 w-full text-white"
               onSelectionChange={setValues}
             >
               {repairTasks.map((repairTask) => (
@@ -235,7 +235,7 @@ const InProgress = ({ serviceAssigned, isOpen, setServiceStatus }) => {
               </div>
             ) : (
               <>
-                <ul className="text-white flex flex-col w-1/2 gap-y-2">
+                <ul className="text-white flex flex-col sm:w-1/2 w-full gap-y-2">
                   {Array.from(values).map((key) => {
                     const task = repairTasks.find((task) => task.key == key);
                     return (
@@ -260,7 +260,7 @@ const InProgress = ({ serviceAssigned, isOpen, setServiceStatus }) => {
             )}
           </div>
           <div className="w-full flex flex-col text-white mt-4 px-3">
-            <div className="w-1/2 flex gap-x-2 items-center">
+            <div className="md:w-1/2 w-full flex gap-x-2 items-center">
               <label className="w-1/2 flex flex-col  gap-y-1 text-zinc-300">
                 Tax (%) :
                 <input
@@ -306,7 +306,7 @@ const InProgress = ({ serviceAssigned, isOpen, setServiceStatus }) => {
           <div className="w-full flex p-3">
             <div
               onClick={() => handleSendEstimate()}
-              className="px-6 p-2 bg-emerald-600 hover:bg-emerald-700 transition-all rounded-lg cursor-pointer"
+              className="md:w-1/2 w-full px-6 p-2 text-center bg-emerald-600 hover:bg-emerald-700 transition-all rounded-lg cursor-pointer"
             >
               Send Estimated
             </div>
