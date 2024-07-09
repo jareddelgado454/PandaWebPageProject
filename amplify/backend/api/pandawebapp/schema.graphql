@@ -255,7 +255,7 @@ enum GoalType {
 type ICustomer {
     id: ID!
     fullName: String!
-    profilePicture: String!
+    profilePicture: String
 }
 
 type ICar {
