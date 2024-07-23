@@ -47,7 +47,7 @@ const AssignedTechnicianModal = ({ isOpen, onOpenChange }) => {
       hideCloseButton={true}
       size="4xl"
     >
-      <ModalContent className="bg-zinc-200 text-white border-[2px] border-gray-600 h-[100vh]">
+      <ModalContent className="bg-zinc-200 text-white border-[2px] border-gray-600 h-[100vh] ">
         {(onClose) => (
           <>
             <ModalBody className="w-full h-[100%] flex-col gap-0 items-center justify-center p-0 bg-zinc-200 relative">
