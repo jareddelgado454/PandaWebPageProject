@@ -24,6 +24,10 @@
         "technicianSubscriptionPlan": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
           "s3Key": "amplify-builds/technicianSubscriptionPlan-31347a364f3448316c61-build.zip"
+        },
+        "stripeCreatingAccountNodeEnviroment": {
+          "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
+          "s3Key": "amplify-builds/stripeCreatingAccountNodeEnviroment-6d526b666653676c3751-build.zip"
         }
       },
       "auth": {
