@@ -75,6 +75,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "stripeCreatingAccountNodeEnviroment": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "technicianSubscriptionPlan": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -146,6 +151,22 @@
         {
           "category": "function",
           "resourceName": "createStripeTechnicianAccount"
+        }
+      ]
+    },
+    "AMPLIFY_function_stripeCreatingAccountNodeEnviroment_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "stripeCreatingAccountNodeEnviroment"
+        }
+      ]
+    },
+    "AMPLIFY_function_stripeCreatingAccountNodeEnviroment_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "stripeCreatingAccountNodeEnviroment"
         }
       ]
     },
