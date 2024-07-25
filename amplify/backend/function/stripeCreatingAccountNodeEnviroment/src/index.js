@@ -68,14 +68,14 @@ const handleCreateStripeAccount = async (userSub, username, email) => {
         // Crear link de onboarding
         const accountLink = await stripe.accountLinks.create({
             account: account.id,
-            refresh_url: "myapp://(auth)/(complete-information)/stripe",
-            return_url: "myapp://(auth)/(complete-information)/stripeaccount",
+            refresh_url: "https://master.d3dtglewderhtg.amplifyapp.com/redirect-to-app-after-stripe/incompleted",
+            return_url: "https://master.d3dtglewderhtg.amplifyapp.com/redirect-to-app-after-stripe/completed",
             type: "account_onboarding"
         });
 
         return {
             statusCode: 200,
-            body: JSON.stringify({ url: accountLink.url }),
+            body: JSON.stringify({ url: accountLink.url, stripeId:account.id }),
         };
     } catch (error) {
         console.error('Error:', error);
@@ -91,8 +91,8 @@ const handleContinueOnboarding = async (stripeId) => {
         // Crear link de onboarding
         const accountLink = await stripe.accountLinks.create({
             account: stripeId,
-            refresh_url: "myapp://(auth)/(complete-information)/stripe",
-            return_url: "myapp://(auth)/(complete-information)/stripeaccount",
+            refresh_url: "https://master.d3dtglewderhtg.amplifyapp.com/redirect-to-app-after-stripe/incompleted",
+            return_url: "https://master.d3dtglewderhtg.amplifyapp.com/redirect-to-app-after-stripe/completed",
             type: "account_onboarding"
         });
 
