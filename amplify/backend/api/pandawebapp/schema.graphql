@@ -70,7 +70,9 @@ type Rate @model @auth(
     id: ID!
     technicianId: ID! @index(name: "byTechnician")
     technician: Technician @belongsTo(fields: ["technicianId"])
-    createdBy: Customer! @hasOne
+    customerId: ID! @index(name: "byCustomer")
+    customer: Customer @belongsTo(fields: ["customerId"])
+    createdBy: ID!
     rate: Float!
     serviceId: ID!
     comment: String
@@ -144,6 +146,7 @@ type Customer @model @auth(
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
     cars: [Car] @hasMany
+    rate: [Rate] @hasMany(indexName: "byCustomer", fields: ["id"])
 }
 
 type Schedule {
@@ -173,6 +176,7 @@ type Service @model @auth(
     type: String!
     status: String!
     completed: String
+    address: String
     originLatitude: Float!
     originLongitude: Float!
     customerId: ID! @index(name: "servicesByCustomer")
