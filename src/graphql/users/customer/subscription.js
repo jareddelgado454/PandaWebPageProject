@@ -7,6 +7,18 @@ export const onCreateOffers = gql`
             createdAt
             amount
             status
+            serviceId
+            service {
+              customer {
+                fullName
+                profilePicture
+              }
+              car {
+                brand
+                model
+                year
+              }
+            }
             technician {
                 profilePicture
                 id
@@ -19,8 +31,6 @@ export const onCreateOffers = gql`
                     }
                 }
             }
-            
-            serviceId
         }
     }
 
