@@ -12,6 +12,9 @@
       "AmplifyAppId": "d3dtglewderhtg"
     },
     "categories": {
+      "auth": {
+        "pandawebapp0a05bcd0": {}
+      },
       "function": {
         "S3Triggerdf93383d": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
@@ -21,39 +24,21 @@
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
           "s3Key": "amplify-builds/createStripeTechnicianAccount-4365654b726b6875366e-build.zip"
         },
-        "technicianSubscriptionPlan": {
-          "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-<<<<<<< HEAD
-          "s3Key": "amplify-builds/technicianSubscriptionPlan-31347a364f3448316c61-build.zip"
-=======
-          "s3Key": "amplify-builds/technicianSubscriptionPlan-6b7a374f4d676d66642f-build.zip"
->>>>>>> develop
-        },
         "stripeCreatingAccountNodeEnviroment": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
           "s3Key": "amplify-builds/stripeCreatingAccountNodeEnviroment-4c736676625659336970-build.zip"
-<<<<<<< HEAD
-=======
         },
         "stripePaymentGenerate": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/stripePaymentGenerate-6c785253636c325a5933-build.zip"
->>>>>>> develop
+          "s3Key": "amplify-builds/stripePaymentGenerate-6a7331326b5671365845-build.zip"
+        },
+        "technicianSubscriptionPlan": {
+          "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
+          "s3Key": "amplify-builds/technicianSubscriptionPlan-6b7a374f4d676d66642f-build.zip"
         }
-      },
-      "auth": {
-        "pandawebapp0a05bcd0": {}
       },
       "storage": {
         "pandawebapp": {}
-      },
-      "api": {
-        "pandawebapp": {}
-      },
-      "geo": {
-        "pandamap": {},
-        "ThePandaSearchIndex": {},
-        "ThePandaLocationSearchIndex": {}
       }
     }
   }

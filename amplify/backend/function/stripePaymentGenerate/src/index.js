@@ -44,8 +44,8 @@ exports.handler = async (event) => {
             serviceType: serviceAssigned.type,
           },
         },
-        success_url: `https://master.d3dtglewderhtg.amplifyapp.com/customer/payment?status=successfully`,
-        cancel_url: `https://master.d3dtglewderhtg.amplifyapp.com/customer/payment?status=cancel`,
+        success_url: `https://master.d3dtglewderhtg.amplifyapp.com/payment-customer?paymentStatus=successfully&serviceId=${serviceAssigned.id}`,
+        cancel_url: `https://master.d3dtglewderhtg.amplifyapp.com/payment-customer?paymentStatus=cancel&serviceId=${serviceAssigned.id}`,
         customer_email: userEmail,
       },
       {
