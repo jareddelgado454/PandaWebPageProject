@@ -5,7 +5,7 @@ Amplify.configure(config);
 import { NextResponse } from 'next/server'
 export const protectedRoutes = ["/admin-dashboard", "/user", "/customer"];
 export const authRoutes = ["/auth/signup", "/auth/signin"];
-export const publicRoutes = ["/"];
+export const publicRoutes = ["/", "/payment-customer"];
 export async function middleware(request) {
   const currentUserCookie = request.cookies.get("currentUser");
   const currentUser = currentUserCookie ? currentUserCookie.value : null;
