@@ -40,6 +40,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "stripePaymentGenerate": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "technicianSubscriptionPlan": {
       "Arn": "string",
       "LambdaExecutionRole": "string",

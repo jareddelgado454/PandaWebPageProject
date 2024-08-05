@@ -80,6 +80,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "stripePaymentGenerate": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "technicianSubscriptionPlan": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -167,6 +172,22 @@
         {
           "category": "function",
           "resourceName": "stripeCreatingAccountNodeEnviroment"
+        }
+      ]
+    },
+    "AMPLIFY_function_stripePaymentGenerate_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "stripePaymentGenerate"
+        }
+      ]
+    },
+    "AMPLIFY_function_stripePaymentGenerate_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "stripePaymentGenerate"
         }
       ]
     },
