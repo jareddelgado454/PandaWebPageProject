@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Steps } from 'intro.js-react';
 import { FaCreditCard, FaInfo } from 'react-icons/fa6';
-import { fetchUserAttributes } from 'aws-amplify/auth';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import Cookies from 'js-cookie';
@@ -16,6 +15,7 @@ import { useDisclosure } from '@nextui-org/react';
 import { AddNewCarModal } from '../..';
 import { UserContext } from '@/contexts/user/UserContext';
 import { ServiceRequestSteps } from '@/utils/tour/serviceRequest/steps';
+import { retrieveAddressUsingLocation } from '@/api/geo/GetAddress';
 export default function ServiceForm() {
     const [stepsEnabled, setStepsEnabled] = useState(false);
     const { user } = useContext(UserContext);
@@ -61,6 +61,7 @@ export default function ServiceForm() {
     const onHandleSubmit = async (values, { resetForm }) => {
         const [longitude, latitude] = userLocation;
         try {
+            const address = await retrieveAddressUsingLocation(longitude, latitude);
             const { data } = await client.graphql({
                 query: createService,
                 variables: {
@@ -70,6 +71,7 @@ export default function ServiceForm() {
                         originLatitude: latitude,
                         originLongitude: longitude,
                         customerId: user.id,
+                        address,
                         customer: {
                             id: user.id,
                             fullName: user.fullName,
