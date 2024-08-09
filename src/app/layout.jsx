@@ -6,7 +6,7 @@ import { MapProvider } from '@/contexts/map/MapProvider';
 import { UserProvider } from '@/contexts/user/UserProvider';
 import ServiceAssignedProvider from "@/contexts/serviceAssigned/ServiceAssignedProvider";
 export const metadata = {
-  title: "The panda App",
+  title: "The Panda App",
   description: "The Panda is a mobile auto repair service CRM",
 };
 export default function RootLayout({ children }) {
