@@ -112,11 +112,9 @@ const UserLayout = ({ children }) => {
         },
         error: (error) => console.log("error en la suscripción", error),
       });
-  
     return () => {
       subscription.unsubscribe();
     };
-
   }, [user, serviceAssigned?.id]); 
 
   return (

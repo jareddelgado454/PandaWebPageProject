@@ -139,7 +139,7 @@ const InProgress = ({ serviceAssigned, isOpen, setServiceStatus }) => {
     try {
       const response = await handleUpdateStatusService({
         serviceId: serviceAssigned.id,
-        status: "payment",
+        status: "in progress",
       });
       console.log(response);
       setServiceStatus("payment");
