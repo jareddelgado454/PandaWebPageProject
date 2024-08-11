@@ -9,7 +9,7 @@ const RedirectingToAppAfterStripe = () => {
 
     useEffect(() => {
         const appRedirectSuccessUrl = "myapp://(tabs)/subscription/completed";
-        const appRedirectErrorUrl = "myapp://(tabs)/suscription/incompleted";
+        const appRedirectErrorUrl = "myapp://(tabs)/subscription/incompleted";
 
         window.location.href = params.action === "completed" ?  appRedirectSuccessUrl : appRedirectErrorUrl;
 
