@@ -39,7 +39,7 @@ exports.handler = async (event) => {
         ],
         mode: 'payment',
         payment_intent_data: {
-          application_fee_amount: Math.round(applicationFeeAmount * 100),
+          application_fee_amount: Math.round(total * 10),
           metadata: {
             serviceType: serviceAssigned.type,
           },

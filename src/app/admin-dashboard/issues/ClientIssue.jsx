@@ -19,7 +19,11 @@ export default function ClientIssue() {
             const { data } = await client.graphql({
                 query: getAllIssues,
             });
-            setIssues(data.listReports.items);
+            const combinedReports = [
+                ...data.listCustomerReports.items,
+                ...data.listTechnicianReports.items
+            ];
+            setIssues(combinedReports);
             setLoading(false);
         } catch (error) {
             console.log(error);

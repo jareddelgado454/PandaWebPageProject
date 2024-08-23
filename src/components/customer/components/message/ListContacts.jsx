@@ -7,6 +7,7 @@ import { UserContext } from '@/contexts/user/UserContext';
 import LoadingComponent from '@/components/LoadingComponent';
 import { formatDistance } from 'date-fns';
 import { RiImageAddLine } from 'react-icons/ri';
+import { baseUrl } from '@/utils/CloudFront';
 export default function ListContacts({ setChatActive, setChatSelected }) {
     const { user } = useContext(UserContext);
     const [loading, setLoading] = useState(false);
@@ -63,7 +64,7 @@ export default function ListContacts({ setChatActive, setChatSelected }) {
                             <div onClick={() => { setChatActive(true); setChatSelected(chat) }} key={i} id="chat_technician" className='flex flex-row justify-between gap-2 dark:hover:bg-zinc-700 hover:rounded-lg transition-all duration-300 ease-in cursor-pointer p-3 border-b-1 border-zinc-300 dark:border-zinc-500'>
                                 <div className='flex flex-row gap-2'>
                                     <Image
-                                        src={getProfilePictureSrc(chat)}
+                                        src={baseUrl+getProfilePictureSrc(chat)}
                                         width={100}
                                         height={100}
                                         alt='technician_profile_picture'

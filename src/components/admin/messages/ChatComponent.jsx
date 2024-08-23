@@ -68,31 +68,42 @@ export default function ChatComponent({ setChatActive, chatSelected, setChatSele
     }, [messages]);
     return (
         <div className='flex flex-col gap-2 w-full h-full relative'>
-            <div id='header' className='w-full bg-zinc-700 dark:bg-zinc-700 p-2 rounded-lg flex flex-row justify-between gap-2'>
+            <div id='header' className='w-full bg-zinc-200 dark:bg-zinc-700 p-2 rounded-lg flex flex-row justify-between gap-2'>
                 {loading ? (<div>Loading</div>) : error ? (<div>{error}</div>) : chat && (
                     <div className='flex flex-row gap-2'>
                         <div onClick={handleChatClick} className='flex justify-center items-center'>
-                            <FaChevronLeft className='cursor-pointer' />
+                            <FaChevronLeft className='cursor-pointer text-black dark:text-white' />
                         </div>
-                        <Image
-                            src={`${chat && chat.customer.profilePicture ? chat.customer.profilePicture : `/image/defaultProfilePicture.jpg`}`}
-                            width={50}
-                            height={50}
-                            alt='alt_profile_customer_selected'
-                            className='w-[3rem] h-[3rem] rounded-full'
-                            priority
-                        />
+                        {chat.customer ? (
+                            <Image
+                                src={`${chat && chat.customer.profilePicture ? baseUrl+chat.customer.profilePicture : `/image/defaultProfilePicture.jpg`}`}
+                                width={50}
+                                height={50}
+                                alt='alt_profile_customer_selected'
+                                className='w-[3rem] h-[3rem] rounded-full'
+                                priority
+                            />
+                        ) : (
+                            <Image
+                                src={`${chat && chat.technician.profilePicture ? baseUrl+chat.technician.profilePicture : `/image/defaultProfilePicture.jpg`}`}
+                                width={50}
+                                height={50}
+                                alt='alt_profile_customer_selected'
+                                className='w-[3rem] h-[3rem] rounded-full'
+                                priority
+                            />
+                        )}
                         <div className='flex flex-col'>
-                            <p>{chat && chat.customer.fullName}</p>
-                            <p className='text-sm dark:text-zinc-400'>online</p>
+                            <p className='text-black dark:text-white font-semibold'>{chat.customer ? chat.customer.fullName : chat.technician.fullName}</p>
+                            <p className='text-sm text-zinc-700 dark:text-zinc-400'>online</p>
                         </div>
                     </div>
                 )}
-                <div className='flex justify-center items-center'>
+                {/* <div className='flex justify-center items-center'>
                     <div className='rounded-full p-3 bg-zinc-800 dark:bg-zinc-800'>
                         <FaPhone />
                     </div>
-                </div>
+                </div> */}
             </div>
             <div className='flex flex-col gap-2 justify-end h-full' id="messages"
                 style={{
@@ -128,7 +139,7 @@ export default function ChatComponent({ setChatActive, chatSelected, setChatSele
                 )) : null}
                 <div ref={messagesEndRef} />
             </div>
-            {chat && <ChatAnswerInput chatId={chat.id} senderId={user.id} />}
+            {chat && <ChatAnswerInput chatId={chat.id} senderId={user.id} messageTo={chat.customer ? chat.customer.id : chat.technician.id} />}
         </div>
     )
 }

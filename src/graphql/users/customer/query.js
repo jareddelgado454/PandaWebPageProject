@@ -7,6 +7,7 @@ export const retrieveMyInformation = gql`
             email
             fullName
             profilePicture
+            createdAt
         }
     }
 `;

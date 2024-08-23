@@ -72,7 +72,8 @@ exports.handler = async (event) => {
                   Username: cognitoUsername,
                   UserAttributes: [
                       { Name: "custom:subscription", Value: `${checkoutSessionCompleted.amount_total === 500000 ? "annual" : "monthly"}` },
-                      { Name: "custom:fee", Value: "0" }
+                      { Name: "custom:fee", Value: "0" },
+                      { Name: "custom:subExpirationDate", Value: expirationDateISOString }
                   ]
               };
 

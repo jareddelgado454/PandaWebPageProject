@@ -10,6 +10,7 @@ import { onDeleteAnswerById } from '@/graphql/issues/mutations/mutation';
 import 'animate.css';
 import Image from 'next/image';
 import { UserContext } from '@/contexts/user/UserContext';
+import { baseUrl } from '@/utils/CloudFront';
 export default function ShowComments({ reportId }) {
     const { user } = useContext(UserContext);
     const [answers, setAnswers] = useState([]);
@@ -89,7 +90,7 @@ export default function ShowComments({ reportId }) {
                                 <Image
                                     height={150}
                                     width={150}
-                                    src={`${answer.user && answer.user.profilePicture ? answer.user.profilePicture : '/image/defaultProfilePicture.jpg'}`}
+                                    src={`${answer.user && answer.user.profilePicture ? baseUrl+answer.user.profilePicture : '/image/defaultProfilePicture.jpg'}`}
                                     alt='admin_profile_picture'
                                     className='w-[3rem] h-[3rem] rounded-full'
                                 />

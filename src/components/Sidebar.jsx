@@ -20,6 +20,7 @@ import {
 import { getUserByMail } from "@/api";
 import Image from "next/image";
 import { UserContext } from "@/contexts/user/UserContext";
+import { baseUrl } from "@/utils/CloudFront";
 export const Sidebar = () => {
 
   const { logout } = useContext(UserContext);
@@ -191,7 +192,7 @@ export const Sidebar = () => {
           >
             <div className="flex items-center w-full h-full gap-2">
               <Image
-                src={user && user.profilePicture ? user.profilePicture : "/image/defaultProfilePicture.jpg"}
+                src={user && user.profilePicture ? `${baseUrl+user.profilePicture}` : "/image/defaultProfilePicture.jpg"}
                 alt="user_logo"
                 width={350}
                 height={350}

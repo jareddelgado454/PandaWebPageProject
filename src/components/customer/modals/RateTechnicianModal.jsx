@@ -15,10 +15,12 @@ export default function RateTechnicianModal({ isOpen, onOpenChange, service, tec
             await client.graphql({
                 query: createTechnicianRate,
                 variables: {
+                    serviceId: service.id,
                     rate,
                     comment,
+                    createdBy: service.customer.id,
                     technicianId: technician.id,
-                    customerId: service.customer.id
+                    customerId: service.customer.id,
                 }
             });
             onCompleteService();

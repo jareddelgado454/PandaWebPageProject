@@ -86,7 +86,7 @@ export default function ChatComponent({ setChatActive, chatSelected, setChatSele
                             <FaChevronLeft className='cursor-pointer' />
                         </div>
                         <Image
-                            src={getProfilePictureSrc(chatSelected)}
+                            src={baseUrl+getProfilePictureSrc(chatSelected)}
                             width={150}
                             height={150}
                             alt='alt_profile_technician_selected'
