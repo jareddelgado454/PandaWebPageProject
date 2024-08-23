@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { dataURLtoBlob } from '@/utils/photo/BlobImage';
 import { updateMyInformation } from '@/graphql/users/customer/mutation';
 import { client } from '@/contexts/AmplifyContext';
+import { baseUrl } from '@/utils/CloudFront';
 export default function InformationHeader({ user }) {
   const [photograph, setPhotograph] = useState(null);
   function handleChangePhotograph(event) {
@@ -54,7 +55,7 @@ export default function InformationHeader({ user }) {
         variables: {
           input: {
             id: user.id,
-            profilePicture: `https://d3nqi6yd86hstw.cloudfront.net/public/${filename}`,
+            profilePicture: `${filename}`,
           },
         },
       });
@@ -77,7 +78,7 @@ export default function InformationHeader({ user }) {
               </div>
             </div>
             <Image
-              src={photograph ? photograph : (user.profilePicture ? user.profilePicture : "/image/defaultProfilePicture.jpg")}
+              src={photograph ? photograph : (user.profilePicture ? baseUrl+user.profilePicture : "/image/defaultProfilePicture.jpg")}
               width={400}
               height={400}
               className='rounded-full w-[7rem] h-[7rem] md:h-[9rem] md:w-[9rem] border-emerald-600 border-3'
