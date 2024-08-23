@@ -5,7 +5,7 @@ import { RiImageAddLine } from 'react-icons/ri';
 import { IoSend } from "react-icons/io5";
 import { useDisclosure } from '@nextui-org/react';
 import ConfirmImageMessage from '../../modals/ConfirmImageMessage';
-export default function ChatAnswerInput({ chatId, senderId }) {
+export default function ChatAnswerInput({ chatId, senderId, messageTo }) {
     const {
         isOpen,
         onOpen,
@@ -32,7 +32,8 @@ export default function ChatAnswerInput({ chatId, senderId }) {
                 variables: {
                     chatId,
                     content: message,
-                    senderId
+                    senderId,
+                    messageTo
                 }
             });
             setMessage("");
@@ -53,9 +54,9 @@ export default function ChatAnswerInput({ chatId, senderId }) {
     };
     return (
         <div className='w-full'>
-            <div className='bg-green-600/50 dark:bg-zinc-700 rounded-lg min-h-full p-4'>
+            <div className='bg-zinc-200 dark:bg-zinc-700 rounded-lg min-h-full p-4'>
                 <form onSubmit={handleSubmit} className='flex justify-center gap-3 items-center w-full h-full'>
-                    <div className='bg-zinc-900 relative w-[3rem] h-[2.2rem] md:w-[3rem] md:h-[2.8rem] overflow-hidden rounded-full shadow-md group'>
+                    <div className='bg-zinc-300 relative w-[3rem] h-[2.2rem] md:w-[3rem] md:h-[2.8rem] overflow-hidden rounded-full shadow-md group'>
                         <input
                             id="file-upload"
                             type="file"
@@ -67,13 +68,13 @@ export default function ChatAnswerInput({ chatId, senderId }) {
                             }}
                         />
                         <div className='flex justify-center items-center w-full h-full'>
-                            <RiImageAddLine className='transition-all duration-300 rounded text-white text-base xl:text-3xl dark:hover:bg-zinc-900 cursor-pointer' />
+                            <RiImageAddLine className='transition-all duration-300 rounded text-black dark:text-white text-base xl:text-3xl dark:hover:bg-zinc-900 cursor-pointer' />
                         </div>
                     </div>
                     <textarea
                         type="text"
                         id="input"
-                        className='m-0 w-full rounded-lg text-white bg-zinc-800 dark:bg-zinc-900 resize-none border-0 focus:ring-0 focus-visible:ring-0 max-h-[3rem] placeholder-black/50 dark:placeholder-white/50 outline-none'
+                        className='m-0 w-full rounded-lg text-black dark:text-white bg-zinc-300 dark:bg-zinc-900 resize-none border-0 focus:ring-0 focus-visible:ring-0 max-h-[3rem] placeholder-black/50 dark:placeholder-white/50 outline-none'
                         name="message"
                         value={message}
                         onChange={({ target }) => setMessage(target.value)}
