@@ -7,6 +7,7 @@ import { retrieveMyInformation } from '@/graphql/users/customer/query';
 import { SecondDateFormatter } from '@/utils/parseDate';
 import { UserContext } from '@/contexts/user/UserContext';
 import GearSpinner from '@/components/GearSpinner';
+import { formatDistance } from 'date-fns';
 export default function ClientProfile() {
     const { user: userSaved } = useContext(UserContext);
     const {
@@ -62,7 +63,7 @@ export default function ClientProfile() {
                                     <p>Contact Number: <strong>{user.contactNumber ? `(+1) ${user.contactNumber}` : <span className='text-rose-600'>This is required</span>}</strong></p>
                                     <p>State: <strong>{user.state ? user.state : <span className='text-rose-600'>This is required</span>}</strong></p>
                                     <p>City: <strong>{user.city ? user.city : <span className='text-rose-600'>This is required</span>}</strong></p>
-                                    <p>Member since: {SecondDateFormatter(new Date(user.createdAt))}</p>
+                                    <p>Member since: {formatDistance(new Date(user.createdAt), new Date(), { addSuffix: true })}</p>
                                     <p className='transition-all duration-300 text-[#40C48E] hover:font-bold cursor-pointer' onClick={onUpdateInformationnModalOpen}>You want to edit?</p>
                                 </div>
                             </Tab>
