@@ -39,13 +39,13 @@ exports.handler = async (event) => {
         ],
         mode: 'payment',
         payment_intent_data: {
-          application_fee_amount: Math.round(applicationFeeAmount * 100),
+          application_fee_amount: Math.round(total * 10),
           metadata: {
             serviceType: serviceAssigned.type,
           },
         },
-        success_url: `https://master.d3dtglewderhtg.amplifyapp.com/customer/payment?status=successfully`,
-        cancel_url: `https://master.d3dtglewderhtg.amplifyapp.com/customer/payment?status=cancel`,
+        success_url: `https://master.d3dtglewderhtg.amplifyapp.com/payment-customer?paymentStatus=successfully&serviceId=${serviceAssigned.id}`,
+        cancel_url: `https://master.d3dtglewderhtg.amplifyapp.com/payment-customer?paymentStatus=cancel&serviceId=${serviceAssigned.id}`,
         customer_email: userEmail,
       },
       {

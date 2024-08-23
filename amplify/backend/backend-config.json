@@ -65,12 +65,22 @@
     }
   },
   "function": {
+    "PaymentSubscriptionNodeEnviroment": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "S3Triggerdf93383d": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
     "createStripeTechnicianAccount": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "pandaPushNotifications": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -127,6 +137,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_PaymentSubscriptionNodeEnviroment_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "PaymentSubscriptionNodeEnviroment"
+        }
+      ]
+    },
+    "AMPLIFY_function_PaymentSubscriptionNodeEnviroment_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "PaymentSubscriptionNodeEnviroment"
+        }
+      ]
+    },
     "AMPLIFY_function_S3Triggerdf93383d_deploymentBucketName": {
       "usedBy": [
         {
@@ -156,6 +182,22 @@
         {
           "category": "function",
           "resourceName": "createStripeTechnicianAccount"
+        }
+      ]
+    },
+    "AMPLIFY_function_pandaPushNotifications_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "pandaPushNotifications"
+        }
+      ]
+    },
+    "AMPLIFY_function_pandaPushNotifications_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "pandaPushNotifications"
         }
       ]
     },

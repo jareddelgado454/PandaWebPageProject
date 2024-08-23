@@ -19,6 +19,13 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
+    "PaymentSubscriptionNodeEnviroment": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "S3Triggerdf93383d": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
@@ -27,6 +34,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string"
     },
     "createStripeTechnicianAccount": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "pandaPushNotifications": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",

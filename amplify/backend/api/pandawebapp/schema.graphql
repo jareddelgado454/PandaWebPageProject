@@ -13,6 +13,43 @@ enum ServiceOfferStatus {
     rejected
 }
 
+enum ChatType {
+    SERVICE
+    REPORT
+}
+
+type CustomerRate @model @auth(
+    rules: [
+        { allow: owner, ownerField: "createdById", operations: [create, update, delete, read] }
+        { allow: private, operations: [ read ] }
+    ]
+) {
+    id: ID!
+    customerId: ID! @index(name: "byCustomer")
+    serviceId: ID!
+    createdById: ID!
+    createdBy: String!
+    rate: Float!
+    comment: String
+    createdAt: AWSDateTime
+}
+
+type TechnicianRate @model @auth(
+    rules: [
+        { allow: owner, ownerField: "createdById", operations: [create, update, delete, read] }
+        { allow: private, operations: [ read ] }
+    ]
+) {
+    id: ID!
+    technicianId: ID! @index(name: "byTechnician")
+    serviceId: ID!
+    createdById: ID!
+    createdBy: String!
+    rate: Float!
+    comment: String
+    createdAt: AWSDateTime
+}
+
 type Report @model @auth(
     rules: [
         { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
@@ -61,24 +98,6 @@ type User @model @auth(
     updatedAt: AWSDateTime
 }
 
-type Rate @model @auth(
-    rules: [
-        { allow: owner, ownerField: "customer", operations: [create, update, delete, read] }
-        { allow: private, operations: [ read ] }
-    ]
-) {
-    id: ID!
-    technicianId: ID! @index(name: "byTechnician")
-    technician: Technician @belongsTo(fields: ["technicianId"])
-    customerId: ID! @index(name: "byCustomer")
-    customer: Customer @belongsTo(fields: ["customerId"])
-    createdBy: ID!
-    rate: Float!
-    serviceId: ID!
-    comment: String
-    createdAt: AWSDateTime
-}
-
 type Technician @model @auth(
     rules: [
         { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
@@ -102,14 +121,24 @@ type Technician @model @auth(
     stripeAccountStatus: String
     subscriptionExpirationDate: AWSDateTime
     fee: Int
-    rate: [Rate] @hasMany(indexName: "byTechnician", fields: ["id"])
+    rate: [TechnicianRate] @hasMany(indexName: "byTechnician", fields: ["id"])
     loLatitude: Float
     loLongitude: Float
     diagnosticPrice: Float
     repairPriceHour: Float
+    certifications: [Certification]
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
     schedule: Schedule
+}
+
+type Certification {
+    name: String!
+    issuingOrganization: String! 
+    issueDate: String  
+    expirationDate: String  
+    credentialId: String     
+    credentialUrl: String    
 }
 
 type Car @model @auth(
@@ -146,7 +175,7 @@ type Customer @model @auth(
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
     cars: [Car] @hasMany
-    rate: [Rate] @hasMany(indexName: "byCustomer", fields: ["id"])
+    rate: [CustomerRate] @hasMany(indexName: "byCustomer", fields: ["id"])
 }
 
 type Schedule {
@@ -222,6 +251,7 @@ type Chat @model @auth(
     technicianSelected: Technician @hasOne
     admin: User @hasOne
     messages: [Message] @hasMany(indexName: "byChat", fields: ["id"])
+    chatType: ChatType
 }
 
 type Message @model @auth(
@@ -235,6 +265,7 @@ type Message @model @auth(
     content: String!
     image: String
     sender: ID!
+    to: ID!
     chatId: ID! @index(name: "byChat")
 }
 
