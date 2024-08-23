@@ -8,6 +8,7 @@ import { listMyChatsAsAdmin } from '@/graphql/chat/query';
 import { formatDistance } from 'date-fns';
 import { RiImageAddLine } from 'react-icons/ri';
 import { useRouter } from 'next/navigation';
+import { baseUrl } from '@/utils/CloudFront';
 
 export default function ContactsComponent({ setChatActive, setChatSelected }) {
   const router = useRouter();
@@ -70,10 +71,10 @@ export default function ContactsComponent({ setChatActive, setChatSelected }) {
         ) : error ? (<div className='flex justify-center items-center h-full w-full text-rose-600 text-2xl'>{error}</div>) : (
           <div className='flex flex-col gap-2 w-full overflow-y-auto'>
             {user && filteredChats.length > 0 && filteredChats.map((chat, i) => (
-              <div onClick={() => handleChatClick(chat)} key={i} id="chat_customer" className='flex flex-row justify-between gap-2 rounded-lg border-zinc-600 dark:border-zinc-800 bg-zinc-600 hover:bg-zinc-800 dark:bg-zinc-700 dark:hover:bg-zinc-800 hover:rounded-lg transition-all duration-300 ease-in cursor-pointer p-3 border-b-1'>
+              <div onClick={() => handleChatClick(chat)} key={i} id="chat_customer" className='flex flex-row justify-between gap-2 rounded-lg border-zinc-600 dark:border-zinc-800 bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-700 dark:hover:bg-zinc-800 hover:rounded-lg transition-all duration-300 ease-in cursor-pointer p-3 border-b-1'>
                 <div className='flex flex-row gap-2'>
                   <Image
-                    src={`${chat.customer.profilePicture ? chat.customer.profilePicture : '/image/defaultProfilePicture.jpg'}`}
+                    src={`${chat.customer.profilePicture ? baseUrl+chat.customer.profilePicture : '/image/defaultProfilePicture.jpg'}`}
                     width={100}
                     height={100}
                     alt='technician_profile_picture'
@@ -81,13 +82,13 @@ export default function ContactsComponent({ setChatActive, setChatSelected }) {
                     priority
                   />
                   <div className='flex flex-col justify-center gap-1'>
-                    <p className='font-semibold'>{chat.customer.fullName}</p>
+                    <p className='font-semibold text-black dark:text-white'>{chat.customer.fullName}</p>
                     <div className='flex flex-row gap-1 items-center'>
                       <p className='text-sm text-zinc-500 dark:text-zinc-400 tracking-wide line-clamp-1'>
                         {chat.messages.items.length > 0 && (chat.messages.items[chat.messages.items.length - 1].sender === user.id && 'Me:')}
                       </p>
-                      <div className='text-sm text-zinc-300 dark:text-zinc-400 tracking-wide line-clamp-1'>{
-                        chat.messages.items.length > 0 ? (
+                      <div className='text-sm text-zinc-600 dark:text-zinc-400 tracking-wide line-clamp-1'>
+                        {chat.messages.items.length > 0 ? (
                           chat.messages.items[chat.messages.items.length - 1].image !== null ? (
                             <div className='flex flex-row gap-1 items-center'><RiImageAddLine /><p>Image</p></div>
                           ) : chat.messages.items[chat.messages.items.length - 1].content
