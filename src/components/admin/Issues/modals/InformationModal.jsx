@@ -39,7 +39,8 @@ export default function InformationModal({ isOpen, onOpenChange, issueSelected }
                 query: createChatAsAdmin,
                 variables: {
                     customerId: issueSelected.customer.id,
-                    adminId: user.id
+                    adminId: user.id,
+                    chatType: "REPORT"
                 }
             });
             router.replace(`/admin-dashboard/messages?chatId=${data.createChat.id}`);
@@ -64,22 +65,32 @@ export default function InformationModal({ isOpen, onOpenChange, issueSelected }
                 <div className={`dark:bg-zinc-800 bg-white rounded-lg slide-in-left transition-all ease-in-out relative overflow-hidden ${zoom ? 'p-0' : 'p-4'}`}>
                   <div className='flex flex-col flex-wrap gap-2'>
                     <div className={`flex gap-x-3 w-full h-[4rem] ${zoom && 'hidden'}`} id='user_report_information'>
-                      <Image
-                        width={50} height={50}
-                        className='w-[3rem] h-[3rem] object-cover object-center rounded-full'
-                        alt="Profile_picture_createdBy_User"
-                        priority
-                        src={`${issueSelected.customer && issueSelected.customer.profilePicture ? issueSelected.customer.profilePicture : '/image/defaultProfilePicture.jpg'}`}
-                      />
+                      {issueSelected.customer  ? (
+                        <Image
+                          width={50} height={50}
+                          className='w-[3rem] h-[3rem] object-cover object-center rounded-full'
+                          alt="Profile_picture_createdBy_User"
+                          priority
+                          src={`${issueSelected.customer.profilePicture ? `${baseUrl+issueSelected.customer.profilePicture}` : '/image/defaultProfilePicture.jpg'}`}
+                        />
+                      ) : (
+                        <Image
+                          width={50} height={50}
+                          className='w-[3rem] h-[3rem] object-cover object-center rounded-full'
+                          alt="Profile_picture_createdBy_User"
+                          priority
+                          src={`${issueSelected.technician.profilePicture ? `${baseUrl+issueSelected.technician.profilePicture}` : '/image/defaultProfilePicture.jpg'}`}
+                        />
+                      )}
                       <div className='flex flex-col w-full gap-1'>
                         <div className='flex flex-row justify-between flex-nowrap items-center gap-2'>
                           <div className='flex flex-row gap-2'>
-                            <p className='text-xs font-semibold'>{issueSelected.customer.fullName}</p>
+                            <p className='text-xs font-semibold'>{issueSelected.customer ? issueSelected.customer.fullName : issueSelected.technician.fullName}</p>
                             <p className='text-xs text-zinc-400'>{SecondDateFormatter(new Date(issueSelected.createdAt))}</p>
                           </div>
                           <FaReply onClick={handleOnCreateChat} className='cursor-pointer' />
                         </div>
-                        <p className='text-zinc-400 font-light text-xs'>{issueSelected.customer.email}</p>
+                        <p className='text-zinc-400 font-light text-xs'>{issueSelected.customer ? issueSelected.customer.email : issueSelected.technician.email}</p>
                       </div>
                     </div>
                     <div className={`w-full mb-5 ${zoom && 'hidden'}`} id='user_report_description'>
@@ -88,14 +99,22 @@ export default function InformationModal({ isOpen, onOpenChange, issueSelected }
                       </p>
                     </div>
                     <div className={`flex justify-center items-center ${zoom && 'absolute h-full w-full'}`}>
-                      <Image
-                        src={`${issueSelected.image ? `${baseUrl + issueSelected.image}` : '/none.jpg'}`}
-                        width={800}
-                        height={800}
-                        className={`object-cover w-full rounded-lg shadow-md dark:bg-zinc-700 z-50 cursor-pointer ${zoom ? 'h-full' : 'h-[10rem] lg:h-[14rem]'}`}
-                        alt='report_image'
-                        onClick={() => setZoom(!zoom)}
-                      />
+                      {issueSelected.image ? (
+                        <Image
+                          src={`${issueSelected.image ? `${baseUrl + issueSelected.image}` : '/none.jpg'}`}
+                          width={800}
+                          height={800}
+                          className={`object-cover w-full rounded-lg shadow-md dark:bg-zinc-700 z-50 cursor-pointer ${zoom ? 'h-full' : 'h-[10rem] lg:h-[14rem]'}`}
+                          alt='report_image'
+                          onClick={() => setZoom(!zoom)}
+                        />
+                      ) : (
+                        <div className='bg-zinc-300 dark:bg-zinc-700 h-[14rem] w-full rounded-lg'>
+                          <div className='flex h-full w-full justify-center items-center'>
+                            no image
+                          </div>
+                        </div>
+                      )}
                     </div>
                     <div className='my-2'>
                       <p className='mb-2 text-sm'>Actions:</p>
@@ -126,7 +145,7 @@ export default function InformationModal({ isOpen, onOpenChange, issueSelected }
                 >
                   <ShowComments reportId={issueSelected.id} />
                   <div className="flex-grow"></div>
-                  <AnswerInput customerId={issueSelected.customer.id} reportId={issueSelected.id} />
+                  <AnswerInput reportId={issueSelected.id} />
                 </div>
               </div>
             </ModalBody>
