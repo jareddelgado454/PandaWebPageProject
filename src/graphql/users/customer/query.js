@@ -31,11 +31,8 @@ export const listOffersByServiceId = gql`
                             id
                             rate
                             comment
-                            createdBy{
-                                id
-                                fullName
-                                profilePicture
-                            }
+                            createdById
+                            createdBy
                             createdAt
                         }
                     }
