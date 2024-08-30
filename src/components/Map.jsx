@@ -128,7 +128,7 @@ export default function Map({ userMarkerRef }) {
     };
   }, [serviceRequest, setServiceCoordinates]);
   useEffect(() => {
-    (async()=> {
+    const intervalId = setInterval(async () => {
       try {
         if(!serviceRequest && map){
           console.log('launched');
@@ -148,7 +148,9 @@ export default function Map({ userMarkerRef }) {
       } catch (error) {
         console.error(error);
       }
-    })();
+    }, 20000);
+
+    return () => clearInterval(intervalId);
   }, [serviceRequest, userLocation, map]);
   
   return (

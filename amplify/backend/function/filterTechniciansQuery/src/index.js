@@ -32,7 +32,7 @@ exports.handler = async (event) => {
                 { latitude: lat, longitude: lon },
                 { latitude: technician.loLatitude, longitude: technician.loLongitude }
             );
-            return distance <= 2;
+            return distance <= 20;
         });
 
         return nearbyTechnicians;
