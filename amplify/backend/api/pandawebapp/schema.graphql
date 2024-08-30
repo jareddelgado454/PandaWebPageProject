@@ -301,3 +301,7 @@ type ICar {
     year: String!
     identificationNumber: String!
 }
+
+type Query {
+  getNearbyTechnicians(lat: Float!, lon: Float!): [Technician] @function(name: "filterTechniciansQuery-dev") @auth(rules: [{ allow: private }])
+}
