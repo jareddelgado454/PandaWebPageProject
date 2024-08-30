@@ -147,3 +147,14 @@ query ListTechnicians {
   }
 }
 `
+export const getNearbyTechnicians = gql`
+  query getNearByTechnicians($lat: Float!, $lon: Float!) {
+    getNearbyTechnicians(lat: $lat, lon: $lon){
+      id
+      email
+      profilePicture
+      loLatitude
+      loLongitude
+    }
+  }
+`;

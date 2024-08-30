@@ -8,7 +8,7 @@ import { ServiceContext } from '@/contexts/service/ServiceContext';
 import { onUpdateServiceCoordinates } from '@/graphql/users/customer/subscription';
 import { client } from '@/contexts/AmplifyContext';
 import { CalculateAngleFromLocation } from '@/utils/service/CalculateAngle';
-import { getServiceById } from '@/graphql/services/queries/query';
+import { getNearbyTechnicians, getServiceById } from '@/graphql/services/queries/query';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import "maplibre-gl-js-amplify/dist/public/amplify-map.css";
 export default function Map({ userMarkerRef }) {
@@ -73,13 +73,6 @@ export default function Map({ userMarkerRef }) {
             .setLngLat(userLocation)
             .addTo(mapC);
 
-          // const pulsatingCircle = document.createElement('div');
-          // pulsatingCircle.className = 'customer-pulsating-circle';
-
-          // new maplibregl.Marker(pulsatingCircle)
-          //   .setLngLat(userLocation)
-          //   .addTo(mapC);
-
         }
         retrieveService();
       }
@@ -95,18 +88,6 @@ export default function Map({ userMarkerRef }) {
       .setLngLat([destLongitude, destLatitude])
       .addTo(mapC);
   };
-  // useEffect(() => {
-  //   if (map) {
-  //     techniciansList.map((technician, i) => {
-  //       const technicianMarker = document.createElement('div');
-  //       technicianMarker.className = 'technician-marker';
-
-  //       new maplibregl.Marker({ element: technicianMarker })
-  //         .setLngLat([technician.loLongitude, technician.loLatitude])
-  //         .addTo(map);
-  //     });
-  //   }
-  // }, [isMapReady, map]);
 
   useEffect(() => {
     if ((isMapReady && map) && serviceRequest) {
@@ -146,6 +127,32 @@ export default function Map({ userMarkerRef }) {
       subscription.unsubscribe();
     };
   }, [serviceRequest, setServiceCoordinates]);
+  useEffect(() => {
+    const intervalId = setInterval(async () => {
+      try {
+        if(!serviceRequest && map){
+          console.log('launched');
+          const { data } = await client.graphql({
+            query: getNearbyTechnicians,
+            variables: {
+              lat: userLocation[1],
+              lon: userLocation[0]
+            }
+          });
+          // console.log(data);
+          const arrayTechnicians = data.getNearbyTechnicians;
+          arrayTechnicians.map((technician) => {
+            displayTechnicianMarker(map, technician.loLatitude, technician.loLongitude);
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }, 20000);
+
+    return () => clearInterval(intervalId);
+  }, [serviceRequest, userLocation, map]);
+  
   return (
     <>
       <div ref={mapDiv} id='map' className='map h-full lg:h-[100%] w-[100%] rounded-lg'></div>

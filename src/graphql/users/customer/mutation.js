@@ -13,8 +13,10 @@ export const createService = gql`
     mutation CreateService($input: CreateServiceInput!) {
         createService(input: $input) {
             id
+            description
             originLatitude
             originLongitude
+            address
             status
             type
             customerId

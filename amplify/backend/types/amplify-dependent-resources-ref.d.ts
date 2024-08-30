@@ -40,6 +40,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "filterTechniciansQuery": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "pandaPushNotifications": {
       "Arn": "string",
       "LambdaExecutionRole": "string",

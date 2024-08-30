@@ -2,7 +2,7 @@ import { gql } from "graphql-tag";
 
 export const onCreateOffers = gql`
     subscription ListenOffers($serviceId: ID) {
-        onCreateOffer(filter: {status: {eq: "accepted"}, serviceId: {eq: $serviceId}}) {
+        onCreateOffer(filter: {status: {eq: "pending"}, serviceId: {eq: $serviceId}}) {
             id
             createdAt
             amount
@@ -27,7 +27,12 @@ export const onCreateOffers = gql`
       	        loLongitude
                   rate {
                     items{
+                        id
                         rate
+                        comment
+                        createdById
+                        createdBy
+                        createdAt
                     }
                 }
             }

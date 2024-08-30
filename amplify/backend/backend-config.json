@@ -80,6 +80,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "filterTechniciansQuery": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "pandaPushNotifications": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -182,6 +187,22 @@
         {
           "category": "function",
           "resourceName": "createStripeTechnicianAccount"
+        }
+      ]
+    },
+    "AMPLIFY_function_filterTechniciansQuery_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "filterTechniciansQuery"
+        }
+      ]
+    },
+    "AMPLIFY_function_filterTechniciansQuery_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "filterTechniciansQuery"
         }
       ]
     },
