@@ -43,7 +43,7 @@
         },
         "filterTechniciansQuery": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/filterTechniciansQuery-6e30366676454b623032-build.zip"
+          "s3Key": "amplify-builds/filterTechniciansQuery-2b752f734b4243486d4d-build.zip"
         }
       },
       "auth": {
