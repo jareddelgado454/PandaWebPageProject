@@ -75,6 +75,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "cancelSubscriptionPlan": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "createStripeTechnicianAccount": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -86,6 +91,11 @@
       "service": "Lambda"
     },
     "pandaPushNotifications": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "paymentsForFinancialDashboard": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -174,6 +184,22 @@
         }
       ]
     },
+    "AMPLIFY_function_cancelSubscriptionPlan_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "cancelSubscriptionPlan"
+        }
+      ]
+    },
+    "AMPLIFY_function_cancelSubscriptionPlan_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "cancelSubscriptionPlan"
+        }
+      ]
+    },
     "AMPLIFY_function_createStripeTechnicianAccount_deploymentBucketName": {
       "usedBy": [
         {
@@ -219,6 +245,22 @@
         {
           "category": "function",
           "resourceName": "pandaPushNotifications"
+        }
+      ]
+    },
+    "AMPLIFY_function_paymentsForFinancialDashboard_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "paymentsForFinancialDashboard"
+        }
+      ]
+    },
+    "AMPLIFY_function_paymentsForFinancialDashboard_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "paymentsForFinancialDashboard"
         }
       ]
     },

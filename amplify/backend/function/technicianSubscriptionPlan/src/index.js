@@ -41,10 +41,11 @@ exports.handler = async (event) => {
       switch( eventReceived.type ){
           case "checkout.session.completed" : 
               const checkoutSessionCompleted = eventReceived.data.object
-              console.log({checkoutSessionCompleted})
+              console.log("Esta es la session Completed",{checkoutSessionCompleted})
 
               const idPassed = checkoutSessionCompleted.metadata?.idDatabase;
               const cognitoUsername = checkoutSessionCompleted.metadata?.cognitoUsername;
+              const subscriptionId = checkoutSessionCompleted.subscription;
               if(!idPassed || !cognitoUsername){
                   console.log("Missing hashedUserId in metadata. Skipping user lookup.");
                   break;
@@ -73,7 +74,9 @@ exports.handler = async (event) => {
                   UserAttributes: [
                       { Name: "custom:subscription", Value: `${checkoutSessionCompleted.amount_total === 500000 ? "annual" : "monthly"}` },
                       { Name: "custom:fee", Value: "0" },
-                      { Name: "custom:subExpirationDate", Value: expirationDateISOString }
+                      { Name: "custom:subExpirationDate", Value: expirationDateISOString },
+                      { Name: "custom:subscriptionId", Value: subscriptionId }, 
+                      { Name: "custom:subscriptionStatus", Value: "ongoing" }
                   ]
               };
 
@@ -82,11 +85,13 @@ exports.handler = async (event) => {
                   Key: {
                       "id": { S: idPassed } 
                   },
-                  UpdateExpression: "SET subscription = :subscriptionValue, fee = :feeValue, subscriptionExpirationDate = :expirationDate",
+                  UpdateExpression: "SET subscription = :subscriptionValue, fee = :feeValue, subscriptionExpirationDate = :expirationDate, subscriptionId = :subscriptionId, subscriptionStatus = :subscriptionStatus",
                   ExpressionAttributeValues: {
                       ":subscriptionValue": { S: subscriptionType },
                       ":feeValue": { N: "0" },
-                      ":expirationDate": { S: expirationDateISOString }
+                      ":expirationDate": { S: expirationDateISOString },
+                      ":subscriptionId": { S: subscriptionId }, 
+                      ":subscriptionStatus": { S: "ongoing" } 
                   },
                   ReturnValues: "UPDATED_NEW"
               };
