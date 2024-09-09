@@ -26,7 +26,7 @@
         },
         "technicianSubscriptionPlan": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/technicianSubscriptionPlan-756c4245712f6938744e-build.zip"
+          "s3Key": "amplify-builds/technicianSubscriptionPlan-4b6849534c794b6a6f64-build.zip"
         },
         "stripeCreatingAccountNodeEnviroment": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
@@ -46,7 +46,15 @@
         },
         "filterTechniciansQuery": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/filterTechniciansQuery-2b752f734b4243486d4d-build.zip"
+          "s3Key": "amplify-builds/filterTechniciansQuery-2b304b59683476345a6b-build.zip"
+        },
+        "cancelSubscriptionPlan": {
+          "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
+          "s3Key": "amplify-builds/cancelSubscriptionPlan-3975446e793158797437-build.zip"
+        },
+        "paymentsForFinancialDashboard": {
+          "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
+          "s3Key": "amplify-builds/paymentsForFinancialDashboard-4b686d6b647575416872-build.zip"
         }
       },
       "storage": {

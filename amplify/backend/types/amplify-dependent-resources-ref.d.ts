@@ -33,6 +33,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "cancelSubscriptionPlan": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "createStripeTechnicianAccount": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
@@ -48,6 +55,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string"
     },
     "pandaPushNotifications": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "paymentsForFinancialDashboard": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",

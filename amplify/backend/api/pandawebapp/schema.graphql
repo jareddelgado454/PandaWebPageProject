@@ -120,6 +120,8 @@ type Technician @model @auth(
     stripeId: String
     stripeAccountStatus: String
     subscriptionExpirationDate: AWSDateTime
+    subscriptionId: String
+    subscriptionStatus: String
     fee: Int
     rate: [TechnicianRate] @hasMany(indexName: "byTechnician", fields: ["id"])
     loLatitude: Float

@@ -1,15 +1,13 @@
 "use client"
-
 import React, { useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-
 const RedirectingToAppAfterStripe = () => {
     const router = useRouter();
     const params = useParams();
 
     useEffect(() => {
-        const appRedirectSuccessUrl = "myapp://(tabs)/subscription/completed";
-        const appRedirectErrorUrl = "myapp://(tabs)/subscription/incompleted";
+        const appRedirectSuccessUrl = "panda-technician://(tabs)/subscription/completed";
+        const appRedirectErrorUrl = "panda-technician://(tabs)/subscription/incompleted";
 
         window.location.href = params.action === "completed" ?  appRedirectSuccessUrl : appRedirectErrorUrl;
 
