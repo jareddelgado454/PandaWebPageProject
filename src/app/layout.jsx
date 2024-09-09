@@ -11,7 +11,7 @@ export const metadata = {
 };
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="h-full bg-zinc-900 overflow-y-auto md:max-h-screen ">
+    <html lang="en" className="h-full bg-[#27272A] overflow-y-auto md:max-h-screen ">
       <body className={`antialiased`}>
         <UserProvider>
           <ServiceAssignedProvider>
