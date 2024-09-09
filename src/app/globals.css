@@ -262,3 +262,19 @@ body {
     transform: rotate(-360deg);
   }
 }
+
+.wave {
+  animation: wave 6s linear infinite;
+}
+
+@keyframes wave {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}

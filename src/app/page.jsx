@@ -1,5 +1,5 @@
 import React from 'react';
-import { AboutSection, BannerSection, ServiceSection, TeamSection } from '@/components/home';
+import { AboutSection, BannerSection, FooterSection, ServiceSection, TeamSection } from '@/components/home';
 import { FloatSidebar } from '@/components/home/FloatSidebar';
 export default function Page() {
     return (
@@ -9,6 +9,7 @@ export default function Page() {
             <AboutSection />
             <ServiceSection />
             <TeamSection />
+            <FooterSection />
         </div>
     );
 }
