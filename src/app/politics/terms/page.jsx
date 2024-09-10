@@ -3,7 +3,7 @@ import React from 'react'
 export default function page() {
     return (
         <div className='w-full h-full py-4 container mx-auto'>
-            <p className='text-center text-[#C0B2A9] font-semibold tracking-wider'>Panda Privacy Policy</p>
+            <p className='text-center text-[#C0B2A9] font-semibold tracking-wider'>Panda Terms and Conditions</p>
             <div className='flex justify-center items-center px-8 md:px-2'>
 
                 <p className='text-[#C0B2A9] leading-loose'>
