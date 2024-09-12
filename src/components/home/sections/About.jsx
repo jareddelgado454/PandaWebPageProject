@@ -3,7 +3,7 @@ import React from 'react'
 
 const About = () => {
   return (
-    <div className='flex flex-col xl:flex-row flex-wrap py-2 px-4'>
+    <div className='flex flex-col xl:flex-row flex-wrap py-2 px-4' id="About-section">
       <div className='w-full xl:w-[45%]'>
         <Image src={'/panda.webp'} alt='Panda_Logo' width={600} height={600} className='h-[12rem] w-[12rem] xl:h-[22rem] xl:w-[24rem] drop-shadow-xl mx-auto' />
       </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import { FaBrain, FaScrewdriverWrench, FaStreetView } from 'react-icons/fa6';
 const Service = () => {
   return (
-    <div className='py-2 px-4'>
+    <div className='py-2 px-4' id="Service-Section">
       <div className='flex justify-center items-center flex-wrap text-[#E6D5C9]'>
         <div className='w-full flex flex-col gap-2 items-center mt-16 mb-16'>
           <p className='text-[#E6D5C9]/60 font-semibold text-xs xl:text-lg'>¿What do we do?</p>
