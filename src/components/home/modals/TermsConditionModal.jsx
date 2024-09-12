@@ -1,7 +1,7 @@
 import React from 'react';
 import { baseUrl } from '@/utils/CloudFront';
-import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Tab, Tabs } from '@nextui-org/react';
-export default function TermsConditionModal({ isOpen, onOpenChange, setIsAccepted, isAccepted, obligatory = false, callback = () => null }) {
+import { Button, Modal, ModalBody, ModalContent, ModalHeader, Tab, Tabs } from '@nextui-org/react';
+export default function TermsConditionModal({ isOpen, onOpenChange, setIsAccepted, obligatory = false, callback = () => null }) {
     const officeViewerUrlTerms = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(`${baseUrl}terms-conditions/Panda-Terms-and-Conditions-of-Use.docx`)}`;
     const officeViewerUrlPrivacy = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(`${baseUrl}terms-conditions/Panda-Privacy-Policy.docx`)}`;
     return (

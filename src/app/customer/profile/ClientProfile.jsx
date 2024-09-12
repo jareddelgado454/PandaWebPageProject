@@ -4,7 +4,6 @@ import { Tabs, Tab, useDisclosure } from "@nextui-org/react";
 import { CarsComponent, InformationHeader, UpdateInformationModal } from '@/components/customer';
 import { client } from '@/contexts/AmplifyContext';
 import { retrieveMyInformation } from '@/graphql/users/customer/query';
-import { SecondDateFormatter } from '@/utils/parseDate';
 import { UserContext } from '@/contexts/user/UserContext';
 import GearSpinner from '@/components/GearSpinner';
 import { formatDistance } from 'date-fns';
