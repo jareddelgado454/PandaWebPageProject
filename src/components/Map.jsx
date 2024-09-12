@@ -131,7 +131,6 @@ export default function Map({ userMarkerRef }) {
     const intervalId = setInterval(async () => {
       try {
         if(!serviceRequest && map){
-          console.log('launched');
           const { data } = await client.graphql({
             query: getNearbyTechnicians,
             variables: {
