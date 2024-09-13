@@ -9,7 +9,7 @@ const Team = () => {
           <p className='text-[#E6D5C9]/60 font-semibold text-xs xl:text-lg'>Look Our</p>
           <p className='text-2xl xl:text-6xl 2xl:text-7xl font-black tracking-wider'>Team</p>
         </div>
-        <div className='flex flex-col xl:flex-row flex-wrap gap-y-8 justify-between w-full xl:w-[50%]'>
+        <div className='flex flex-col md:flex-row flex-wrap gap-y-8 justify-between w-full md:w-[50%]'>
           <div className='flex flex-col gap-4 items-center'>
             <Image
               src={'/image/Team/Charles.jpg'}

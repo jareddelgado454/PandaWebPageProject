@@ -22,12 +22,6 @@ const Navbar = () => {
                 <div
                     className={`absolute ${ active ? 'flex bg-[#303030] rounded-lg' : 'hidden' } xl:relative top-20 right-0 2xl:top-0 xl:flex flex-col xl:flex-row flex-nowrap items-center gap-8 text-white`}
                 >
-                    {/* <p
-                        className='bg-[#303030]/60 h-10 rounded-3xl px-10 flex items-center shadow-2xl border-[#40c48e] cursor-pointer ease-in-out hover:bg-[#303030]/80 hover:border-2 hover:border-[#40c48e] hover:font-semibold hover:-translate-y-1 hover:scale-110 duration-300'
-                        onClick={() => scrolltoHash('Home-Section')}
-                    >
-                        Home
-                    </p> */}
                     <p
                         className='bg-[#303030]/60 h-10 rounded-3xl px-10 flex items-center shadow-2xl border-[#40c48e] cursor-pointer ease-in-out hover:bg-[#303030]/80 hover:border-2 hover:border-[#40c48e] hover:font-semibold hover:-translate-y-1 hover:scale-110 duration-300'
                         onClick={() => scrolltoHash('About-section')}
@@ -45,6 +39,12 @@ const Navbar = () => {
                         onClick={() => scrolltoHash('Team-Section')}
                     >
                         Team
+                    </p>
+                    <p
+                        className='bg-[#303030]/60 h-10 rounded-3xl px-10 flex items-center shadow-2xl border-[#40c48e] cursor-pointer ease-in-out hover:bg-[#303030]/80 hover:border-2 hover:border-[#40c48e] hover:font-semibold hover:-translate-y-1 hover:scale-110 duration-300'
+                        onClick={() => scrolltoHash('Faq-Section')}
+                    >
+                        Faq
                     </p>
                 </div>
             </div>

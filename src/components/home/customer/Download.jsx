@@ -5,7 +5,7 @@ import { FaAppStore, FaGooglePlay } from 'react-icons/fa6'
 
 const Download = () => {
     return (
-        <div className='flex flex-col xl:flex-row justify-center items-center gap-12 text-[#E6D5C9]'>
+        <div className='flex flex-col md:flex-row justify-center items-center gap-12 text-[#E6D5C9]'>
             <div className='w-[50%] flex flex-col justify-center items-center gap-8'>
                 <FaGooglePlay className='text-4xl xl:text-6xl 2xl:text-9xl' />
                 <p className='font-semibold tracking-widest text-center 2xl:text-xl'>Play Store</p>

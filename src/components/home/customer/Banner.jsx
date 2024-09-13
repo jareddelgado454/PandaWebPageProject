@@ -6,7 +6,7 @@ import { SigninModal } from '../modals/SigninModal';
 import { SignupModal } from '../modals/SignupModal';
 import VerificationCodeModal from '@/components/LoginRegister/modals/VerificationCodeModal';
 import Link from 'next/link';
-const banner = () => {
+const Banner = () => {
     const [dataSignUp, setDataSignIn] = useState({
         email: '',
         password: ''
@@ -44,7 +44,7 @@ const banner = () => {
                     <p className='text-[#E6D5C9] text-2xl tracking-widest font-semibold'>Panda</p>
                 </Link>
             </div>
-            <div className='flex flex-col xl:flex-row justify-between gap-y-6 w-full h-[80%] items-center'>
+            <div className='flex flex-col md:flex-row justify-between gap-y-6 w-full h-[80%] items-center'>
                 <div className='flex flex-col justify-center items-center gap-7 h-[65%] w-[100%] 2xl:w-[40%] select-none'>
                     <p className='text-[#E6D5C9] font-black tracking-wider text-3xl 2xl:text-6xl text-center'>Customer App</p>
                     <p className='text-[#E6D5C9]/60 text-sm 2xl:text-base px-16 text-center'>
@@ -77,4 +77,4 @@ const banner = () => {
     )
 }
 
-export default banner
+export default Banner
