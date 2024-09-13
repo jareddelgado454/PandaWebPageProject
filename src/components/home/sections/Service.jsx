@@ -8,7 +8,7 @@ const Service = () => {
           <p className='text-[#E6D5C9]/60 font-semibold text-xs xl:text-lg'>¿What do we do?</p>
           <p className='text-2xl xl:text-6xl 2xl:text-7xl font-black tracking-wider'>Our Services</p>
         </div>
-        <div className='grid grid-cols-1 xl:grid-cols-3 gap-y-7'>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-y-7'>
           <div className='w-full xl:w-[32rem]'>
             <div className='flex flex-col items-center gap-10'>
               <FaStreetView className='text-4xl xl:text-6xl 2xl:text-9xl' />

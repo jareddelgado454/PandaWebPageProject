@@ -8,9 +8,9 @@ import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { FaApple, FaFacebook } from 'react-icons/fa6';
 import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
-import { getCustomerById } from '@/api';
+import { getCustomerById, getTechnicianById } from '@/api';
 import { UserContext } from '@/contexts/user/UserContext';
-export const SigninModal = ({ isOpen, onOpenChange, setDataSignIn, onOpenVerifyModal }) => {
+export const SigninModal = ({ isOpen, onOpenChange, setDataSignIn, onOpenVerifyModal, user }) => {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const { login } = useContext(UserContext);
@@ -64,6 +64,10 @@ export const SigninModal = ({ isOpen, onOpenChange, setDataSignIn, onOpenVerifyM
                         login({ role, expiredAt, id: userSub, ...data });
                         setLoading(false);
                         router.push("/customer");
+                    }  else if (role === "technician") {
+                        const data = await getTechnicianById(userSub);
+                        login({ role, expiredAt, id: userSub, ...data });
+                        router.push("/user");
                     }
                 default:
                     break;
@@ -80,7 +84,7 @@ export const SigninModal = ({ isOpen, onOpenChange, setDataSignIn, onOpenVerifyM
                 {() => (
                     <>
                         <ModalHeader className='w-full'>
-                            <p className='text-center w-full text-2xl text-[#E6D5C9] tracking-widest'>Signin as Customer</p>
+                            <p className='text-center w-full text-2xl text-[#E6D5C9] tracking-widest capitalize'>Signin as {user}</p>
                         </ModalHeader>
                         <ModalBody>
                             <Image src={'/panda.webp'} width={150} height={150} alt='Panda_Logo_Web' className='mx-auto' />
