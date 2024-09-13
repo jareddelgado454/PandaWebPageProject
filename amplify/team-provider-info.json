@@ -52,6 +52,10 @@
         "paymentsForFinancialDashboard": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
           "s3Key": "amplify-builds/paymentsForFinancialDashboard-4b686d6b647575416872-build.zip"
+        },
+        "filterServicesQuery": {
+          "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
+          "s3Key": "amplify-builds/filterServicesQuery-70694e782f3730424370-build.zip"
         }
       },
       "auth": {
