@@ -9,3 +9,6 @@ export { default as FooterSection } from './sections/Footer';
 
 export { default as BannerCustomerSection } from './customer/Banner';
 export { default as DownloadCustomerSection } from './customer/Download';
+
+export { default as BannerTechnicianSection } from './technician/Banner';
+export { default as DownloadTechnicianSection } from './technician/Download';

@@ -5,9 +5,9 @@ import Image from 'next/image';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-import { handleCreateCustomerOnDataBase } from '@/api';
+import { handleCreateCustomerOnDataBase, handleCreateTechnicianOnDataBase } from '@/api';
 import { signUp } from 'aws-amplify/auth';
-export const SignupModal = ({ isOpen, onOpenChange, onOpen, setDataSignIn, onOpenVerifyModal, setResultData }) => {
+export const SignupModal = ({ isOpen, onOpenChange, onOpen, setDataSignIn, onOpenVerifyModal, setResultData, user }) => {
     const SignupSchema = Yup.object().shape({
         fullName: Yup.string().required('Full name is required'),
         email: Yup.string().email('Invalid email address').required('Email is required'),
@@ -33,6 +33,19 @@ export const SignupModal = ({ isOpen, onOpenChange, onOpen, setDataSignIn, onOpe
             console.error(error);
         }
     }
+    const onCreateTechnicianToDB = async (userId, values, isAdded) => {
+        try {
+          const { createTechnician } = await handleCreateTechnicianOnDataBase({
+            id: userId,
+            fullName: values.fullName,
+            email: values.email,
+            status: "active"
+          }, isAdded);
+          return createTechnician;
+        } catch (error) {
+          console.error(error);
+        }
+      }
     const onHandleSignup = async (values) => {
         try {
             const { userId, nextStep } = await signUp({
@@ -41,7 +54,7 @@ export const SignupModal = ({ isOpen, onOpenChange, onOpen, setDataSignIn, onOpe
                 options: {
                     userAttributes: {
                         email: values.email,
-                        "custom:role": "customer",
+                        "custom:role": user,
                         "custom:fullName": values.fullName,
                         "custom:status": "active",
                         "custom:termsAccepted": values.privacyAccepted && values.termsAccepted ? "true" : "false",
@@ -58,9 +71,21 @@ export const SignupModal = ({ isOpen, onOpenChange, onOpen, setDataSignIn, onOpe
                 email: values.email,
                 password: values.password
             });
-            const returnedData = await onCreateCustomerToDB(userId, dataObject, isAdded);
-            console.log(returnedData);
-            setResultData({...returnedData})
+            switch (user) {
+                case 'customer':
+                    returnedData = await onCreateCustomerToDB(userId, dataObject, isAdded);
+                    setResultData({...returnedData})
+                    break;
+      
+                case 'technician':
+                  returnedData = await onCreateTechnicianToDB(userId, values, isAdded);
+                  setResultData({...returnedData})
+                  break;
+      
+                default:
+                  return;
+            }
+            
             if (nextStep?.signUpStep === "CONFIRM_SIGN_UP") {
                 onOpen(false);
                 onOpenVerifyModal(true);
@@ -79,7 +104,7 @@ export const SignupModal = ({ isOpen, onOpenChange, onOpen, setDataSignIn, onOpe
                 {() => (
                     <>
                         <ModalHeader className='w-full'>
-                            <p className='text-center w-full text-2xl text-[#E6D5C9] tracking-widest'>Signup as Customer</p>
+                            <p className='text-center w-full text-2xl text-[#E6D5C9] tracking-widest capitalize'>Signup as {user}</p>
                         </ModalHeader>
                         <ModalBody>
                             <Image src={'/panda.webp'} width={150} height={150} alt='Panda_Logo_Web' className='mx-auto' />

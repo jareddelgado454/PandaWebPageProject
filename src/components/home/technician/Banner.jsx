@@ -1,11 +1,12 @@
 'use client';
-import React, { useState } from 'react'
-import Image from 'next/image'
-import { useDisclosure } from '@nextui-org/react';
-import { SigninModal } from '../modals/SigninModal';
-import { SignupModal } from '../modals/SignupModal';
 import VerificationCodeModal from '@/components/LoginRegister/modals/VerificationCodeModal';
+import Image from 'next/image';
 import Link from 'next/link';
+import React, { useState } from 'react'
+import { SigninModal } from '../modals/SigninModal';
+import { useDisclosure } from '@nextui-org/react';
+import { SignupModal } from '../modals/SignupModal';
+
 const Banner = () => {
     const [dataSignUp, setDataSignIn] = useState({
         email: '',
@@ -34,10 +35,10 @@ const Banner = () => {
                 onOpenChange={onVerifyCodeModalOpenChange}
                 dataSignIn={{ email: dataSignUp.email, password: dataSignUp.password }}
                 resultData={resultData}
-                roleSelected={"customer"}
+                roleSelected={"technician"}
             />
-            <SigninModal isOpen={isSignInModalOpen} onOpenChange={onSignInModalChange} setDataSignIn={setDataSignIn} onOpenVerifyModal={onVerifyCodeModalOpen} user={'customer'} />
-            <SignupModal isOpen={isSignUpModalOpen} onOpen={onSignUpModalOpen} onOpenChange={onSignUpModalChange} setDataSignIn={setDataSignIn} onOpenVerifyModal={onVerifyCodeModalOpen} setResultData={setResultData} user={'customer'} />
+            <SigninModal isOpen={isSignInModalOpen} onOpenChange={onSignInModalChange} setDataSignIn={setDataSignIn} onOpenVerifyModal={onVerifyCodeModalOpen} user={'technician'} />
+            <SignupModal isOpen={isSignUpModalOpen} onOpen={onSignUpModalOpen} onOpenChange={onSignUpModalChange} setDataSignIn={setDataSignIn} onOpenVerifyModal={onVerifyCodeModalOpen} setResultData={setResultData} user={'technician'} />
             <div className='flex flex-row items-center'>
                 <Link href={'/'} className='flex flex-row gap-2 items-center'>
                     <Image src={'/panda.webp'} width={200} height={200} className='w-[5rem] h-[4rem]' alt='Panda_Logo_web' />
@@ -48,7 +49,7 @@ const Banner = () => {
                 <div className='flex flex-col justify-center items-center gap-7 h-[65%] w-[100%] 2xl:w-[40%] select-none'>
                     <p className='text-[#E6D5C9] font-black tracking-wider text-3xl 2xl:text-6xl text-center'>Customer App</p>
                     <p className='text-[#E6D5C9]/60 text-sm 2xl:text-base px-16 text-center'>
-                        Welcome to Panda Customer App, the easiest way to request vehicle repair services right from your location! Whether your car breaks down or needs maintenance, you can instantly connect with nearby technicians using real-time geolocation.
+                    Welcome to Panda Technician App, the most efficient platform for providing vehicle repair services directly where the customer needs you. Instantly connect with nearby users using real-time geolocation and respond to service requests to solve any issues on-site quickly and effectively.
                     </p>
                     <div className='flex flex-row gap-5'>
                         <button className='border-2 border-[#40c48e] text-white tracking-wider rounded-3xl px-5 py-2 cursor-pointer transition-all ease-in-out hover:bg-green-panda hover:font-semibold hover:-translate-y-1 hover:scale-110 duration-300'
@@ -71,10 +72,10 @@ const Banner = () => {
                         </button> */}
                     </div>
                 </div>
-                <Image src='/image/home/user_location.webp' width={500} height={500} alt='User_location_icon' className='drop-shadow-2xl' />
+                <Image src='/image/home/technician.webp' width={500} height={500} alt='User_location_icon' className='drop-shadow-2xl' />
             </div>
         </div>
     )
 }
 
-export default Banner
+export default Banner;
