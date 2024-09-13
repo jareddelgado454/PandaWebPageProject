@@ -1,11 +1,19 @@
-import { Tooltip } from '@nextui-org/react';
-import Link from 'next/link';
+'use client';
 import React from 'react'
+import { Tooltip, useDisclosure } from '@nextui-org/react';
+import Link from 'next/link';
 import { FaBrain, FaMoneyCheckDollar, FaScrewdriverWrench, FaStreetView } from 'react-icons/fa6';
+import { PlansModal } from './modals/PlansModal';
 
 export const FloatSidebar = () => {
+  const {
+    isOpen: isPlansModalOpen,
+    onOpen: onPlansModalOpen,
+    onOpenChange: onPlansModalOpenChange,
+} = useDisclosure();
   return (
     <div className='fixed bg-[#18181B]/60 rounded-lg shadow-lg px-5 py-5 text-[#E6D5C9] left-4 top-[35%] z-10'>
+        <PlansModal isOpen={isPlansModalOpen} onOpenChange={onPlansModalOpenChange} />
         <div className='flex flex-col gap-6'>
             <Link href={'/home/customer'}>
               <Tooltip placement='right' content="Customer Page">
@@ -19,7 +27,7 @@ export const FloatSidebar = () => {
               <FaBrain className='text-2xl cursor-pointer ease-in-out hover:font-semibold hover:-translate-y-1 hover:scale-110 duration-300' />
             </Tooltip>
             <Tooltip placement='right' content="Plans & Prices">
-              <FaMoneyCheckDollar className='text-2xl cursor-pointer ease-in-out hover:font-semibold hover:-translate-y-1 hover:scale-110 duration-300' />
+              <FaMoneyCheckDollar onClick={onPlansModalOpen} className='text-2xl cursor-pointer ease-in-out hover:font-semibold hover:-translate-y-1 hover:scale-110 duration-300' />
             </Tooltip>
         </div>
     </div>
