@@ -3,20 +3,47 @@ import React, { useState } from 'react';
 import { faq } from '@/assets/data/Faq';
 const AskedQuestion = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [touchStart, setTouchStart] = useState(0);
+    const [touchEnd, setTouchEnd] = useState(0);
 
     const nextSlide = () => {
         setCurrentIndex((prevIndex) =>
-            prevIndex === plants.length - 1 ? 0 : prevIndex + 1
+            prevIndex === faq.length - 1 ? 0 : prevIndex + 1
         );
     };
 
     const prevSlide = () => {
         setCurrentIndex((prevIndex) =>
-            prevIndex === 0 ? plants.length - 1 : prevIndex - 1
+            prevIndex === 0 ? faq.length - 1 : prevIndex - 1
         );
     };
+      // Handles touch start
+      const handleTouchStart = (e) => {
+        setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    // Handles touch move
+    const handleTouchMove = (e) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    // Detects swipe direction
+    const handleTouchEnd = () => {
+        if (touchStart - touchEnd > 50) {
+            nextSlide(); // swipe left
+        }
+
+        if (touchStart - touchEnd < -50) {
+            prevSlide(); // swipe right
+        }
+    };
+
     return (
-        <div className='relative w-full max-w-4xl mx-auto my-8 flex flex-col gap-5' >
+        <div className='relative w-full max-w-4xl mx-auto my-8 flex flex-col gap-5 cursor-grabbing px-3 md:px-0'
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+        >
             <p className='text-center text-[#E6D5C9]/60 font-semibold text-xs xl:text-lg'>Frequent Asked</p>
             <p className='text-center text-2xl xl:text-6xl 2xl:text-7xl font-black tracking-wider text-[#E6D5C9]'>Questions</p>
             <div className='flex transition-transform duration-500 ease-in-out'>
