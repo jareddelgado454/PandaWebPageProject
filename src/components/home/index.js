@@ -12,3 +12,7 @@ export { default as DownloadCustomerSection } from './customer/Download';
 
 export { default as BannerTechnicianSection } from './technician/Banner';
 export { default as DownloadTechnicianSection } from './technician/Download';
+
+export { default as BannerGenerativeSection } from './generative/Banner';
+export { default as AboutGenerativeSection } from './generative/About';
+export { default as TestimonialsGenerativeSection } from './generative/Testimonials';

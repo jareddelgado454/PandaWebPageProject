@@ -21,7 +21,9 @@ export const FloatSidebar = () => {
         <Link href={'/home/technician'}>
           <FaScrewdriverWrench className='text-2xl cursor-pointer ease-in-out hover:font-semibold hover:-translate-y-1 hover:scale-110 duration-300' />
         </Link>
-        <FaBrain className='text-2xl cursor-pointer ease-in-out hover:font-semibold hover:-translate-y-1 hover:scale-110 duration-300' />
+        <Link href={'/home/generative'}>
+          <FaBrain className='text-2xl cursor-pointer ease-in-out hover:font-semibold hover:-translate-y-1 hover:scale-110 duration-300' />
+        </Link>
         <FaMoneyCheckDollar onClick={onPlansModalOpen} className='text-2xl cursor-pointer ease-in-out hover:font-semibold hover:-translate-y-1 hover:scale-110 duration-300' />
       </div>
     </div>
