@@ -12,7 +12,7 @@ export const FloatSidebar = () => {
     onOpenChange: onPlansModalOpenChange,
   } = useDisclosure();
   return (
-    <div className='fixed bg-[#18181B]/60 rounded-lg shadow-lg px-5 py-5 text-[#E6D5C9] right-4 top-[35%] z-10'>
+    <div className='fixed bg-[#18181B]/60 rounded-lg shadow-lg px-5 py-5 text-[#E6D5C9] right-4 top-[35%] z-20'>
       <PlansModal isOpen={isPlansModalOpen} onOpenChange={onPlansModalOpenChange} />
       <div className='flex flex-col gap-6'>
         <Link href={'/home/customer'}>
