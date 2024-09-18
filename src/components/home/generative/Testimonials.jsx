@@ -1,7 +1,7 @@
 'use client';
 import { testimonials } from '@/assets/data/Testimonials';
 import React, { useState } from 'react'
-
+import { faq } from '@/assets/data/Faq';
 const Testimonials = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [touchStart, setTouchStart] = useState(0);
@@ -52,19 +52,19 @@ const Testimonials = () => {
                         key={i}
                         className={`w-full ${i === currentIndex ? 'block' : 'hidden'}`}
                     >
-                        <div className='p-4 bg-zinc-900 rounded-lg shadow-md h-[18rem]'>
-                            <div className="mt-4 flex flex-col justify-center gap-5 h-full">
+                        <div className='py-2 px-4 bg-zinc-900 rounded-lg shadow-md h-[18rem]'>
+                            <div className="mt-2 flex flex-col justify-center gap-3 md:gap-5 h-full">
                                 <div className='flex flex-row gap-4'>
-                                    <div className='bg-zinc-700 h-[4rem] w-[4rem] rounded-full'></div>
+                                    <div className='bg-zinc-700 w-[2rem] h-[2rem] md:h-[4rem] md:w-[4rem] rounded-full'></div>
                                     <div className='flex flex-col gap-1'>
                                         <p className='font-semibold'>Johan Del Rio</p>
                                         <p className='text-xs text-[#E6D5C9]/50'>{i} days ago</p>
                                     </div>
                                 </div>
                                 <div>
-                                    <h2 className="text-lg font-semibold text-[#E6D5C9]">{item.title}</h2>
+                                    <p className="text-sm md:text-lg font-semibold text-[#E6D5C9]">{item.title}</p>
                                 </div>
-                                <p className="text-zinc-400 leading-loose tracking-widest">{item.description}</p>
+                                <p className="text-zinc-400 text-xs leading-loose tracking-widest">{item.description}</p>
                             </div>
                         </div>
                     </div>
