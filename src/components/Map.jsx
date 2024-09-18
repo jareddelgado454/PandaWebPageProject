@@ -14,6 +14,7 @@ import "maplibre-gl-js-amplify/dist/public/amplify-map.css";
 export default function Map({ userMarkerRef }) {
   const mapDiv = useRef(null);
   const technicianMarkerRef = useRef(null);
+  const technicianMarkers = useRef({});
   const { userLocation, isLoading } = useContext(PlaceContext);
   const { map, setMap, isMapReady } = useContext(MapContext);
   const { serviceRequest, setServiceRequest, setServiceCoordinates } = useContext(ServiceContext);
@@ -59,7 +60,7 @@ export default function Map({ userMarkerRef }) {
         });
         setMap(mapC);
         if (serviceRequest) {
-          displayTechnicianMarker(mapC, serviceRequest.destLatitude, serviceRequest.destLongitude);
+          displayTechnicianMarker(mapC, serviceRequest.serviceTechnicianSelectedId,serviceRequest.destLatitude, serviceRequest.destLongitude);
         }
         if (userLocation) {
           mapC.flyTo({
@@ -80,21 +81,30 @@ export default function Map({ userMarkerRef }) {
     };
     initializeMap();
   }, [isLoading]);
-  const displayTechnicianMarker = (mapC, destLatitude = 0, destLongitude = 0) => {
-    const technicianMarker = document.createElement('div');
-    technicianMarker.className = 'technician-marker';
-
-    technicianMarkerRef.current = new maplibregl.Marker({ element: technicianMarker })
-      .setLngLat([destLongitude, destLatitude])
-      .addTo(mapC);
+  const displayTechnicianMarker = (mapC, id, destLatitude = 0, destLongitude = 0) => {
+    if (technicianMarkers.current[id]) {
+      const startCoords = technicianMarkers.current[id].getLngLat().toArray();
+      const endCoords = [destLongitude, destLatitude];
+      animateMarker(technicianMarkers.current[id], startCoords, endCoords, 1500);
+      technicianMarkers.current[id].setLngLat(endCoords);
+      const angleDegrees = CalculateAngleFromLocation(startCoords, endCoords);
+      technicianMarkers.current[id].setRotation(angleDegrees);
+    } else {
+      const technicianMarker = document.createElement('div');
+      technicianMarker.className = 'technician-marker';
+      const newMarker = new maplibregl.Marker({ element: technicianMarker })
+        .setLngLat([destLongitude, destLatitude])
+        .addTo(mapC);
+      technicianMarkers.current[id] = newMarker;
+    }
   };
 
   useEffect(() => {
     if ((isMapReady && map) && serviceRequest) {
-      const { destLatitude, destLongitude } = serviceRequest;
+      const { destLatitude, destLongitude, serviceTechnicianSelectedId } = serviceRequest;
 
       if (!technicianMarkerRef.current) {
-        displayTechnicianMarker(map, destLatitude || 0, destLongitude || 0);
+        displayTechnicianMarker(map, serviceTechnicianSelectedId,destLatitude || 0, destLongitude || 0);
       } else {
         const startCoords = technicianMarkerRef.current.getLngLat().toArray();
         const endCoords = [destLongitude || 0, destLatitude || 0];
@@ -141,7 +151,7 @@ export default function Map({ userMarkerRef }) {
           // console.log(data);
           const arrayTechnicians = data.getNearbyTechnicians;
           arrayTechnicians.map((technician) => {
-            displayTechnicianMarker(map, technician.loLatitude, technician.loLongitude);
+            displayTechnicianMarker(map, technician.id, technician.loLatitude, technician.loLongitude);
           });
         }
       } catch (error) {
