@@ -4,9 +4,11 @@ const stripe = require('stripe')(TEST_SECRET_KEY);
 exports.handler = async (event) => {
   try {
     const requestBody = JSON.parse(event.body);
-    const { total, serviceAssigned, applicationFeeAmount, userEmail } = requestBody;
-
-    console.log('Received data:', requestBody);
+    const { total, serviceAssigned, applicationFeeAmount, userEmail, typeAccount } = requestBody;
+    let feeAmount = 0;
+    if (typeAccount === "free") {
+      feeAmount = Math.round(total * 10);
+    }
 
     if (!total || !serviceAssigned || !applicationFeeAmount || !userEmail) {
       return {
@@ -39,7 +41,7 @@ exports.handler = async (event) => {
         ],
         mode: 'payment',
         payment_intent_data: {
-          application_fee_amount: Math.round(total * 10),
+          application_fee_amount: feeAmount,
           metadata: {
             serviceType: serviceAssigned.type,
           },

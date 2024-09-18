@@ -34,7 +34,7 @@
         },
         "stripePaymentGenerate": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/stripePaymentGenerate-7a2b75314261744c7a48-build.zip"
+          "s3Key": "amplify-builds/stripePaymentGenerate-67646549573776734d51-build.zip"
         },
         "PaymentSubscriptionNodeEnviroment": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
@@ -46,7 +46,7 @@
         },
         "filterTechniciansQuery": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/filterTechniciansQuery-2b304b59683476345a6b-build.zip"
+          "s3Key": "amplify-builds/filterTechniciansQuery-6834486534392f396e38-build.zip"
         },
         "cancelSubscriptionPlan": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
@@ -58,11 +58,18 @@
         },
         "filterServicesQuery": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/filterServicesQuery-70694e782f3730424370-build.zip"
+          "s3Key": "amplify-builds/filterServicesQuery-52646951673053504a75-build.zip"
         }
       },
       "storage": {
         "pandawebapp": {}
+      },
+      "api": {
+        "pandawebapp": {}
+      },
+      "geo": {
+        "ThePandaLocationSearchIndex": {},
+        "pandamap": {}
       }
     }
   }
