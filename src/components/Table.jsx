@@ -11,6 +11,7 @@ import {
 import { useDisclosure } from "@nextui-org/react";
 import { deleteUserById } from "@/graphql/users/mutation/users";
 import Image from "next/image";
+import { baseUrl } from "@/utils/CloudFront";
 export const Table = ({ item, callback, typeUser }) => {
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
@@ -203,7 +204,7 @@ export const Table = ({ item, callback, typeUser }) => {
                   <Image
                     src={
                       user.profilePicture
-                        ? user.profilePicture
+                        ? `${baseUrl + user.profilePicture}`
                         : "/image/defaultProfilePicture.jpg"
                     }
                     alt="logo_image"
