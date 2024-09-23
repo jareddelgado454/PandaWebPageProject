@@ -98,7 +98,7 @@ export default function ContactsComponent({ setChatActive, setChatSelected }) {
                   </div>
                 </div>
                 <div className='flex flex-col gap-2'>
-                  <p className='text-zinc-300/80 text-xs md:text-base'>{chat.messages.items.length > 0 && formatDistance(new Date(chat.messages.items[chat.messages.items.length - 1].createdAt), new Date(), { addSuffix: true })}</p>
+                  <p className='text-black font-medium dark:text-zinc-300/80 text-xs md:text-base'>{chat.messages.items.length > 0 && formatDistance(new Date(chat.messages.items[chat.messages.items.length - 1].createdAt), new Date(), { addSuffix: true })}</p>
                 </div>
               </div>
             ))}
