@@ -15,7 +15,7 @@ const Service = () => {
               <div className='flex flex-col gap-3'>
                 <p className='font-semibold tracking-widest text-center 2xl:text-xl'>Customer App</p>
                 <p className='text-xs xl:text-base font-medium tracking-widest text-center text-[#E6D5C9]/70 px-4'>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                ¡The easiest way to request vehicle repair services right from your location!
                 </p>
               </div>
             </div>
@@ -26,7 +26,7 @@ const Service = () => {
               <div className='flex flex-col gap-3'>
                 <p className='font-semibold tracking-widest text-center 2xl:text-xl'>Customer App</p>
                 <p className='text-xs xl:text-base font-medium tracking-widest text-center text-[#E6D5C9]/70 px-4'>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  The most efficient platform for providing vehicle repair services directly where the customer needs you.
                 </p>
               </div>
             </div>
@@ -37,7 +37,7 @@ const Service = () => {
               <div className='flex flex-col gap-3'>
                 <p className='font-semibold tracking-widest text-center 2xl:text-xl'>Customer App</p>
                 <p className='text-xs xl:text-base font-medium tracking-widest text-center text-[#E6D5C9]/70 px-4'>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Generative A.I Project to create personalized, step-by-step repair guides tailored to individual skill levels, learning preferences and more.
                 </p>
               </div>
             </div>
