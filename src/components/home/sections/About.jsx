@@ -11,7 +11,7 @@ const About = () => {
         <p className='text-center text-[#E6D5C9]/60 font-semibold text-xs xl:text-lg'>Let us introduce ourselves</p>
         <p className='text-center text-3xl xl:text-6xl 2xl:text-8xl font-black tracking-wider'>About Us</p>
         <p className='text-justify tracking-wider text-sm leading-9'>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          {`Our founders have a long family history in the auto industry and a deep empathy for small business owners and barriers to success. We combined those two areas that we are highly passionate about and came to this wonderful conclusion. We care deeply about people and strongly believe that our experiences and expertise can help to empower people.`}
         </p>
       </div>
     </div>
