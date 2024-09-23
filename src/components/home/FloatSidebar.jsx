@@ -11,7 +11,6 @@ export const FloatSidebar = () => {
     onOpen: onPlansModalOpen,
     onOpenChange: onPlansModalOpenChange,
   } = useDisclosure();
-
   return (
     <div className='fixed bg-[#18181B]/60 rounded-lg shadow-lg px-5 py-5 text-[#E6D5C9] right-4 top-[35%] z-20'>
         <PlansModal isOpen={isPlansModalOpen} onOpenChange={onPlansModalOpenChange} />
