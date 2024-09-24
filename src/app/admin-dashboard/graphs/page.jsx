@@ -5,6 +5,7 @@ import { client } from '@/contexts/AmplifyContext';
 import HighRateComponent from '@/components/chartjs/highRate/HighRateComponent';
 import MonthlyComponent from '@/components/chartjs/monthlyServices/MonthlyComponent';
 import MonthGoalComponent from '@/components/chartjs/MonthlyGoal/MonthGoalComponent';
+import { HighRateCustomerComponent } from '@/components/chartjs/highRate/HighRateCustomerComponent';
 const Graphs = () => {
 
   const [loading, setLoading] = useState(true);
@@ -50,7 +51,7 @@ const Graphs = () => {
             </div>
             <div className='bg-zinc-800 rounded-lg h-full p-7 flex flex-col gap-4 col-span-2 overflow-auto'>
               <p className='font-bold text-lg'>Customers with High Rate</p>
-              {/* <HighRateComponent technicians={data.technicians} /> */}
+              <HighRateCustomerComponent customers={data.customers} />
             </div>
           </div>
         </>

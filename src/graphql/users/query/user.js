@@ -36,6 +36,12 @@ export const listDataToGraphs = gql`
         email
         status
         profilePicture
+        rate{
+          items{
+            id
+            rate
+          }
+        }
         createdAt
       }
     }

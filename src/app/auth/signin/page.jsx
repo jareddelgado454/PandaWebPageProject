@@ -16,7 +16,6 @@ import { Hub } from "aws-amplify/utils";
 import { Formik, Form, Field } from "formik";
 import {
   signIn,
-  signOut,
   fetchUserAttributes,
   fetchAuthSession,
 } from "aws-amplify/auth";
@@ -220,11 +219,7 @@ const SignIn = () => {
                         <p>{errorMessage.message}</p>
                       </div>
                     )}
-                    <button type="button" onClick={signOut}>
-                      Logout
-                    </button>
                   </div>
-                  <span></span>
                 </Form>
               )}
             </Formik>

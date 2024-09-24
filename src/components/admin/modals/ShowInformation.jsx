@@ -12,6 +12,7 @@ import {
 import { DateFormatter } from "@/utils/parseDate";
 import { AdminSetUserPassword } from "@/api/sdk";
 import { generateTempoPassword } from "@/utils/GenerateTempoPassword";
+import { baseUrl } from "@/utils/CloudFront";
 const ShowInformation = ({ isOpen, onOpenChange, user }) => {
     const handleSetUserPassword = async() => {
         const passwordGenerated = generateTempoPassword();
@@ -29,7 +30,7 @@ const ShowInformation = ({ isOpen, onOpenChange, user }) => {
                     <ModalBody className="flex flex-col lg:flex-row gap-10 justify-center">
                         <div className="flex items-center">
                             <Image
-                                src={user.profilePicture ? user.profilePicture : '/image/defaultProfilePicture.jpg'}
+                                src={user.profilePicture ? baseUrl + user.profilePicture : '/image/defaultProfilePicture.jpg'}
                                 alt="user_image_modalShow"
                                 width={450}
                                 height={450}
