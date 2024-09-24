@@ -17,12 +17,16 @@ const Banner = () => {
           <source src={`${baseUrl}home/Background_IA.mp4`} type='video/mp4' />
           Your browser not supports this tag
         </video>
-        <div className='flex flex-row justify-between items-center p-4'>
+        <div className='flex flex-row justify-between items-center p-4 '>
           <Link href={'/'} className='flex flex-row gap-2 items-center bg-zinc-900/60 p-2 rounded-3xl'>
             <Image src={'/panda.webp'} width={200} height={200} className='w-[5rem] h-[4rem]' alt='Panda_Logo_web' />
             <p className='text-[#E6D5C9] text-2xl tracking-widest font-semibold'>Panda</p>
           </Link>
-          <div></div>
+          <Link href={"/home/generative/students"}>
+            <button className='bg-emerald-300 rounded-lg px-4 py-2 justify-center items-center hover:bg-emerald-400 transition-all'>
+              <p className='text-black font-bold'>Students</p>
+            </button>
+          </Link>
         </div>
         <div className='flex flex-wrap md:flex-nowrap m-4 gap-4 absolute top-[30%] left-0'>
           <div className='w-full md:w-[40%] bg-zinc-900/60 py-6 px-8 flex flex-col gap-8 rounded-lg'>
