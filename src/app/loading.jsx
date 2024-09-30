@@ -2,7 +2,7 @@ import React from 'react'
 
 const Loading = () => {
   return (
-    <div className='w-full h-screen flex items-center justify-center bg-zinc-900 text-white text-[40px]'>
+    <div className='w-full h-screen flex items-center justify-center bg-darkBlack text-white text-[40px]'>
         <div className='flex rotate-[30deg] justify-center items-center h-full gap-8'>
             <div className="wrapper">
                 <div className="gear">

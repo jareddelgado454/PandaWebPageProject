@@ -83,7 +83,7 @@ const ModalDetailRequest = ({
           offerTechnicianId: technicianId,
           amount: pricesTechnician.repairPriceHour,
           serviceId: id,
-          status: "accepted",
+          status: "pending",
           text: "Queres ser tu propio jefe?",
         });
         console.log("Succesfull sended offer", data);

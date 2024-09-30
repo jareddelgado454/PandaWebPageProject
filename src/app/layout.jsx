@@ -5,14 +5,15 @@ import { PlaceProvider } from '@/contexts/place/PlaceProvider';
 import { MapProvider } from '@/contexts/map/MapProvider';
 import { UserProvider } from '@/contexts/user/UserProvider';
 import ServiceAssignedProvider from "@/contexts/serviceAssigned/ServiceAssignedProvider";
+import { chakra_Petch, jost } from "@/assets/fonts/fonts";
 export const metadata = {
   title: "The Panda App",
   description: "The Panda is a mobile auto repair service CRM",
 };
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="h-full bg-zinc-900 overflow-y-auto md:max-h-screen ">
-      <body className={`antialiased`}>
+    <html lang="en" className="h-full bg-darkBlack overflow-y-auto md:max-h-screen ">
+      <body className={`${chakra_Petch.variable} ${jost.variable} antialiased`}>
         <UserProvider>
           <ServiceAssignedProvider>
             <PlaceProvider>

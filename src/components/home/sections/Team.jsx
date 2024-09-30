@@ -1,63 +1,129 @@
-import Image from 'next/image'
-import React from 'react'
+import Image from "next/image";
+import React from "react";
+import { FiArrowRight } from "react-icons/fi"; // Importamos el ícono para la redirección
 
 const Team = () => {
   return (
-    <div className='py-2 px-4' id="Team-Section">
-      <div className='flex justify-center items-center flex-wrap text-[#E6D5C9] xl:mt-16'>
-        <div className='w-full flex flex-col gap-2 items-center mt-16 mb-16'>
-          <p className='text-[#E6D5C9]/60 font-semibold text-xs xl:text-lg'>Look Our</p>
-          <p className='text-2xl xl:text-6xl 2xl:text-7xl font-black tracking-wider'>Team</p>
+    <div
+      className="w-full flex justify-center py-2 px-4 bg-gradient-to-b from-meant to-meantDark"
+      id="Team-Section"
+    >
+      <div className="flex w-[80%] justify-center items-center flex-wrap text-darkBlack xl:mt-6">
+        <div className="w-full flex flex-row gap-2 items-center mt-6 mb-10">
+          <p className="text-darkBlack font-semibold text-xs xl:text-lg">
+            Look Our
+          </p>
+          <p className="font-chackra text-2xl xl:text-6xl 2xl:text-7xl font-black ">
+            Team
+          </p>
         </div>
-        <div className='flex flex-col md:flex-row flex-wrap gap-y-8 justify-between w-full md:w-[65%]'>
-          <div className='flex flex-col gap-4 items-center'>
-            <Image
-              src={'/image/Team/Charles.jpg'}
-              width={450}
-              height={450}
-              alt='Panda_Charles_Mims'
-              className='rounded-full w-[10rem] h-[10rem] xl:w-[12rem] xl:h-[12rem] border-3 border-[#C0B2A9] object-cover'
-            />
-            <p className='bg-zinc-900/50 px-16 py-4 rounded-3xl text-lg font-semibold tracking-wider text-center'>Charles Mims</p>
-            <p className='tracking-widest'>CEO</p>
+
+        {/* Contenedor de las cards usando Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 w-full mb-16">
+          {/* Card 1 con borde personalizado */}
+          <div className="relative p-[2px] bg-gradient-to-br from-midgray to-darkblack rounded-xl">
+            <div className="flex flex-col bg-meantExtraDark rounded-xl shadow-xl transition-all duration-300 hover:shadow-2xl overflow-hidden">
+              <div className="overflow-hidden w-full rounded-t-xl">
+                <Image
+                  src={"/image/Team/Charles.jpg"}
+                  width={400}
+                  height={350}
+                  alt="Panda_Charles_Mims"
+                  className="object-cover h-[350px] w-full transition-transform duration-300 hover:scale-110"
+                />
+              </div>
+              <div className="flex flex-col px-4 py-4">
+                <p className="font-chackra text-[25px] font-semibold text-lightWhite">
+                  Charles Mims
+                </p>
+                <p className="font-chackra text-[18px] text-zinc-300">CEO</p>
+                <hr className="w-full border-t border-midMeant my-2" />
+                <button className="flex items-center gap-2 text-sm text-[#E6D5C9]/80 hover:text-[#E6D5C9]">
+                  View Contact <FiArrowRight className="text-xl" />
+                </button>
+              </div>
+            </div>
           </div>
-          <div className='flex flex-col gap-4 items-center'>
-            <Image
-              src={'/image/Team/Neil.jpg'}
-              width={450}
-              height={450}
-              alt='Panda_Neil_Brown'
-              className='rounded-full w-[10rem] h-[10rem] xl:w-[12rem] xl:h-[12rem] border-3 border-[#C0B2A9] object-cover'
-            />
-             <p className='bg-zinc-900/50 px-16 py-4 rounded-3xl text-lg font-semibold tracking-wider text-center'>Neil Brown</p>
-             <p className='tracking-widest'>CTO</p>
+
+          {/* Aquí puedes seguir replicando la misma estructura para las otras cards */}
+          
+          <div className="relative p-[2px] bg-gradient-to-br from-midgray to-darkblack rounded-xl">
+            <div className="flex flex-col bg-meantExtraDark rounded-xl shadow-xl transition-all duration-300 hover:shadow-2xl">
+              <div className="overflow-hidden w-full rounded-t-xl">
+                <Image
+                  src={"/image/Team/Neil.jpg"}
+                  width={400}
+                  height={350}
+                  alt="Panda_Neil_Brown"
+                  className="object-cover h-[350px] w-full transition-transform duration-300 hover:scale-110"
+                />
+              </div>
+              <div className="flex flex-col px-4 py-4">
+                <p className="font-chackra text-[25px] font-semibold text-lightWhite">
+                  Neil Brown
+                </p>
+                <p className="font-chackra text-[18px] text-zinc-300">CTO</p>
+                <hr className="w-full border-t border-midMeant my-2" />
+                <button className="flex items-center gap-2 text-sm text-[#E6D5C9]/80 hover:text-[#E6D5C9]">
+                  View Contact <FiArrowRight className="text-xl" />
+                </button>
+              </div>
+            </div>
           </div>
-          <div className='flex flex-col gap-4 items-center'>
-            <Image
-              src={'/image/Team/Jared.webp'}
-              width={450}
-              height={450}
-              alt='Panda_Neil_Brown'
-              className='rounded-full w-[10rem] h-[10rem] xl:w-[12rem] xl:h-[12rem] border-3 border-[#C0B2A9] object-cover'
-            />
-             <p className='bg-zinc-900/50 px-16 py-4 rounded-3xl text-lg font-semibold tracking-wider text-center'>Jared Delgado</p>
-             <p className='tracking-widest'>Developer</p>
+
+          {/* Card 3 */}
+          <div className="relative p-[2px] bg-gradient-to-br from-midgray to-darkblack rounded-xl">
+            <div className="flex flex-col bg-meantExtraDark rounded-xl shadow-xl transition-all duration-300 hover:shadow-2xl">
+              <div className="overflow-hidden w-full rounded-t-xl">
+                <Image
+                  src={"/image/Team/Jared.webp"}
+                  width={400}
+                  height={350}
+                  alt="Panda_Jared_Delgado"
+                  className="object-cover h-[350px] w-full transition-transform duration-300 hover:scale-110"
+                />
+              </div>
+              <div className="flex flex-col px-4 py-4">
+                <p className="font-chackra text-[25px] font-semibold text-lightWhite">
+                  Jared Delgado
+                </p>
+                <p className="font-chackra text-[18px] text-zinc-300">Developer</p>
+                <hr className="w-full border-t border-midMeant my-2" />
+                <button className="flex items-center gap-2 text-sm text-[#E6D5C9]/80 hover:text-[#E6D5C9]">
+                  View Contact <FiArrowRight className="text-xl" />
+                </button>
+              </div>
+            </div>
           </div>
-          <div className='flex flex-col gap-4 items-center'>
-            <Image
-              src={'/image/Team/David.webp'}
-              width={450}
-              height={450}
-              alt='Panda_Neil_Brown'
-              className='rounded-full w-[10rem] h-[10rem] xl:w-[12rem] xl:h-[12rem] border-3 border-[#C0B2A9] object-cover'
-            />
-             <p className='bg-zinc-900/50 px-16 py-4 rounded-3xl text-lg font-semibold tracking-wider text-center'>Elio David</p>
-             <p className='tracking-widest'>Developer</p>
+
+          {/* Card 4 */}
+          <div className="relative p-[2px] bg-gradient-to-br from-midgray to-darkblack rounded-xl">
+            <div className="flex flex-col bg-meantExtraDark rounded-xl shadow-xl transition-all duration-300 hover:shadow-2xl">
+              <div className="overflow-hidden w-full rounded-t-xl">
+                <Image
+                  src={"/image/Team/David.webp"}
+                  width={400}
+                  height={350}
+                  alt="Panda_Elio_David"
+                  className="object-cover h-[350px] w-full transition-transform duration-300 hover:scale-110"
+                />
+              </div>
+              <div className="flex flex-col px-4 py-4">
+                <p className="font-chackra text-[25px] font-semibold text-lightWhite">
+                  Elio David
+                </p>
+                <p className="font-chackra text-[18px] text-zinc-300">Developer</p>
+                <hr className="w-full border-t border-midMeant my-2" />
+                <button className="flex items-center gap-2 text-sm text-[#E6D5C9]/80 hover:text-[#E6D5C9]">
+                  View Contact <FiArrowRight className="text-xl" />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Team
+export default Team;
