@@ -8,17 +8,6 @@ export const onCreateOffers = gql`
             amount
             status
             serviceId
-            service {
-              customer {
-                fullName
-                profilePicture
-              }
-              car {
-                brand
-                model
-                year
-              }
-            }
             technician {
                 profilePicture
                 id
@@ -29,10 +18,6 @@ export const onCreateOffers = gql`
                     items{
                         id
                         rate
-                        comment
-                        createdById
-                        createdBy
-                        createdAt
                     }
                 }
             }

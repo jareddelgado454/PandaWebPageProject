@@ -6,7 +6,12 @@ export const retrieveMyInformation = gql`
             id
             email
             fullName
+            contactNumber
+            state
+            city
+            address
             profilePicture
+            rate{ items { id rate } }
             createdAt
         }
     }

@@ -47,6 +47,7 @@ export default function OfferDetails() {
       .graphql({ query: onCreateOffers, variables: { serviceId: serviceRequest.id } })
       .subscribe({
         next: ({ data }) => {
+          console.log(data);
           // Update previous state
           setOffers(prevOffers => [...prevOffers, data.onCreateOffer]);
         },
@@ -120,7 +121,7 @@ export default function OfferDetails() {
                       <Image
                         width={100}
                         height={100}
-                        src={`${offer.tecnician && offer.tecnician.profilePicture ? offer.tecnician.profilePicture : '/image/defaultProfilePicture.jpg'}`}
+                        src={`${offer.technician && offer.technician.profilePicture ? offer.technician.profilePicture : '/image/defaultProfilePicture.jpg'}`}
                         className='h-[3rem] w-[3rem] rounded-full'
                         alt="profile_picture_technician_offer"
                       />
@@ -128,7 +129,7 @@ export default function OfferDetails() {
                         <div className='flex flex-row gap-4 justify-between items-center'>
                           <p onClick={() => handleDetailTechnicianModal(offer.technician)} className='text-sm font-semibold 2xl:text-base line-clamp-1 cursor-pointer'>{offer.technician && offer.technician.fullName}</p>
                           <div className='flex gap-2 justify-center items-center'>
-                            {offer.technician.rate ? (
+                            {offer.technician.rate.items.length > 0 ? (
                               <ReactStars
                                 count={5}
                                 value={calculateRate(offer.technician.rate)}
@@ -143,7 +144,7 @@ export default function OfferDetails() {
                             ) : (
                               <p>No rate</p>
                             )}
-                            <p className='text-sm font-bold'>{calculateRate(offer.technician.rate)}</p>
+                            <p className='text-sm font-bold'>{ offer.technician.rate.items.length > 0 && calculateRate(offer.technician.rate)}</p>
                           </div>
                         </div>
                         <p className='text-xs 2xl:text-sm text-zinc-400'>Technician</p>

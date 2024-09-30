@@ -1,12 +1,12 @@
 'use client';
 import React, { useContext, useEffect, useState } from 'react';
+import { formatDistance } from 'date-fns';
 import { Tabs, Tab, useDisclosure } from "@nextui-org/react";
-import { CarsComponent, InformationHeader, UpdateInformationModal } from '@/components/customer';
 import { client } from '@/contexts/AmplifyContext';
+import { CarsComponent, InformationHeader, UpdateInformationModal } from '@/components/customer';
 import { retrieveMyInformation } from '@/graphql/users/customer/query';
 import { UserContext } from '@/contexts/user/UserContext';
 import GearSpinner from '@/components/GearSpinner';
-import { formatDistance } from 'date-fns';
 export default function ClientProfile() {
     const { user: userSaved } = useContext(UserContext);
     const {
