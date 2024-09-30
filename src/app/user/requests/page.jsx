@@ -121,6 +121,7 @@ const Requests = () => {
             newRequest.originLongitude,
             newRequest.originLatitude,
           ]);
+          console.log(distance, "disntanceeeeeeeeeeeeeeee");
           if (
             (filter === "all" || newRequest.type === filter) &&
             distance <= maxDistanceFilterSelected

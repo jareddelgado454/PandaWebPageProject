@@ -28,7 +28,7 @@ const Banner = () => {
         onOpenChange: onVerifyCodeModalOpenChange,
     } = useDisclosure();
     return (
-        <div className='h-full xl:h-screen'>
+        <div className='h-full xl:h-screen flex flex-col items-center'>
             <VerificationCodeModal
                 isOpen={isVerifyCodeModalOpen}
                 onOpenChange={onVerifyCodeModalOpenChange}
@@ -38,10 +38,10 @@ const Banner = () => {
             />
             <SigninModal isOpen={isSignInModalOpen} onOpenChange={onSignInModalChange} setDataSignIn={setDataSignIn} onOpenVerifyModal={onVerifyCodeModalOpen} user={'customer'} />
             <SignupModal isOpen={isSignUpModalOpen} onOpen={onSignUpModalOpen} onOpenChange={onSignUpModalChange} setDataSignIn={setDataSignIn} onOpenVerifyModal={onVerifyCodeModalOpen} setResultData={setResultData} user={'customer'} />
-            <div className='flex flex-row items-center'>
+            <div className='w-[80%]  flex flex-row items-center py-3'>
                 <Link href={'/'} className='flex flex-row gap-2 items-center'>
-                    <Image src={'/panda.webp'} width={200} height={200} className='w-[5rem] h-[4rem]' alt='Panda_Logo_web' />
-                    <p className='text-[#E6D5C9] text-2xl tracking-widest font-semibold'>Panda</p>
+                    <Image src={'/panda.webp'} width={100} height={100} className='w-[60px] h-[50px]' alt='Panda_Logo_web' />
+                    <p className='text-meant text-[25px] font-chackra font-semibold'>The Panda</p>
                 </Link>
             </div>
             <div className='flex flex-col md:flex-row justify-between gap-y-6 w-full h-[80%] items-center'>

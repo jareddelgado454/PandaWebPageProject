@@ -22,7 +22,7 @@ export default function Page() {
     };
     return (
         <HotKeys keyMap={keyMap} handlers={handlers} >
-            <div className='flex-1 h-svh'>
+            <div className='flex-1 h-svh bg-darkBlack'>
                 <FloatSidebar />
                 <BannerSection />
                 <AboutSection />

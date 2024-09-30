@@ -5,6 +5,7 @@ export const createOffer = gql`
       id
       createdAt
       amount
+      offerTechnicianId
       status
       serviceId
       technician {
@@ -15,6 +16,7 @@ export const createOffer = gql`
     		loLongitude
         rate {
           items{
+            id
             rate
           }
         }

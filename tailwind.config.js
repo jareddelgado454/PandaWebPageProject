@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-const {nextui} = require("@nextui-org/react");
+const {nextui, colors} = require("@nextui-org/react");
 module.exports = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -20,7 +20,24 @@ module.exports = {
       },
       backgroundColor: {
         'green-panda': '#40C48E'
-      }
+      },
+      colors: {
+        meant:"#5FFFA0",
+        midMeant : "#43ae6e",
+        meantDark:"#1d8948",
+        meantExtraDark:"#156c38",
+        lightWhite:"#f3f3f3",
+        lightGray:"#bababa",
+        midGray:"#656566",
+        raisinBlack:"#1e1e25",
+        otherGray : "#45454c",
+        darkGray:"#2d2d36",
+        darkBlack:"#0D0E0D"
+      },
+      fontFamily: {
+        chackra: ['var(--font-chakra_petch)'],
+        jost:['var(--font-jost)'],
+      },
     },
   },
   plugins: [nextui()],
