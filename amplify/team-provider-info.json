@@ -34,7 +34,7 @@
         },
         "stripePaymentGenerate": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/stripePaymentGenerate-67646549573776734d51-build.zip"
+          "s3Key": "amplify-builds/stripePaymentGenerate-7931704143754f473063-build.zip"
         },
         "PaymentSubscriptionNodeEnviroment": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",

@@ -4,25 +4,18 @@ const stripe = require('stripe')(TEST_SECRET_KEY);
 exports.handler = async (event) => {
   try {
     const requestBody = JSON.parse(event.body);
-    const { total, serviceAssigned, applicationFeeAmount, userEmail, typeAccount } = requestBody;
+    const { total, serviceAssigned, userEmail, typeAccount } = requestBody;
     let feeAmount = 0;
     if (typeAccount === "free") {
       feeAmount = Math.round(total * 10);
     }
 
-    if (!total || !serviceAssigned || !applicationFeeAmount || !userEmail) {
+    if (!total || !serviceAssigned || !userEmail) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: 'Total, serviceAssigned, applicationFeeAmount, and userEmail are required' }),
+        body: JSON.stringify({ error: 'Total, serviceAssigned and userEmail are required' }),
       };
     }
-
-    console.log('Creating session with:', {
-      total,
-      serviceAssigned,
-      applicationFeeAmount,
-      userEmail
-    });
 
     const session = await stripe.checkout.sessions.create(
       {
