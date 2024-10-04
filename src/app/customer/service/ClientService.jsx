@@ -15,10 +15,14 @@ export default function ClientService() {
   const router = useRouter();
   useEffect(() => {
     const retrieveUserFromCognito = async() => {
-      const userC = await fetchUserAttributes();
-      if(userC['custom:profileCompleted'] == "false"){
-        alert(`¡You need to complete you principal information!`);
-        router.replace(`/customer/profile`);
+      try {
+        const userC = await fetchUserAttributes();
+        if(userC['custom:profileCompleted'] == "false"){
+          alert(`¡You need to complete you principal information!`);
+          router.replace(`/customer/profile`);
+        }
+      } catch (error) {
+        console.error(error);
       }
     }
   retrieveUserFromCognito();

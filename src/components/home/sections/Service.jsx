@@ -1,4 +1,5 @@
 "use client"
+import Link from 'next/link';
 import React, { useState } from 'react';
 import { FaBrain, FaScrewdriverWrench, FaStreetView } from 'react-icons/fa6';
 import { RiArrowRightLine } from "react-icons/ri";
@@ -12,21 +13,21 @@ const Service = () => {
       icon: <FaStreetView className='text-[40px] transition-colors duration-150' />,
       title: 'Customer App',
       description: '¡The easiest way to request vehicle repair services right from your location!',
-      link: '/customer-app',
+      link: '/home/customer',
     },
     {
       id: 'technicianApp',
       icon: <FaScrewdriverWrench className='text-[40px] transition-colors duration-150' />,
       title: 'Technician App',
       description: 'The most efficient platform for providing vehicle repair services directly where the customer needs you.',
-      link: '/technician-app',
+      link: '/home/technician',
     },
     {
       id: 'elearningApp',
       icon: <FaBrain className='text-[40px] transition-colors duration-150' />,
       title: 'Panda AI App',
       description: 'Generative A.I Project to create personalized, step-by-step repair guides tailored to individual skill levels, learning preferences and more.',
-      link: '/elearning-app',
+      link: '/home/generative',
     },
   ];
 
@@ -81,12 +82,12 @@ const Service = () => {
                     {service.description}
                   </p>
                   {selected === service.id && (
-                    <div
+                    <Link href={service.link}
                       className='mt-4 bg-darkBlack flex flex-row text-meant px-6 py-3 rounded-full text-xs xl:text-sm font-bold hover:bg-raisinBlack  transition-colors duration-150'
                     >
                       Go to this App
                       <RiArrowRightLine className='text-meant text-[20px]'/>
-                    </div>
+                    </Link>
                   )}
                 </div>
               </div>

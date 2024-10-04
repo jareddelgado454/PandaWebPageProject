@@ -1,14 +1,16 @@
 'use client';
 import React, { useState } from 'react';
+import ReactStars from "react-rating-stars-component";
 import { uploadData } from 'aws-amplify/storage';
 import { v4 as uuidv4 } from 'uuid';
-import { FaCamera, FaCircleCheck, FaRegStar, FaStar } from 'react-icons/fa6';
+import { FaCamera, FaCircleCheck, FaRegStar, FaRegStarHalf, FaStar } from 'react-icons/fa6';
 import Image from 'next/image';
 import { toast } from 'react-toastify';
 import { dataURLtoBlob } from '@/utils/photo/BlobImage';
 import { updateMyInformation } from '@/graphql/users/customer/mutation';
 import { client } from '@/contexts/AmplifyContext';
 import { baseUrl } from '@/utils/CloudFront';
+import { calculateRate } from '@/utils/service/AVGRate';
 export default function InformationHeader({ user }) {
   const [photograph, setPhotograph] = useState(null);
   function handleChangePhotograph(event) {
@@ -99,9 +101,22 @@ export default function InformationHeader({ user }) {
           <div className='flex flex-col gap-2 text-center md:text-left'>
             <div className='flex flex-row gap-2 items-center justify-center md:justify-start flex-wrap'>
               <p className='w-full'>Welcome back, <strong className='text-[#40C48E]'>{user && user.fullName ? user.fullName : <span className='text-rose-600'>This is required</span>}</strong></p>
-              <FaStar className='text-amber-500' /><FaStar className='text-amber-500' /><FaStar className='text-amber-500' /><FaStar className='text-amber-500' />
-              <FaRegStar className='text-amber-500' />
-              <p>4 stars</p>
+              {user.rate.items.length > 0 ? (
+                <>
+                  <ReactStars
+                    count={5}
+                    value={calculateRate(user.rate)}
+                    size={22}
+                    edit={false}
+                    isHalf={true}
+                    emptyIcon={<FaStar />}
+                    halfIcon={<FaRegStarHalf />}
+                    fullIcon={<FaRegStar />}
+                    activeColor="#ffd700"
+                  />
+                  <p>4 stars</p>
+                </>
+              ) : <p>No stars</p>}
             </div>
             <p className=''>{user && user.email}</p>
             {user && user.email_verified && <div className='flex items-center justify-center md:justify-start gap-1'><p className='text-[#40C48E]'>Verified </p><FaCircleCheck className='text-[#40C48E]' /></div>}

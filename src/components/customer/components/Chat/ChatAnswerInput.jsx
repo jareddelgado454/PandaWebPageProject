@@ -56,7 +56,7 @@ export default function ChatAnswerInput({ chatId, senderId, messageTo }) {
         <div className='w-full'>
             <div className='bg-zinc-200 dark:bg-zinc-700 rounded-lg min-h-full p-4'>
                 <form onSubmit={handleSubmit} className='flex justify-center gap-3 items-center w-full h-full'>
-                    <div className='bg-zinc-300 relative w-[3rem] h-[2.2rem] md:w-[3rem] md:h-[2.8rem] overflow-hidden rounded-full shadow-md group'>
+                    <div className='bg-zinc-300 dark:bg-zinc-900 relative w-[3rem] h-[2.2rem] md:w-[3rem] md:h-[2.8rem] overflow-hidden rounded-full shadow-md group'>
                         <input
                             id="file-upload"
                             type="file"
@@ -68,7 +68,7 @@ export default function ChatAnswerInput({ chatId, senderId, messageTo }) {
                             }}
                         />
                         <div className='flex justify-center items-center w-full h-full'>
-                            <RiImageAddLine className='transition-all duration-300 rounded text-black dark:text-white text-base xl:text-3xl dark:hover:bg-zinc-900 cursor-pointer' />
+                            <RiImageAddLine className='transition-all duration-300 rounded text-black dark:text-white text-base xl:text-3xl dark:hover:bg-zinc-950 cursor-pointer' />
                         </div>
                     </div>
                     <textarea

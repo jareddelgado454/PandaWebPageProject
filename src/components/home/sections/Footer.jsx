@@ -22,31 +22,40 @@ export default function Footer() {
               {/* Circulo externo con color meant y el icono lineal */}
               <div className="w-10 h-10 bg-meant rounded-full flex items-center justify-center cursor-pointer transition-all hover:bg-[#38a17b]">
                 <div className="w-8 h-8 border border-darkBlack rounded-full flex items-center justify-center">
-                  <FiFacebook className="text-darkBlack text-xl" />
+                  <Link href="https://www.facebook.com/PandaMarsLLC/">
+                    <FiFacebook className="text-darkBlack text-xl" />
+                  </Link>
                 </div>
               </div>
 
               <div className="w-10 h-10 bg-meant rounded-full flex items-center justify-center cursor-pointer transition-all hover:bg-[#38a17b]">
                 <div className="w-8 h-8 border border-darkBlack rounded-full flex items-center justify-center">
-                  <FiYoutube className="text-darkBlack text-xl" />
+                  <Link href="https://www.youtube.com/channel/UCBbLAJCJvUbgHwgmZiENFWA">
+                    <FiYoutube className="text-darkBlack text-xl" />
+                  </Link>
                 </div>
               </div>
 
               <div className="w-10 h-10 bg-meant rounded-full flex items-center justify-center cursor-pointer transition-all hover:bg-[#38a17b]">
                 <div className="w-8 h-8 border border-darkBlack rounded-full flex items-center justify-center">
+                  <Link href="https://www.linkedin.com/company/the-panda-m-a-r-s-llc/">
+                  </Link>
                   <FiLinkedin className="text-darkBlack text-xl" />
                 </div>
               </div>
-
               <div className="w-10 h-10 bg-meant rounded-full flex items-center justify-center cursor-pointer transition-all hover:bg-[#38a17b]">
                 <div className="w-8 h-8 border border-darkBlack rounded-full flex items-center justify-center">
-                  <FaTiktok className="text-darkBlack text-xl" />
+                  <Link href="https://www.tiktok.com/@pandamarsllc">
+                    <FaTiktok className="text-darkBlack text-xl" />
+                  </Link>
                 </div>
               </div>
 
               <div className="w-10 h-10 bg-meant rounded-full flex items-center justify-center cursor-pointer transition-all hover:bg-[#38a17b]">
                 <div className="w-8 h-8 border border-darkBlack rounded-full flex items-center justify-center">
-                  <FiInstagram className="text-darkBlack text-xl" />
+                  <Link href="https://www.instagram.com/pandamarsllc/?hl=en">
+                    <FiInstagram className="text-darkBlack text-xl" />
+                  </Link>
                 </div>
               </div>
             </div>
@@ -60,19 +69,19 @@ export default function Footer() {
                 Products
               </p>
               <Link
-                href="/technician-app"
+                href="/home/technician"
                 className="text-lightWhite hover:text-meant text-[15px] mb-1 font-jost"
               >
                 Technician App
               </Link>
               <Link
-                href="/customer-app"
+                href="/home/customer"
                 className="text-lightWhite hover:text-meant text-[15px] mb-1 font-jost"
               >
                 Customer App
               </Link>
               <Link
-                href="/panda-ai-app"
+                href="/home/generative"
                 className="text-lightWhite hover:text-meant text-[15px] font-jost"
               >
                 Panda AI App
