@@ -278,3 +278,42 @@ body {
     transform: translateY(0);
   }
 }
+
+
+/* .highlight {
+  position: relative;
+  display: inline; 
+  color: black;
+  background-color: transparent;
+  word-break: break-word; 
+}
+
+.highlight::before,
+.highlight::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 50%;
+  height: 1em; 
+  background-color: #5FFFA0;
+  z-index: -1;
+  transform: skewX(-12deg);
+}
+
+.highlight::before {
+  bottom: 0.1em;
+}
+
+.highlight::after {
+  left: 50%;
+  bottom: 0.4em;
+  width: calc(50% + 5px);
+} */
+
+.highlight {
+  display: inline;
+  background: linear-gradient(105deg, transparent 3%, #5FFFA0 3%, #5FFFA0 97%, transparent 97%);
+  color: black;
+  padding: 1px ;
+  border-radius:20px;
+}

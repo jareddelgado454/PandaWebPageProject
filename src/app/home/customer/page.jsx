@@ -1,11 +1,18 @@
 import React from 'react'
-import { BannerCustomerSection, DownloadCustomerSection } from '@/components/home'
+import { BannerCustomerSection, DownloadCustomerSection, FooterSection } from '@/components/home'
+import BannerLast from '@/components/home/customer/BannerLast'
+import DescriptionCustomer from '@/components/home/customer/DescriptionCustomer'
+import HowToUseCustomer from '@/components/home/customer/HowToUseCustomer'
 
 export default function customer() {
   return (
-    <div className='flex-1 flex-col  relative overflow-hidden' style={{ background: 'radial-gradient(circle, rgba(39,39,42,1) 4%, rgba(9,9,11,1) 100%)' }}>
-      <BannerCustomerSection />
+    <div className='flex-1 h-svh bg-darkBlack' >
+      {/* <BannerCustomerSection /> */}
+      <BannerLast />
+      <DescriptionCustomer />
+      <HowToUseCustomer />
       <DownloadCustomerSection />
+      <FooterSection />
     </div>
   )
 }

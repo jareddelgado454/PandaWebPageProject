@@ -7,7 +7,13 @@ const nextConfig = {
           hostname: 'd3nqi6yd86hstw.cloudfront.net',
           port: '',
           pathname: '/**'
-        }
+        },
+        {
+          protocol: 'https',
+          hostname: 'via.placeholder.com',
+          port: '',
+          pathname: '/**',
+        },
       ]
     },
     webpack: (config, { isServer }) => {
