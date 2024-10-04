@@ -2,8 +2,11 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { FaBars } from "react-icons/fa6";
+import { Button, useDisclosure } from "@nextui-org/react";
+import VideoModal from "../modalLanding/VideoModal";
 const Navbar = () => {
   const [active, setActive] = useState(false);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const scrolltoHash = function (element_id) {
     const element = document.getElementById(element_id);
     element?.scrollIntoView({
@@ -14,6 +17,7 @@ const Navbar = () => {
   };
   return (
     <div className="flex flex-wrap justify-between py-2 w-[80%] ">
+      <VideoModal isOpen={isOpen} onOpenChange={onOpenChange} />
       <div className="flex flex-row flex-nowrap">
         <div className="bg-zinc-900 w-[4rem] h-[4rem] rounded-full shadow-xl flex justify-center items-center border-[#40c48e] cursor-pointer ease-in-out hover:bg-[#303030]/80 hover:border-2 hover:border-[#40c48e] hover:-translate-y-1 hover:scale-110 duration-300">
           <Image
@@ -64,9 +68,9 @@ const Navbar = () => {
         </div>
       </div>
       <div className="flex items-center justify-center">
-        <div className="bg-meant text-black p-2 px-6 rounded-lg text-[14px] font-bold font-jost cursor-pointer hover:bg-meantDark transition-all">
+        <Button type="button" onClick={onOpen} className="bg-meant text-black p-2 px-6 rounded-lg text-[14px] font-bold font-jost cursor-pointer hover:bg-meantDark transition-all">
             Explore now
-        </div>
+        </Button>
       </div>
     </div>
   );
