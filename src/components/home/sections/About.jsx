@@ -9,7 +9,7 @@ const About = () => {
     >
       <div className="w-[80%] flex flex-col md:flex-row flex-wrap  gap-[50px]">
         <div className="flex flex-1  flex-col items-center justify-start">
-          <p className="bg-gradient-to-r from-lightWhite to-darkGray bg-clip-text text-transparent font-black font-chackra tracking-[3px] text-3xl 2xl:text-6xl w-full ">
+          <p className="bg-gradient-to-r from-lightWhite to-darkGray bg-clip-text text-transparent font-black font-chackra tracking-[3px] text-3xl 2xl:text-6xl w-full text-center md:text-left">
             Let us introduce ourselves{" "}
             <span className="text-meant">About </span>Us
           </p>
