@@ -1,15 +1,20 @@
-const TEST_SECRET_KEY = "sk_test_51MHZf4JbGPo8jsLC7uInizJy0DjyqYbFZrSYMN0USaP1L3w6r4D1tbTWuF5pwWMOq6UoVlhdeBfsFa68sGIE7tY600NlVl5zAf"
-const stripe = require('stripe')(TEST_SECRET_KEY);
-
+const stripeModule = require('stripe');
+const {
+  SecretsManagerClient,
+  GetSecretValueCommand,
+} = require("@aws-sdk/client-secrets-manager");
 exports.handler = async (event) => {
   try {
+    const secret = await retrieveKeyFromSM();
+    const stripe = stripeModule(secret.STRIPE_TEST_KEY);
+
     const requestBody = JSON.parse(event.body);
     const { total, serviceAssigned, userEmail, typeAccount } = requestBody;
     let feeAmount = 0;
     if (typeAccount === "free") {
       feeAmount = Math.round(total * 10);
     }
-
+    
     if (!total || !serviceAssigned || !userEmail) {
       return {
         statusCode: 400,
@@ -48,18 +53,37 @@ exports.handler = async (event) => {
       }
     );
 
-    console.log('Session created:', session);
-
     return {
       statusCode: 200,
       body: JSON.stringify({ url: session.url }),
     };
   } catch (error) {
-    console.error('Error creating session:', error);
-
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message }),
     };
   }
 };
+
+const retrieveKeyFromSM = async() => {
+  try {
+    const secret_name = "STRIPE_TEST_KEY";
+    const clientSecrets = new SecretsManagerClient({
+      region: "us-east-1",
+    });
+
+    const response = await clientSecrets.send(
+      new GetSecretValueCommand({
+        SecretId: secret_name,
+        VersionStage: "AWSCURRENT", 
+      })
+    );
+
+    const secret = JSON.parse(response.SecretString); 
+
+    return secret;
+  } catch (error) {
+    throw new Error('Could not retrieve Stripe secret key');
+  }
+    
+}

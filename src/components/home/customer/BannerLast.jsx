@@ -8,6 +8,7 @@ import { useDisclosure } from "@nextui-org/react";
 import VerificationCodeModal from "@/components/LoginRegister/modals/VerificationCodeModal";
 import { SigninModal } from '../modals/SigninModal';
 import { SignupModal } from '../modals/SignupModal';
+import AccessModal from "@/components/LoginRegister/modals/AccessCustomerModal";
 
 const slides = [
   {
@@ -72,6 +73,11 @@ const BannerLast = () => {
     isOpen: isVerifyCodeModalOpen,
     onOpen: onVerifyCodeModalOpen,
     onOpenChange: onVerifyCodeModalOpenChange,
+  } = useDisclosure();
+  const {
+    isOpen: isAccessCustomerModalOpen,
+    onOpen: onAccessCustomerModalOpen,
+    onOpenChange: onAccessCustomerModalOpenChange,
   } = useDisclosure();
 
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -139,20 +145,11 @@ const BannerLast = () => {
         <div className="w-full flex flex-col items-center absolute bottom-10">
           <div className="flex w-[80%] justify-start mb-12 z-20 gap-4">
             <button
-              onClick={onSignInModalOpen}
+              onClick={onAccessCustomerModalOpen}
               className="flex items-center gap-2 bg-meant text-black py-3 px-6 rounded-lg hover:bg-green-500 transition"
             >
               <span className="font-chackra text-[25px] font-semibold">
-                SignIn
-              </span>
-              <RiArrowRightLine className="text-[25px]" />
-            </button>
-            <button
-              onClick={onSignUpModalOpen}
-              className="flex items-center gap-2 bg-meant text-black py-3 px-6 rounded-lg hover:bg-green-500 transition"
-            >
-              <span className="font-chackra text-[25px] font-semibold">
-                SignUp
+                Access
               </span>
               <RiArrowRightLine className="text-[25px]" />
             </button>
@@ -191,7 +188,8 @@ const BannerLast = () => {
           </div>
         </div>
       </div>
-      <VerificationCodeModal
+      <AccessModal isOpen={isAccessCustomerModalOpen} onOpenChange={onAccessCustomerModalOpenChange}/>
+      {/* <VerificationCodeModal
         isOpen={isVerifyCodeModalOpen}
         onOpenChange={onVerifyCodeModalOpenChange}
         dataSignIn={{ email: dataSignUp.email, password: dataSignUp.password }}
@@ -213,7 +211,7 @@ const BannerLast = () => {
         onOpenVerifyModal={onVerifyCodeModalOpen}
         setResultData={setResultData}
         user={"customer"}
-      />
+      /> */}
     </div>
   );
 };
