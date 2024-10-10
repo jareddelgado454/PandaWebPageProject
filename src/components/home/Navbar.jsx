@@ -29,10 +29,10 @@ const Navbar = () => {
           />
         </div>
       </div>
-      <div className="flex flex-col gap-3 relative items-center justify-center">
+      <div className="flex flex-col gap-3 relative items-center justify-center z-20">
         <div
           onClick={() => setActive(!active)}
-          className=" bg-[#303030]/50 w-[3rem] h-[3rem] rounded-full shadow-xl flex justify-center items-center border-[#40c48e] cursor-pointer ease-in-out hover:bg-[#303030]/80 hover:border-2 hover:border-[#40c48e] hover:-translate-y-1 hover:scale-110 duration-300 xl:hidden"
+          className=" bg-[#303030]/50 w-[3rem] h-[3rem] rounded-full shadow-xl flex justify-center items-center border-[#40c48e] cursor-pointer ease-in-out hover:bg-[#303030]/80 hover:border-2 hover:border-[#40c48e] hover:-translate-y-1 hover:scale-110 duration-300 xl:hidden z-20"
         >
           <FaBars className="text-white" />
         </div>

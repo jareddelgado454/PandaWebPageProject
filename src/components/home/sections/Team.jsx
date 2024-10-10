@@ -9,7 +9,7 @@ const Team = () => {
       id="Team-Section"
     >
       <div className="flex w-[80%] justify-center items-center flex-wrap text-darkBlack xl:mt-6">
-        <div className="w-full flex flex-row gap-2 items-center mt-6 mb-10">
+        <div className="w-full flex flex-row gap-2 items-center justify-center mt-6 mb-10">
           <p className="text-darkBlack font-semibold text-xs xl:text-lg">
             Look Our
           </p>

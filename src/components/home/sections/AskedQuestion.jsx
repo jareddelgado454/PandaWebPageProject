@@ -74,10 +74,10 @@ const AskedQuestion = () => {
                         : ""}
                         .
                     </span>
-                    <h2 className="text-[27px] font-chackra font-semibold text-lightWhite">
+                    <h2 className="text-[12px] md:text-[27px] font-chackra font-semibold text-lightWhite">
                       {item.question}
                     </h2>
-                    <p className="text-zinc-300 leading-relaxed font-jost text-[19px]">
+                    <p className="text-zinc-300 leading-relaxed font-jost text-[11px] md:text-[19px]">
                       {item.answer}
                     </p>
                   </div>

@@ -7,10 +7,10 @@ import { FaTiktok } from "react-icons/fa6";
 export default function Footer() {
   return (
     <div className="w-full flex items-center justify-center py-8 border-t-[1px] border-t-darkGray">
-      <div className="w-[80%] flex flex-row justify-between gap-8">
+      <div className="w-[80%] flex flex-col md:flex-row justify-between gap-8">
         {/* Primera columna con íconos sociales y descripción */}
 
-        <div className="flex flex-row ">
+        <div className="flex flex-col md:flex-row gap-5">
           <div className="w-[250px] flex flex-col justify-center mr-24">
             <p className="font-chackra text-meant text-[24px] font-semibold mb-2">
               The Panda.

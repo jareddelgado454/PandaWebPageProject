@@ -34,13 +34,13 @@ const Service = () => {
   return (
     <div className='py-2 px-4 w-full flex flex-col items-center' id="Service-Section">
       <div className='flex justify-center w-[80%] items-center flex-wrap text-lightWhite mb-6'>
-        <div className='w-full flex flex-col gap-2 items-end mt-6 mb-16'>
+        <div className='w-full flex flex-col gap-2 mt-6 mb-16'>
           {/* <p className='text-meant font-semibold text-xs xl:text-lg text-right'>¿What do we do?</p> */}
-          <p className="bg-gradient-to-r from-midGray to-lightWhite bg-clip-text text-transparent font-black font-chackra tracking-[3px] text-3xl 2xl:text-6xl">
+          <p className="bg-gradient-to-r from-midGray to-lightWhite bg-clip-text text-transparent font-black font-chackra tracking-[3px] text-3xl 2xl:text-6xl text-center">
             Our Services
           </p>
         </div>
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-y-7 gap-x-9 mb-12'>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-y-7 gap-x-9 mb-12 z-0'>
           {services.map((service) => (
             <div
               key={service.id}
