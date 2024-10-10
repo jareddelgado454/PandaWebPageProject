@@ -32,35 +32,31 @@ const DescriptionCustomer = () => {
   ];
 
   return (
-    <div className='py-2 px-4 w-full flex flex-col items-center' id="Service-Section">
-      <div className='flex justify-center w-[80%] items-center flex-wrap text-lightWhite mb-6'>
-        <div className='w-full flex flex-col gap-2 items-end mt-6 mb-16'>
-          <p className="bg-gradient-to-r from-lightGray to-lightWhite bg-clip-text text-transparent font-black font-chackra  text-3xl 2xl:text-6xl">
+    <div className='py-2 pt-8 px-4 w-full flex flex-col items-center' id="Service-Section">
+      <div className='flex justify-center xl:w-[80%] w-[calc(100%-50px)] items-center flex-wrap text-lightWhite mb-6 '>
+        <div className='w-full flex flex-col gap-2 items-end mt-6 mb-16 '>
+          <p className="bg-gradient-to-r from-lightGray to-lightWhite bg-clip-text text-transparent font-black font-chackra xl:text-5xl text-4xl 2xl:text-6xl min-h-[70px]">
             People stay with us because
           </p>
         </div>
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-y-7 gap-x-9 mb-12'>
+        <div className='grid grid-cols-1 lg:grid-cols-3 gap-y-7 gap-x-9 mb-12 '>
           {services.map((service) => (
             <div
               key={service.id}
-              className='relative w-full xl:w-[25rem] cursor-pointer flex'
+              className='relative w-full lg:w-[25rem] cursor-pointer flex'
               onClick={() => setSelected(service.id)}
             >
-              {/* Div detrás simulando el borde */}
               <div
                 className={`absolute top-0 left-0 w-full h-full rounded-xl -z-10 transition-all duration-150
                   ${selected === service.id ? 'bg-transparent' : 'bg-gradient-to-br from-darkBlack to-raisinBlack scale-[1.01]'}
                 `}
               ></div>
-
-              {/* Contenedor principal */}
               <div
                 className={`relative z-20 flex flex-col justify-center gap-6 p-6 py-10 rounded-xl transition-all duration-150 
-                  ${selected === service.id ? 'bg-meant text-darkBlack scale-110' : 'bg-gradient-to-b from-darkGray to-darkBlack'}
-                  min-h-[350px] h-full flex-grow group
+                  ${selected === service.id ? 'bg-meant text-darkBlack xl:scale-110 scale-105' : 'bg-gradient-to-b from-darkGray to-darkBlack'}
+                  min-h-[320px] h-full flex-grow group
                 `}
               >
-                {/* Ícono y texto con transición */}
                 <div className={`transition-colors w-[78px] h-[78px] shadow-lg flex items-center text-darkBlack justify-center rounded-full duration-150 ${selected === service.id ? 'text-meant bg-darkBlack' : ' bg-meant'}`}>
                   <div className={`w-[65px] h-[65px] rounded-full border-[4px]  flex items-center justify-center ${selected === service.id ? 'text-meant bg-darkBlack border-meant' : ' bg-meant border-raisinBlack'}`}>
                     {service.icon}

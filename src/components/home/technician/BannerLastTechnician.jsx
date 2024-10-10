@@ -45,7 +45,7 @@ const slides = [
     src: "/image/technician5.jpg",
     header: (
       <h3>
-        You're not limited to word-of-mouth referrals. Reach a broader{" "}
+        You&apos;re not limited to word-of-mouth referrals. Reach a broader{" "}
         <span className="highlight">audience</span> looking for technicians like
         you.
       </h3>

@@ -130,7 +130,7 @@ const BannerLast = () => {
 
         <div className="flex flex-row justify-center items-center w-[80%] relative z-20">
           <div className="w-full flex flex-col gap-2 h-[65%] select-none">
-            <p className="text-lightWhite font-black font-chackra tracking-[4px] text-3xl 2xl:text-6xl w-[70%]">
+            <p className="text-lightWhite font-black font-chackra tracking-[4px] xl:text-5xl text-4xl 2xl:text-6xl w-[70%]">
               {slides[currentSlide].header}
             </p>
           </div>
