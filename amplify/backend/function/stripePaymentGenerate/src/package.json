@@ -8,6 +8,7 @@
     "@types/aws-lambda": "^8.10.92"
   },
   "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.666.0",
     "stripe": "^16.6.0"
   }
 }
