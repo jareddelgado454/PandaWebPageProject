@@ -189,29 +189,6 @@ const BannerLast = () => {
         </div>
       </div>
       <AccessModal isOpen={isAccessCustomerModalOpen} onOpenChange={onAccessCustomerModalOpenChange}/>
-      {/* <VerificationCodeModal
-        isOpen={isVerifyCodeModalOpen}
-        onOpenChange={onVerifyCodeModalOpenChange}
-        dataSignIn={{ email: dataSignUp.email, password: dataSignUp.password }}
-        resultData={resultData}
-        roleSelected={"customer"}
-      />
-      <SigninModal
-        isOpen={isSignInModalOpen}
-        onOpenChange={onSignInModalChange}
-        setDataSignIn={setDataSignIn}
-        onOpenVerifyModal={onVerifyCodeModalOpen}
-        user={"customer"}
-      />
-      <SignupModal
-        isOpen={isSignUpModalOpen}
-        onOpen={onSignUpModalOpen}
-        onOpenChange={onSignUpModalChange}
-        setDataSignIn={setDataSignIn}
-        onOpenVerifyModal={onVerifyCodeModalOpen}
-        setResultData={setResultData}
-        user={"customer"}
-      /> */}
     </div>
   );
 };

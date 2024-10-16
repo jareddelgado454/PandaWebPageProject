@@ -6,10 +6,10 @@ import {
   ModalBody,
   Button,
 } from "@nextui-org/react";
-import MainServicesEmail from "./CustomerModalAcessSteps/MainServicesEmail";
-import CreateAccountCustomer from "./CustomerModalAcessSteps/CreateAccountCustomer";
 import AccessWithEmail from "./CustomerModalAcessSteps/AccessWithEmail";
-import VerificationCodeCustomer from "./CustomerModalAcessSteps/VerificationCodeCustomer";
+import MainServicesEmailTechnician from "./TechnicianModalAccessSteps/MainServicesEmailTechnician";
+import CreateAccountTechnician from "./TechnicianModalAccessSteps/CreateAccountTechnician";
+import VerificationCodeTechnician from "./TechnicianModalAccessSteps/VerificationCodeTechnician";
 
 const Steps = {
   Email: "EMAIL",
@@ -18,7 +18,7 @@ const Steps = {
   VerificationCode: "VERIFICATION_CODE",
 };
 
-const AccessModal = ({ isOpen, onOpenChange }) => {
+const AccessTechnicianModal = ({ isOpen, onOpenChange }) => {
   const [step, setStep] = useState(Steps.Email);
   const [isLoading, setIsLoading] = useState(false);
   const [dataSignIn, setDataSignIn] = useState({
@@ -75,14 +75,14 @@ const AccessModal = ({ isOpen, onOpenChange }) => {
             <ModalHeader className="flex flex-col gap-1"></ModalHeader>
             <ModalBody>
               {step === Steps.Email && (
-                <MainServicesEmail
+                <MainServicesEmailTechnician
                   onHandleAccessWithEmail={handleAccessWithEmail}
                   isLoading={isLoading}
                   setIsLoading={setIsLoading}
                 />
               )}
               {step === Steps.CreatePassword && (
-                <CreateAccountCustomer
+                <CreateAccountTechnician
                   goBack={() => setStep(Steps.AccessWithEmail)}
                   onSwitchToVerificationCode={handleVerificationCode}
                   setResultData={setResultData}
@@ -102,7 +102,7 @@ const AccessModal = ({ isOpen, onOpenChange }) => {
                 />
               )}
               {step === Steps.VerificationCode && (
-                <VerificationCodeCustomer
+                <VerificationCodeTechnician
                   dataSignIn={dataSignIn}
                   resultData={resultData}
                   handleModalClose={handleModalClose}
@@ -118,4 +118,4 @@ const AccessModal = ({ isOpen, onOpenChange }) => {
   );
 };
 
-export default AccessModal;
+export default AccessTechnicianModal;

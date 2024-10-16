@@ -8,6 +8,7 @@ import { useDisclosure } from "@nextui-org/react";
 import { SigninModal } from "../modals/SigninModal";
 import { SignupModal } from "../modals/SignupModal";
 import VerificationCodeModal from "@/components/LoginRegister/modals/VerificationCodeModal";
+import AccessTechnicianModal from "@/components/LoginRegister/modals/AccessTechnicianModal";
 
 // Lista de imágenes y títulos con resaltado
 const slides = [
@@ -64,19 +65,9 @@ const BannerLastTechnician = () => {
   });
   const [resultData, setResultData] = useState();
   const {
-    isOpen: isSignInModalOpen,
-    onOpen: onSignInModalOpen,
-    onOpenChange: onSignInModalChange,
-  } = useDisclosure();
-  const {
-    isOpen: isSignUpModalOpen,
-    onOpen: onSignUpModalOpen,
-    onOpenChange: onSignUpModalChange,
-  } = useDisclosure();
-  const {
-    isOpen: isVerifyCodeModalOpen,
-    onOpen: onVerifyCodeModalOpen,
-    onOpenChange: onVerifyCodeModalOpenChange,
+    isOpen: isAccessTechnicianOpen,
+    onOpen: onAccessTechnicianOpen,
+    onOpenChange: onAccessTechnicianOpenChange,
   } = useDisclosure();
 
   useEffect(() => {
@@ -146,20 +137,11 @@ const BannerLastTechnician = () => {
         <div className="w-full flex flex-col items-center absolute bottom-10">
           <div className="flex w-[80%] justify-start mb-12 z-20 gap-4">
             <button
-              onClick={onSignInModalOpen}
+              onClick={onAccessTechnicianOpen}
               className="flex items-center gap-2 bg-meant text-black py-3 px-6 rounded-lg hover:bg-green-500 transition"
             >
               <span className="font-chackra text-[25px] font-semibold">
-                SignIn
-              </span>
-              <RiArrowRightLine className="text-[25px]" />
-            </button>
-            <button
-              onClick={onSignUpModalOpen}
-              className="flex items-center gap-2 bg-meant text-black py-3 px-6 rounded-lg hover:bg-green-500 transition"
-            >
-              <span className="font-chackra text-[25px] font-semibold">
-                SignUp
+                Access
               </span>
               <RiArrowRightLine className="text-[25px]" />
             </button>
@@ -201,29 +183,7 @@ const BannerLastTechnician = () => {
           </div>
         </div>
       </div>
-      <VerificationCodeModal
-        isOpen={isVerifyCodeModalOpen}
-        onOpenChange={onVerifyCodeModalOpenChange}
-        dataSignIn={{ email: dataSignUp.email, password: dataSignUp.password }}
-        resultData={resultData}
-        roleSelected={"technician"}
-      />
-      <SigninModal
-        isOpen={isSignInModalOpen}
-        onOpenChange={onSignInModalChange}
-        setDataSignIn={setDataSignIn}
-        onOpenVerifyModal={onVerifyCodeModalOpen}
-        user={"technician"}
-      />
-      <SignupModal
-        isOpen={isSignUpModalOpen}
-        onOpen={onSignUpModalOpen}
-        onOpenChange={onSignUpModalChange}
-        setDataSignIn={setDataSignIn}
-        onOpenVerifyModal={onVerifyCodeModalOpen}
-        setResultData={setResultData}
-        user={"technician"}
-      />
+      <AccessTechnicianModal isOpen={isAccessTechnicianOpen} onOpenChange={onAccessTechnicianOpenChange}/>
     </div>
   );
 };

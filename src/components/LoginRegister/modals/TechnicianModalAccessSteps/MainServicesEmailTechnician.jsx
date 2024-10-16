@@ -6,24 +6,7 @@ import { RiMailLine } from "react-icons/ri";
 import Image from "next/image";
 import { signInWithRedirect } from "aws-amplify/auth";
 
-const MainServicesEmail = ({ onHandleAccessWithEmail }) => {
-  const [email, setEmail] = useState("");
-
-  const handleContinue = async () => {
-    if (!email) {
-      setErrorMessage("Please enter your email.");
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      setErrorMessage("Please enter a valid email address.");
-      return;
-    }
-
-    setErrorMessage("");
-    await onSubmit(email);
-  };
-
+const MainServicesEmailTechnician = ({ onHandleAccessWithEmail, setIsLoading, isLoading }) => {
   return (
     <>
       <div className="flex flex-row justify-center items-center">
@@ -91,25 +74,6 @@ const MainServicesEmail = ({ onHandleAccessWithEmail }) => {
         <div className="flex-grow border-b border-gray-600"></div>
       </div>
 
-      {/* <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)} // Actualiza el estado del email
-        className={`w-full p-3 text-white bg-zinc-950/70 rounded-lg border-[1px] ${
-          errorMessage ? "border-red-500" : "border-zinc-600"
-        }`}
-      />
-      {errorMessage && (
-        <p className="text-red-500 text-sm mb-4">{errorMessage}</p>
-      )}
-
-      <Button
-        className="w-full flex items-center justify-center bg-zinc-200 text-black font-jost font-semibold text-[16px] py-4 mb-3"
-        onPress={handleContinue}
-      >
-        Continue <MdArrowForward className="ml-2" />
-      </Button> */}
       <Button
           className="font-jost flex items-center bg-darkBlack border-[2px] border-raisinBlack text-white py-6 mb-4"
           onPress={() => {
@@ -120,7 +84,7 @@ const MainServicesEmail = ({ onHandleAccessWithEmail }) => {
           <h4 className="flex flex-1 text-center justify-center text-[16px]">
             Continue with Email
           </h4>
-        </Button>
+      </Button>
       <p className="w-full text-center font-jost mb-6 text-[15px] text-zinc-400">
         By creating an account, you agree to the{" "}
         <span className="text-white cursor-pointer">Terms of Service</span>{" "}
@@ -134,4 +98,4 @@ const MainServicesEmail = ({ onHandleAccessWithEmail }) => {
   );
 };
 
-export default MainServicesEmail;
+export default MainServicesEmailTechnician;
