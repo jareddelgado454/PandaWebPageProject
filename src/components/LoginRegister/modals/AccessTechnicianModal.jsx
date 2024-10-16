@@ -6,10 +6,10 @@ import {
   ModalBody,
   Button,
 } from "@nextui-org/react";
-import AccessWithEmail from "./CustomerModalAcessSteps/AccessWithEmail";
 import MainServicesEmailTechnician from "./TechnicianModalAccessSteps/MainServicesEmailTechnician";
 import CreateAccountTechnician from "./TechnicianModalAccessSteps/CreateAccountTechnician";
 import VerificationCodeTechnician from "./TechnicianModalAccessSteps/VerificationCodeTechnician";
+import AccessWithEmailTechnician from "./TechnicianModalAccessSteps/AccessWithEmailTechnician";
 
 const Steps = {
   Email: "EMAIL",
@@ -92,7 +92,7 @@ const AccessTechnicianModal = ({ isOpen, onOpenChange }) => {
                 />
               )}
               {step === Steps.AccessWithEmail && (
-                <AccessWithEmail
+                <AccessWithEmailTechnician
                   onSwitchToCreateAccount={handleCreateAccount}
                   goBack={() => setStep(Steps.Email)}
                   onSwitchToVerificationCode={handleVerificationCode}

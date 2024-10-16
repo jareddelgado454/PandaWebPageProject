@@ -238,7 +238,7 @@ const AccessWithEmailTechnician = ({
           className="text-white cursor-pointer"
           onClick={onSwitchToCreateAccount}
         >
-          Don't have an account? <span className="text-meant">Sign up</span>
+          Don&apos;t have an account? <span className="text-meant">Sign up</span>
         </p>
       </div>
     </>
