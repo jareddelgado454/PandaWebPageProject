@@ -233,7 +233,6 @@ const AccessWithEmail = ({
         Log in
       </Button>
 
-      {/* Enlace para crear cuenta */}
       <div className="mt-4 mb-6">
         <p
           className="text-white cursor-pointer"
