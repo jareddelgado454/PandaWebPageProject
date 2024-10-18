@@ -18,6 +18,7 @@ import {
   signIn,
   fetchUserAttributes,
   fetchAuthSession,
+  signOut,
 } from "aws-amplify/auth";
 import VerificationCodeModal from "@/components/LoginRegister/modals/VerificationCodeModal";
 import {
@@ -213,6 +214,9 @@ const SignIn = () => {
                     >
                       Login
                     </button>
+                    <button onClick={signOut}>
+                      Signout
+                    </button>
                     {errorMessage.status && (
                       <div className="bg-red-500 w-full text-white text-[16px] flex items-center gap-x-2 p-2 mb-3">
                         <RiErrorWarningFill className="text-[30px]" />
@@ -296,7 +300,7 @@ const CheckoutModal = ({ isOpen, onOpenChange }) => {
           <div className="flex flex-col justify-center items-center w-full h-full py-4 gap-4">
             <div className="flex items-center justify-center">
               <Image
-                src="/panda.png"
+                src="/panda.webp"
                 className="w-[6rem] h-[5.5rem]"
                 width={100}
                 height={100}
