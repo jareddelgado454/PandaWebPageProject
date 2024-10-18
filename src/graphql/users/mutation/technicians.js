@@ -50,3 +50,11 @@ export const updateLocationTechnician = gql`
     }
 }
 `;
+
+export const deleteTechincian = gql`
+  mutation MyMutation($id: ID!) {
+    deleteTechnician(input: {id: $id}){
+      id
+    }
+  }
+`;
