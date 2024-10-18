@@ -63,6 +63,7 @@ export const SignupModal = ({ isOpen, onOpenChange, onOpen, setDataSignIn, onOpe
                 },
             });
             let isAdded = true;
+            let returnedData;
             const dataObject = {
                 fullName: values.fullName,
                 email: values.email
