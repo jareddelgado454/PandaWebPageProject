@@ -20,7 +20,7 @@ export const handleCreateUserOnDatabase = async(values, isAdded) => {
         return data;
 
     } catch (error) {
-        console.log(error);
+        throw error;
     }
 }
 export const handleCreateTechnicianOnDataBase = async(values, isAdded) => {

@@ -20,13 +20,12 @@ const AddUserModal = ({ isOpen, onOpenChange, callback }) => {
                 status: values.status,
                 temporaryPassword: values.temporaryPassword
             });
-            setIsPassordGenerated(false);
             toast.success(`User ${values.fullName} has been created.`);
             resetForm(true);
+            setIsPassordGenerated(false);
             callback();
-        } catch (error) {
-            console.log(error);
-            toast.error("Something went wrong.");
+        } catch (e) {
+            toast.error(e.errors[0].message);
         }
     }
 
