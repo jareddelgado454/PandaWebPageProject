@@ -19,6 +19,8 @@ exports.handler = async (event) => {
 
         await createUserInCognito(user);
 
+        await addUserToGroup(user.email, 'admin-access')
+
         await createUserOnDynamo(user);
 
         await sendTemporaryCredentials(user);
@@ -48,15 +50,27 @@ const createUserInCognito = async (user) => {
             TemporaryPassword: user.temporaryPassword,
             UserAttributes: [
                 { Name: 'email', Value: user.email },
-                { Name: 'name', Value: user.fullName }
+                { Name: 'name', Value: user.fullName },
+                { Name: 'custom:role', Value: 'admin' }
             ],
             MessageAction: 'SUPPRESS'
         };
 
         await cognitoIdentityServiceProvider.adminCreateUser(params).promise();
-        console.log(`Cognito's user created: ${user.email}`);
     } catch (error) {
-        console.error(error);
+        throw error;
+    }
+};
+
+const addUserToGroup = async (username, userGroup) => {
+    try {
+        const params = {
+            GroupName: userGroup,
+            UserPoolId: 'us-east-1_H9Y0GkM7h',
+            Username: username
+        };
+        await cognitoIdentityServiceProvider.adminAddUserToGroup(params).promise();
+    } catch (error) {
         throw error;
     }
 };
