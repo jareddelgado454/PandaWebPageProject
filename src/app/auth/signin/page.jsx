@@ -18,7 +18,6 @@ import {
   signIn,
   fetchUserAttributes,
   fetchAuthSession,
-  signOut,
 } from "aws-amplify/auth";
 import VerificationCodeModal from "@/components/LoginRegister/modals/VerificationCodeModal";
 import {
@@ -30,6 +29,7 @@ import {
 import { UserContext } from "@/contexts/user/UserContext";
 import Image from "next/image";
 import { getCustomerById, getTechnicianById } from "@/api";
+import { NewPasswordModal } from "@/components/admin";
 const SignIn = () => {
   const { login } = useContext(UserContext);
   const router = useRouter();
@@ -37,6 +37,11 @@ const SignIn = () => {
     isOpen: isVerifyCodeModalOpen,
     onOpen: onVerifyCodeModalOpen,
     onOpenChange: onVerifyCodeModalOpenChange,
+  } = useDisclosure();
+  const {
+    isOpen: isNewPasswordModalOpen,
+    onOpen: onNewPasswordModalOpen,
+    onOpenChange: onNewPasswordModalOpenChange,
   } = useDisclosure();
   const { isOpen: isLoadingModalOpen, onOpen: onOpenLoadingModal } =
     useDisclosure();
@@ -68,12 +73,18 @@ const SignIn = () => {
           },
         });
         setDataPassed({ email: values.email, password: values.password });
-        console.log(nextStep);
+
         if (isSignedIn) {
           console.log("Login succesfull");
         } else {
           if (nextStep?.signInStep === "CONFIRM_SIGN_UP") {
             onVerifyCodeModalOpen();
+          }else if (nextStep.signInStep === "CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED"){
+            try {
+              onNewPasswordModalOpen();
+            } catch (error) {
+              console.error(error);
+            }
           } else {
             console.log("Error signing in. Please try again.");
           }
@@ -116,6 +127,7 @@ const SignIn = () => {
   };
   useEffect(() => {
     const hubListenerCancel = Hub.listen("auth", async ({ payload }) => {
+      console.log(payload);
       switch (payload.event) {
         case "signedIn":
           onOpenLoadingModal(true);
@@ -132,6 +144,7 @@ const SignIn = () => {
             login({ role, expiredAt, id: userSub, ...data });
             router.push("/customer");
           }
+
         default:
           break;
       }
@@ -152,17 +165,7 @@ const SignIn = () => {
               <p>enter with your account</p>
             </div>
 
-            <div className=" border-transparent flex flex-col border-t-[2px] border-zinc-600 pt-8 pb-4">
-              <p className="text-white mb-3">
-                {"You still don't have an account?"}{" "}
-                <Link
-                  className="hover:text-emerald-300 text-emerald-400 text-[18px] font-bold hover:font-bold cursor-pointer"
-                  href="/auth/signup"
-                >
-                  Sign up here
-                </Link>
-              </p>
-            </div>
+            <div className=" border-transparent flex flex-col border-t-[2px] border-zinc-600 pt-8"/>
             <Formik
               initialValues={initialValue}
               onSubmit={onHandleSubmit}
@@ -214,9 +217,6 @@ const SignIn = () => {
                     >
                       Login
                     </button>
-                    <button onClick={signOut}>
-                      Signout
-                    </button>
                     {errorMessage.status && (
                       <div className="bg-red-500 w-full text-white text-[16px] flex items-center gap-x-2 p-2 mb-3">
                         <RiErrorWarningFill className="text-[30px]" />
@@ -262,6 +262,10 @@ const SignIn = () => {
           isOpen={isVerifyCodeModalOpen}
           onOpenChange={onVerifyCodeModalOpenChange}
           dataSignIn={dataPassed}
+        />
+        <NewPasswordModal
+          isOpen={isNewPasswordModalOpen}
+          onOpenChange={onNewPasswordModalOpenChange}
         />
       </div>
     </>
