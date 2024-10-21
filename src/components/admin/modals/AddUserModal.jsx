@@ -1,7 +1,6 @@
 'use client';
 import React, { useState } from 'react';
 import { Field, Form, Formik } from "formik";
-import { signUp } from "aws-amplify/auth";
 import { toast } from "react-toastify";
 import {
     Modal, ModalHeader, ModalFooter, ModalContent, ModalBody, Button,
