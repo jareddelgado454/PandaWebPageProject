@@ -4,6 +4,9 @@ const cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider();
 exports.handler = async (event) => {
     const { id, username } = event.arguments;
     try {
+
+        await removeFromGroup(username, 'admin-access');
+
         await deleteFromDynamo(id);
 
         await deleteFromCognito(username);
@@ -39,3 +42,17 @@ const deleteFromCognito = async(username) => {
         throw error;
     }
 }
+
+const removeFromGroup = async (username, userGroup) => {
+    const params = {
+        GroupName: userGroup,
+        UserPoolId: 'us-east-1_H9Y0GkM7h',
+        Username: username
+    };
+    try {
+        await cognitoIdentityServiceProvider.adminRemoveUserFromGroup(params).promise();
+        console.log(`User ${username} removed from group ${userGroup}`);
+    } catch (error) {
+        throw error;
+    }
+};
