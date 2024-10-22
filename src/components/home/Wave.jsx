@@ -2,7 +2,7 @@ import React from 'react';
 
 export const Wave = () => {
   return (
-    <svg className='absolute bottom-0 z-0' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+    <svg className='absolute bottom-0 z-0' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200" >
       <path
         className='wave '
         fill="#0D0E0D"

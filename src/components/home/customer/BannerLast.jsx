@@ -12,7 +12,7 @@ import AccessModal from "@/components/LoginRegister/modals/AccessCustomerModal";
 
 const slides = [
   {
-    src: "/image/technician4.png",
+    src: "/image/customerLandingImages/findCustomer.webp",
     header: (
       <h3>
         Connect with skilled, verified technicians for a variety of{" "}
@@ -32,7 +32,7 @@ const slides = [
     subtitle: "Booking",
   },
   {
-    src: "/image/technician3.webp",
+    src: "/image/customerLandingImages/pricingCustomer.jpg",
     header: (
       <h3>
         Get upfront <span className="highlight">pricing</span> and stimates for
@@ -42,7 +42,7 @@ const slides = [
     subtitle: "Pricing",
   },
   {
-    src: "/image/technician5.jpg",
+    src: "/image/customerLandingImages/paymentCustomer.jpeg",
     header: (
       <h3>
         Pay <span className="highlight">securely</span> through the app after

@@ -5,9 +5,9 @@ import Image from "next/image";
 
 const steps = [
   { id: 1, title: "Create your account to get started", image: "/stepsTechnician/createAccountTech.png", icon: FiUserPlus },
-  { id: 2, title: "Complete the first steps", image: "/stepsTechnician/completeInformationTechnician.png", icon: FiClipboard },
+  { id: 2, title: "Complete the first steps", image: "/stepsTechnician/CompleteInformationTechnician.png", icon: FiClipboard },
   { id: 3, title: "Select an available service and make an offer", image: "/stepsTechnician/listServicesTechnician.png", icon: FiTool },
-  { id: 4, title: "Arrive at the location and complete the diagnosis, here fill out the diagnosis information to create the budget", image: "/stepsTechnician/completeDiagnostic.png", icon: FiTruck },
+  { id: 4, title: "Arrive at the location and complete the diagnosis, here fill out the diagnosis information to create the budget", image: "/stepsTechnician/CompleteDiagnostic.png", icon: FiTruck },
   { id: 5, title: "Once the service is completed, wait for the customer to make payment, wait for verification", image: "/stepsTechnician/SecurePayments.png", icon: FiDollarSign },
   { id: 6, title: "Once the service is finished, send a review about the client, to be able to continue", image: "/stepsTechnician/rating.png", icon: FiStar },
 ];

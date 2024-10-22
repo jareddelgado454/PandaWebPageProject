@@ -76,10 +76,10 @@ const AccessWithEmail = ({
           router.push("/customer");
       }
 
-      // login({ email });
     } catch (error) {
       toast.error("Something went wrong. Please check your credentials.");
       console.log(error);
+      setIsLoading(false);
     }
   };
 

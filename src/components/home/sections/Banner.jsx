@@ -3,6 +3,7 @@ import { Wave } from "../Wave";
 import { NavbarSection } from "..";
 import Link from "next/link";
 import { FiArrowUpRight } from "react-icons/fi";
+import Image from "next/image";
 const Banner = () => {
   return (
     <div
@@ -17,19 +18,19 @@ const Banner = () => {
     >
       <div className="bg-darkBlack/30 inset-0 w-full h-full flex flex-col items-center">
         <NavbarSection />
-        <div className="flex flex-row justify-center items-center w-full xl:w-[80%] relative z-0 flex-wrap">
-          <div className="w-full xl:w-1/2 flex flex-col items-center gap-2 h-[65%] select-none">
-            <p className="text-lightWhite mb-6 font-bold font-chackra tracking-wider text-md 2xl:text-lg text-center">
+        <div className="flex flex-row justify-center items-center w-full xl:w-[80%] relative z-0 flex-wrap  h-full">
+          <div className="w-full xl:w-1/2 flex flex-col  gap-2 h-[65%] select-none">
+            <p className="text-lightWhite mb-6 font-bold font-chackra tracking-wider text-md 2xl:text-lg ">
               Easily find a reliable mobile mechanic near you
             </p>
-            <p className="bg-gradient-to-r from-lightWhite to-midGray bg-clip-text text-transparent font-black font-chackra tracking-[3px] text-xl 2xl:text-4xl w-full xl:w-[420px] text-center">
+            <p className="bg-gradient-to-r from-lightWhite to-midGray bg-clip-text text-transparent font-black font-chackra tracking-[3px] text-xl 2xl:text-4xl w-full xl:w-[420px] ">
               Mobile Auto repairs
             </p>
             <p className="text-meant font-black font-chackra tracking-[4px] text-xl 2xl:text-6xl">
               {" "}
               The Panda M.A.R.S.
             </p>
-            <p className="bg-gradient-to-r from-midGray to-lightWhite bg-clip-text text-transparent font-black font-chackra tracking-[3px] text-2xl 2xl:text-4xl w-[300px] text-center">
+            <p className="bg-gradient-to-r from-midGray to-lightWhite bg-clip-text text-transparent font-black font-chackra tracking-[3px] text-2xl 2xl:text-4xl w-[300px] ">
               and services !
             </p>
 
@@ -63,6 +64,13 @@ const Banner = () => {
             </div>
           </div>
           <div className="w-full xl:w-1/2">
+            <Image
+              src={"/mainImageLading.png"}
+              alt={`panda`}
+              width={600}
+              height={500}
+              className="object-cover w-[80%]"
+            />
           </div>
         </div>
         <Wave />

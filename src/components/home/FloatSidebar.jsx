@@ -1,31 +1,34 @@
 'use client';
-import React from 'react'
-import { Tooltip, useDisclosure } from '@nextui-org/react';
+import React from 'react';
+import { Tooltip } from '@nextui-org/react';
 import Link from 'next/link';
-import { FaBrain, FaMoneyCheckDollar, FaScrewdriverWrench, FaStreetView } from 'react-icons/fa6';
-import { PlansModal } from './modals/PlansModal';
+import { FaBrain, FaScrewdriverWrench, FaStreetView } from 'react-icons/fa6';
 
 export const FloatSidebar = () => {
-  const {
-    isOpen: isPlansModalOpen,
-    onOpen: onPlansModalOpen,
-    onOpenChange: onPlansModalOpenChange,
-  } = useDisclosure();
   return (
-    <div className='fixed bg-zinc-900 rounded-lg shadow-lg px-5 py-5 text-[#E6D5C9] right-4 top-[35%] z-20'>
-        <PlansModal isOpen={isPlansModalOpen} onOpenChange={onPlansModalOpenChange} />
-        <div className='flex flex-col gap-6'>
+    <div className='dark fixed bg-zinc-900 border-[1px] border-raisinBlack rounded-lg shadow-lg px-5 py-5 text-lightWhite right-4 top-[35%] z-20'>
+      <div className='flex flex-col gap-8'>
+        {/* Customer App Tooltip */}
+        <Tooltip content="Customer App" delay={0} closeDelay={0} placement='left-start' className='bg-meant text-darkBlack font-semibold'>
           <Link href={'/home/customer'}>
-            <FaStreetView className='text-2xl cursor-pointer ease-in-out hover:font-semibold hover:-translate-y-1 hover:scale-110 duration-300' />
+            <FaStreetView className='text-2xl cursor-pointer ease-in-out hover:font-semibold hover:text-meant hover:-translate-y-1 hover:scale-110 duration-300' />
           </Link>
+        </Tooltip>
+
+        {/* Technician App Tooltip */}
+        <Tooltip content="Technician App" delay={0} closeDelay={0} placement='left-start' className='bg-meant text-darkBlack font-semibold'>
           <Link href={'/home/technician'}>
-            <FaScrewdriverWrench className='text-2xl cursor-pointer ease-in-out hover:font-semibold hover:-translate-y-1 hover:scale-110 duration-300' />
+            <FaScrewdriverWrench className='text-2xl cursor-pointer ease-in-out hover:font-semibold hover:text-meant  hover:-translate-y-1 hover:scale-110 duration-300' />
           </Link>
+        </Tooltip>
+
+        {/* GenAI Panda Tooltip */}
+        <Tooltip content="GenAI Panda" delay={0} closeDelay={0} placement='left-start' className='bg-meant text-darkBlack font-semibold'>
           <Link href={'/home/generative'}>
-            <FaBrain className='text-2xl cursor-pointer ease-in-out hover:font-semibold hover:-translate-y-1 hover:scale-110 duration-300' />
+            <FaBrain className='text-2xl cursor-pointer ease-in-out hover:font-semibold hover:text-meant  hover:-translate-y-1 hover:scale-110 duration-300' />
           </Link>
-          <FaMoneyCheckDollar onClick={onPlansModalOpen} className='text-2xl cursor-pointer ease-in-out hover:font-semibold hover:-translate-y-1 hover:scale-110 duration-300' />
-        </div>
+        </Tooltip>
+      </div>
     </div>
-  )
-}
+  );
+};
