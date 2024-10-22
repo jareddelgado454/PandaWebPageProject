@@ -6,6 +6,7 @@ import {
   signIn,
   resendSignUpCode,
   fetchAuthSession,
+  getCurrentUser,
 } from "aws-amplify/auth";
 import { RiErrorWarningFill, RiRestartLine } from "react-icons/ri";
 import { MdArrowForward, MdArrowBack } from "react-icons/md";
@@ -13,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { UserContext } from "@/contexts/user/UserContext";
 import { Button } from "@nextui-org/react";
 import Image from "next/image";
+import { handleCreateCustomerOnDataBase } from "@/api";
 
 
 const VerificationCodeCustomer = ({
@@ -70,6 +72,16 @@ const VerificationCodeCustomer = ({
     }
   };
 
+  const fetchCurrentUser = async () => {
+    try {
+     const { username } = await getCurrentUser();
+     return username;
+     
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const handleSignUpConfirmation = async () => {
     setErrorCode({
       status: false,
@@ -84,7 +96,7 @@ const VerificationCodeCustomer = ({
           confirmationCode: code,
         });
 
-        const response = await signIn({
+        await signIn({
           username: dataSignIn.email,
           password: dataSignIn.password,
           options: {
@@ -93,17 +105,25 @@ const VerificationCodeCustomer = ({
         });
         setShowResendButton(true);
         setCode("");
+        const username = await fetchCurrentUser();
+        const { createCustomer } = await handleCreateCustomerOnDataBase({
+          id: dataSignIn.userId,
+          fullName: dataSignIn.fullName,
+          email: dataSignIn.email,
+          status: "active",
+          cognitoId: username
+      }, true);
         const { tokens } = await fetchAuthSession();
         const expiredAt = tokens.accessToken.payload.exp;
-        login({ ...resultData, expiredAt });
+        login({ ...createCustomer, expiredAt });
 
         setIsLoading(true);
 
         router.replace("/customer/");
 
-        console.log(response);
         handleModalClose();
       } catch (error) {
+        setIsLoading(false);
         if (error.name == "CodeMismatchException") {
           setErrorCode({
             status: true,

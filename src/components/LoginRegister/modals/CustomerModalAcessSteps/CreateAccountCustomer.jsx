@@ -37,23 +37,16 @@ const CreateAccountCustomer = ({ onSwitchToVerificationCode, goBack, setResultDa
               },
           },
         });
-        console.log("creado en cognito")
-        const { createCustomer } = await handleCreateCustomerOnDataBase({
-            id: userId,
-            fullName: fullName,
-            email: email,
-            status: "active",
-        }, true);
+        
         setDataSignIn({
+          userId,
           email,
-          password
+          fullName
         });
-        setResultData({...createCustomer});
-        console.log("creado en base de datos")
+
         setIsLoading(false);
         if (nextStep?.signUpStep === "CONFIRM_SIGN_UP") {
           onSwitchToVerificationCode();
-          console.log("necesitas ir a buscar el codigo d everificacion a tu email")
         }
       } catch (error) {
         console.log(error)

@@ -114,7 +114,7 @@ const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn, roleSelected, 
   }
 
   return (
-    <Modal backdrop='blur' isOpen={true} onOpenChange={onOpenChange} isDismissable={false} hideCloseButton={true}>
+    <Modal backdrop='blur' isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} hideCloseButton={true}>
           <ModalContent className='bg-zinc-800 text-white border-[2px] border-gray-700 pb-4'>
             {(onClose) => (
               <>
