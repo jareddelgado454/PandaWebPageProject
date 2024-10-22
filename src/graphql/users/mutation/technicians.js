@@ -4,6 +4,9 @@ export const createTechnician = gql`
   mutation CreateTechnician($input: CreateTechnicianInput!) {
     createTechnician(input: $input) {
       id
+      fullName
+      email
+      cognitoId
     }
   }
 `;

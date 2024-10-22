@@ -217,6 +217,13 @@ const SignIn = () => {
                     >
                       Login
                     </button>
+                    {/* <button
+                      type="button"
+                      className="bg-emerald-600 hover:bg-emerald-700 cursor-pointer font-bold text-white text-[18px] w-full py-3 px-4 rounded-lg transition-colors delay-50 mb-3"
+                      onClick={signOut}
+                    >
+                      Signout
+                    </button> */}
                     {errorMessage.status && (
                       <div className="bg-red-500 w-full text-white text-[16px] flex items-center gap-x-2 p-2 mb-3">
                         <RiErrorWarningFill className="text-[30px]" />

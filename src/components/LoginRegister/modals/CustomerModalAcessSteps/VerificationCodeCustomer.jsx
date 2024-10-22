@@ -9,7 +9,7 @@ import {
   getCurrentUser,
 } from "aws-amplify/auth";
 import { RiErrorWarningFill, RiRestartLine } from "react-icons/ri";
-import { MdArrowForward, MdArrowBack } from "react-icons/md";
+import { MdArrowBack } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import { UserContext } from "@/contexts/user/UserContext";
 import { Button } from "@nextui-org/react";
@@ -19,7 +19,6 @@ import { handleCreateCustomerOnDataBase } from "@/api";
 
 const VerificationCodeCustomer = ({
   dataSignIn,
-  resultData,
   handleModalClose,
   isLoading,
   setIsLoading
@@ -112,7 +111,7 @@ const VerificationCodeCustomer = ({
           email: dataSignIn.email,
           status: "active",
           cognitoId: username
-      }, true);
+      }, false);
         const { tokens } = await fetchAuthSession();
         const expiredAt = tokens.accessToken.payload.exp;
         login({ ...createCustomer, expiredAt });

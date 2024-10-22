@@ -3,9 +3,7 @@ import { Button } from "@nextui-org/react";
 import Image from "next/image";
 import { MdArrowForward, MdArrowBack } from "react-icons/md";
 import { signUp } from "aws-amplify/auth";
-import { handleCreateCustomerOnDataBase } from "@/api";
-
-const CreateAccountCustomer = ({ onSwitchToVerificationCode, goBack, setResultData, setDataSignIn, isLoading, setIsLoading }) => {
+const CreateAccountCustomer = ({ onSwitchToVerificationCode, goBack, setDataSignIn, isLoading, setIsLoading }) => {
   const [fullName, setFullName] = useState(""); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,13 +35,12 @@ const CreateAccountCustomer = ({ onSwitchToVerificationCode, goBack, setResultDa
               },
           },
         });
-        
         setDataSignIn({
           userId,
           email,
-          fullName
+          fullName,
+          password
         });
-
         setIsLoading(false);
         if (nextStep?.signUpStep === "CONFIRM_SIGN_UP") {
           onSwitchToVerificationCode();
