@@ -12,7 +12,7 @@ const AuthLayout = ({ children }) => {
         <div className="md:flex hidden items-center">
           <div className="flex gap-x-2 items-center">
             <Image
-              src="/panda.png"
+              src="/panda.webp"
               className="w-[4rem] h-[3rem] drop-shadow-lg"
               width={50}
               height={50}

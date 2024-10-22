@@ -58,7 +58,6 @@ const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn, roleSelected, 
       status : false,
       message : ""
     })
-    console.log(dataSignIn)
     if(code != ""){
         try {
           await confirmSignUp({
@@ -84,8 +83,6 @@ const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn, roleSelected, 
             router.replace("/customer/");
           }
           
-
-          console.log(response);
           onClose();
 
         } catch (error) {
@@ -117,7 +114,7 @@ const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn, roleSelected, 
   }
 
   return (
-    <Modal backdrop='blur' isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} hideCloseButton={true}>
+    <Modal backdrop='blur' isOpen={true} onOpenChange={onOpenChange} isDismissable={false} hideCloseButton={true}>
           <ModalContent className='bg-zinc-800 text-white border-[2px] border-gray-700 pb-4'>
             {(onClose) => (
               <>
@@ -127,7 +124,7 @@ const VerificationCodeModal = ({isOpen, onOpenChange, dataSignIn, roleSelected, 
                 <ModalBody className='w-full flex flex-col items-center justify-center'>
                     <div className='flex flex-col items-center justify-center'>
                       <img
-                          src="/panda.png"
+                          src="/panda.webp"
                           alt="panga_logo"
                           className='w-[150px] h-[120px] drop-shadow-lg mb-3'
                       />

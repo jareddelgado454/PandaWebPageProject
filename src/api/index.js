@@ -2,25 +2,25 @@ import { client } from '@/contexts/AmplifyContext';
 import { getUserByCognitoID, getUserByEmail } from '@/graphql/custom-queries';
 import { createOffer, updatePaymentLinkService, updateStatusService, updateTechnicianLocation, updateTotalAmountService } from '@/graphql/services/mutations/mutation';
 import { getRequestServiceById } from '@/graphql/services/queries/query';
+import { createUserFromDB } from '@/graphql/users/admin/mutation';
 import { retrieveMyInformation } from '@/graphql/users/customer/query';
 import { createCustomer } from '@/graphql/users/mutation/customer';
 import { createTechnician, updateLocationTechnician, updateStripeInformationTechnician } from '@/graphql/users/mutation/technicians';
-import { createUser } from '@/graphql/users/mutation/users';
 import { getTechnician, getTehcnicianById } from '@/graphql/users/query/technician';
 export const handleCreateUserOnDatabase = async(values, isAdded) => {
     
     try {
         const { data } = await client.graphql({
-            query: createUser,
+            query: createUserFromDB,
             variables: {
-                input: { ...values }
+                user: { ...values }
             },
             authMode: isAdded ? 'iam' : 'userPool'
         });
         return data;
 
     } catch (error) {
-        console.log(error);
+        throw error;
     }
 }
 export const handleCreateTechnicianOnDataBase = async(values, isAdded) => {

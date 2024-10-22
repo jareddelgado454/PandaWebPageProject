@@ -18,6 +18,13 @@ enum ChatType {
     REPORT
 }
 
+input CreateUserDBInput {
+    email: String!
+    fullName: String!
+    status: String!
+    temporaryPassword: String!
+}
+
 type CustomerRate @model @auth(
     rules: [
         { allow: owner, ownerField: "createdById", operations: [create, update, delete, read] }
@@ -106,7 +113,8 @@ type Technician @model @auth(
         { allow: private, operations: [ read ] }
     ]
 ) {
-    id: ID!  
+    id: ID!
+    cognitoId: String
     email: String
     fullName: String
     contactNumber: String
@@ -166,6 +174,7 @@ type Customer @model @auth(
     ]
 ) {
     id: ID!
+    cognitoId: String
     email: String
     fullName: String
     contactNumber: String
@@ -308,4 +317,9 @@ type ICar {
 type Query {
   getNearbyTechnicians(lat: Float!, lon: Float!): [Technician] @function(name: "filterTechniciansQuery-dev") @auth(rules: [{ allow: private }])
   getNearbyServices(lat: Float!, lon: Float!): [Service] @function(name: "filterServicesQuery-dev") @auth(rules: [{ allow: private }])
+}
+
+type Mutation {
+    createUserFromAdminPanel(user: CreateUserDBInput!): User! @function(name: "createAdminFromPanel-dev") @auth(rules: [{ allow: groups, groups: ["admin-access"] }])
+    deleteUserFromAdminPanel(id: ID!, username: String!): ID! @function(name: "deleteUserFromAdminPanel-dev") @auth(rules: [{ allow: groups, groups: ["admin-access"] }])
 }

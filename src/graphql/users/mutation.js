@@ -44,22 +44,3 @@ export const deleteUserById = gql`
     }
   }
 `;
-
-export const createUser = gql`
-  mutation CreateUser($input: CreateUserInput!) {
-    createUser(input: $input) {
-      address
-      city
-      cognitoId
-      contactNumber
-      email
-      fullName
-      profilePicture
-      rol
-      state
-      status
-      subscription
-      zipCode
-    }
-  }
-`;
