@@ -113,7 +113,8 @@ type Technician @model @auth(
         { allow: private, operations: [ read ] }
     ]
 ) {
-    id: ID!  
+    id: ID!
+    cognitoId: String
     email: String
     fullName: String
     contactNumber: String
@@ -173,6 +174,7 @@ type Customer @model @auth(
     ]
 ) {
     id: ID!
+    cognitoId: String
     email: String
     fullName: String
     contactNumber: String
