@@ -12,7 +12,7 @@ import {
 } from "@nextui-org/react";
 import { client } from '@/contexts/AmplifyContext';
 import { deleteUser } from 'aws-amplify/auth';
-import { deleteCustomerFromDB } from '@/graphql/users/mutation/users';
+import { deleteCustomerFromDB } from '@/graphql/users/customer/mutation';
 const DeleteUserModal = ({ isOpen, onOpenChange, user }) => {
     const router = useRouter();
     const [confirmation, setConfirmation] = useState('');
