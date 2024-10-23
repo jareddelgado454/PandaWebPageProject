@@ -50,9 +50,9 @@ export const Sidebar = () => {
   const toggleSidebar = () => {
     setActive(!active);
   };
-  function reduceName(name) {
+  function reduceName(name, end = 0) {
     if (name.length > 10) {
-      return name.slice(0, 17) + '...';
+      return name.slice(0, end) + '...';
     } else {
       return name;
     }
@@ -91,7 +91,7 @@ export const Sidebar = () => {
             Panda CMS
           </p>
           <Image
-            src="/panda.png"
+            src="/panda.webp"
             className={`w-[3rem] h-[3rem] drop-shadow-lg  ${active ? "block" : "hidden"
               }`}
             width={150}
@@ -187,25 +187,25 @@ export const Sidebar = () => {
           </div>
 
           <div
-            className={`bg-zinc-600 dark:bg-green-panda shadow-sm p-3 rounded-md mt-4 transition-all w-full ${active ? "h-[5rem] 2xl:h-[7rem]" : "h-[3rem]"
+            className={`bg-zinc-600 dark:bg-green-panda shadow-sm rounded-md mt-4 transition-all w-full ${active ? "h-[5rem] 2xl:h-[6rem] px-3" : "h-[3rem]"
               }`}
           >
-            <div className="flex items-center w-full h-full gap-2">
+            <div className="flex items-center justify-center w-full h-full gap-2">
               <Image
                 src={user && user.profilePicture ? `${baseUrl+user.profilePicture}` : "/image/defaultProfilePicture.jpg"}
                 alt="user_logo"
                 width={350}
                 height={350}
-                className={`rounded-full bg-cover bg-center ${active ? "w-[3rem] h-[3rem]" : "w-[1.8rem] h-[1.5rem]"
+                className={`rounded-full object-fill ${active ? "w-9 h-9" : "w-8 h-8"
                   }`}
               />
-              <div className="overflow-hidden flex flex-col gap-1 2xl:gap-2 w-full">
-                <p className={` text-sm line-clamp-1 tracking-wider ${!active && "hidden"}`}>{user && reduceName(user?.fullName)}</p>
+              <div className={`overflow-hidden flex flex-col gap-1 2xl:gap-2 w-full ${!active && 'hidden'}`}>
+                <p className={` text-[12px] tracking-wider ${!active && "hidden"}`}>{user && reduceName(user?.fullName, 19)}</p>
                 <p
-                  className={`text-xs text-zinc-300 dark:text-zinc-200 tracking-wider line-clamp-1 ${!active && "hidden"
+                  className={`text-[10px] text-zinc-300 dark:text-zinc-200 tracking-wider line-clamp-1 ${!active && "hidden"
                     }`}
                 >
-                  {user && user.email}
+                  {user && reduceName(user.email, 18)}
                 </p>
                 <p
                   className={`text-[17px] font-extrabold cursor-pointer ${!active && "hidden"

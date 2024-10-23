@@ -6,18 +6,19 @@ import {
   signIn,
   resendSignUpCode,
   fetchAuthSession,
+  getCurrentUser,
 } from "aws-amplify/auth";
 import { RiErrorWarningFill, RiRestartLine } from "react-icons/ri";
-import { MdArrowForward, MdArrowBack } from "react-icons/md";
+import { MdArrowBack } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import { UserContext } from "@/contexts/user/UserContext";
 import { Button } from "@nextui-org/react";
 import Image from "next/image";
+import { handleCreateTechnicianOnDataBase } from "@/api";
 
 
 const VerificationCodeTechnician = ({
   dataSignIn,
-  resultData,
   handleModalClose,
   isLoading,
   setIsLoading
@@ -70,6 +71,16 @@ const VerificationCodeTechnician = ({
     }
   };
 
+  const fetchCurrentUser = async () => {
+    try {
+     const { username } = await getCurrentUser();
+     return username;
+     
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const handleSignUpConfirmation = async () => {
     setErrorCode({
       status: false,
@@ -93,9 +104,17 @@ const VerificationCodeTechnician = ({
         });
         setShowResendButton(true);
         setCode("");
+        const username = await fetchCurrentUser();
+        const { createTechnician } = await handleCreateTechnicianOnDataBase({
+          id: dataSignIn.userId,
+          fullName: dataSignIn.fullName,
+          email: dataSignIn.email,
+          status: "active",
+          cognitoId: username
+      }, false);
         const { tokens } = await fetchAuthSession();
         const expiredAt = tokens.accessToken.payload.exp;
-        login({ ...resultData, expiredAt });
+        login({ ...createTechnician, expiredAt });
 
         setIsLoading(false);
 

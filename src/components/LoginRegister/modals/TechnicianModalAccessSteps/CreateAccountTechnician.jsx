@@ -3,9 +3,7 @@ import { Button } from "@nextui-org/react";
 import Image from "next/image";
 import { MdArrowForward, MdArrowBack } from "react-icons/md";
 import { signUp } from "aws-amplify/auth";
-import {  handleCreateTechnicianOnDataBase } from "@/api";
-
-const CreateAccountTechnician = ({ onSwitchToVerificationCode, goBack, setResultData, setDataSignIn, isLoading, setIsLoading }) => {
+const CreateAccountTechnician = ({ onSwitchToVerificationCode, goBack, setDataSignIn, isLoading, setIsLoading }) => {
   const [fullName, setFullName] = useState(""); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,19 +35,12 @@ const CreateAccountTechnician = ({ onSwitchToVerificationCode, goBack, setResult
               },
           },
         });
-        console.log("creado en cognito")
-        const { createTechnician } = await handleCreateTechnicianOnDataBase({
-            id: userId,
-            fullName: fullName,
-            email: email,
-            status: "active",
-        }, true);
         setDataSignIn({
+          userId,
           email,
+          fullName,
           password
         });
-        setResultData({...createTechnician});
-        console.log("creado en base de datos")
         setIsLoading(false);
         if (nextStep?.signUpStep === "CONFIRM_SIGN_UP") {
           onSwitchToVerificationCode();

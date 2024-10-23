@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import {AddUserModal, DeleteModal, EditModal, ShowInfoModal} from "./admin/index";
+import {AddUserModal, EditModal, ShowInfoModal} from "./admin/index";
 import { client } from "@/contexts/AmplifyContext";
 import {
   FaTrashCan,
@@ -8,11 +8,12 @@ import {
   FaSort,
   FaAddressCard,
 } from "react-icons/fa6";
-import { Button, useDisclosure } from "@nextui-org/react";
+import { useDisclosure } from "@nextui-org/react";
 import Image from "next/image";
-import { baseUrl } from "@/utils/CloudFront";
 import { toast } from "react-toastify";
-export const Table = ({ item, callback, typeUser }) => {
+import { baseUrl } from "@/utils/CloudFront";
+import { deleteCustomerorTechicianFromDB, deleteUserFromDB } from "@/graphql/users/admin/mutation";
+export const TableTwo = ({ item, callback, typeUser }) => {
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
   const {
@@ -21,19 +22,9 @@ export const Table = ({ item, callback, typeUser }) => {
     onOpenChange: onEditModalOpenChange,
   } = useDisclosure();
   const {
-    isOpen: isDeleteModalOpen,
-    onOpen: onDeleteModalOpen,
-    onOpenChange: onDeleteModalOpenChange,
-  } = useDisclosure();
-  const {
     isOpen: isShowModalOpen,
     onOpen: onShowModalOpen,
     onOpenChange: onShowModalOpenChange
-  } = useDisclosure();
-  const {
-    isOpen: isAddModalOpen,
-    onOpen: onUserAddModalOpen,
-    onOpenChange: onAddUserModalChange
   } = useDisclosure();
   const [recordSelected, setRecordSelected] = useState({});
   const handleOpenEditModal = (user) => {
@@ -50,16 +41,17 @@ export const Table = ({ item, callback, typeUser }) => {
         return;
       }
       await client.graphql({
-        query: deleteUserFromDB,
+        query: deleteCustomerorTechicianFromDB,
         variables: {
           id: id,
-          username
+          username,
+          role: typeUser
         },
       });
       toast.success('Deleted successfully');
       callback();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   const handleSort = (key) => {
@@ -130,14 +122,6 @@ export const Table = ({ item, callback, typeUser }) => {
               className="dark:bg-zinc-800 border border-[#40C48E] dark:text-white shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
-          {typeUser === "admin" && (
-            <Button
-              className="bg-green-panda tracking-widest text-zinc-100 font-semibold"
-              onClick={onUserAddModalOpen}
-            >
-              Add
-            </Button>
-          )}
         </div>
       </div>
       <div className="relative overflow-x-auto rounded-lg shadow-lg p-6 bg-white dark:bg-zinc-800">
@@ -208,7 +192,7 @@ export const Table = ({ item, callback, typeUser }) => {
                         : "/image/defaultProfilePicture.jpg"
                     }
                     alt="logo_image"
-                    className="w-[2rem] h-[2rem] rounded-lg bg-cover bg-center"
+                    className="w-[2rem] h-[2rem] rounded-full object-center object-cover"
                     height={250}
                     width={250}
                   />
@@ -239,7 +223,7 @@ export const Table = ({ item, callback, typeUser }) => {
                   <div className="flex gap-4">
                     <button
                       type="button"
-                      onClick={() => handleDeleteUserId(user.id, user.email)}
+                      onClick={() => handleDeleteUserId(user.id, user.cognitoId)}
                       className="bg-rose-500 p-2 rounded text-white"
                     >
                       <FaTrashCan />
@@ -271,23 +255,11 @@ export const Table = ({ item, callback, typeUser }) => {
             typeUser={typeUser}
             setRecordSelected={setRecordSelected}
           />
-          <DeleteModal
-            isOpen={isDeleteModalOpen}
-            onOpenChange={onDeleteModalOpenChange}
-            user={recordSelected}
-            callback={callback}
-            setRecordSelected={setRecordSelected}
-          />
           <ShowInfoModal 
             isOpen={isShowModalOpen}
             onOpenChange={onShowModalOpenChange}
             user={recordSelected}
             setRecordSelected={setRecordSelected}
-          />
-          <AddUserModal
-            isOpen={isAddModalOpen}
-            onOpenChange={onAddUserModalChange}
-            callback={callback}
           />
         </table>
       </div>

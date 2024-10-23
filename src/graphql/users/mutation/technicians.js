@@ -4,6 +4,9 @@ export const createTechnician = gql`
   mutation CreateTechnician($input: CreateTechnicianInput!) {
     createTechnician(input: $input) {
       id
+      fullName
+      email
+      cognitoId
     }
   }
 `;
@@ -49,4 +52,12 @@ export const updateLocationTechnician = gql`
       loLongitude
     }
 }
+`;
+
+export const deleteTechincian = gql`
+  mutation MyMutation($id: ID!) {
+    deleteTechnician(input: {id: $id}){
+      id
+    }
+  }
 `;

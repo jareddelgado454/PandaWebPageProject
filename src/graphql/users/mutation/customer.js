@@ -6,7 +6,7 @@ export const createCustomer = gql`
             id
             fullName
             email
-            
+            cognitoId
         }
     }
 `;

@@ -104,5 +104,12 @@ export const deleteMyCar = gql`
             customerCarsId
         }
     }
+`;
 
+export const deleteCustomerFromDB = gql`
+  mutation MyMutation($id: ID!) {
+    deleteCustomer(input: {id: $id}){
+      id
+    }
+  }
 `;

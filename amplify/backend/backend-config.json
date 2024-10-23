@@ -80,7 +80,17 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "createAdminFromPanel": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "createStripeTechnicianAccount": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "deleteUserFromAdminPanel": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -205,6 +215,22 @@
         }
       ]
     },
+    "AMPLIFY_function_createAdminFromPanel_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createAdminFromPanel"
+        }
+      ]
+    },
+    "AMPLIFY_function_createAdminFromPanel_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createAdminFromPanel"
+        }
+      ]
+    },
     "AMPLIFY_function_createStripeTechnicianAccount_deploymentBucketName": {
       "usedBy": [
         {
@@ -218,6 +244,22 @@
         {
           "category": "function",
           "resourceName": "createStripeTechnicianAccount"
+        }
+      ]
+    },
+    "AMPLIFY_function_deleteUserFromAdminPanel_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "deleteUserFromAdminPanel"
+        }
+      ]
+    },
+    "AMPLIFY_function_deleteUserFromAdminPanel_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "deleteUserFromAdminPanel"
         }
       ]
     },

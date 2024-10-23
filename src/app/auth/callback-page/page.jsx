@@ -10,6 +10,7 @@ import {
   fetchUserAttributes,
   fetchAuthSession,
   updateUserAttributes,
+  getCurrentUser,
 } from "aws-amplify/auth";
 import { useRouter } from "next/navigation";
 import loading3 from "../../../../public/loading/loading3.gif"
@@ -27,6 +28,16 @@ const CallbackPage = () => {
   const [selectingCustomer, setSelectingCustomer] = useState(false);
   const [selectingTechnician, setSelectingTechnician] = useState(false);
   const router = useRouter();
+
+  const fetchCurrentUser = async () => {
+    try {
+     const { username } = await getCurrentUser();
+     return username;
+     
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   useEffect(() => {
     const retrieveDataUser = async () => {
@@ -101,12 +112,14 @@ const CallbackPage = () => {
 
   const selectCustomerHandle = async () => {
     setSelectingCustomer(true);
+    const username = await fetchCurrentUser();
     try {
       
       const result = await handleCreateCustomerOnDataBase({
         id: user?.sub,
         email: user?.email,
         fullName: user?.name,
+        cognitoId: username
       });
 
       await updateUserAttributes({
