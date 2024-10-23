@@ -53,3 +53,9 @@ export const deleteUserFromDB = gql`
     deleteUserFromAdminPanel(id: $id, username: $username)
   }
 `;
+
+export const deleteCustomerorTechicianFromDB = gql`
+  mutation MyMutation($id: ID!, $username: String!, $role: String) {
+    deleteUserFromAdminPanel(id: $id, username: $username, role: $role)
+  }
+`;

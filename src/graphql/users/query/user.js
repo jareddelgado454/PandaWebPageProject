@@ -98,6 +98,7 @@ export const listCustomers = gql`
           fullName
           contactNumber
           status
+          cognitoId
           profilePicture
           createdAt
       }
