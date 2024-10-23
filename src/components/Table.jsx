@@ -11,9 +11,6 @@ import {
 import { Button, useDisclosure } from "@nextui-org/react";
 import Image from "next/image";
 import { baseUrl } from "@/utils/CloudFront";
-import { deleteUserFromDB } from "@/graphql/users/admin/mutation";
-import { deleteCustomerFromDB } from "@/graphql/users/customer/mutation";
-import { deleteTechincian } from "@/graphql/users/mutation/technicians";
 import { toast } from "react-toastify";
 export const Table = ({ item, callback, typeUser }) => {
   const [sortedColumn, setSortedColumn] = useState(null);
@@ -52,20 +49,8 @@ export const Table = ({ item, callback, typeUser }) => {
       if (!id) {
         return;
       }
-      let query;
-      switch (typeUser) {
-        case "admin":
-          query = deleteUserFromDB;
-          break;
-        case "customer":
-          query = deleteCustomerFromDB;
-        case "technician":
-          query = deleteTechincian;
-        default:
-          break;
-      }
       await client.graphql({
-        query: query,
+        query: deleteUserFromDB,
         variables: {
           id: id,
           username

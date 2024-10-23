@@ -12,7 +12,7 @@ import { useDisclosure } from "@nextui-org/react";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { baseUrl } from "@/utils/CloudFront";
-import { deleteUserFromDB } from "@/graphql/users/admin/mutation";
+import { deleteCustomerorTechicianFromDB, deleteUserFromDB } from "@/graphql/users/admin/mutation";
 export const TableTwo = ({ item, callback, typeUser }) => {
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
@@ -41,16 +41,17 @@ export const TableTwo = ({ item, callback, typeUser }) => {
         return;
       }
       await client.graphql({
-        query: deleteUserFromDB,
+        query: deleteCustomerorTechicianFromDB,
         variables: {
           id: id,
-          username
+          username,
+          role: typeUser
         },
       });
       toast.success('Deleted successfully');
       callback();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   const handleSort = (key) => {
@@ -191,7 +192,7 @@ export const TableTwo = ({ item, callback, typeUser }) => {
                         : "/image/defaultProfilePicture.jpg"
                     }
                     alt="logo_image"
-                    className="w-[2rem] h-[2rem] rounded-lg bg-cover bg-center"
+                    className="w-[2rem] h-[2rem] rounded-full object-center object-cover"
                     height={250}
                     width={250}
                   />
@@ -222,7 +223,7 @@ export const TableTwo = ({ item, callback, typeUser }) => {
                   <div className="flex gap-4">
                     <button
                       type="button"
-                      onClick={() => handleDeleteUserId(user.id, user.email)}
+                      onClick={() => handleDeleteUserId(user.id, user.cognitoId)}
                       className="bg-rose-500 p-2 rounded text-white"
                     >
                       <FaTrashCan />
