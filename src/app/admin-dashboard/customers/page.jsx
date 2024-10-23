@@ -19,13 +19,7 @@ const Customers = () => {
   const retrieveData = async () => {
     setLoading(true);
     try {
-      const { data } = await client.graphql({
-        query: listCustomers,
-        variables: {
-          email: "test@gmail.com",
-          role: "customer"
-        },
-      });
+      const { data } = await client.graphql({ query: listCustomers });
       setUsers(data.listCustomers.items);
       setLoading(false);
     } catch (error) {
