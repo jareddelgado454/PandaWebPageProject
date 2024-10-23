@@ -62,11 +62,11 @@
         },
         "deleteUserFromAdminPanel": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/deleteUserFromAdminPanel-2f742f624b597367636b-build.zip"
+          "s3Key": "amplify-builds/deleteUserFromAdminPanel-47517a7750564346765a-build.zip"
         },
         "createAdminFromPanel": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/createAdminFromPanel-2f566c336e776e457842-build.zip"
+          "s3Key": "amplify-builds/createAdminFromPanel-53357a42592f624f3664-build.zip"
         }
       },
       "storage": {

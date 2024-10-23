@@ -2,12 +2,24 @@ const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider();
 exports.handler = async (event) => {
-    const { id, username } = event.arguments;
+    const { id, username, role } = event.arguments;
+
     try {
 
-        await removeFromGroup(username, 'admin-access');
+        switch (role) {
+            case "customer":
+                await deleteCustomerFromDynamo(id);
+                break;
 
-        await deleteFromDynamo(id);
+            case "technician":
+                await deleteTechnicianFromDynamo(id);
+                break;
+        
+            default:
+                await removeFromGroup(username, 'admin-access');
+                await deleteAdminFromDynamo(id);
+                break;
+        }
 
         await deleteFromCognito(username);
 
@@ -19,9 +31,33 @@ exports.handler = async (event) => {
     }
 };
 
-const deleteFromDynamo = async (id) => {
+const deleteAdminFromDynamo = async (id) => {
     const params = {
         TableName: "User-yjp2laxn7fhihdb4oidvyc3hf4-dev",
+        Key: { id }
+    }
+    try {
+        await dynamoDb.delete(params).promise();
+    } catch (error) {
+        throw error;
+    }
+}
+
+const deleteCustomerFromDynamo = async (id) => {
+    const params = {
+        TableName: "Customer-yjp2laxn7fhihdb4oidvyc3hf4-dev",
+        Key: { id }
+    }
+    try {
+        await dynamoDb.delete(params).promise();
+    } catch (error) {
+        throw error;
+    }
+}
+
+const deleteTechnicianFromDynamo = async (id) => {
+    const params = {
+        TableName: "Technician-yjp2laxn7fhihdb4oidvyc3hf4-dev",
         Key: { id }
     }
     try {
