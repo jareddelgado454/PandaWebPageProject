@@ -25,8 +25,8 @@ const DownloadTechnician = () => {
     
   return (
     <div className="w-full flex flex-col items-center  relative mb-20 ">
-      <div className="flex flex-col w-[80%]">
-        <div className="h-[1px] flex w-full bg-gradient-to-r from-darkGray to-raisinBlack mb-14 mt-6 text-transparent select-none">
+      <div className="flex flex-col md:w-[80%] w-full md:px-0 px-4">
+        <div className="h-[1px] flex w-full bg-gradient-to-r from-darkGray to-raisinBlack mb-14 md:mt-6 mt-2 text-transparent select-none">
           a
         </div>
         <h3 className="w-full px-2 text-gray-200 md:text-[50px] text-[30px] font-bold font-chackra  mb-5">
@@ -35,7 +35,7 @@ const DownloadTechnician = () => {
           you the best experience
         </h3>
         <div
-          className="bg-raisinBlack hover:bg-zinc-900 rounded-3xl w-full flex lg:flex-row flex-col shadow-xl "
+          className="bg-zinc-900 hover:bg-zinc-900 rounded-3xl w-full flex lg:flex-row flex-col shadow-xl "
           style={{ transition: "background-color 1.2s ease" }}
         >
           <div className="lg:w-[50%] w-full flex flex-col p-8">
@@ -52,7 +52,7 @@ const DownloadTechnician = () => {
               </div>
               <div className="flex flex-col ">
                 <h4 className="text-white font-chackra h-[40px] text-[20px] font-semibold">
-                  The Panda Technician App
+                  The Panda Technician 
                 </h4>
                 <div className="flex gap-x-1">
                   <RiStarFill className="text-yellow-400 text-[30px]" />

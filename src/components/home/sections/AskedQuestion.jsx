@@ -29,11 +29,11 @@ const AskedQuestion = () => {
 
   return (
     <div className="relative w-full pt-16 py-12 flex flex-col items-center gap-5 px-3 md:px-0 bg-darkBlack mb-10">
-      <div className="w-[80%] flex flex-col">
-        <p className="w-[200px] bg-gradient-to-r from-lightWhite to-midGray bg-clip-text text-transparent font-semibold text-xs xl:text-lg">
+      <div className="md:w-[80%] w-full flex flex-col">
+        <p className="md:w-[200px] w-full md:text-left text-center bg-gradient-to-r from-lightWhite to-midGray bg-clip-text text-transparent font-semibold text-md xl:text-lg">
           Frequent asked
         </p>
-        <p className="w-[300px] bg-gradient-to-r from-midGray to-lightWhite bg-clip-text text-transparent font-black font-chackra text-3xl 2xl:text-6xl">
+        <p className="md:w-[300px] w-full md:text-left text-center bg-gradient-to-r from-midGray to-lightWhite bg-clip-text text-transparent font-black font-chackra text-4xl 2xl:text-6xl">
           Questions
         </p>
 

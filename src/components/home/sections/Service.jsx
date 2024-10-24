@@ -35,7 +35,7 @@ const Service = () => {
     <div className='py-2 px-4 w-full flex flex-col items-center' id="Service-Section">
       <div className='flex justify-center xl:w-[80%] w-full items-center flex-wrap text-lightWhite mb-6'>
         <div className='w-full flex flex-col gap-2 mt-6 mb-16'>
-          <p className="bg-gradient-to-r from-midGray to-lightWhite bg-clip-text text-transparent font-black font-chackra tracking-[3px] text-3xl 2xl:text-6xl text-center">
+          <p className="bg-gradient-to-r from-midGray to-lightWhite bg-clip-text text-transparent font-black font-chackra tracking-[3px] text-4xl 2xl:text-6xl text-center">
             Our Services
           </p>
         </div>
@@ -54,9 +54,9 @@ const Service = () => {
 
               {/* Contenedor principal */}
               <div
-                className={`relative z-20 flex flex-col justify-center md:gap-10 gap-4 p-6 py-10 rounded-xl transition-all duration-150 
+                className={`relative z-20 flex flex-col justify-center md:gap-10 gap-4 p-6 md:py-10 py-6 rounded-xl transition-all duration-150 
                   ${selected === service.id ? 'bg-meant text-darkBlack md:scale-110' : 'bg-gradient-to-b from-darkGray to-darkBlack'}
-                  min-h-[350px] h-full flex-grow group`}
+                  md:min-h-[350px] min-h-[260px] h-full flex-grow group`}
               >
                 {/* Ícono y texto con transición */}
                 <div className={`transition-colors md:w-[80px] w-[60px] md:h-[80px] h-[60px] bg-midGray/50 flex items-center justify-center rounded-full duration-150 ${selected === service.id ? 'text-meant' : 'group-hover:text-meant'}`}>
@@ -92,7 +92,7 @@ const Service = () => {
             </div>
           ))}
         </div>
-        <div className="h-[1px] flex w-full bg-gradient-to-r from-darkGray to-raisinBlack mb-4 mt-6 text-transparent select-none">
+        <div className="h-[1px] flex w-full bg-gradient-to-r md:from-darkGray from-midGray to-raisinBlack mb-4 md:mt-6 mt-3 text-transparent select-none">
           a
         </div>
       </div>

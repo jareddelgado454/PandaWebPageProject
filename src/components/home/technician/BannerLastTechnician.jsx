@@ -94,7 +94,7 @@ const BannerLastTechnician = () => {
   };
 
   return (
-    <div className="relative w-full h-[750px] z-10" id="Home-Section">
+    <div className="relative w-full md:h-[750px] h-[650px] z-10" id="Home-Section">
       <div className="absolute inset-0 z-[-1]">
         <Image
           src={slides[currentSlide].src}
@@ -110,7 +110,7 @@ const BannerLastTechnician = () => {
       {/* Contenido principal */}
       <div className="relative z-10 w-full h-full flex flex-col items-center">
         {/* Navbar */}
-        <div className="w-[80%] flex flex-row items-center py-3 z-20">
+        <div className="md:w-[80%] w-full md:px-0 px-4 flex flex-row items-center py-3 z-20">
           <Link href={"/"} className="flex flex-row gap-2 items-center">
             <Image
               src={"/panda.webp"}
@@ -125,9 +125,9 @@ const BannerLastTechnician = () => {
           </Link>
         </div>
 
-        <div className="flex flex-row justify-center items-center w-[80%] relative z-20">
+        <div className="flex flex-row justify-center items-center md:w-[80%] w-full md:px-0 px-5 relative z-20">
           <div className="w-full flex flex-col gap-2 h-[65%] select-none">
-            <p className="text-lightWhite font-black font-chackra tracking-[4px] text-3xl 2xl:text-6xl w-[70%]">
+            <p className="text-lightWhite font-black font-chackra tracking-[4px] text-3xl 2xl:text-6xl md:w-[70%] w-full">
               {slides[currentSlide].header}
             </p>
           </div>
@@ -135,7 +135,7 @@ const BannerLastTechnician = () => {
 
         {/* Indicadores de las secciones (Main, Jobs, Schedule, Expand) */}
         <div className="w-full flex flex-col items-center absolute bottom-10">
-          <div className="flex w-[80%] justify-start mb-12 z-20 gap-4">
+          <div className="flex md:w-[80%] w-full md:px-0 px-6 justify-start mb-12 z-20 gap-4">
             <button
               onClick={onAccessTechnicianOpen}
               className="flex items-center gap-2 bg-meant text-black py-3 px-6 rounded-lg hover:bg-green-500 transition"

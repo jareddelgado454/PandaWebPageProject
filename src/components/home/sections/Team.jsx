@@ -10,10 +10,10 @@ const Team = () => {
     >
       <div className="flex w-[80%] justify-center items-center flex-wrap text-darkBlack xl:mt-6">
         <div className="w-full flex flex-row gap-2 items-center justify-center mt-6 mb-10">
-          <p className="text-darkBlack font-semibold text-xs xl:text-lg">
+          <p className="text-darkBlack font-semibold text-md xl:text-lg">
             Look Our
           </p>
-          <p className="font-chackra text-2xl xl:text-6xl 2xl:text-7xl font-black ">
+          <p className="font-chackra text-3xl xl:text-6xl 2xl:text-7xl font-black ">
             Team
           </p>
         </div>

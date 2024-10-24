@@ -16,13 +16,13 @@ const HowToUseTechnician = () => {
   const [selectedStep, setSelectedStep] = useState(1);
 
   return (
-    <div className="relative w-full pt-16 py-12 flex flex-col items-center gap-5 px-3 md:px-0 bg-darkBlack mb-10">
-      <div className="w-[80%] flex flex-col">
-        <p className="w-[570px] bg-gradient-to-r from-lightGray to-lightWhite bg-clip-text text-transparent font-black font-chackra text-3xl 2xl:text-6xl mb-10">
+    <div className="relative w-full md:pt-16 pt-8 md:py-12 py-6 flex flex-col items-center gap-5 px-3 md:px-0 bg-darkBlack mb-10">
+      <div className="w-full md:w-[80%] flex flex-col md:px-0 px-4">
+        <p className="md:w-[570px] w-full bg-gradient-to-r from-lightGray to-lightWhite bg-clip-text text-transparent font-black font-chackra text-4xl 2xl:text-6xl mb-10">
           How to use the App
         </p>
 
-        <div className="w-full flex flex-row justify-center items-center">
+        <div className="hidden md:flex w-full flex-row justify-center items-center">
           <div className="w-1/2 flex flex-col gap-6 relative pl-10">
             <div className="absolute top-0 left-0 h-full w-[1px] bg-gradient-to-b from-meant to-darkBlack"></div>
 
@@ -36,16 +36,15 @@ const HowToUseTechnician = () => {
                 }`}
                 onMouseEnter={() => setSelectedStep(step.id)}
               >
-                {/* Icono representativo para cada paso */}
                 <step.icon
-                  size={35}
-                  className={`min-w-[24px] min-h-[24px] ${
+                  size={40}
+                  className={`md:min-w-[40px] min-w-[25px] min-h-[25px] md:min-h-[40px] ${
                     selectedStep === step.id
                       ? "text-meant"
                       : "text-meant opacity-50"
                   }`}
                 />
-                <p className="text-xl font-medium">{step.title}</p>
+                <p className=" flex-1 md:text-xl text-lg font-medium">{step.title}</p>
               </div>
             ))}
           </div>
@@ -59,6 +58,27 @@ const HowToUseTechnician = () => {
               className="object-cover w-[80%]"
             />
           </div>
+        </div>
+
+        <div className="flex flex-col md:hidden gap-10">
+          {steps.map((step) => (
+            <div key={step.id} className="flex flex-col items-start text-left">
+              <div className="flex items-center gap-4">
+                <step.icon
+                  size={40} 
+                  className="text-meant"
+                />
+                <p className="text-xl font-medium text-white">{step.title}</p>
+              </div>
+              <Image
+                src={step.image}
+                alt={`Step ${step.id}`}
+                width={500}
+                height={400}
+                className="object-cover w-full mt-4"
+              />
+            </div>
+          ))}
         </div>
       </div>
     </div>
