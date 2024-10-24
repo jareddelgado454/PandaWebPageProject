@@ -16,8 +16,8 @@
       "profile",
       "aws.cognito.signin.user.admin"
     ],
-    "redirectSignIn": "https://master.d3dtglewderhtg.amplifyapp.com/auth/callback-page",
-    "redirectSignOut": "https://master.d3dtglewderhtg.amplifyapp.com/",
+    "redirectSignIn": "http://localhost:3000/auth/callback-page",
+    "redirectSignOut": "http://localhost:3000/",
     "responseType": "code"
   },
   "federationTarget": "COGNITO_USER_POOLS",
