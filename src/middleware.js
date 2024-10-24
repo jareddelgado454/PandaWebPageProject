@@ -1,8 +1,8 @@
-import { signOut } from 'aws-amplify/auth';
 import { Amplify } from "aws-amplify";
 import config from "@/amplifyconfiguration.json";
 Amplify.configure(config);
 import { NextResponse } from 'next/server'
+import { fetchAuthSession } from "aws-amplify/auth";
 export const protectedRoutes = ["/admin-dashboard", "/user", "/customer"];
 export const authRoutes = ["/auth/signup", "/auth/signin"];
 export const publicRoutes = ["/", "/payment-customer"];
@@ -15,11 +15,7 @@ export async function middleware(request) {
     protectedRoutes.some(route => request.nextUrl.pathname.startsWith(route)) &&
     (!currentUser || Date.now() > new Date((JSON.parse(currentUser).expiredAt) * 1000))
   ) {
-    request.cookies.delete("currentUser");
-    const response = NextResponse.redirect(new URL("/", request.url));
-    response.cookies.delete("currentUser");
-    await signOut();
-    return response;
+    await fetchAuthSession({ forceRefresh: true });
   }
 
   if (authRoutes.includes(request.nextUrl.pathname) && currentUser) {
