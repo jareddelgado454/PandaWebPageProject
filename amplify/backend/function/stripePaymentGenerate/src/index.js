@@ -8,8 +8,7 @@ exports.handler = async (event) => {
     const secret = await retrieveKeyFromSM();
     const stripe = stripeModule(secret.STRIPE_TEST_KEY);
 
-    const requestBody = JSON.parse(event.body);
-    const { total, serviceAssigned, userEmail, typeAccount } = requestBody;
+    const { total, serviceAssigned, userEmail, typeAccount } = event.arguments;
     let feeAmount = 0;
     if (typeAccount === "free") {
       feeAmount = Math.round(total * 10);
@@ -53,15 +52,9 @@ exports.handler = async (event) => {
       }
     );
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ url: session.url }),
-    };
+    return session.url
   } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: error.message }),
-    };
+    return error.message;
   }
 };
 

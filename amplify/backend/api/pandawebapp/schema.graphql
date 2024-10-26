@@ -321,5 +321,6 @@ type Query {
 
 type Mutation {
     createUserFromAdminPanel(user: CreateUserDBInput!): User! @function(name: "createAdminFromPanel-dev") @auth(rules: [{ allow: groups, groups: ["admin-access"] }])
+    createStripePaymentIntent(total: Float!, serviceAssigned: String!, userEmail: String!, typeAccount: String!): String! @function(name: "stripePaymentGenerate-dev") @auth(rules: [{ allow: private }])
     deleteUserFromAdminPanel(id: ID!, username: String!, role: String): ID! @function(name: "deleteUserFromAdminPanel-dev") @auth(rules: [{ allow: groups, groups: ["admin-access"] }])
 }
