@@ -8,17 +8,17 @@ exports.handler = async (event) => {
     const secret = await retrieveKeyFromSM();
     const stripe = stripeModule(secret.STRIPE_TEST_KEY);
 
-    const requestBody = JSON.parse(event.body);
-    const { total, serviceAssigned, userEmail, typeAccount } = requestBody;
+    const { input: { total, serviceAssignedId, serviceAssignedType, serviceAssignedStripeId, userEmail, typeAccount } } = event.arguments;
+
     let feeAmount = 0;
     if (typeAccount === "free") {
       feeAmount = Math.round(total * 10);
     }
     
-    if (!total || !serviceAssigned || !userEmail) {
+    if (!total || !serviceAssignedId || !userEmail) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: 'Total, serviceAssigned and userEmail are required' }),
+        body: JSON.stringify({ error: 'Total, serviceAssignedId and userEmail are required', arguments: event.arguments }),
       };
     }
 
@@ -41,27 +41,21 @@ exports.handler = async (event) => {
         payment_intent_data: {
           application_fee_amount: feeAmount,
           metadata: {
-            serviceType: serviceAssigned.type,
+            serviceType: serviceAssignedType,
           },
         },
-        success_url: `https://master.d3dtglewderhtg.amplifyapp.com/payment-customer?paymentStatus=successfully&serviceId=${serviceAssigned.id}`,
-        cancel_url: `https://master.d3dtglewderhtg.amplifyapp.com/payment-customer?paymentStatus=cancel&serviceId=${serviceAssigned.id}`,
+        success_url: `https://master.d3dtglewderhtg.amplifyapp.com/payment-customer?paymentStatus=successfully&serviceId=${serviceAssignedId}`,
+        cancel_url: `https://master.d3dtglewderhtg.amplifyapp.com/payment-customer?paymentStatus=cancel&serviceId=${serviceAssignedId}`,
         customer_email: userEmail,
       },
       {
-        stripeAccount: serviceAssigned.stripeId,
+        stripeAccount: serviceAssignedStripeId,
       }
     );
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ url: session.url }),
-    };
+    return session.url
   } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: error.message }),
-    };
+    return error.message;
   }
 };
 

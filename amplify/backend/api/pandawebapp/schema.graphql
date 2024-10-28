@@ -25,6 +25,15 @@ input CreateUserDBInput {
     temporaryPassword: String!
 }
 
+input CreateStripeIntent {
+    serviceAssignedId: ID!
+    serviceAssignedType: String!
+    serviceAssignedStripeId: String!
+    total: Float
+    typeAccount: String
+    userEmail: String
+}
+
 type CustomerRate @model @auth(
     rules: [
         { allow: owner, ownerField: "createdById", operations: [create, update, delete, read] }
@@ -322,4 +331,5 @@ type Query {
 type Mutation {
     createUserFromAdminPanel(user: CreateUserDBInput!): User! @function(name: "createAdminFromPanel-dev") @auth(rules: [{ allow: groups, groups: ["admin-access"] }])
     deleteUserFromAdminPanel(id: ID!, username: String!, role: String): ID! @function(name: "deleteUserFromAdminPanel-dev") @auth(rules: [{ allow: groups, groups: ["admin-access"] }])
+    createStripeIntent(input: CreateStripeIntent!): String! @function(name: "stripePaymentGenerate-dev") @auth(rules: [{ allow: private }])
 }
