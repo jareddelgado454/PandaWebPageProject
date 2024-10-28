@@ -121,6 +121,7 @@ export const getServiceById = gql`
             fullName
             contactNumber
             profilePicture
+            suscription
             stripeId
             rate {
               items{

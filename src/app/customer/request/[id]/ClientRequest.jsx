@@ -153,7 +153,7 @@ export default function ClientRequest() {
                   {service && <ServiceTrackingComponent service={service} setService={setService} />}
                 </div>
                 <div className='bg-green-700/15 dark:bg-zinc-700 h-full rounded-lg shadow-md'>
-                  {service && <PaymentComponent service={service} setService={setService} />}
+                  {service && <PaymentComponent service={service} setService={setService} user={user} />}
                 </div>
               </>
             )}

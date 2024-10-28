@@ -183,3 +183,9 @@ export const createTechnicianRate = gql`
     }
   }
 `;
+
+export const createStripeIntent = gql`
+  mutation MyMutation($input: CreateStripeIntent!) {
+    createStripeIntent(input: $input)
+  }
+`;
