@@ -63,6 +63,8 @@ export default function OfferDetails() {
 
   const onHandleAcceptServiceFromTechnician = async (offer) => {
     try {
+      await changeOfferStatusFromCustomer(offer.id, "accepted");
+
       const { data } = await client.graphql({
         query: updateService,
         variables: {

@@ -16,11 +16,14 @@ import { AddNewCarModal } from '../..';
 import { UserContext } from '@/contexts/user/UserContext';
 import { ServiceRequestSteps } from '@/utils/tour/serviceRequest/steps';
 import { retrieveAddressUsingLocation } from '@/api/geo/GetAddress';
+import { getCustomerRates } from '@/api/customer';
+import { calculateRate } from '@/utils/service/AVGRate';
 export default function ServiceForm() {
     const [stepsEnabled, setStepsEnabled] = useState(false);
     const { user } = useContext(UserContext);
     const { userLocation } = useContext(PlaceContext);
     const { serviceRequest, setServiceRequest } = useContext(ServiceContext);
+    const [rate, setRate] = useState(0);
     const [service, setService] = useState({});
     const [myCars, setMyCars] = useState([]);
     const [carSelected, setCarSelected] = useState(null);
@@ -44,6 +47,13 @@ export default function ServiceForm() {
     }
 
     useEffect(() => { retrieveMyCars(); }, [user]);
+
+    useEffect(() => {
+        (async() => {
+            const rates = await getCustomerRates(user.id);
+            setRate(calculateRate(rates));
+        })();
+    }, [user]);
 
     useEffect(() => {
         const savedService = Cookies.get("ServiceRequest");
@@ -76,6 +86,7 @@ export default function ServiceForm() {
                             id: user.id,
                             fullName: user.fullName,
                             profilePicture: user.profilePicture,
+                            rate
                         },
                         car: {
                             id: carSelected?.id,

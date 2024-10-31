@@ -24,6 +24,7 @@ export const createService = gql`
                 id
                 fullName
                 profilePicture
+                rate
             }
             car {
                 id
@@ -51,6 +52,7 @@ export const updateService = gql`
                 email
                 fullName
                 contactNumber
+                subscriptionStatus
                 profilePicture
                 loLatitude
                 loLongitude
@@ -66,6 +68,7 @@ export const updateService = gql`
                 id
                 profilePicture
                 fullName
+                rate
             }
             destLatitude
             destLongitude
@@ -74,6 +77,47 @@ export const updateService = gql`
             updatedAt
         }
     }
+`;
+
+export const acceptServiceRequest = gql`
+  mutation MyMutation($destLatitude: Float!, $destLongitude: Float!, $serviceId: ID!, $technicianId: ID!, $price: Float!, $status: String!) {
+    acceptServiceRequest(destLatitude: $destLatitude, destLongitude: $destLongitude, serviceId: $serviceId, technicianSelectedId: $technicianId, price: $price, statusService: $status) {
+      id
+      originLatitude
+      originLongitude
+      status
+      serviceTechnicianSelectedId
+      customerId
+      technicianSelected {
+        id
+        email
+        fullName
+        contactNumber
+        subscriptionStatus
+        profilePicture
+        loLatitude
+        loLongitude
+      }
+      car {
+        id
+        brand
+        image
+        model
+        year
+      }
+      customer {
+        id
+        profilePicture
+        fullName
+        rate
+      }
+      destLatitude
+      destLongitude
+      type
+      createdAt
+      updatedAt
+    }
+  }
 `;
 
 export const saveMyCar = gql`

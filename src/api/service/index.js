@@ -1,5 +1,22 @@
 import { client } from "@/contexts/AmplifyContext";
 import { listMyChatWithAdmin, listMyChatWithTechnician } from "@/graphql/chat/query";
+import { updateOfferStatus } from "@/graphql/services/mutations/mutation";
+
+export const changeOfferStatusFromCustomer = async(offerId, status) => {
+    try {
+        await client.graphql({
+            query: updateOfferStatus,
+            variables: {
+                input: {
+                    id: offerId,
+                    status
+                }
+            }
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 export const existChatWithTechnicianSelected = async(customerId, technicianId) => {
     try {
