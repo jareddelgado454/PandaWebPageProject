@@ -67,6 +67,10 @@
         "createAdminFromPanel": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
           "s3Key": "amplify-builds/createAdminFromPanel-53357a42592f624f3664-build.zip"
+        },
+        "acceptServiceRequest": {
+          "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
+          "s3Key": "amplify-builds/acceptServiceRequest-6f71664938544661302f-build.zip"
         }
       },
       "storage": {

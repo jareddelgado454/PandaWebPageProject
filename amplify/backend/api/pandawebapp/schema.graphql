@@ -18,6 +18,22 @@ enum ChatType {
     REPORT
 }
 
+type ICustomer {
+    id: ID!
+    fullName: String!
+    profilePicture: String
+    rate: Float!
+}
+
+type ICar {
+    id: ID!
+    brand: String!
+    image: String!
+    model: String!
+    year: String!
+    identificationNumber: String!
+}
+
 input CreateUserDBInput {
     email: String!
     fullName: String!
@@ -308,21 +324,6 @@ enum GoalType {
     ANNUAL
 }
 
-type ICustomer {
-    id: ID!
-    fullName: String!
-    profilePicture: String
-}
-
-type ICar {
-    id: ID!
-    brand: String!
-    image: String!
-    model: String!
-    year: String!
-    identificationNumber: String!
-}
-
 type Query {
   getNearbyTechnicians(lat: Float!, lon: Float!): [Technician] @function(name: "filterTechniciansQuery-dev") @auth(rules: [{ allow: private }])
   getNearbyServices(lat: Float!, lon: Float!): [Service] @function(name: "filterServicesQuery-dev") @auth(rules: [{ allow: private }])
@@ -332,4 +333,5 @@ type Mutation {
     createUserFromAdminPanel(user: CreateUserDBInput!): User! @function(name: "createAdminFromPanel-dev") @auth(rules: [{ allow: groups, groups: ["admin-access"] }])
     deleteUserFromAdminPanel(id: ID!, username: String!, role: String): ID! @function(name: "deleteUserFromAdminPanel-dev") @auth(rules: [{ allow: groups, groups: ["admin-access"] }])
     createStripeIntent(input: CreateStripeIntent!): String! @function(name: "stripePaymentGenerate-dev") @auth(rules: [{ allow: private }])
+    acceptServiceRequest(serviceId: ID!, technicianSelectedId: ID!, destLatitude: Float!, destLongitude: Float!, price: Float!, statusService: String!): Service @function(name: "acceptServiceRequest-dev") @auth(rules: [{ allow: private }])
 }
