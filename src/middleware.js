@@ -1,39 +1,51 @@
 import { Amplify } from "aws-amplify";
 import config from "@/amplifyconfiguration.json";
 Amplify.configure(config);
-import { NextResponse } from 'next/server'
-import { fetchAuthSession } from "aws-amplify/auth";
+import { NextResponse } from 'next/server';
 export const protectedRoutes = ["/admin-dashboard", "/user", "/customer"];
 export const authRoutes = ["/auth/signup", "/auth/signin"];
 export const publicRoutes = ["/", "/payment-customer"];
+
 export async function middleware(request) {
   const currentUserCookie = request.cookies.get("currentUser");
   const currentUser = currentUserCookie ? currentUserCookie.value : null;
-  const userRol = currentUserCookie ? JSON.parse(currentUser).role : null;
+  const userRol = currentUser ? JSON.parse(currentUser).role : null;
+  const isSessionExpired = currentUser ? Date.now() > new Date((JSON.parse(currentUser).expiredAt) * 1000) : true;
 
   if (
     protectedRoutes.some(route => request.nextUrl.pathname.startsWith(route)) &&
-    (!currentUser || Date.now() > new Date((JSON.parse(currentUser).expiredAt) * 1000))
+    (!currentUser || isSessionExpired)
   ) {
-    await fetchAuthSession({ forceRefresh: true });
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
+  // Redirect if there is an user authenticated.
   if (authRoutes.includes(request.nextUrl.pathname) && currentUser) {
-    console.log("allowed");
-    if(JSON.parse(currentUser).role === 'admin') {
-      return NextResponse.redirect(new URL("/admin-dashboard/", request.url));
-    }else {
+    if (userRol === 'admin') {
+      return NextResponse.redirect(new URL("/admin-dashboard", request.url));
+    } else if (userRol === 'technician') {
       return NextResponse.redirect(new URL("/user", request.url));
+    } else {
+      return NextResponse.redirect(new URL("/customer", request.url));
     }
   }
 
+  // Block access to the admin routes if the user is not administrator
   if (request.nextUrl.pathname.startsWith("/admin-dashboard") && userRol !== 'admin') {
-    const response = NextResponse.redirect(new URL("/user", request.url));
-    return response;
+    return NextResponse.redirect(new URL("/user", request.url));
   }
 
+  // Redirect to the respective routes using user's respective role.
   if (request.nextUrl.pathname.startsWith("/user") && userRol === 'admin') {
-    const response = NextResponse.redirect(new URL("/admin-dashboard", request.url));
-    return response;
+    return NextResponse.redirect(new URL("/admin-dashboard", request.url));
+  } else if(request.nextUrl.pathname.startsWith("/user") && userRol === 'customer'){
+    return NextResponse.redirect(new URL("/customer", request.url));
+  }
+
+  // Redirect to the respective routes using user's respective role.
+  if (request.nextUrl.pathname.startsWith("/customer") && userRol === 'admin') {
+    return NextResponse.redirect(new URL("/admin-dashboard", request.url));
+  }else if (request.nextUrl.pathname.startsWith("/customer") && userRol === 'technician'){
+    return NextResponse.redirect(new URL("/user", request.url));
   }
 }
