@@ -115,6 +115,7 @@ export const listTechnicians = gql`
             email
             fullName
             contactNumber
+            cognitoId
             status
             profilePicture
             createdAt
