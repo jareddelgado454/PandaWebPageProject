@@ -1,3 +1,5 @@
+import { client } from "@/contexts/AmplifyContext";
+
 export const getCustomerRates = async(customerId) => {
     try {
         const result = await client.graphql({
