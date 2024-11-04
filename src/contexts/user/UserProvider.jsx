@@ -4,6 +4,7 @@ import { UserContext } from './UserContext';
 import { userReducer } from './UserReducer';
 import Cookies from 'js-cookie';
 import GearSpinner from '@/components/GearSpinner';
+import { fetchAuthSession } from 'aws-amplify/auth';
 const INITIAL_USER_STATE = {
     user: {
         role: "",
@@ -45,6 +46,9 @@ export const UserProvider = ({ children }) => {
     }
 
     useEffect(() => {
+        (async() => {
+            await fetchAuthSession({ forceRefresh: true });
+        })();
         const userFromCookies = getUserFromCookies();
         if (userFromCookies) {
             dispatch({ type: 'setUser', payload: userFromCookies })
