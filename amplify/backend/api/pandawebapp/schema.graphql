@@ -18,6 +18,11 @@ enum ChatType {
     REPORT
 }
 
+enum GoalType {
+    MONTHLY
+    ANNUAL
+}
+
 type ICustomer {
     id: ID!
     fullName: String!
@@ -319,9 +324,39 @@ type Goal @model @auth(
     updatedAt: AWSDateTime
 }
 
-enum GoalType {
-    MONTHLY
-    ANNUAL
+type ScheduledService @model {
+    id: ID!
+    title: String!
+    description: String!
+    status: String!
+    completed: String
+    address: String
+    originLatitude: Float!
+    originLongitude: Float!
+    destLatitude: Float
+    destLongitude: Float
+    customerId: ID! @index(name: "servicesByCustomer")
+    customer: ICustomer
+    technicianSelected: Technician @hasOne
+    scheduledOffers: [ScheduledOffer] @hasMany(indexName: "byScheduledOffer", fields: ["id"])
+    car: ICar
+    dateScheduled: AWSDateTime
+    paymentMethod: String!
+    price: Float
+    tax: Float
+    total: Float
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type ScheduledOffer @model {
+    id: ID!
+    scheduledServiceId: ID! @index(name: "byScheduledOffer")
+    scheduledService: ScheduledService! @belongsTo(fields: ["scheduledServiceId"])
+    customer: Customer @hasOne
+    description: String!
+    image: String
+    proposalDate: AWSDateTime
 }
 
 type Query {
