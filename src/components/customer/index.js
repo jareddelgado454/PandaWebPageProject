@@ -2,6 +2,8 @@ export { default as CustomerBar } from './components/CustomerSidebar';
 export { default as BtnLocation } from './components/LocationButton';
 export { default as CarsComponent } from './components/profile/DisplayCars';
 export { default as InformationHeader } from './components/profile/InformationHeader';
+export { default as DisplayTechnicians } from './components/schedule/DisplayTechnicians';
+export { default as ConfirmSchedule } from './components/schedule/ConfirmSchedule';
 //Map
 export { default as SearchMapInput } from './components/Map/GeoSearchInput';
 //Home
@@ -19,3 +21,5 @@ export { default as TechnicianDetailComponent } from './components/request/detai
 //Messages
 export { default as ContactsComponent } from './components/message/ListContacts';
 export { default as ChatCustomerComponent } from './components/message/ChatComponent';
+// Calendar
+export { default as ServiceScheduleCalendar } from './components/schedule/ScheduleCalendar';
