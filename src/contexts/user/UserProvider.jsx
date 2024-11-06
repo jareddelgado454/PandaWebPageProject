@@ -7,10 +7,12 @@ import GearSpinner from '@/components/GearSpinner';
 import { fetchAuthSession } from 'aws-amplify/auth';
 const INITIAL_USER_STATE = {
     user: {
-        role: "",
-        expiredAt: null,
-        id: ""
-    }
+        id: "",
+        email: "",
+        fullName: "",
+        role: "", 
+    },
+    expiredAt: null
 }
 
 export const UserProvider = ({ children }) => {
@@ -30,12 +32,17 @@ export const UserProvider = ({ children }) => {
         return null;
     };
 
-    const login = (userData) => {
+    const login = (userData, expiredAt) => {
         Cookies.set(
             "currentUser",
             JSON.stringify(userData)
         );
+        Cookies.set(
+            "expiredAt",
+            JSON.stringify(expiredAt)
+        );
         dispatch({ type: 'setUser', payload: userData });
+        dispatch({ type: 'setToken', payload: expiredAt });
     }
 
     const logout = () => {
@@ -47,8 +54,18 @@ export const UserProvider = ({ children }) => {
 
     useEffect(() => {
         (async() => {
-            await fetchAuthSession({ forceRefresh: true });
+            const { tokens } = await fetchAuthSession({ forceRefresh: true });
+            if(tokens){
+                Cookies.set(
+                    "expiredAt",
+                    JSON.stringify(tokens.accessToken.payload.exp)
+                );
+                dispatch({ type: 'refreshToken', payload: tokens.accessToken.payload.exp })
+            }
         })();
+    }, []);
+    
+    useEffect(() => {
         const userFromCookies = getUserFromCookies();
         if (userFromCookies) {
             dispatch({ type: 'setUser', payload: userFromCookies })
