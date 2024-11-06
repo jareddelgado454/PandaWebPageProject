@@ -71,7 +71,7 @@ const AccessWithEmail = ({
           console.log("iniciando sesion");
           const { role, expiredAt, userSub } = await currentAuthenticatedUser();
           const data = await getCustomerById(userSub);
-          login({ role, expiredAt, id: userSub, ...data });
+          login({ role, id: userSub, ...data }, expiredAt);
           setIsLoading(false);
           router.push("/customer");
       }
