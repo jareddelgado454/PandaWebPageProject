@@ -10,7 +10,8 @@ export async function middleware(request) {
   const currentUserCookie = request.cookies.get("currentUser");
   const currentUser = currentUserCookie ? currentUserCookie.value : null;
   const userRol = currentUser ? JSON.parse(currentUser).role : null;
-  const isSessionExpired = currentUser ? Date.now() > new Date((JSON.parse(currentUser).expiredAt) * 1000) : true;
+  const expiredAt = request.cookies.get("expiredAt");
+  const isSessionExpired = expiredAt ? Date.now() > expiredAt * 1000 : true;
 
   if (
     protectedRoutes.some(route => request.nextUrl.pathname.startsWith(route)) &&
@@ -25,7 +26,7 @@ export async function middleware(request) {
       return NextResponse.redirect(new URL("/admin-dashboard", request.url));
     } else if (userRol === 'technician') {
       return NextResponse.redirect(new URL("/user", request.url));
-    } else {
+    } else  if (userRol === 'customer') {
       return NextResponse.redirect(new URL("/customer", request.url));
     }
   }
