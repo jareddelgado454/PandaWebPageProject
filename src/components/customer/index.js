@@ -4,6 +4,8 @@ export { default as CarsComponent } from './components/profile/DisplayCars';
 export { default as InformationHeader } from './components/profile/InformationHeader';
 export { default as DisplayTechnicians } from './components/schedule/DisplayTechnicians';
 export { default as ConfirmSchedule } from './components/schedule/ConfirmSchedule';
+export { default as ScheduleForm } from './components/schedule/ScheduleForm';
+export { default as SuccessCheckComponent } from './components/SuccessCheck';
 //Map
 export { default as SearchMapInput } from './components/Map/GeoSearchInput';
 //Home
