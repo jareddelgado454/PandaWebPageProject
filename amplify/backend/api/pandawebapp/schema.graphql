@@ -324,11 +324,17 @@ type Goal @model @auth(
     updatedAt: AWSDateTime
 }
 
-type ScheduledService @model {
+type ScheduledService @model @auth(
+    rules: [
+        { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
+        { allow: private, operations: [ read, update, create, delete ] }
+    ]
+) {
     id: ID!
     title: String!
     description: String!
     status: String!
+    type: String!
     completed: String
     address: String
     originLatitude: Float!
@@ -337,26 +343,16 @@ type ScheduledService @model {
     destLongitude: Float
     customerId: ID! @index(name: "servicesByCustomer")
     customer: ICustomer
+    technicianOfferedId: ID!
     technicianSelected: Technician @hasOne
-    scheduledOffers: [ScheduledOffer] @hasMany(indexName: "byScheduledOffer", fields: ["id"])
     car: ICar
     dateScheduled: AWSDateTime
     paymentMethod: String!
     price: Float
-    tax: Float
+    fee: Float
     total: Float
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
-}
-
-type ScheduledOffer @model {
-    id: ID!
-    scheduledServiceId: ID! @index(name: "byScheduledOffer")
-    scheduledService: ScheduledService! @belongsTo(fields: ["scheduledServiceId"])
-    customer: Customer @hasOne
-    description: String!
-    image: String
-    proposalDate: AWSDateTime
 }
 
 type Query {
