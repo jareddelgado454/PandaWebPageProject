@@ -1,4 +1,5 @@
 import { client } from "@/contexts/AmplifyContext";
+import { retrieveCustomerRate } from "@/graphql/users/customer/query";
 
 export const getCustomerRates = async(customerId) => {
     try {

@@ -3,7 +3,7 @@ import { getUserByCognitoID, getUserByEmail } from '@/graphql/custom-queries';
 import { createOffer, updatePaymentLinkService, updateStatusService, updateTechnicianLocation, updateTotalAmountService } from '@/graphql/services/mutations/mutation';
 import { getRequestServiceById } from '@/graphql/services/queries/query';
 import { createUserFromDB } from '@/graphql/users/admin/mutation';
-import { retrieveMyInformation } from '@/graphql/users/customer/query';
+import { retrieveMyAuthInformation } from '@/graphql/users/customer/query';
 import { createCustomer } from '@/graphql/users/mutation/customer';
 import { createTechnician, updateLocationTechnician, updateStripeInformationTechnician } from '@/graphql/users/mutation/technicians';
 import { getTechnician, getTehcnicianById } from '@/graphql/users/query/technician';
@@ -223,7 +223,7 @@ export const getUserByMail = async (email) => {
 export const getCustomerById = async (customerId) => {
     try {
         const { data } = await client.graphql({
-            query: retrieveMyInformation,
+            query: retrieveMyAuthInformation,
             variables: {
                 id: customerId
             }
