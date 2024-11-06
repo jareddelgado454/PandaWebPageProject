@@ -153,9 +153,16 @@ export const getNearbyTechnicians = gql`
     getNearbyTechnicians(lat: $lat, lon: $lon){
       id
       email
+      fullName
       profilePicture
       loLatitude
       loLongitude
+      rate{
+        items {
+          rate
+        }
+      }
+      createdAt
     }
   }
 `;
