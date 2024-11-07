@@ -11,7 +11,7 @@ export default function layout({ children }) {
       <ServiceProvider>
         <MessageNotification />
         <CustomerBar />
-        <div className='w-full bg-white dark:bg-zinc-800 h-full md:h-[calc(100vh-50px)] 2xl:h-[calc(100vh-100px)] shadow-lg rounded-lg relative overflow-hidden'>
+        <div className='w-full bg-[#f6f6f8] dark:bg-zinc-800 h-full md:h-[calc(100vh-50px)] 2xl:h-[calc(100vh-100px)] shadow-lg rounded-lg relative overflow-hidden'>
           {children}
         </div>
       </ServiceProvider>

@@ -119,7 +119,7 @@ export default function CustomerSidebar() {
   return (
     <div
       id="sidebar-container"
-      className="w-full lg:w-[21%] 2xl:w-2/12 lg:h-[calc(100vh-50px)] 2xl:h-[calc(100vh-100px)] rounded-2xl bg-white shadow-lg dark:bg-zinc-800 flex flex-row lg:flex-col items-center justify-between gap-2 overflow-x-auto lg:overflow-x-hidden overflow-y-hidden"
+      className="bg-[#f6f6f8] dark:bg-zinc-800 w-full lg:w-[21%] 2xl:w-2/12 lg:h-[calc(100vh-50px)] 2xl:h-[calc(100vh-100px)] rounded-2xl shadow-lg flex flex-row lg:flex-col items-center justify-between gap-2 overflow-x-auto lg:overflow-x-hidden overflow-y-hidden"
       style={{
         scrollbarWidth: 'none',
         msOverflowStyle: 'none'
