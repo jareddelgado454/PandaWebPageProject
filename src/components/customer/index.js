@@ -16,6 +16,9 @@ export { default as BlockTreeComponent } from './components/home/BlockThreeCompo
 export { default as TechnicianInformationModal } from './modals/TechnicianModal';
 export { default as AddNewCarModal } from './modals/AddNewCarModal';
 export { default as UpdateInformationModal } from './modals/UpdateInfoModal';
+// Request
+export { default as ListRequestServicesComponent } from './components/request/ListRequestServices';
+export { default as ListScheduledServicesComponent } from './components/request/ListScheduledServices';
 // Request Detail
 export { default as PaymentComponent } from './components/request/detail/PaymentMethod';
 export { default as ServiceTrackingComponent } from './components/request/detail/ServiceTracking';
