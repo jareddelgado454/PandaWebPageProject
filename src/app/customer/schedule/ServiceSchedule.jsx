@@ -13,11 +13,11 @@ export default function ServiceSchedule() {
     return (
         <div className='h-full my-2'>
             {currentStep === 1 && <DisplayTechnicians setCurrentStep={setCurrentStep} setTechnicianSelected={setTechnicianSelected} />}
-            {currentStep === 2 && <ServiceScheduleCalendar setCurrentStep={setCurrentStep} dates={dates} setDates={setDates} technicianSelectedId={technicianSelected.id} />}
+            {currentStep === 2 && <ServiceScheduleCalendar setCurrentStep={setCurrentStep} dates={dates} setDates={setDates} technicianSelectedId={technicianSelected.id} calendarType={technicianSelected.scheduleType} />}
             {currentStep === 3 && <ConfirmSchedule setCurrentStep={setCurrentStep} technicianSelected={technicianSelected} dates={dates} />}
             <ScheduleSteppers currentStep={currentStep}  />
             <div className='absolute left-5 bottom-5'>
-                {currentStep !== 1 && <Button onClick={() => setCurrentStep(currentStep - 1)} color='success'>Back</Button> }
+                {currentStep !== 1 && <Button onClick={() => setCurrentStep(currentStep - 1)} color='success' className='text-white tracking-wider font-semibold'>Back</Button> }
             </div>
         </div>
     )
