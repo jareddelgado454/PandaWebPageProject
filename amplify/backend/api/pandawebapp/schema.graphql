@@ -170,6 +170,7 @@ type Technician @model @auth(
     certifications: [Certification]
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
+    scheduleType: String
     schedule: Schedule
 }
 
@@ -346,7 +347,8 @@ type ScheduledService @model @auth(
     technicianOfferedId: ID!
     technicianSelected: Technician @hasOne
     car: ICar
-    dateScheduled: AWSDateTime
+    dateStartScheduled: AWSDateTime
+    dateEndScheduled: AWSDateTime
     paymentMethod: String!
     price: Float
     fee: Float
