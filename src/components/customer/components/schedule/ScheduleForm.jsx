@@ -78,6 +78,7 @@ const ScheduleForm = ({ dates, carSelected, setCarSelected, technicianSelectedId
     const [longitude, latitude] = userLocation;
     setLoading(true);
     try {
+      
       await client.graphql({
         query: createScheduleDService,
         variables: {
@@ -88,7 +89,8 @@ const ScheduleForm = ({ dates, carSelected, setCarSelected, technicianSelectedId
             originLongitude: longitude,
             customerId: customer.id,
             technicianOfferedId: technicianSelectedId,
-            dateScheduled: dates.start,
+            dateStartScheduled: dates.start.toISOString(),
+            dateEndScheduled: dates.end.toISOString(),
             customer: {
               id: customer.id,
               fullName: customer.fullName,
@@ -134,7 +136,7 @@ const ScheduleForm = ({ dates, carSelected, setCarSelected, technicianSelectedId
     >
       {({ errors, touched, setFieldValue, isValid }) => (
         <Form className='w-full h-full flex flex-col gap-10 p-6'>
-          <p className='text-center font-bold tracking-widest text-3xl'>Scheduled Service Information</p>
+          <p className='text-center font-black tracking-wider text-3xl'>Scheduled Service Information</p>
           <div className='flex gap-4'>
             <Field name="title">
               {({ field }) => (
@@ -156,6 +158,7 @@ const ScheduleForm = ({ dates, carSelected, setCarSelected, technicianSelectedId
             <DateInput
               label={"Schedule Start Date"}
               granularity="minute"
+              hideTimeZone
               defaultValue={parseAbsoluteToLocal(dates.start.toISOString())}
               isReadOnly
             />
@@ -220,6 +223,9 @@ const ScheduleForm = ({ dates, carSelected, setCarSelected, technicianSelectedId
                 </Select>
               )}
             </Field>
+            <div className='w-[50%] flex justify-center items-center'>
+              <p className='text-xs text-center leading-loose tracking-wider font-bold'>This scheduled service is set to last 30 minutes. The technician will be able to extend the duration when is necessary.</p>
+            </div>
           </div>
           {loading ? <Spinner color="success"/> : (
             <Button isDisabled={!isValid} type='submit' color='success' className='font-bold tracking-widest text-white'>

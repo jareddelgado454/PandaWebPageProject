@@ -140,14 +140,14 @@ const DisplayTechnicians = ({ setCurrentStep, setTechnicianSelected }) => {
     }
     return (
         <>
-            <p className='tracking-wider text-center text-xl my-4 font-semibold'>Available Technicians</p>
+            <p className='tracking-wider text-center text-xl my-4 font-black'>Available Technicians</p>
             <div className='flex flex-col md:flex-row px-6 gap-4'>
                 <input
                     type="text"
-                    className='bg-[#F4F4F5] dark:bg-zinc-700 px-2 rounded-lg shadow h-11 tracking-wider w-[85%]'
+                    className='bg-white dark:bg-zinc-700 px-2 rounded-lg shadow-lg h-11 tracking-wider w-[85%] outline-none'
                     placeholder='Search a Technician'
                 />
-                <select className='bg-[#F4F4F5] text-zinc-700 dark:bg-zinc-700 dark:text-[#F4F4F5] px-2 rounded-lg shadow h-11 tracking-wider w-[15%] cursor-pointer'>
+                <select className='bg-white text-zinc-700 dark:bg-zinc-700 dark:text-[#F4F4F5] px-2 rounded-lg shadow-lg h-11 tracking-wider w-[15%] cursor-pointer'>
                     <option value="1">option 1</option>
                     <option value="2">option 2</option>
                 </select>
@@ -157,23 +157,23 @@ const DisplayTechnicians = ({ setCurrentStep, setTechnicianSelected }) => {
                 ) : error ? <div>{error}</div> : (
                     <div className='grid grid-cols-3 gap-8 py-4 px-6 h-[70%] overflow-y-auto'>
                         {technicians.map((technician, i) => (
-                            <div onClick={() => onSelectTechnician(technician)} key={i} className='bg-[#F4F4F5] dark:bg-zinc-700 drop-shadow-md h-[7rem] rounded-lg py-2 px-2 transition-transform ease-in-out hover:-translate-y-1 hover:scale-100 duration-300 cursor-pointer'>
-                                <div className='w-full h-full flex flex-row gap-1'>
-                                    <div className='w-[15%] h-full flex justify-center items-center'>
+                            <div onClick={() => onSelectTechnician(technician)} key={i} className='bg-white dark:bg-zinc-700 drop-shadow-lg h-[9rem] rounded-lg py-2 px-2 transition-transform ease-in-out hover:-translate-y-1 hover:scale-100 duration-300 cursor-pointer'>
+                                <div className='w-full h-full flex flex-row gap-2'>
+                                    <div className='w-[20%] h-full flex justify-center items-center'>
                                         <Image
-                                            className='rounded-full w-14 h-14'
+                                            className='rounded-full w-[4.5rem] h-[4.5rem]'
                                             width={400}
                                             height={400}
                                             alt='technician_profile_picture'
                                             src={technician.profilePicture !== null ? `${baseUrl + technician.profilePicture}` : '/image/defaultProfilePicture.jpg'}
                                         />
                                     </div>
-                                    <div className='flex flex-col gap-y-2 tracking-wider'>
+                                    <div className='flex flex-col gap-y-2 tracking-wide justify-center'>
                                         <div className='flex gap-2'>
-                                            <strong>Name: </strong><p>{technician.fullName}</p>
+                                            <p>Name: </p><strong>{technician.fullName}</strong>
                                         </div>
                                         <div className='flex gap-2 items-center'>
-                                            <strong>Rate: </strong><p>{calculateRate(technician.rate)}</p>
+                                            <p>Rate: </p><strong>{calculateRate(technician.rate)}</strong>
                                             <ReactStars
                                                 count={5}
                                                 value={calculateRate(technician.rate)}
@@ -184,7 +184,7 @@ const DisplayTechnicians = ({ setCurrentStep, setTechnicianSelected }) => {
                                             />
                                         </div>
                                         <div className='flex gap-2'>
-                                            <strong>Schedule Type: </strong><p>Weekend</p>
+                                            <p>Schedule Type: </p><strong>{technician.scheduleType}</strong>
                                         </div>
                                     </div>
                                 </div>

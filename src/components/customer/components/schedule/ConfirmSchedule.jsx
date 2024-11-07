@@ -25,7 +25,7 @@ const ConfirmSchedule = ({ setCurrentStep, technicianSelected, dates }) => {
 
   return (
     <div className='p-4 flex flex-col md:flex-row gap-4 h-[85%]'>
-      <div className='dark:bg-zinc-900 shadow-lg rounded-lg w-[80%]'>
+      <div className='bg-white dark:bg-zinc-900 shadow-lg rounded-lg w-[80%]'>
         {isSuccessed ? <SuccessCheckComponent message="Your scheduled service petition has been sended." /> : (
           <ScheduleForm
             dates={dates}
@@ -37,7 +37,7 @@ const ConfirmSchedule = ({ setCurrentStep, technicianSelected, dates }) => {
         )}
       </div>
       <div className='flex flex-col gap-4 w-[20%]'>
-        <div className='dark:bg-zinc-900 shadow-lg rounded-lg h-[50%] w-full py-2'>
+        <div className='bg-white dark:bg-zinc-900 shadow-lg rounded-lg h-[50%] w-full py-2'>
           <div className='flex flex-col gap-4 justify-center items-center h-full'>
             {carSelected ? (
               <>
@@ -63,7 +63,7 @@ const ConfirmSchedule = ({ setCurrentStep, technicianSelected, dates }) => {
             ) : (<div>Select a car</div>)}
           </div>
         </div>
-        <div className='dark:bg-zinc-900 shadow-lg rounded-lg h-[50%] w-full py-2'>
+        <div className='bg-white dark:bg-zinc-900 shadow-lg rounded-lg h-[50%] w-full py-2'>
           <div className='flex flex-col gap-4 justify-center items-center h-full'>
             <Image
               className='h-32 w-32 dark:bg-zinc-800 rounded-full'

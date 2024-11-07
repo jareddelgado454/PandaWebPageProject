@@ -7,10 +7,7 @@ import { Spinner, useDisclosure } from '@nextui-org/react';
 import ScheduledModal from '../../modals/ScheduledModal';
 import { client } from '@/contexts/AmplifyContext';
 import { retrieveScheduledServicesByTechnicianId } from '@/graphql/schedule/query';
-const events = [
-    { title: 'Meeting', start: new Date()}
-]
-const ScheduleCalendar = ({setCurrentStep, dates, setDates, technicianSelectedId}) => {
+const ScheduleCalendar = ({setCurrentStep, dates, setDates, technicianSelectedId, calendarType}) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [loading, setLoading] = useState(false);
   const [events, setEvents] = useState([]);
@@ -32,7 +29,8 @@ const ScheduleCalendar = ({setCurrentStep, dates, setDates, technicianSelectedId
       const eventStructured = eventsDB.map((i) => (
         {
           title: 'Service',
-          start: i.dateScheduled
+          start: i.dateStartScheduled,
+          end: i.dateEndScheduled
         }
       ));
       setEvents(eventStructured);
@@ -55,13 +53,15 @@ const ScheduleCalendar = ({setCurrentStep, dates, setDates, technicianSelectedId
       {loading ? <Spinner color='success' /> : error ? (<div className='h-full w-full flex justify-center items-center'><p>Something went wrong.</p></div>) : events && (
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
-          timeZone='UTC'
           initialView='dayGridMonth'
-          weekends
+          weekends={calendarType === "weekdays" ? false : true}
           events={events}
           eventContent={renderEventContent}
           selectable={true}
           select={({ start, end }) => onOpenModal(start, end)}
+          validRange={{
+            start: new Date()
+          }}
           eventTimeFormat={{
             hour: 'numeric',
             minute: '2-digit',
@@ -77,11 +77,12 @@ const ScheduleCalendar = ({setCurrentStep, dates, setDates, technicianSelectedId
 export default ScheduleCalendar
 
 function renderEventContent(eventInfo) {
+  console.log(eventInfo);
     return (
-      <div className='bg-green-panda w-full rounded-lg my-1 mx-2 py-1 px-2'>
+      <div className='bg-rose-600 w-full rounded-lg my-1 mx-2 py-1 px-2'>
         <div className='w-full h-full flex gap-1 text-white tracking-wider font-medium'>
           <p>{eventInfo.timeText}</p>
-          <p>Service</p>
+          <p>Busy</p>
         </div>
       </div>
     )
