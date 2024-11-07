@@ -17,6 +17,29 @@ export const retrieveMyInformation = gql`
     }
 `;
 
+export const retrieveMyAuthInformation = gql`
+    query GetCustomer($id: ID!) {
+        getCustomer(id: $id){
+            id
+            email
+            fullName
+        }
+    }
+`;
+
+export const retrieveCustomerRate = gql`
+    query GetCustomer($id: ID!) {
+        getCustomer(id: $id){
+            id
+            rate{
+                items{
+                    rate
+                }
+            }
+        }
+    }
+`;
+
 export const listOffersByServiceId = gql`
     query ListOffersById($serviceId: ID) {
         listOffers(filter: {serviceId: {eq: $serviceId}}) {

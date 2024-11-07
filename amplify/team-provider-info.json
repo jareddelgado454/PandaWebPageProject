@@ -34,7 +34,11 @@
         },
         "stripePaymentGenerate": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
+<<<<<<< HEAD
           "s3Key": "amplify-builds/stripePaymentGenerate-2b614266793451637445-build.zip"
+=======
+          "s3Key": "amplify-builds/stripePaymentGenerate-326833504d7a552f674d-build.zip"
+>>>>>>> develop
         },
         "PaymentSubscriptionNodeEnviroment": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
@@ -67,6 +71,10 @@
         "createAdminFromPanel": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
           "s3Key": "amplify-builds/createAdminFromPanel-53357a42592f624f3664-build.zip"
+        },
+        "acceptServiceRequest": {
+          "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
+          "s3Key": "amplify-builds/acceptServiceRequest-6f71664938544661302f-build.zip"
         }
       },
       "storage": {

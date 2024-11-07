@@ -15,7 +15,6 @@ export default function Client_Component() {
   const retrieveUser = async () => {
     try {
       const data = await fetchUserAttributes();
-      console.log(data);
       setIsAgreed(data['custom:termsAccepted']);
     } catch (error) {
       console.warn(error);

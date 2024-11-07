@@ -133,7 +133,7 @@ const SignIn = () => {
           onOpenLoadingModal(true);
           const { role, expiredAt, userSub } = await currentAuthenticatedUser();
           if (role === "admin") {
-            login({ role, expiredAt, id: userSub })
+            login({ role, id: userSub }, { token: { expiredAt } })
             router.push("/admin-dashboard/");
           } else if (role === "technician") {
             const data = await getTechnicianById(userSub);
@@ -141,7 +141,7 @@ const SignIn = () => {
             router.push("/user");
           } else if (role === "customer") {
             const data = await getCustomerById(userSub);
-            login({ role, expiredAt, id: userSub, ...data });
+            login({ role, id: userSub, ...data }, { token: { expiredAt } });
             router.push("/customer");
           }
 

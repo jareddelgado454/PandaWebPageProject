@@ -74,6 +74,18 @@ export const OnChangeStatusServiceByCustomer = gql`
 
 `;
 
+export const updateOfferStatus = gql`
+  mutation UpdateOffer($input: UpdateOfferInput!){
+    updateOffer(input: $input){
+      id
+      serviceId
+      offerTechnicianId
+      updatedAt
+      status
+    }
+  }
+`;
+
 export const DeleteMyRequest = gql`
   mutation DeleteRequest($serviceId: ID!, $serviceCustomerId: ID!) {
     deleteService(input: {id: $serviceId}, condition: {customerId: {eq: $serviceCustomerId}}){
@@ -181,5 +193,11 @@ export const createTechnicianRate = gql`
     createRate(input: $input){
       id
     }
+  }
+`;
+
+export const createStripeIntent = gql`
+  mutation MyMutation($input: CreateStripeIntent!) {
+    createStripeIntent(input: $input)
   }
 `;

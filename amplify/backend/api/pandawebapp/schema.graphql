@@ -18,11 +18,41 @@ enum ChatType {
     REPORT
 }
 
+enum GoalType {
+    MONTHLY
+    ANNUAL
+}
+
+type ICustomer {
+    id: ID!
+    fullName: String!
+    profilePicture: String
+    rate: Float!
+}
+
+type ICar {
+    id: ID!
+    brand: String!
+    image: String!
+    model: String!
+    year: String!
+    identificationNumber: String!
+}
+
 input CreateUserDBInput {
     email: String!
     fullName: String!
     status: String!
     temporaryPassword: String!
+}
+
+input CreateStripeIntent {
+    serviceAssignedId: ID!
+    serviceAssignedType: String!
+    serviceAssignedStripeId: String!
+    total: Float
+    typeAccount: String
+    userEmail: String
 }
 
 type CustomerRate @model @auth(
@@ -140,6 +170,7 @@ type Technician @model @auth(
     certifications: [Certification]
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
+    scheduleType: String
     schedule: Schedule
 }
 
@@ -294,24 +325,36 @@ type Goal @model @auth(
     updatedAt: AWSDateTime
 }
 
-enum GoalType {
-    MONTHLY
-    ANNUAL
-}
-
-type ICustomer {
+type ScheduledService @model @auth(
+    rules: [
+        { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
+        { allow: private, operations: [ read, update, create, delete ] }
+    ]
+) {
     id: ID!
-    fullName: String!
-    profilePicture: String
-}
-
-type ICar {
-    id: ID!
-    brand: String!
-    image: String!
-    model: String!
-    year: String!
-    identificationNumber: String!
+    title: String!
+    description: String!
+    status: String!
+    type: String!
+    completed: String
+    address: String
+    originLatitude: Float!
+    originLongitude: Float!
+    destLatitude: Float
+    destLongitude: Float
+    customerId: ID! @index(name: "servicesByCustomer")
+    customer: ICustomer
+    technicianOfferedId: ID!
+    technicianSelected: Technician @hasOne
+    car: ICar
+    dateStartScheduled: AWSDateTime
+    dateEndScheduled: AWSDateTime
+    paymentMethod: String!
+    price: Float
+    fee: Float
+    total: Float
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
 }
 
 type Query {
@@ -323,4 +366,6 @@ type Mutation {
     createUserFromAdminPanel(user: CreateUserDBInput!): User! @function(name: "createAdminFromPanel-dev") @auth(rules: [{ allow: groups, groups: ["admin-access"] }])
     createStripePaymentIntent(total: Float!, serviceAssigned: String!, userEmail: String!, typeAccount: String!): String! @function(name: "stripePaymentGenerate-dev") @auth(rules: [{ allow: private }])
     deleteUserFromAdminPanel(id: ID!, username: String!, role: String): ID! @function(name: "deleteUserFromAdminPanel-dev") @auth(rules: [{ allow: groups, groups: ["admin-access"] }])
+    createStripeIntent(input: CreateStripeIntent!): String! @function(name: "stripePaymentGenerate-dev") @auth(rules: [{ allow: private }])
+    acceptServiceRequest(serviceId: ID!, technicianSelectedId: ID!, destLatitude: Float!, destLongitude: Float!, price: Float!, statusService: String!): Service @function(name: "acceptServiceRequest-dev") @auth(rules: [{ allow: private }])
 }

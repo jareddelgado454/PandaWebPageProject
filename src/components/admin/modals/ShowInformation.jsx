@@ -10,14 +10,12 @@ import {
   Button
 } from "@nextui-org/react";
 import { DateFormatter } from "@/utils/parseDate";
-import { AdminSetUserPassword } from "@/api/sdk";
 import { generateTempoPassword } from "@/utils/GenerateTempoPassword";
 import { baseUrl } from "@/utils/CloudFront";
 const ShowInformation = ({ isOpen, onOpenChange, user }) => {
     const handleSetUserPassword = async() => {
         const passwordGenerated = generateTempoPassword();
         console.log(passwordGenerated);
-        await AdminSetUserPassword(user.email, passwordGenerated);
     }
     return (
         <Modal backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange} size="3xl">

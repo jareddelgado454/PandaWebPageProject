@@ -2,10 +2,30 @@
 import React from 'react';
 import { FaDollarSign } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
-export default function PaymentMethod({ service }) {
+export default function PaymentMethod({ service, user }) {
   const router = useRouter();
-  function createCheckoutSession() {
-    router.push(service.paymentLink);
+
+  const createCheckoutSession = async () => {
+
+    try {
+      const { data } = (await client.graphql({
+        query: createStripeIntent,
+        variables: {
+          input: {
+            serviceAssignedId: service.id,
+            serviceAssignedType: service.type,
+            serviceAssignedStripeId: service.technicianSelected.stripeId,
+            total: service.total,
+            typeAccount: service.technicianSelected.subscription,
+            userEmail: user.email
+          },
+        },
+      }))
+      router.push(data.createStripeIntent);
+    } catch (error) {
+      console.error('Error:', error);
+      Alert.alert('Error', 'Something went wrong');
+    }
   }
   return (
     <div className='h-full w-full flex flex-col lg:flex-row gap-2'>

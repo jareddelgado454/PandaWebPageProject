@@ -121,6 +121,7 @@ export const getServiceById = gql`
             fullName
             contactNumber
             profilePicture
+            suscription
             stripeId
             rate {
               items{
@@ -152,9 +153,17 @@ export const getNearbyTechnicians = gql`
     getNearbyTechnicians(lat: $lat, lon: $lon){
       id
       email
+      fullName
       profilePicture
       loLatitude
       loLongitude
+      rate{
+        items {
+          rate
+        }
+      }
+      scheduleType
+      createdAt
     }
   }
 `;

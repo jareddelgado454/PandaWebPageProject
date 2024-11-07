@@ -4,7 +4,7 @@ import { Steps } from 'intro.js-react';
 import { useRouter } from 'next/navigation';
 import { fetchUserAttributes, signOut } from 'aws-amplify/auth';
 import Link from 'next/link';
-import { FaCircleExclamation, FaComments, FaHandPointUp, FaHouse, FaInfo, FaKey, FaListCheck, FaRegMoon, FaUserXmark } from "react-icons/fa6";
+import { FaCalendarDays, FaCircleExclamation, FaComments, FaHandPointUp, FaHouse, FaInfo, FaKey, FaListCheck, FaRegMoon, FaUserXmark } from "react-icons/fa6";
 import { RiUserFill, RiLogoutCircleLine } from "react-icons/ri";
 import { useDisclosure } from "@nextui-org/react";
 import { DeleteUserModal, PassWordModal, SendReportModal } from '@/components/modalUser';
@@ -119,7 +119,7 @@ export default function CustomerSidebar() {
   return (
     <div
       id="sidebar-container"
-      className="w-full lg:w-[21%] 2xl:w-2/12 lg:h-[calc(100vh-50px)] 2xl:h-[calc(100vh-100px)] rounded-2xl bg-white shadow-lg dark:bg-zinc-800 flex flex-row lg:flex-col items-center justify-between gap-2 overflow-x-auto lg:overflow-x-hidden overflow-y-hidden"
+      className="bg-[#f6f6f8] dark:bg-zinc-800 w-full lg:w-[21%] 2xl:w-2/12 lg:h-[calc(100vh-50px)] 2xl:h-[calc(100vh-100px)] rounded-2xl shadow-lg flex flex-row lg:flex-col items-center justify-between gap-2 overflow-x-auto lg:overflow-x-hidden overflow-y-hidden"
       style={{
         scrollbarWidth: 'none',
         msOverflowStyle: 'none'
@@ -159,6 +159,12 @@ export default function CustomerSidebar() {
               <Link href={'/customer/service'} className={`w-full  rounded-md transition-all hover:bg-emerald-500 flex gap-x-2 hover:text-white text-sm md:text-[16px] items-center p-2 px-3 cursor-pointer`}>
                 <FaHandPointUp />
                 Service Request
+              </Link>
+            </div>
+            <div className='item-link w-full flex flex-col gap-y-2 sidebar-item-selector3'>
+              <Link href={'/customer/schedule'} className={`w-full  rounded-md transition-all hover:bg-emerald-500 flex gap-x-2 hover:text-white text-sm md:text-[16px] items-center p-2 px-3 cursor-pointer`}>
+                <FaCalendarDays />
+                Service Schedule
               </Link>
             </div>
             {/* <div className='w-full flex flex-col gap-y-2'>
@@ -220,9 +226,9 @@ export default function CustomerSidebar() {
             <div className="w-full flex items-center p-4 ">
               <div
                 onClick={async () => {
-                  router.replace("/");
                   await signOut();
                   logout();
+                  router.replace("/");
                 }}
                 className={`w-full rounded-md  flex gap-x-2 text-[16px] items-center p-2 pt-4 cursor-pointer border-t-[2px] border-[#40C48E] dark:border-zinc-700 `}
               >

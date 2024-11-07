@@ -75,6 +75,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "acceptServiceRequest": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "cancelSubscriptionPlan": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -196,6 +201,22 @@
         {
           "category": "function",
           "resourceName": "S3Triggerdf93383d"
+        }
+      ]
+    },
+    "AMPLIFY_function_acceptServiceRequest_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "acceptServiceRequest"
+        }
+      ]
+    },
+    "AMPLIFY_function_acceptServiceRequest_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "acceptServiceRequest"
         }
       ]
     },

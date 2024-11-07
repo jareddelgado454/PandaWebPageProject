@@ -12,6 +12,7 @@ import { Button, useDisclosure } from "@nextui-org/react";
 import Image from "next/image";
 import { baseUrl } from "@/utils/CloudFront";
 import { toast } from "react-toastify";
+import { deleteUserFromDB } from "@/graphql/users/admin/mutation";
 export const Table = ({ item, callback, typeUser }) => {
   const [sortedColumn, setSortedColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
