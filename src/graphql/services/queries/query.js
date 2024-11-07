@@ -162,6 +162,7 @@ export const getNearbyTechnicians = gql`
           rate
         }
       }
+      scheduleType
       createdAt
     }
   }
