@@ -110,12 +110,22 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "notifyScheduledService": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "pandaPushNotifications": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
     "paymentsForFinancialDashboard": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "schedulerService": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -316,6 +326,22 @@
         }
       ]
     },
+    "AMPLIFY_function_notifyScheduledService_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "notifyScheduledService"
+        }
+      ]
+    },
+    "AMPLIFY_function_notifyScheduledService_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "notifyScheduledService"
+        }
+      ]
+    },
     "AMPLIFY_function_pandaPushNotifications_deploymentBucketName": {
       "usedBy": [
         {
@@ -345,6 +371,22 @@
         {
           "category": "function",
           "resourceName": "paymentsForFinancialDashboard"
+        }
+      ]
+    },
+    "AMPLIFY_function_schedulerService_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "schedulerService"
+        }
+      ]
+    },
+    "AMPLIFY_function_schedulerService_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "schedulerService"
         }
       ]
     },

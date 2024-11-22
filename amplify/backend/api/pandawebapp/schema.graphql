@@ -25,6 +25,7 @@ enum GoalType {
 
 type ICustomer {
     id: ID!
+    fcmToken: String!
     fullName: String!
     profilePicture: String
     rate: Float!
@@ -335,6 +336,7 @@ type ScheduledService @model @auth(
     title: String!
     description: String!
     status: String!
+    offerStatus: String
     type: String!
     completed: String
     address: String
@@ -347,8 +349,8 @@ type ScheduledService @model @auth(
     technicianOfferedId: ID!
     technicianSelected: Technician @hasOne
     car: ICar
-    dateStartScheduled: AWSDateTime
-    dateEndScheduled: AWSDateTime
+    scheduledStartDate: AWSDateTime
+    scheduledEndDate: AWSDateTime
     paymentMethod: String!
     price: Float
     fee: Float
@@ -366,5 +368,5 @@ type Mutation {
     createUserFromAdminPanel(user: CreateUserDBInput!): User! @function(name: "createAdminFromPanel-dev") @auth(rules: [{ allow: groups, groups: ["admin-access"] }])
     deleteUserFromAdminPanel(id: ID!, username: String!, role: String): ID! @function(name: "deleteUserFromAdminPanel-dev") @auth(rules: [{ allow: groups, groups: ["admin-access"] }])
     createStripeIntent(input: CreateStripeIntent!): String! @function(name: "stripePaymentGenerate-dev") @auth(rules: [{ allow: private }])
-    acceptServiceRequest(serviceId: ID!, technicianSelectedId: ID!, destLatitude: Float!, destLongitude: Float!, price: Float!, statusService: String!): Service @function(name: "acceptServiceRequest-dev") @auth(rules: [{ allow: private }])
+    deleteOffersByServiceId(serviceId: ID!): ID! @function(name: "acceptServiceRequest-dev") @auth(rules: [{ allow: private }])
 }

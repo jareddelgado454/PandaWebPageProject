@@ -70,7 +70,15 @@
         },
         "acceptServiceRequest": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/acceptServiceRequest-6f71664938544661302f-build.zip"
+          "s3Key": "amplify-builds/acceptServiceRequest-416e577754656850706e-build.zip"
+        },
+        "notifyScheduledService": {
+          "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
+          "s3Key": "amplify-builds/notifyScheduledService-7a36444a4b774934594a-build.zip"
+        },
+        "schedulerService": {
+          "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
+          "s3Key": "amplify-builds/schedulerService-64334362423676344e46-build.zip"
         }
       },
       "storage": {
