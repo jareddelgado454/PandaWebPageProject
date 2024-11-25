@@ -31,6 +31,21 @@ type ICustomer {
     rate: Float!
 }
 
+type Schedule {
+    monday: [TimeSlot]
+    tuesday: [TimeSlot]
+    wednesday: [TimeSlot]
+    thursday: [TimeSlot]
+    friday: [TimeSlot]
+    saturday: [TimeSlot]
+    sunday: [TimeSlot]
+}
+
+type TimeSlot {
+    opening: String
+    closing: String
+}
+
 type ICar {
     id: ID!
     brand: String!
@@ -222,21 +237,6 @@ type Customer @model @auth(
     rate: [CustomerRate] @hasMany(indexName: "byCustomer", fields: ["id"])
 }
 
-type Schedule {
-    monday: DailySchedule
-    tuesday: DailySchedule
-    wednesday: DailySchedule
-    thursday: DailySchedule
-    friday: DailySchedule
-    saturday: DailySchedule
-    sunday: DailySchedule
-}
-
-type DailySchedule {
-    opening: String
-    closing: String
-}
-
 type Service @model @auth(
     rules: [
         { allow: groups, groups: ["admin-access"], operations: [create, update, delete, read] }
@@ -360,7 +360,7 @@ type ScheduledService @model @auth(
 }
 
 type Query {
-  getNearbyTechnicians(lat: Float!, lon: Float!): [Technician] @function(name: "filterTechniciansQuery-dev") @auth(rules: [{ allow: private }])
+  getNearbyTechnicians(lat: Float!, lon: Float!, online_status: String): [Technician] @function(name: "filterTechniciansQuery-dev") @auth(rules: [{ allow: private }])
   getNearbyServices(lat: Float!, lon: Float!): [Service] @function(name: "filterServicesQuery-dev") @auth(rules: [{ allow: private }])
 }
 
