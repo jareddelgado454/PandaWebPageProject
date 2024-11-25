@@ -29,8 +29,8 @@ const ScheduleCalendar = ({setCurrentStep, dates, setDates, technicianSelectedId
       const eventStructured = eventsDB.map((i) => (
         {
           title: 'Service',
-          start: i.dateStartScheduled,
-          end: i.dateEndScheduled
+          start: i.scheduledStartDate,
+          end: i.scheduledEndDate
         }
       ));
       setEvents(eventStructured);
