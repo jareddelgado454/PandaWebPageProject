@@ -17,11 +17,11 @@ export const retrieveCustomerScheduledServices = gql`
 
 export const retrieveScheduledServicesByTechnicianId = gql`
     query MyQuery($technicianOfferedId: ID!) {
-        listScheduledServices(filter: {technicianOfferedId: {eq: $technicianOfferedId}, status: {eq: "pending"}}) {
+        listScheduledServices(filter: {technicianOfferedId: {eq: $technicianOfferedId}, status: {eq: "accepted"}}) {
             items {
                 id
-                dateStartScheduled
-                dateEndScheduled
+                scheduledStartDate
+                scheduledEndDate
             }
         }
     }

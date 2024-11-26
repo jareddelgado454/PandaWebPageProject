@@ -8,6 +8,7 @@ mutation MyMutation($input: CreateScheduledServiceInput!) {
     description
     status
     address
+    technicianOfferedId
     originLatitude
     originLongitude
     customer{

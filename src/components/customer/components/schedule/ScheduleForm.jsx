@@ -89,8 +89,8 @@ const ScheduleForm = ({ dates, carSelected, setCarSelected, technicianSelectedId
             originLongitude: longitude,
             customerId: customer.id,
             technicianOfferedId: technicianSelectedId,
-            dateStartScheduled: dates.start.toISOString(),
-            dateEndScheduled: dates.end.toISOString(),
+            scheduledStartDate: dates.start.toISOString(),
+            scheduledEndDate: dates.end.toISOString(),
             customer: {
               id: customer.id,
               fullName: customer.fullName,
@@ -127,7 +127,6 @@ const ScheduleForm = ({ dates, carSelected, setCarSelected, technicianSelectedId
         car: '',
         address: currentAddres || '',
         paymentMethod: 'card',
-        type: ''
       }}
       validationSchema={validationSchema}
       validateOnChange

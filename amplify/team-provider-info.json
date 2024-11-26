@@ -46,11 +46,11 @@
         },
         "pandaPushNotifications": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/pandaPushNotifications-6b5349515a7651436d45-build.zip"
+          "s3Key": "amplify-builds/pandaPushNotifications-414e426b2f624333582f-build.zip"
         },
         "filterTechniciansQuery": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/filterTechniciansQuery-6834486534392f396e38-build.zip"
+          "s3Key": "amplify-builds/filterTechniciansQuery-55752f7771417477312b-build.zip"
         },
         "cancelSubscriptionPlan": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
@@ -74,7 +74,15 @@
         },
         "acceptServiceRequest": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/acceptServiceRequest-6f71664938544661302f-build.zip"
+          "s3Key": "amplify-builds/acceptServiceRequest-416e577754656850706e-build.zip"
+        },
+        "notifyScheduledService": {
+          "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
+          "s3Key": "amplify-builds/notifyScheduledService-7a36444a4b774934594a-build.zip"
+        },
+        "schedulerService": {
+          "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
+          "s3Key": "amplify-builds/schedulerService-435649727063774a734e-build.zip"
         }
       },
       "storage": {
