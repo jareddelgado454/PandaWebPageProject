@@ -13,9 +13,22 @@ const ScheduleCalendar = ({setCurrentStep, dates, setDates, technicianSelectedId
   const [events, setEvents] = useState([]);
   const [error, setError] = useState();
   const onOpenModal = (start, end) => {
-    onOpen();
-    setDates({start, end});
-  }
+    const isAvailable = !events.some((event) => {
+      const eventStart = new Date(event.start);
+      const eventEnd = new Date(event.end);
+      return (
+        (start >= eventStart && start < eventEnd) || 
+        (end > eventStart && end <= eventEnd)
+      );
+    });
+  
+    if (isAvailable) {
+      setDates({ start, end });
+      onOpen();
+    } else {
+      alert('The selected time is already booked. Please choose another slot.');
+    }
+  };
   const getScheduledServices = async() => {
     setLoading(true);
     try {
@@ -30,7 +43,10 @@ const ScheduleCalendar = ({setCurrentStep, dates, setDates, technicianSelectedId
         {
           title: 'Service',
           start: i.scheduledStartDate,
-          end: i.scheduledEndDate
+          end: i.scheduledEndDate,
+          display: 'background',
+          color: '#f87171',
+          title: 'Not Available'
         }
       ));
       setEvents(eventStructured);
@@ -58,6 +74,19 @@ const ScheduleCalendar = ({setCurrentStep, dates, setDates, technicianSelectedId
           events={events}
           eventContent={renderEventContent}
           selectable={true}
+          selectAllow={(selectInfo) => {
+            const { start, end } = selectInfo;
+          
+            // Validar si la selección está en un rango ocupado
+            return !events.some((event) => {
+              const eventStart = new Date(event.start);
+              const eventEnd = new Date(event.end);
+              return (
+                (start >= eventStart && start < eventEnd) || // Empieza dentro del rango
+                (end > eventStart && end <= eventEnd) // Termina dentro del rango
+              );
+            });
+          }}
           select={({ start, end }) => onOpenModal(start, end)}
           validRange={{
             start: new Date()
