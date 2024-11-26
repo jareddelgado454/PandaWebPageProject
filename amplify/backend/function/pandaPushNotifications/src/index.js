@@ -2,44 +2,70 @@ const AWS = require("aws-sdk");
 const sns = new AWS.SNS();
 
 exports.handler = async (event) => {
-  const requestBody =
-    typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-  const { title, message, fcmToken } = requestBody;
-  try {
-    const endpointArn = await createEndpoint(fcmToken);
 
+  try {
+    for (const record of event.Records) {
+      if (record.eventName === "MODIFY") {
+        const newImage = AWS.DynamoDB.Converter.unmarshall(record.dynamodb.NewImage);
+
+        if (newImage.customer.fcmToken && newImage.status !== "pending") {
+          await sendServiceStatusNotification(newImage);
+        }
+      }
+    }
+    return { statusCode: 200, body: "Event processed successfully" };
+  } catch (error) {
+    console.error("Error processing DynamoDB Stream:", error);
+    return { statusCode: 500, body: `Error: ${error.message}` };
+  }
+
+};
+
+const sendServiceStatusNotification = async(service) => {
+
+  try {
+    const { id, customer, status } = service;
+
+    if (!id) {
+      throw new Error("Service ID is missing in the event");
+    }
+
+    if (!customer || !customer.fcmToken) {
+      throw new Error("Customer or FCM token not found");
+    }
+
+    const message = `The service has changed to ${status}`;
     const payload = {
       default: message,
       GCM: JSON.stringify({
         notification: {
-          title: title,
+          title: "Scheduled Service",
           body: message,
           sound: "default",
         },
       }),
     };
 
-    const params = {
+    const endpointArn = await createEndpoint(customer.fcmToken);
+
+    const snsParams = {
       Message: JSON.stringify(payload),
       MessageStructure: "json",
       TargetArn: endpointArn,
     };
+    await sns.publish(snsParams).promise();
 
-    const result = await sns.publish(params).promise();
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: "Notification sent successfully",
-        data: payload,
-      }),
-    };
+    console.log(`Notification sent to customer for service ${id}`);
+    return { statusCode: 200, body: "Notification sent successfully" };
   } catch (error) {
+    console.error("Error sending notification:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify(`Failed to send notification: ${error.message}`),
+      body: `Failed to send notification: ${error.message}`,
     };
   }
-};
+
+}
 
 const createEndpoint = async (fcmToken) => {
   const params = {

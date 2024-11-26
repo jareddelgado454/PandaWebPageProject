@@ -32,7 +32,12 @@ exports.handler = async (event) => {
                 { latitude: lat, longitude: lon },
                 { latitude: technician.loLatitude, longitude: technician.loLongitude }
             );
-            return distance <= 20 && (online_status && technician.online_status === online_status);
+            
+            if(!online_status){
+                return distance <= 20;
+            }
+
+            return distance <= 20 && technician.online_status === online_status;
         });
 
         return nearbyTechnicians;

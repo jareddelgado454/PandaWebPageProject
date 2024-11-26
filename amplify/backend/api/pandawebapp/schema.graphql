@@ -25,7 +25,7 @@ enum GoalType {
 
 type ICustomer {
     id: ID!
-    fcmToken: String!
+    fcmToken: String
     fullName: String!
     profilePicture: String
     rate: Float!
@@ -44,6 +44,21 @@ type Schedule {
 type TimeSlot {
     opening: String
     closing: String
+}
+
+input TimeSlotInput {
+  opening: String
+  closing: String
+}
+
+input ScheduleInput {
+  monday: [TimeSlotInput]
+  tuesday: [TimeSlotInput]
+  wednesday: [TimeSlotInput]
+  thursday: [TimeSlotInput]
+  friday: [TimeSlotInput]
+  saturday: [TimeSlotInput]
+  sunday: [TimeSlotInput]
 }
 
 type ICar {
