@@ -91,7 +91,7 @@ export const ServiceProvider = ({ children }) => {
         if (isNotificationSupported && Notification.permission === 'granted') {
             new Notification('Service Status Update', {
                 body: `The service status has changed to: ${newStatus}`,
-                icon: 'https://master.d3dtglewderhtg.amplifyapp.com/panda.png'
+                icon: 'https://www.app.panda-mars.com/panda.png'
             });
         }
     };
