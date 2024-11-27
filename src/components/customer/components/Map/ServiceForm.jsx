@@ -50,8 +50,12 @@ export default function ServiceForm() {
 
     useEffect(() => {
         (async() => {
-            const rates = await getCustomerRates(user.id);
-            setRate(calculateRate(rates));
+            if(user){
+                const rates = await getCustomerRates(user.id);
+                setRate(calculateRate(rates));
+            }else {
+                return;
+            }
         })();
     }, [user]);
 
