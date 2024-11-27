@@ -82,6 +82,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "notifyScheduledService": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "pandaPushNotifications": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
@@ -90,6 +97,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string"
     },
     "paymentsForFinancialDashboard": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "schedulerService": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",

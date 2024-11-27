@@ -3,46 +3,17 @@ const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 exports.handler = async (event) => {
     
-    const { serviceId, technicianSelectedId, destLatitude, destLongitude, price, statusService } = event.arguments;
+    const { serviceId } = event.arguments;
 
     try {
-        
-        const updatedService = await updateService(serviceId, technicianSelectedId, destLatitude, destLongitude, price, statusService);
         await deleteOffersById(serviceId);
 
-        return updatedService;
+        return serviceId;
     } catch (error) {
         console.error(error);
         return error;
     }
 
-};
-
-const updateService = async (serviceId, technicianSelectedId, destLatitude, destLongitude, price, statusService) => {
-    const params = {
-        TableName: 'Service-yjp2laxn7fhihdb4oidvyc3hf4-dev',
-        Key: { id: serviceId },
-        UpdateExpression: 'SET serviceTechnicianSelectedId = :serviceTechnicianSelectedId, destLatitude = :destLatitude, destLongitude = :destLongitude, price = :price, #status = :statusService',
-        ExpressionAttributeNames: {
-            '#status': 'status'
-        },
-        ExpressionAttributeValues: {
-            ':serviceTechnicianSelectedId': technicianSelectedId,
-            ':destLatitude' : destLatitude,
-            ":destLongitude" : destLongitude,
-            ":price" : price,
-            ":statusService" : statusService
-        },
-        ReturnValues: 'ALL_NEW'
-    };
-
-    try {
-        const result = await dynamoDB.update(params).promise();
-        return result.Attributes;
-    } catch (error) {
-        console.error(`Error updating service: ${error.message}`);
-        throw new Error('Failed to update service', error);
-    }
 };
 
 const deleteOffersById = async (serviceId) => {

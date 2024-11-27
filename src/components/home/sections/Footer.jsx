@@ -38,9 +38,9 @@ export default function Footer() {
 
               <div className="w-10 h-10 bg-meant rounded-full flex items-center justify-center cursor-pointer transition-all hover:bg-[#38a17b]">
                 <div className="w-8 h-8 border border-darkBlack rounded-full flex items-center justify-center">
-                  <Link href="https://www.linkedin.com/company/the-panda-m-a-r-s-llc/">
+                  <Link href="https://www.linkedin.com/company/the-panda-m-a-r-s-llc">
+                    <FiLinkedin className="text-darkBlack text-xl" />
                   </Link>
-                  <FiLinkedin className="text-darkBlack text-xl" />
                 </div>
               </div>
               <div className="w-10 h-10 bg-meant rounded-full flex items-center justify-center cursor-pointer transition-all hover:bg-[#38a17b]">

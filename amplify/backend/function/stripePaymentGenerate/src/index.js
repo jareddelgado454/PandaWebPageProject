@@ -8,12 +8,8 @@ exports.handler = async (event) => {
     const secret = await retrieveKeyFromSM();
     const stripe = stripeModule(secret.STRIPE_TEST_KEY);
 
-<<<<<<< HEAD
-    const { total, serviceAssigned, userEmail, typeAccount } = event.arguments;
-=======
     const { input: { total, serviceAssignedId, serviceAssignedType, serviceAssignedStripeId, userEmail, typeAccount } } = event.arguments;
 
->>>>>>> develop
     let feeAmount = 0;
     if (typeAccount === "free") {
       feeAmount = Math.round(total * 10);

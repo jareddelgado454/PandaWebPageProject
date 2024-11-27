@@ -17,7 +17,7 @@ const haversineDistance = (coords1, coords2) => {
 };
 
 exports.handler = async (event) => {
-    const { lat, lon } = event.arguments;
+    const { lat, lon, online_status } = event.arguments;
 
     const params = {
         TableName: "Technician-yjp2laxn7fhihdb4oidvyc3hf4-dev"
@@ -32,7 +32,12 @@ exports.handler = async (event) => {
                 { latitude: lat, longitude: lon },
                 { latitude: technician.loLatitude, longitude: technician.loLongitude }
             );
-            return distance <= 20 && technician.online_status === "online";
+            
+            if(!online_status){
+                return distance <= 20;
+            }
+
+            return distance <= 20 && technician.online_status === online_status;
         });
 
         return nearbyTechnicians;
