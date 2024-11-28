@@ -48,8 +48,8 @@ exports.handler = async (event) => {
             serviceType: serviceAssignedType,
           },
         },
-        success_url: `https://master.d3dtglewderhtg.amplifyapp.com/payment-customer?paymentStatus=successfully&serviceId=${serviceAssignedId}`,
-        cancel_url: `https://master.d3dtglewderhtg.amplifyapp.com/payment-customer?paymentStatus=cancel&serviceId=${serviceAssignedId}`,
+        success_url: `https://www.app.panda-mars.com/payment-customer?paymentStatus=successfully&serviceId=${serviceAssignedId}`,
+        cancel_url: `https://www.app.panda-mars.com/payment-customer?paymentStatus=cancel&serviceId=${serviceAssignedId}`,
         customer_email: userEmail,
       },
       {

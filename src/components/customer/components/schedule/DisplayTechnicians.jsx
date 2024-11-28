@@ -53,7 +53,7 @@ const DisplayTechnicians = ({ setCurrentStep, setTechnicianSelected }) => {
                 {loading ? (
                     <div className='flex justify-center items-center w-full h-[70%]'><Spinner color='success' size='lg' /></div>
                 ) : error ? <div>{error}</div> : (
-                    <div className='grid grid-cols-3 gap-8 py-4 px-6 h-[70%] overflow-y-auto'>
+                    <div className='grid grid-cols-3 gap-8 py-4 px-6 h-[50%] overflow-y-auto'>
                         {technicians.map((technician, i) => (
                             <div onClick={() => onSelectTechnician(technician)} key={i} className='bg-white dark:bg-zinc-700 drop-shadow-lg h-[9rem] rounded-lg py-2 px-2 transition-transform ease-in-out hover:-translate-y-1 hover:scale-100 duration-300 cursor-pointer'>
                                 <div className='w-full h-full flex flex-row gap-2'>
