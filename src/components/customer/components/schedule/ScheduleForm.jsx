@@ -85,6 +85,7 @@ const ScheduleForm = ({ dates, carSelected, setCarSelected, technicianSelectedId
           input: {
             ...values,
             status: 'pending',
+            offerStatus: 'pending',
             originLatitude: latitude,
             originLongitude: longitude,
             customerId: customer.id,
