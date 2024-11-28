@@ -24,8 +24,8 @@ exports.handler = async (event) => {
                     quantity: 1,
                 }
             ],
-            success_url: "https://master.d3dtglewderhtg.amplifyapp.com/redirect-to-app-after-subscription-stripe/completed",
-            cancel_url: "https://master.d3dtglewderhtg.amplifyapp.com/redirect-to-app-after-subscription-stripe/inccompleted",
+            success_url: "https://www.app.panda-mars.com/redirect-to-app-after-subscription-stripe/completed",
+            cancel_url: "https://www.app.panda-mars.com/redirect-to-app-after-subscription-stripe/inccompleted",
             metadata: idsPassed ? { ...idsPassed } : {},
         });
 

@@ -229,7 +229,7 @@ function UserSidebar({ user }) {
               <Image
                 width={70}
                 height={55}
-                src="/panda.png"
+                src="/panda.webp"
                 className="w-[50px] min-w-[45px] h-[40px] drop-shadow-lg"
                 alt="panda_logo"
               />

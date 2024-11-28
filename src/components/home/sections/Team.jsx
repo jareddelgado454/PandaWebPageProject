@@ -38,9 +38,9 @@ const Team = () => {
                 </p>
                 <p className="font-chackra text-[18px] text-zinc-300">CEO</p>
                 <hr className="w-full border-t border-midMeant my-2" />
-                <button className="flex items-center gap-2 text-sm text-[#E6D5C9]/80 hover:text-[#E6D5C9]">
+                {/* <button className="flex items-center gap-2 text-sm text-[#E6D5C9]/80 hover:text-[#E6D5C9]">
                   View Contact <FiArrowRight className="text-xl" />
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
@@ -64,9 +64,9 @@ const Team = () => {
                 </p>
                 <p className="font-chackra text-[18px] text-zinc-300">CTO</p>
                 <hr className="w-full border-t border-midMeant my-2" />
-                <button className="flex items-center gap-2 text-sm text-[#E6D5C9]/80 hover:text-[#E6D5C9]">
+                {/* <button className="flex items-center gap-2 text-sm text-[#E6D5C9]/80 hover:text-[#E6D5C9]">
                   View Contact <FiArrowRight className="text-xl" />
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
@@ -89,9 +89,9 @@ const Team = () => {
                 </p>
                 <p className="font-chackra text-[18px] text-zinc-300">Developer</p>
                 <hr className="w-full border-t border-midMeant my-2" />
-                <button className="flex items-center gap-2 text-sm text-[#E6D5C9]/80 hover:text-[#E6D5C9]">
+                {/* <button className="flex items-center gap-2 text-sm text-[#E6D5C9]/80 hover:text-[#E6D5C9]">
                   View Contact <FiArrowRight className="text-xl" />
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
@@ -114,9 +114,9 @@ const Team = () => {
                 </p>
                 <p className="font-chackra text-[18px] text-zinc-300">Developer</p>
                 <hr className="w-full border-t border-midMeant my-2" />
-                <button className="flex items-center gap-2 text-sm text-[#E6D5C9]/80 hover:text-[#E6D5C9]">
+                {/* <button className="flex items-center gap-2 text-sm text-[#E6D5C9]/80 hover:text-[#E6D5C9]">
                   View Contact <FiArrowRight className="text-xl" />
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
