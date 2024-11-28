@@ -162,6 +162,36 @@ export const getNearbyTechnicians = gql`
           rate
         }
       }
+      schedule {
+      monday {
+        closing
+        opening
+      }
+      friday {
+        closing
+        opening
+      }
+      saturday {
+        closing
+        opening
+      }
+      sunday {
+        closing
+        opening
+      }
+      thursday {
+        closing
+        opening
+      }
+      tuesday {
+        closing
+        opening
+      }
+      wednesday {
+        closing
+        opening
+      }
+    }
       scheduleType
       createdAt
     }
