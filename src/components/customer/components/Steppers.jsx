@@ -1,7 +1,5 @@
 import React from 'react';
-import { client } from '@/contexts/AmplifyContext';
 import { FaCheck } from 'react-icons/fa6';
-
 export const Steppers = ({ currentStep }) => {
   return (
     <div className='w-full h-[4rem] md:h-[5.8rem]'>
