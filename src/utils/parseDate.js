@@ -1,3 +1,4 @@
+import { differenceInMinutes, format, isBefore } from "date-fns";
 export const DateFormatter = (date) => {
 
     var dateParsed = new Date(date);
@@ -38,3 +39,17 @@ export const ThirdDateFormatter = (date) => {
     return `Total days as technician: ${days} days`;
 
 }
+
+export const DateFormatterDateFns = (date = "") => format(new Date(date), "MMMM d, yyyy 'at' hh:mm a");
+
+export const getTimeMessage = (scheduledStartDate) => {
+    const now = new Date();
+    const scheduledDate = new Date(scheduledStartDate);
+
+    if (isBefore(now, scheduledDate) && differenceInMinutes(scheduledDate, now) <= 15) {
+        const minutesLeft = differenceInMinutes(scheduledDate, now);
+        return `Starting in ${minutesLeft} minute${minutesLeft === 1 ? '' : 's'}`;
+    }
+
+    return `${DateFormatterDateFns(scheduledStartDate)}`;
+};
