@@ -203,6 +203,7 @@ type Technician @model @auth(
     updatedAt: AWSDateTime
     scheduleType: String
     schedule: Schedule
+    fcmToken: String
 }
 
 type Certification {

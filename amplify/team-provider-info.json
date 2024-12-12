@@ -30,7 +30,7 @@
         },
         "stripeCreatingAccountNodeEnviroment": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/stripeCreatingAccountNodeEnviroment-66325277452f4d304a74-build.zip"
+          "s3Key": "amplify-builds/stripeCreatingAccountNodeEnviroment-7777757a376f744e4743-build.zip"
         },
         "stripePaymentGenerate": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
