@@ -19,6 +19,13 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "function": {
+    "AmazonLocationKey": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "PaymentSubscriptionNodeEnviroment": {
       "Arn": "string",
       "LambdaExecutionRole": "string",

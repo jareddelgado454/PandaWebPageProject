@@ -6,6 +6,7 @@ import { MapProvider } from '@/contexts/map/MapProvider';
 import { UserProvider } from '@/contexts/user/UserProvider';
 import ServiceAssignedProvider from "@/contexts/serviceAssigned/ServiceAssignedProvider";
 import { chakra_Petch, jost } from "@/assets/fonts/fonts";
+import { GoogleTagManager } from '@next/third-parties/google'
 export const metadata = {
   title: "The Panda App",
   description: "The Panda is a mobile auto repair service CRM",
@@ -13,6 +14,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="h-full bg-darkBlack overflow-y-auto md:max-h-screen ">
+      <GoogleTagManager gtmId="G-DXCWJ5XLLT" />
       <body className={`${chakra_Petch.variable} ${jost.variable} antialiased`}>
         <UserProvider>
           <ServiceAssignedProvider>

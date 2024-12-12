@@ -30,7 +30,7 @@
         },
         "stripeCreatingAccountNodeEnviroment": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/stripeCreatingAccountNodeEnviroment-4c736676625659336970-build.zip"
+          "s3Key": "amplify-builds/stripeCreatingAccountNodeEnviroment-7777757a376f744e4743-build.zip"
         },
         "stripePaymentGenerate": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
@@ -39,7 +39,7 @@
         },
         "PaymentSubscriptionNodeEnviroment": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/PaymentSubscriptionNodeEnviroment-416977744572572b664b-build.zip"
+          "s3Key": "amplify-builds/PaymentSubscriptionNodeEnviroment-6b72364d705154514c54-build.zip"
         },
         "pandaPushNotifications": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
@@ -80,6 +80,10 @@
         "schedulerService": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
           "s3Key": "amplify-builds/schedulerService-7a67595556746736445a-build.zip"
+        },
+        "AmazonLocationKey": {
+          "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
+          "s3Key": "amplify-builds/AmazonLocationKey-306c7263687175415a47-build.zip"
         }
       },
       "storage": {
