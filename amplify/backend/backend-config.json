@@ -65,6 +65,11 @@
     }
   },
   "function": {
+    "AmazonLocationKey": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "PaymentSubscriptionNodeEnviroment": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -182,6 +187,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_AmazonLocationKey_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AmazonLocationKey"
+        }
+      ]
+    },
+    "AMPLIFY_function_AmazonLocationKey_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "AmazonLocationKey"
+        }
+      ]
+    },
     "AMPLIFY_function_PaymentSubscriptionNodeEnviroment_deploymentBucketName": {
       "usedBy": [
         {

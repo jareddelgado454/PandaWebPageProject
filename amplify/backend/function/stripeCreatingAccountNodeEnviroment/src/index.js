@@ -68,8 +68,8 @@ const handleCreateStripeAccount = async (userSub, username, email) => {
         // Crear link de onboarding
         const accountLink = await stripe.accountLinks.create({
             account: account.id,
-            refresh_url: "https://master.d3dtglewderhtg.amplifyapp.com/redirect-to-app-after-stripe/incompleted",
-            return_url: "https://master.d3dtglewderhtg.amplifyapp.com/redirect-to-app-after-stripe/completed",
+            refresh_url: "https://app.panda-mars.com/redirect-to-app-after-stripe/incompleted",
+            return_url: "https://app.panda-mars.com/redirect-to-app-after-stripe/completed",
             type: "account_onboarding"
         });
 
