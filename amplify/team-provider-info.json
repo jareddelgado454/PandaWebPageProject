@@ -83,6 +83,10 @@
         "AmazonLocationKey": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
           "s3Key": "amplify-builds/AmazonLocationKey-306c7263687175415a47-build.zip"
+        },
+        "technicianNotificactionService": {
+          "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
+          "s3Key": "amplify-builds/technicianNotificactionService-5a4e6c7a416e7831764a-build.zip"
         }
       },
       "storage": {
