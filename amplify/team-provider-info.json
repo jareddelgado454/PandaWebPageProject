@@ -74,11 +74,11 @@
         },
         "notifyScheduledService": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/notifyScheduledService-487831432b68596d4a31-build.zip"
+          "s3Key": "amplify-builds/notifyScheduledService-7a667763516a2b707261-build.zip"
         },
         "schedulerService": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/schedulerService-7a67595556746736445a-build.zip"
+          "s3Key": "amplify-builds/schedulerService-6942776d517a72615837-build.zip"
         },
         "AmazonLocationKey": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
