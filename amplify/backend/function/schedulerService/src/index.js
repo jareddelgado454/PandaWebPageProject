@@ -61,7 +61,7 @@ const scheduleNotification = async (service) => {
   const scheduleExpression = `at(${notificationTimeUTC})`;
 
   const scheduleName = `notify-service-${id}`;
-  console.log(scheduleName);
+  
   const roleArn = "arn:aws:iam::327537917845:role/pandawebappLambdaRole0cb4f451-dev";
 
   const params = {

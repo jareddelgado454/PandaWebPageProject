@@ -1,5 +1,6 @@
 const AWS = require("aws-sdk");
 const sns = new AWS.SNS();
+const ses = new AWS.SES({ region: "us-east-1" });
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 const { differenceInMinutes } = require('date-fns');
 
@@ -30,16 +31,20 @@ exports.handler = async (event) => {
     const serviceData = await dynamodb.get(serviceParams).promise();
 
     if (!serviceData.Item) throw new Error("Service not found");
-
+    
     const { title, scheduledStartDate, customer } = serviceData.Item;
+
+    const minutes = differenceInMinutes(formatDateForScheduler(new Date(scheduledStartDate)), new Date());
+
+    await sendEmailForScheduledService(serviceData.Item, minutes);
+
 
     if (!customer || !customer.fcmToken) {
       throw new Error("Customer or FCM token not found");
     }
 
-    const minutes = differenceInMinutes(formatDateForScheduler(new Date(scheduledStartDate)), new Date());
-
     const message = `Your scheduled service "${title}" is starting in ${minutes}`;
+
     const payload = {
       default: message,
       GCM: JSON.stringify({
@@ -60,7 +65,6 @@ exports.handler = async (event) => {
     };
     await sns.publish(snsParams).promise();
 
-    console.log(`Notification sent to customer for service ${serviceId}`);
     return { statusCode: 200, body: "Notification sent successfully" };
   } catch (error) {
     console.error("Error sending notification:", error);
@@ -82,3 +86,26 @@ const createEndpoint = async (fcmToken) => {
     throw error;
   }
 };
+
+const sendEmailForScheduledService = async (service, minutes) => {
+  try {
+      const emailParams = {
+          Destination: {
+              ToAddresses: [service.customer.email],
+          },
+          Message: {
+              Body: {
+                  Text: {
+                      Data: `Hi ${service.customer.fullName},\n\nYour scheduled service "${service.title}" is starting in ${minutes} minutes.`
+                  }
+              },
+              Subject: { Data: "Scheduled Service" }
+          },
+          Source: "reply@panda-mars.com"
+      };
+      
+      await ses.sendEmail(emailParams).promise();
+  } catch (error) {
+      throw error;
+  }
+}
