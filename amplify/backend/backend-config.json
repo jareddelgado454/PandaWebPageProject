@@ -150,6 +150,16 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "technicianNotifyScheduledService": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "technicianSchedulerService": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "technicianSubscriptionPlan": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -461,6 +471,38 @@
         {
           "category": "function",
           "resourceName": "technicianNotificactionService"
+        }
+      ]
+    },
+    "AMPLIFY_function_technicianNotifyScheduledService_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "technicianNotifyScheduledService"
+        }
+      ]
+    },
+    "AMPLIFY_function_technicianNotifyScheduledService_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "technicianNotifyScheduledService"
+        }
+      ]
+    },
+    "AMPLIFY_function_technicianSchedulerService_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "technicianSchedulerService"
+        }
+      ]
+    },
+    "AMPLIFY_function_technicianSchedulerService_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "technicianSchedulerService"
         }
       ]
     },
