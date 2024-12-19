@@ -89,6 +89,7 @@ export default function ServiceForm() {
                         customer: {
                             id: user.id,
                             fullName: user.fullName,
+                            email: user.email,
                             profilePicture: user.profilePicture,
                             rate
                         },
