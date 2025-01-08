@@ -138,7 +138,7 @@ export default function Footer() {
 
           {/* Derechos reservados */}
           <p className="text-lightWhite text-xs xl:text-base leading-loose">
-            © 2024 The Panda M.A.R.S. LLC. All rights reserved.
+            © 2025 The Panda M.A.R.S. LLC. All rights reserved.
           </p>
         </div>
       </div>
