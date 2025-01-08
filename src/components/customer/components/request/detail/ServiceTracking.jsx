@@ -13,7 +13,9 @@ export default function ServiceTracking({ service, setService }) {
     <>
       <div className='w-full h-full flex flex-col lg:flex-row gap-2 items-center justify-center'>
         <div className='w-[50%] flex justify-center items-center'>
-          <Steppers currentStep={steps[service.status]} service={service} setService={setService} />
+          {service.status === "cancelled" ? (
+            <div className='flex gap-2'><p className='text-lg tracking-wider'>The service has been</p><strong className='text-lg tracking-wider text-rose-600'>cancelled</strong></div>
+          ) : <Steppers currentStep={steps[service.status]} service={service} setService={setService} />}
         </div>
         <CustomerInformation service={service} setService={setService} />
       </div>
@@ -26,7 +28,7 @@ const CustomerInformation = ({ service }) => {
     const [lat1, lon1] = coord1;
     const [lat2, lon2] = coord2;
 
-    const R = 6371; // Radio de la Tierra en km
+    const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
     const lat1Rad = lat1 * Math.PI / 180;
