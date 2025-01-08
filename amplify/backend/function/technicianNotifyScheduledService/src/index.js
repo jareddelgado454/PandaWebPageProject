@@ -16,6 +16,9 @@ const formatDateForScheduler = (date) => {
 };
 
 exports.handler = async (event) => {
+
+  console.log('Called');
+
   try {
     
     const { serviceId } = event;
@@ -32,18 +35,26 @@ exports.handler = async (event) => {
 
     if (!serviceData.Item) throw new Error("Service not found");
     
-    const { title, scheduledStartDate, customer } = serviceData.Item;
+    const { title, scheduledStartDate, technicianOfferedId } = serviceData.Item;
 
     const minutes = differenceInMinutes(formatDateForScheduler(new Date(scheduledStartDate)), new Date());
 
-    await sendEmailForScheduledService(serviceData.Item, minutes);
+    const params = {
+        TableName: "Technician-yjp2laxn7fhihdb4oidvyc3hf4-dev", 
+        Key: {
+          id: technicianOfferedId, 
+        },
+    };
 
-
-    if (!customer || !customer.fcmToken) {
-      throw new Error("Customer or FCM token not found");
+    const technician = await dynamodb.get(params).promise();
+    console.log("Este es el tecnico", technician);
+    if (!technician.Item || !technician.Item.fcmToken) {
+        throw new Error("Customer or FCM token not found");
     }
 
-    const message = `Your scheduled service "${title}" is starting in ${minutes} minutes`;
+    await sendEmailForScheduledService(technician.Item, minutes);
+
+    const message = `Your scheduled service "${title}" is starting in ${minutes}`;
 
     const payload = {
       default: message,
@@ -56,7 +67,7 @@ exports.handler = async (event) => {
       }),
     };
 
-    const endpointArn = await createEndpoint(customer.fcmToken);
+    const endpointArn = await createEndpoint(technician.Item.fcmToken);
 
     const snsParams = {
       Message: JSON.stringify(payload),
@@ -87,16 +98,16 @@ const createEndpoint = async (fcmToken) => {
   }
 };
 
-const sendEmailForScheduledService = async (service, minutes) => {
+const sendEmailForScheduledService = async (technician, minutes) => {
   try {
       const emailParams = {
           Destination: {
-              ToAddresses: [service.customer.email],
+              ToAddresses: [technician.email],
           },
           Message: {
               Body: {
                   Text: {
-                      Data: `Hi ${service.customer.fullName},\n\nYour scheduled service "${service.title}" is starting in ${minutes} minutes.`
+                      Data: `Hi ${technician.fullName},\n\nYour scheduled service is starting in ${minutes} minutes.`
                   }
               },
               Subject: { Data: "Scheduled Service" }

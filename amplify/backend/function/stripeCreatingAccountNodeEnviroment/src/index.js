@@ -68,8 +68,8 @@ const handleCreateStripeAccount = async (userSub, username, email) => {
         // Crear link de onboarding
         const accountLink = await stripe.accountLinks.create({
             account: account.id,
-            refresh_url: "https://app.panda-mars.com/redirect-to-app-after-stripe/incompleted",
-            return_url: "https://app.panda-mars.com/redirect-to-app-after-stripe/completed",
+            refresh_url: "https://www.app.panda-mars.com/redirect-to-app-after-stripe/incompleted",
+            return_url: "https://www.app.panda-mars.com/redirect-to-app-after-stripe/completed",
             type: "account_onboarding"
         });
 
@@ -91,8 +91,8 @@ const handleContinueOnboarding = async (stripeId) => {
         // Crear link de onboarding
         const accountLink = await stripe.accountLinks.create({
             account: stripeId,
-            refresh_url: "https://app.panda-mars.com/redirect-to-app-after-stripe/incompleted",
-            return_url: "https://app.panda-mars.com/redirect-to-app-after-stripe/completed",
+            refresh_url: "https://www.app.panda-mars.com/redirect-to-app-after-stripe/incompleted",
+            return_url: "https://www.app.panda-mars.com/redirect-to-app-after-stripe/completed",
             type: "account_onboarding"
         });
 

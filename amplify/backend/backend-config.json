@@ -130,6 +130,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "retrieveStripeKey": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "schedulerService": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -146,6 +151,16 @@
       "service": "Lambda"
     },
     "technicianNotificactionService": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "technicianNotifyScheduledService": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "technicianSchedulerService": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -400,6 +415,22 @@
         }
       ]
     },
+    "AMPLIFY_function_retrieveStripeKey_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "retrieveStripeKey"
+        }
+      ]
+    },
+    "AMPLIFY_function_retrieveStripeKey_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "retrieveStripeKey"
+        }
+      ]
+    },
     "AMPLIFY_function_schedulerService_deploymentBucketName": {
       "usedBy": [
         {
@@ -461,6 +492,38 @@
         {
           "category": "function",
           "resourceName": "technicianNotificactionService"
+        }
+      ]
+    },
+    "AMPLIFY_function_technicianNotifyScheduledService_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "technicianNotifyScheduledService"
+        }
+      ]
+    },
+    "AMPLIFY_function_technicianNotifyScheduledService_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "technicianNotifyScheduledService"
+        }
+      ]
+    },
+    "AMPLIFY_function_technicianSchedulerService_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "technicianSchedulerService"
+        }
+      ]
+    },
+    "AMPLIFY_function_technicianSchedulerService_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "technicianSchedulerService"
         }
       ]
     },

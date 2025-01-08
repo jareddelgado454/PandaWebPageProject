@@ -377,14 +377,15 @@ type ScheduledService @model @auth(
 }
 
 type Query {
+  getAmazonLocationKey: String @function(name: "AmazonLocationKey-dev") @auth(rules: [{ allow: private }])
   getNearbyTechnicians(lat: Float!, lon: Float!, online_status: String): [Technician] @function(name: "filterTechniciansQuery-dev") @auth(rules: [{ allow: private }])
   getNearbyServices(lat: Float!, lon: Float!): [Service] @function(name: "filterServicesQuery-dev") @auth(rules: [{ allow: private }])
-  getAmazonLocationKey: String @function(name: "AmazonLocationKey-dev") @auth(rules: [{ allow: private }])
+  getStripeKey: String @function(name: "retrieveStripeKey-dev") @auth(rules: [{ allow: private }])
 }
 
 type Mutation {
+    deleteOffersByServiceId(serviceId: ID!): ID! @function(name: "acceptServiceRequest-dev") @auth(rules: [{ allow: private }])
+    createStripeIntent(input: CreateStripeIntent!): String! @function(name: "stripePaymentGenerate-dev") @auth(rules: [{ allow: private }])
     createUserFromAdminPanel(user: CreateUserDBInput!): User! @function(name: "createAdminFromPanel-dev") @auth(rules: [{ allow: groups, groups: ["admin-access"] }])
     deleteUserFromAdminPanel(id: ID!, username: String!, role: String): ID! @function(name: "deleteUserFromAdminPanel-dev") @auth(rules: [{ allow: groups, groups: ["admin-access"] }])
-    createStripeIntent(input: CreateStripeIntent!): String! @function(name: "stripePaymentGenerate-dev") @auth(rules: [{ allow: private }])
-    deleteOffersByServiceId(serviceId: ID!): ID! @function(name: "acceptServiceRequest-dev") @auth(rules: [{ allow: private }])
 }
