@@ -7,7 +7,7 @@ import { calculateRate } from '@/utils/service/AVGRate';
 import { formatDistance } from 'date-fns';
 export default function TechnicianModal({ isOpen, onOpenChange, technician }) {
   const calculateAverageRate = (items) => {
-    if (items.length === 0) return 0; // Manejo de caso donde el array está vacío
+    if (items.length === 0) return 0;
 
     const totalRate = items.reduce((sum, item) => sum + item.rate, 0);
     return totalRate / items.length;
