@@ -130,6 +130,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "retrieveStripeKey": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "schedulerService": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -407,6 +412,22 @@
         {
           "category": "function",
           "resourceName": "paymentsForFinancialDashboard"
+        }
+      ]
+    },
+    "AMPLIFY_function_retrieveStripeKey_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "retrieveStripeKey"
+        }
+      ]
+    },
+    "AMPLIFY_function_retrieveStripeKey_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "retrieveStripeKey"
         }
       ]
     },

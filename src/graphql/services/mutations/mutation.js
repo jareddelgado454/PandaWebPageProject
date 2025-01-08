@@ -52,6 +52,7 @@ export const OnChangeStatusServiceByCustomer = gql`
       id
       completed
       serviceTechnicianSelectedId
+      customerId
       originLatitude
       originLongitude
       destLatitude

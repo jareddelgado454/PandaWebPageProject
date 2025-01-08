@@ -11,7 +11,6 @@ import { updateStatusService } from '@/graphql/services/mutations/mutation';
 import { ServiceContext } from '@/contexts/service/ServiceContext';
 import { onUpdateServiceGlobal } from '@/graphql/users/customer/subscription';
 import RateTechnicianModal from '@/components/customer/modals/RateTechnicianModal';
-import { verifyIfCustomerRated } from '@/graphql/users/customer/query';
 import { UserContext } from '@/contexts/user/UserContext';
 export default function ClientRequest() {
   const { id } = useParams();
@@ -32,13 +31,23 @@ export default function ClientRequest() {
     const retrieveServiceDetail = async () => {
       setLoading(true);
       try {
-        const { data } = await client.graphql({
+        const { data: { getService } } = await client.graphql({
           query: getServiceById,
           variables: {
             serviceId: id
           }
         });
-        setService(data.getService);
+        setService(getService);
+        if (getService.completed !== "completed") {
+          setServiceRequest(getService);
+          Cookies.set(
+            "ServiceRequest",
+            JSON.stringify(getService)
+          );
+        }else {
+          setServiceRequest(null);
+          Cookies.remove("ServiceRequest");
+        }
       } catch (error) {
         console.error(error);
         setError(error);
@@ -46,21 +55,6 @@ export default function ClientRequest() {
         setLoading(false);
       }
     };
-    const verifyIsRateByCustomer = async() => {
-      try {
-        const { data } = await client.graphql({
-          query: verifyIfCustomerRated,
-          variables: { customerId: user?.id }
-        });
-        if(data?.listRates.length > 0){
-          setHasRated(true);
-        }
-      } catch (error) {
-        console.warn(error);
-      }
-    }
-  
-    verifyIsRateByCustomer();
     retrieveServiceDetail();
   }, [id, client, user]);
   const onChangeToComplete = async () => {
@@ -68,11 +62,11 @@ export default function ClientRequest() {
       const { data } = await client.graphql({
         query: updateStatusService,
         variables: {
-          serviceId: serviceRequest.id,
+          serviceId: id,
           status: 'completed'
         }
       });
-      if(data && data.updateService ){
+      if (data && data.updateService) {
         setInterval(() => {
           Cookies.remove("ServiceRequest");
           setServiceRequest(null);
@@ -83,14 +77,19 @@ export default function ClientRequest() {
     }
   }
   useEffect(() => {
+    if(!serviceRequest) return;
     const subscription = client
       .graphql({
         query: onUpdateServiceGlobal,
-        variables: { serviceId: serviceRequest?.id, customerId: serviceRequest?.customer.id }
+        variables: { serviceId: id, customerId: serviceRequest.customer.id }
       })
       .subscribe({
         next: ({ data }) => {
           const updatedService = data.onUpdateService;
+          if (updatedService.status === "cancelled"){
+            Cookies.remove('ServiceRequest');
+            setServiceRequest(null);
+          }
           if (updatedService) {
             setService((prevState) => ({
               ...prevState,
@@ -107,12 +106,10 @@ export default function ClientRequest() {
         },
         error: (error) => console.warn(error)
       });
-
     return () => {
       subscription?.unsubscribe();
     };
-
-  }, [serviceRequest, param]);
+  }, [serviceRequest, param, id]);
   useEffect(() => {
     if (param == "completed") {
       onChangeToComplete();
@@ -122,11 +119,11 @@ export default function ClientRequest() {
   }, [param, serviceRequest]);
 
   useEffect(() => {
-    if(!hasRated){
+    if (!hasRated) {
       onRateTechnicianModalOpen();
     }
   }, [hasRated, setHasRated, setServiceRequest]);
-  
+
   return (
     <>
       <CancelConfirmModal isOpen={isOpen} onOpenChange={onOpenChange} service={service} />

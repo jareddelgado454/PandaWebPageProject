@@ -43,7 +43,7 @@ exports.handler = async (event) => {
       throw new Error("Customer or FCM token not found");
     }
 
-    const message = `Your scheduled service "${title}" is starting in ${minutes}`;
+    const message = `Your scheduled service "${title}" is starting in ${minutes} minutes`;
 
     const payload = {
       default: message,

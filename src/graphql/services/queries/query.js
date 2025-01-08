@@ -121,7 +121,6 @@ export const getServiceById = gql`
             fullName
             contactNumber
             profilePicture
-            suscription
             stripeId
             rate {
               items{
@@ -194,6 +193,60 @@ export const getNearbyTechnicians = gql`
     }
       scheduleType
       createdAt
+    }
+  }
+`;
+
+export const listCurrentService = gql`
+query MyQuery($customerId: ID!) {
+  listServices(filter: {or: [{status: {eq: "service accepted"}}, {status: {eq: "on the way"}}, {status: {eq: "in progress"}}, {status: {eq: "payment"}}], serviceTechnicianSelectedId: {ne: null}, customerId: {eq: $customerId}}) {
+      items {
+        id
+        customerId
+        customer {
+          id
+          fullName
+          fcmToken
+          email
+          profilePicture
+          rate
+        }
+        car {
+          id
+          brand
+          identificationNumber
+          image
+          model
+          year
+        }
+        title
+        description
+        status
+        address
+        destLatitude
+        destLongitude
+        originLatitude
+        originLongitude
+        paymentMethod
+        price
+        tax
+        total
+        serviceTechnicianSelectedId
+        technicianSelected {
+          id
+          email
+          fullName
+          contactNumber
+          profilePicture
+          stripeId
+          createdAt
+          rate {
+            items {
+              rate
+            }
+          }
+        }
+      }
     }
   }
 `;
