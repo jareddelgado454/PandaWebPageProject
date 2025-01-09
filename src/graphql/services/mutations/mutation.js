@@ -91,6 +91,7 @@ export const DeleteMyRequest = gql`
   mutation DeleteRequest($serviceId: ID!, $serviceCustomerId: ID!) {
     deleteService(input: {id: $serviceId}, condition: {customerId: {eq: $serviceCustomerId}}){
       id
+      customerId
     }
   }
 
