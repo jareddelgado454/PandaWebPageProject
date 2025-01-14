@@ -81,3 +81,10 @@ export const onUpdateStatusServiceSubscription = gql`
   }
 `;
 
+export const onDeleteMyService = gql`
+  subscription DeleteService($serviceId: ID!) {
+    onDeleteService(filter: {id: {eq: $serviceId}}){
+      id
+    }
+  }
+`;

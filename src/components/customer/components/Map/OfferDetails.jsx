@@ -14,6 +14,7 @@ import { updateService } from '@/graphql/users/customer/mutation';
 import { MapContext } from '@/contexts/map/MapContext';
 import { PlaceContext } from '@/contexts/place/PlaceContext';
 import { calculateRate } from '@/utils/service/AVGRate';
+import { changeOfferStatusFromCustomer } from '@/api/service';
 const TechnicianModal = dynamic(() => import('../../modals/TechnicianModal'))
 export default function OfferDetails() {
   const [active, setActive] = useState(false);

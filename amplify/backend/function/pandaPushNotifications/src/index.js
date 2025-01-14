@@ -24,7 +24,7 @@ exports.handler = async (event) => {
 const sendServiceStatusNotification = async(service) => {
 
   try {
-    const { id, customer, status } = service;
+    const { id, title, customer, status } = service;
 
     if (!id) {
       throw new Error("Service ID is missing in the event");
@@ -39,7 +39,7 @@ const sendServiceStatusNotification = async(service) => {
       default: message,
       GCM: JSON.stringify({
         notification: {
-          title: "Scheduled Service",
+          title: `${title} service`,
           body: message,
           sound: "default",
         },

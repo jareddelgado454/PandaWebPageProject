@@ -7,7 +7,7 @@ import GearSpinner from "@/components/GearSpinner";
 import { onUpdateServiceStatus } from "@/graphql/users/customer/subscription";
 import { client } from "../AmplifyContext";
 const INITIAL_STATE = {
-    serviceRequest: undefined
+    serviceRequest: null
 }
 
 export const ServiceProvider = ({ children }) => {

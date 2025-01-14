@@ -7,6 +7,7 @@ import { Spinner, useDisclosure } from '@nextui-org/react';
 import ScheduledModal from '../../modals/ScheduledModal';
 import { client } from '@/contexts/AmplifyContext';
 import { retrieveScheduledServicesByTechnicianId } from '@/graphql/schedule/query';
+import { format } from 'date-fns';
 const ScheduleCalendar = ({setCurrentStep, dates, setDates, technicianSelectedId, calendarType}) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [loading, setLoading] = useState(false);
@@ -42,13 +43,11 @@ const ScheduleCalendar = ({setCurrentStep, dates, setDates, technicianSelectedId
       const eventStructured = eventsDB.map((i) => (
         {
           title: 'Service',
-          start: i.scheduledStartDate,
-          end: i.scheduledEndDate,
-          display: 'background',
-          color: '#f87171',
-          title: 'Not Available'
+          start: `${format(new Date(i.scheduledStartDate), "yyyy-MM-dd")}T${format(new Date(i.scheduledStartDate), "hh:mm:ss")}`,
+          end: `${format(new Date(i.scheduledEndDate), "yyyy-MM-dd")}T${format(new Date(i.scheduledEndDate), "hh:mm:ss")}`
         }
       ));
+      console.log(eventStructured);
       setEvents(eventStructured);
       setLoading(false);
     } catch (error) {
@@ -66,27 +65,15 @@ const ScheduleCalendar = ({setCurrentStep, dates, setDates, technicianSelectedId
       msOverflowStyle: 'none'
     }}>
       <p className='text-center tracking-wider font-semibold text-2xl'>Technician Availability</p>
-      {loading ? <Spinner color='success' /> : error ? (<div className='h-full w-full flex justify-center items-center'><p>Something went wrong.</p></div>) : events && (
+      {loading ? <Spinner color='success' /> : error ? (<div className='h-full w-full flex justify-center items-center'><p>Something went wrong.</p></div>) : (
         <FullCalendar
+          timeZone='local'
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView='dayGridMonth'
           weekends={calendarType === "weekdays" ? false : true}
           events={events}
           eventContent={renderEventContent}
           selectable={true}
-          selectAllow={(selectInfo) => {
-            const { start, end } = selectInfo;
-          
-            // Validar si la selección está en un rango ocupado
-            return !events.some((event) => {
-              const eventStart = new Date(event.start);
-              const eventEnd = new Date(event.end);
-              return (
-                (start >= eventStart && start < eventEnd) || // Empieza dentro del rango
-                (end > eventStart && end <= eventEnd) // Termina dentro del rango
-              );
-            });
-          }}
           select={({ start, end }) => onOpenModal(start, end)}
           validRange={{
             start: new Date()

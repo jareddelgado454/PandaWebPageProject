@@ -1,9 +1,35 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FaArrowUp } from 'react-icons/fa6';
+import Cookies from 'js-cookie';
+import { ServiceContext } from '@/contexts/service/ServiceContext';
+import { client } from '@/contexts/AmplifyContext';
+import { onDeleteMyService } from '@/graphql/services/subscriptions/subscription';
 import ServiceForm from './ServiceForm';
 export default function RequestInput() {
+    const { serviceRequest, setServiceRequest } = useContext(ServiceContext);
     const [isInputActive, setIsInputActive] = useState(false);
+    useEffect(() => {
+        if (!serviceRequest) return;
+        const subscription = client
+            .graphql({
+                query: onDeleteMyService,
+                variables: { serviceId: serviceRequest.id }
+            })
+            .subscribe({
+                next: ({ data }) => {
+                    const deletedService = data.onDeleteService;
+                    if (deletedService) {
+                        Cookies.remove("ServiceRequest");
+                        setServiceRequest(null);
+                    }
+                },
+                error: (error) => console.warn(error)
+            });
+        return () => {
+            subscription?.unsubscribe();
+        };
+    }, [serviceRequest]);
     return (
         <>
             <div className={`transtion-all duration-300 absolute ${isInputActive ? 'bottom-[13rem] md:bottom-[26rem] lg:bottom-[13rem]' : 'bottom-0 delay-[10ms]'} left-[48%] transform w-full`}>
