@@ -38,19 +38,19 @@
         },
         "createAdminFromPanel": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/stripeCreatingAccountNodeEnviroment-4c736676625659336970-build.zip"
+          "s3Key": "amplify-builds/createAdminFromPanel-53357a42592f624f3664-build.zip"
         },
         "createStripeTechnicianAccount": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/stripePaymentGenerate-326833504d7a552f674d-build.zip"
+          "s3Key": "amplify-builds/createStripeTechnicianAccount-4365654b726b6875366e-build.zip"
         },
         "deleteUserFromAdminPanel": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/PaymentSubscriptionNodeEnviroment-416977744572572b664b-build.zip"
+          "s3Key": "amplify-builds/deleteUserFromAdminPanel-47517a7750564346765a-build.zip"
         },
         "filterServicesQuery": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/pandaPushNotifications-414e426b2f624333582f-build.zip"
+          "s3Key": "amplify-builds/filterServicesQuery-52646951673053504a75-build.zip"
         },
         "filterTechniciansQuery": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
@@ -90,15 +90,15 @@
         },
         "technicianNotifyScheduledService": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/acceptServiceRequest-416e577754656850706e-build.zip"
+          "s3Key": "amplify-builds/technicianNotifyScheduledService-6b45514c39526d415074-build.zip"
         },
         "technicianSchedulerService": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/notifyScheduledService-7a36444a4b774934594a-build.zip"
+          "s3Key": "amplify-builds/technicianSchedulerService-45635a48392f42525445-build.zip"
         },
         "technicianSubscriptionPlan": {
           "deploymentBucketName": "amplify-pandawebapp-dev-33154-deployment",
-          "s3Key": "amplify-builds/schedulerService-435649727063774a734e-build.zip"
+          "s3Key": "amplify-builds/technicianSubscriptionPlan-4b6849534c794b6a6f64-build.zip"
         }
       },
       "storage": {

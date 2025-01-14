@@ -33,7 +33,6 @@ const Subscription = () => {
   const [stripeAccountStatus, setStripeAccountStatus] = useState(null);
   const [formattedDate, setFormattedDate] = useState(null);
   const [differenceDays, setDifferenceDays] = useState(null);
-  console.log("usseeeeeeeeeeeeeeeer", user);
   const router = useRouter();
 
   const {
@@ -50,15 +49,15 @@ const Subscription = () => {
     setLoadingRetrieving(true);
     try {
         const { username } = await getCurrentUser();
-        console.log("perri aca que onda..");
-        if(user["custom:subscription"] !== "free"){
-          console.log("dentro de la condicion perrita")
+        console.log("Este es el user",user);
+        if(user["custom:subscription"] && user["custom:subscription"] !== "free"){
           const {data} = await client.graphql({
             query: getSubscriptionExpirationDate,
             variables: {
               id: user.sub,
             },
           });
+          console.log("fecha",data?.getTechnician?.subscriptionExpirationDate)
           const date = dayjs(data?.getTechnician?.subscriptionExpirationDate);
           const now = dayjs();
           const difference = date.diff(now, 'day');
@@ -85,8 +84,10 @@ const Subscription = () => {
   }, [user]);
 
   useEffect(()=>{
-    retrieveData();
-  },[]);
+    if(user){
+      retrieveData();
+    }
+  },[user]);
 
   const handleCreateAccount = async () => {
     try {
@@ -272,10 +273,10 @@ const Subscription = () => {
                 <div className="flex gap-x-3 items-center sm:text-[35px] text-[25px]  font-bold">
                   <BsCalendar2Check className="dark:text-zinc-400 text-zinc-700" />
                   {
-                    user["custom:subscription"] === "free" ? "Free Plan" : user["custom:subscription"] === "annual" ? "Annualy Plan" : "Monthly Plan"
+                    user["custom:subscription"] === "free" || !user["custom:subscription"] ? "Free Plan" : user["custom:subscription"] === "annual" ? "Annualy Plan" : "Monthly Plan"
                   }
                 </div>
-                {user["custom:subscription"] === "free" ? (
+                {user["custom:subscription"] === "free" || !user["custom:subscription"] ? (
                   <Button isDisabled={loadingRetrieving} onClick={handleUpgrade} className="py-2 px-4 rounded-xl bg-emerald-600 text-white cursor-pointer">
                     Upgrade
                   </Button>
@@ -335,10 +336,10 @@ const Subscription = () => {
                     Renewal Amount
                   </span>
                   <span className="text-[28px] font-semibold dark:text-emerald-300 text-emerald-600">
-                    $ {  user["custom:subscription"] === "free" ? "0" : user["custom:subscription"] === "annual" ? "5,000.00" : "500.00" }
+                    $ {  user["custom:subscription"] === "free" || !user["custom:subscription"] ? "0" : user["custom:subscription"] === "annual" ? "5,000.00" : "500.00" }
                   </span>
                   <span className="dark:text-zinc-400 text-zinc-700">
-                    { user["custom:subscription"] === "free" ? "Free Plan" : user["custom:subscription"] === "annual" ? "Annualy Plan" : "Monthly Plan" }
+                    { user["custom:subscription"] === "free" || !user["custom:subscription"]  ? "Free Plan" : user["custom:subscription"] === "annual" ? "Annualy Plan" : "Monthly Plan" }
                   </span>
                   <span className="dark:text-emerald-400 text-emerald-500 font-semibold cursor-pointer">
                     See past invoices
