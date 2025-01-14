@@ -103,3 +103,56 @@ export const getProfilePicture = gql`
   }
 `;
 
+export const LIST_MY_CHATS = gql`
+query ListAllMyChats($technicianId: ID!) {
+    listChatsWithTechnicians: listChats(filter: {chatTechnicianSelectedId: {eq: $technicianId}, chatCustomerId: {attributeExists: true}}) {
+        items {
+            id
+            chatCustomerId
+            chatTechnicianSelectedId
+            createdAt
+            updatedAt
+            customer {
+                id
+                fullName
+                profilePicture
+            }
+            messages {
+                items {
+                    id
+                    sender
+                    chatId
+                    content
+                    image
+                    createdAt
+                }
+            }
+        }
+    }
+    listChatsWithAdmins: listChats(filter: {chatTechnicianSelectedId: {eq: $technicianId}, chatAdminId: {attributeExists: true}}) {
+        items {
+            id
+            chatCustomerId
+            chatAdminId
+            createdAt
+            updatedAt
+            admin {
+                profilePicture
+                fullName
+                id
+            }
+            messages {
+                items {
+                    id
+                    sender
+                    chatId
+                    content
+                    image
+                    createdAt
+                }
+            }
+        }
+    }
+}
+`;
+

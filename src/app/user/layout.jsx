@@ -65,7 +65,8 @@ const UserLayout = ({ children }) => {
       console.log("Este es el coso del tecnico", userInfo.sub);
       setIsOnline(userInfo["custom:isOnline"] === "true" ? true : false);
     } catch (error) {
-      setError(error);
+      console.log("error", error);
+      // setError(error);
     }
   };
 

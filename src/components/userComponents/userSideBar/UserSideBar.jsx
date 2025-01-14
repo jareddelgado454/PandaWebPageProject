@@ -319,7 +319,7 @@ function UserSidebar({ user }) {
                         className="rounded-full object-cover shadow-md"
                     />
                   </div>
-                  <span className="overflow-clip whitespace-nowrap tracking-wide text-[15px]">Setting</span>
+                  <span className="overflow-clip whitespace-nowrap tracking-wide text-[15px]">My Account</span>
                 </Link>
               </div>
               <div

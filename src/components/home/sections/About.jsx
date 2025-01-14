@@ -19,7 +19,7 @@ const About = () => {
             {`Our founders have a long family history in the auto industry and a deep empathy for small business owners and barriers to success. We combined those two areas that we are highly passionate about and came to this wonderful conclusion. We care deeply about people and strongly believe that our experiences and expertise can help to empower people.`}
           </p>
         </div>
-        <div className="h-[1px] flex w-full bg-gradient-to-r from-darkGray to-raisinBlack mb-4 md:mt-6 mt-3">
+        <div className="h-[1px] flex w-full bg-gradient-to-r from-darkGray to-raisinBlack mb-4 md:mt-6 mt-3 text-transparent">
           a
         </div>
       </div>
