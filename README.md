@@ -4,7 +4,7 @@
 
 Welcome to **Panda Mars**, the ultimate web platform designed to connect technicians with customers who need roadside assistance. This project serves as a bridge between users and experts, ensuring a seamless experience for quick and reliable vehicle repairs.
 
-![Panda Mars Screenshot](https://via.placeholder.com/800x400?text=Panda+Mars+Web+Platform)  
+![Panda Mars Screenshot](public/screenshots/homeViewPanda.PNG)  
 *Illustrative image of the Panda Mars platform.*
 
 ## 🌟 **Live Demo**
